@@ -1,0 +1,20 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "skvn-marine/accordion",
+  "version": "0.1.0",
+  "title": "SKVN Accordion",
+  "category": "design",
+  "icon": "menu",
+  "description": "Accessible accordion skeleton for SKVN Marine content.",
+  "textdomain": "skvn-marine-blocks",
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Accordion heading"
+    }
+  },
+  "supports": {
+    "html": false
+  }
+}

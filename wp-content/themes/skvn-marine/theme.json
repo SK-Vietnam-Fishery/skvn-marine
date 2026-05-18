@@ -1,0 +1,71 @@
+{
+  "version": 3,
+  "settings": {
+    "layout": {
+      "contentSize": "760px",
+      "wideSize": "1200px"
+    },
+    "color": {
+      "palette": [
+        {
+          "slug": "marine",
+          "color": "#075985",
+          "name": "Marine"
+        },
+        {
+          "slug": "ocean",
+          "color": "#0ea5e9",
+          "name": "Ocean"
+        },
+        {
+          "slug": "deep",
+          "color": "#0f172a",
+          "name": "Deep"
+        },
+        {
+          "slug": "surface",
+          "color": "#f8fafc",
+          "name": "Surface"
+        }
+      ]
+    },
+    "typography": {
+      "fontSizes": [
+        {
+          "slug": "sm",
+          "size": "0.875rem",
+          "name": "Small"
+        },
+        {
+          "slug": "base",
+          "size": "1rem",
+          "name": "Base"
+        },
+        {
+          "slug": "lg",
+          "size": "1.125rem",
+          "name": "Large"
+        },
+        {
+          "slug": "xl",
+          "size": "1.25rem",
+          "name": "XL"
+        },
+        {
+          "slug": "display",
+          "size": "clamp(2.5rem, 6vw, 5rem)",
+          "name": "Display"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var(--wp--preset--color--surface)",
+      "text": "var(--wp--preset--color--deep)"
+    },
+    "typography": {
+      "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    }
+  }
+}

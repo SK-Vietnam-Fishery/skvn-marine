@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "skvn-marine/slide",
+  "version": "0.1.0",
+  "title": "SKVN Slide",
+  "category": "design",
+  "icon": "slides",
+  "description": "Single slide for the SKVN slider block.",
+  "parent": [
+    "skvn-marine/slider"
+  ],
+  "textdomain": "skvn-marine-blocks",
+  "supports": {
+    "html": false,
+    "reusable": false
+  }
+}
