@@ -12,6 +12,7 @@
 - Use WindPress/Tailwind for design system implementation.
 - Use TypeScript for custom Gutenberg block plugin.
 - Use Swiper for slider.
+- Product Grid/List V1: use WooCommerce native blocks/patterns. Custom Product Grid/List or related style blocks are deferred to V2.
 
 ## [manual] Invariants
 
@@ -24,7 +25,6 @@
 
 ## [manual] Open Decisions
 
-- Product grid/list V1 implementation: Woo native first or custom block.
 - Exact CF7 webhook approach for n8n.
 - Polylang activation timing.
 - SEO/GEO content template details.

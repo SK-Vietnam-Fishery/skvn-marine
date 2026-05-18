@@ -9,8 +9,13 @@ Custom Gutenberg blocks with logic.
 - `skvn-marine/slider`
 - `skvn-marine/slide`
 - `skvn-marine/accordion`
-- `skvn-marine/product-grid`
-- `skvn-marine/product-list`
+
+## [manual] Deferred Blocks
+
+- V1 KHÔNG build custom `skvn-marine/product-grid`.
+- V1 KHÔNG build custom `skvn-marine/product-list`.
+- V1 dùng WooCommerce native blocks/patterns cho product grid/list.
+- V2 mới thêm Product Grid/List custom hoặc style blocks liên quan nếu cần.
 
 ## [manual] Rules
 

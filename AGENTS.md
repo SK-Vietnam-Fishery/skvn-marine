@@ -5,14 +5,30 @@
 
 ---
 
+## 0. Milestone hiện tại
+
+Current milestone: **V1 / 0.1.0 — Child theme skeleton + local runtime baseline**
+
+Milestone source of truth: `.context/MILESTONES.md`.
+
+Quy tắc quản lý tension theo milestone:
+
+- Trong cùng milestone hiện tại, tension đã `RESOLVED` vẫn giữ trong `.context/TENSIONS.md` để agent thấy decision liên quan khi làm task V1.
+- Chỉ khi human tuyên bố chuyển sang milestone/version mới (ví dụ V1 → V2), agent mới move các tension đã `RESOLVED` của milestone cũ sang `.context/TENSIONS_HISTORY.md`.
+- Khi chuyển milestone, agent phải update cả `AGENTS.md` và `.context/MILESTONES.md`, đồng thời move milestone cũ sang `.context/MILESTONES_HISTORY.md`.
+- `.context/TENSIONS_HISTORY.md` không load mặc định, chỉ đọc khi cần audit quyết định cũ hoặc human yêu cầu.
+
+---
+
 ## 1. Đọc trước — Bắt buộc
 
-Mỗi task bắt đầu bằng 3 bước này, không có ngoại lệ:
+Mỗi task bắt đầu bằng 4 bước này, không có ngoại lệ:
 
 ```
 1. Đọc .context/GLOBAL.md       → hiểu stack, module index, invariants
-2. Đọc .context/TENSIONS.md     → check OPEN tensions liên quan đến task
-3. Đọc .context/<module>.md     → load context của module sắp sửa
+2. Đọc .context/MILESTONES.md   → biết milestone hiện tại và checklist liên quan
+3. Đọc .context/TENSIONS.md     → check OPEN/RESOLVED tensions của milestone hiện tại
+4. Đọc .context/<module>.md     → load context của module sắp sửa
 ```
 
 Nếu `.context/<module>.md` chưa tồn tại → load `GLOBAL.md` + hỏi lại trước khi tạo file mới.
@@ -66,7 +82,7 @@ echo wp_kses_post($content);
 ## 3. Workflow — Mỗi Task
 
 ```
-1. Load context (GLOBAL → TENSIONS → module)
+1. Load context (GLOBAL → MILESTONES → TENSIONS → module)
 2. Đọc [manual] của module — hiểu constraints và invariants
 3. Nếu [manual] còn placeholder → DỪNG, hỏi lại
 4. Detect tensions (xem Section 4)
@@ -76,6 +92,7 @@ echo wp_kses_post($content);
 8. Implement — follow coding standards bên dưới
 9. Self-check (xem checklist cuối file)
 10. Update .context/ nếu có quyết định mới
+11. Chỉ khi human chuyển version/milestone mới, update `AGENTS.md` + `.context/MILESTONES.md`, move milestone cũ sang `.context/MILESTONES_HISTORY.md`, và move tension đã RESOLVED của milestone cũ khỏi `.context/TENSIONS.md` sang `.context/TENSIONS_HISTORY.md`
 ```
 
 ### Sau khi implement xong
@@ -115,6 +132,16 @@ Decision:   OPEN
 Severity LOW  → ghi tension → tiếp tục theo hướng conservative → báo human review sau
 Severity HIGH → ghi tension → DỪNG task → chờ human fill Decision
 ```
+
+### Resolved tension archive
+
+Trong cùng milestone hiện tại, `.context/TENSIONS.md` giữ cả OPEN tensions và RESOLVED tensions có liên quan đến milestone đó.
+
+Khi human tuyên bố chuyển sang version/milestone mới, agent phải move các entry `Decision: RESOLVED ...` của milestone cũ sang `.context/TENSIONS_HISTORY.md`.
+
+Không load `.context/TENSIONS_HISTORY.md` mặc định khi bắt đầu task. Chỉ đọc history khi cần audit quyết định cũ hoặc human yêu cầu.
+
+Milestone checklist và trigger chuyển mốc được quản lý trong `.context/MILESTONES.md`. Khi chuyển milestone, milestone cũ phải được archive sang `.context/MILESTONES_HISTORY.md`.
 
 ### Ví dụ triggers tension
 
@@ -249,6 +276,8 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 [ ] Dependency mới có rationale
 [ ] Files sửa ≤ 5 (hoặc có lý do nếu hơn)
 [ ] TENSIONS.md updated nếu có conflict phát sinh
+[ ] MILESTONES.md updated nếu milestone checklist/status thay đổi
+[ ] Chỉ archive resolved tensions khi human chuyển version/milestone mới
 [ ] .context/<module>.md updated nếu có decision mới
 ```
 
@@ -278,3 +307,115 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 - GitHub Actions CI/CD
 - Technical Product Card với specs table
 - Custom CPT cho product
+
+---
+
+## 11. Dev Repo vs WordPress Runtime — Không được nhầm
+
+Repo này (`D:\Github\skvn-marine`) là **source repo để dev**, KHÔNG phải WordPress runtime root.
+
+WordPress runtime root nghĩa là **thư mục cài WordPress đầy đủ để chạy/test website**, ví dụ thư mục có `wp-admin/`, `wp-includes/`, `wp-content/`, `wp-config.php`. Với người không quen technical wording, có thể hiểu đơn giản là: **thư mục chứa toàn bộ bộ cài WordPress của site local/test**.
+
+Nếu có file `.local/ENVIRONMENT.md`, agent phải đọc file đó để biết path môi trường local của máy hiện tại.
+
+Nếu chưa có `.local/ENVIRONMENT.md` và task cần thao tác với WordPress runtime (cài/activate plugin, test theme/plugin, chạy WP-CLI trên site), agent PHẢI hỏi human cung cấp WordPress runtime root trước. Khi hỏi, nói rõ đây là **đường dẫn tới thư mục cài WordPress đầy đủ của site local/test**, không phải source repo theme/plugin. Sau khi human cung cấp path, agent PHẢI tạo `.local/ENVIRONMENT.md` và ghi lại:
+
+```text
+WP_RUNTIME_ROOT_WINDOWS=...
+WP_RUNTIME_ROOT_WSL=...
+```
+
+File `.local/ENVIRONMENT.md` là machine-local, đã được git ignore, KHÔNG commit.
+
+### Source repo chỉ chứa
+
+- Theme custom: `wp-content/themes/skvn-marine/`
+- Plugin custom: `wp-content/plugins/skvn-marine-blocks/`
+- Context/docs/dev files: `.context/`, `docs/`, `AGENTS.md`, `README.md`
+
+### Source repo KHÔNG được chứa
+
+Không cài, copy, vendor, commit external WordPress plugins vào repo này:
+
+- `wp-content/plugins/woocommerce/`
+- `wp-content/plugins/contact-form-7/`
+- `wp-content/plugins/contact-form-cfdb7/`
+- `wp-content/plugins/seo-by-rank-math/`
+- `wp-content/plugins/rank-math/`
+- `wp-content/plugins/antispam-bee/`
+- `wp-content/plugins/windpress/`
+- `wp-content/plugins/polylang/`
+- `wp-content/plugins/akismet/`
+- `wp-content/plugins/hello.php`
+
+External plugins thuộc **WordPress runtime site**, không thuộc source repo dev.
+
+### Trước khi cài plugin bằng WP-CLI
+
+Bắt buộc xác định rõ WordPress root thật. WordPress root phải có:
+
+```text
+wp-config.php
+wp-admin/
+wp-includes/
+wp-content/
+```
+
+Local hiện tại phải được khai báo trong `.local/ENVIRONMENT.md`, ví dụ:
+
+```text
+WP_RUNTIME_ROOT_WINDOWS=D:\Github\minhhaifish
+WP_RUNTIME_ROOT_WSL=/mnt/d/Github/minhhaifish
+```
+
+Nếu task yêu cầu "cài plugin", "activate plugin", "setup môi trường WordPress", agent PHẢI hỏi hoặc xác nhận path runtime root trước.
+
+Không được chạy:
+
+```bash
+wp plugin install ...
+```
+
+trong source repo này nếu repo không có `wp-config.php`, `wp-admin/`, `wp-includes/`.
+
+### Cách đúng để test theme/plugin
+
+1. Human tạo hoặc cung cấp một WordPress runtime root riêng.
+2. Agent cài external plugins vào runtime root bằng WP-CLI:
+
+```bash
+wp plugin install woocommerce contact-form-7 contact-form-cfdb7 seo-by-rank-math antispam-bee windpress --activate --path=/path/to/wp-root
+```
+
+3. Agent deploy custom code từ source repo sang runtime root bằng copy hoặc symlink:
+
+```text
+source repo/wp-content/themes/skvn-marine
+-> runtime root/wp-content/themes/skvn-marine
+
+source repo/wp-content/plugins/skvn-marine-blocks
+-> runtime root/wp-content/plugins/skvn-marine-blocks
+```
+
+4. Agent activate custom theme/plugin trong runtime root:
+
+```bash
+wp theme activate skvn-marine --path=/path/to/wp-root
+wp plugin activate skvn-marine-blocks --path=/path/to/wp-root
+```
+
+### Nếu lỡ copy external plugins vào source repo
+
+DỪNG ngay và báo human.
+
+Chỉ được xóa các thư mục external plugin nếu chắc chắn chúng là untracked/generated và không phải code custom của project. Sau khi xóa, kiểm tra:
+
+```bash
+git status --short wp-content/plugins
+```
+
+Kết quả mong muốn: chỉ còn `skvn-marine-blocks/` là plugin custom của repo.
+
+### Tension trigger
+
+Nếu không chắc một thư mục/plugin thuộc source repo hay runtime site → ghi LOW tension và hỏi lại trước khi cài/copy/xóa.

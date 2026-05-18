@@ -1,7 +1,9 @@
-# TENSIONS.md — SKVN Marine
+﻿# TENSIONS.md — SKVN Marine
 
 > Agent và human cùng maintain file này.
-> KHÔNG để stale. Mỗi OPEN tension phải có Decision trước khi task liên quan được thực hiện.
+> File này giữ OPEN tensions và RESOLVED tensions của milestone hiện tại.
+> Chỉ move RESOLVED tensions sang `.context/TENSIONS_HISTORY.md` khi human tuyên bố chuyển version/milestone mới.
+> Mỗi OPEN tension phải có Decision trước khi task liên quan được thực hiện.
 
 ---
 
@@ -11,7 +13,7 @@ Context:    Planning phase — chưa bắt đầu implement product section
 Proposal:   Tạo custom `skvn-marine/product-grid` và `skvn-marine/product-list` block ngay từ đầu
 Constraint: Master context khuyến nghị "Start with WooCommerce-native blocks/patterns where possible. Custom product grid/list blocks can be added after the homepage is working."
 Severity:   high
-Decision:   OPEN
+Decision:   RESOLVED 2026-05-18 — V1 dùng WooCommerce native blocks/patterns cho product grid/list. Custom Product Grid/List hoặc style blocks liên quan để V2.
 
 ---
 

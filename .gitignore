@@ -32,6 +32,9 @@ wp-config.php
 # Log files
 *.log
 
+# Local machine environment notes
+/.local/
+
 # htaccess
 /.htaccess
 
