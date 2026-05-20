@@ -381,6 +381,55 @@ WP_RUNTIME_ROOT_WSL=...
 
 File `.local/ENVIRONMENT.md` là machine-local, đã được git ignore, KHÔNG commit.
 
+### Local dev runtime — máy hiện tại
+
+Thông tin chi tiết của máy hiện tại nằm trong `.local/ENVIRONMENT.md`. File này local-only, có thể chứa credential, KHÔNG commit.
+
+Agent phải đọc `.local/ENVIRONMENT.md` trước khi chạy WP-CLI, bật server, hoặc chạy build local.
+
+Local hiện tại:
+
+```text
+Source repo Windows: D:\Github\skvn-marine
+WP runtime Windows:  D:\Github\minhhaifish
+WP runtime WSL:      /mnt/d/Github/minhhaifish
+WSL distro:          Debian
+WSL user:            shinkuro
+WP URL:              http://localhost:8080
+WP admin:            http://localhost:8080/wp-admin/
+```
+
+Toolchain đã cài trong WSL Debian:
+
+```text
+PHP:      /usr/bin/php — 8.4.21
+WP-CLI:   /usr/local/bin/wp — 2.12.0
+MariaDB:  /usr/bin/mariadb — 11.8.6
+nvm:      /home/shinkuro/.nvm
+Node.js:  20.20.2
+npm:      10.8.2
+```
+
+Không cài Node/toolchain vào source repo. Không tạo `.local/toolchains/` trong repo.
+
+Bật local WP dev server:
+
+```bash
+wsl -d Debian -- bash -lc "cd /mnt/d/Github/minhhaifish && setsid -f wp server --host=0.0.0.0 --port=8080 --allow-root"
+```
+
+Kiểm tra server:
+
+```bash
+curl -I http://localhost:8080/wp-login.php
+```
+
+Chạy plugin build bằng Node trong WSL:
+
+```bash
+wsl -d Debian -- bash -lc "source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build"
+```
+
 ### Source repo chỉ chứa
 
 - Theme custom: `wp-content/themes/skvn-marine/`

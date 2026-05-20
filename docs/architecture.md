@@ -19,6 +19,7 @@ V3 may evolve into a reusable base theme for multiple websites.
 - Lead automation: n8n webhook
 - SEO: Rank Math + GEO/AEO-oriented content structure
 - Multilingual candidate: Polylang
+- Map block engine: Out of the Block: OpenStreetMap
 - Spam baseline: Antispam Bee for comments, separate protection for CF7 forms
 - Image strategy: WebP, SEO filenames, auto ALT from attachment title if empty
 
@@ -34,6 +35,7 @@ V3 may evolve into a reusable base theme for multiple websites.
 - Frontend/editor CSS
 - Animation runtime
 - WooCommerce visual overrides
+- Map/contact section wrapper, including overlay contact card styling
 - Media helpers, including image ALT automation
 
 ### Plugin owns
@@ -51,4 +53,29 @@ V3 may evolve into a reusable base theme for multiple websites.
 - CFDB7 lead table/storage
 - n8n lead automation
 - Rank Math SEO
+- Antispam Bee comment spam protection
+- Out of the Block: OpenStreetMap map block
 - Polylang multilingual if activated
+
+## Map / Contact Section Direction
+
+Use Out of the Block: OpenStreetMap as the map engine. The SKVN theme owns the section composition and visual treatment.
+
+Target layout:
+
+- Full-width map panel.
+- Large blue map pin emphasis on the left side.
+- Floating white contact card over the map on desktop, aligned right.
+- Contact card includes company name, address, phone, and email.
+- Dark blue surrounding band or bottom frame can be used when it supports the page composition.
+- On mobile, stack the contact card above or below the map instead of forcing an overlay.
+
+### Recommended runtime plugins
+
+- WooCommerce
+- WindPress
+- Rank Math SEO
+- Contact Form 7
+- Contact Form CFDB7
+- Antispam Bee
+- Out of the Block: OpenStreetMap

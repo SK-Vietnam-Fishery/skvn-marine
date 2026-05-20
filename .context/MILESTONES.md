@@ -53,7 +53,7 @@ Acceptance:
 - [x] External required plugins installed in runtime root, not source repo
 - [x] PHP server smoke test returns HTTP 200 on `http://localhost:8080`
 - [x] Theme PHP syntax check passed after latest code changes
-- [ ] Plugin build check passed after latest code changes
+- [x] Plugin build check passed after latest code changes
 - [ ] Human approves milestone completion
 
 ### 0.2.0 — Design System, Block Styles, Patterns
@@ -65,8 +65,13 @@ Acceptance:
 - [ ] Theme tokens reviewed/refined
 - [ ] `theme.json` reviewed/refined
 - [ ] Base typography/layout implemented
+- [ ] Header baseline implemented with GeneratePress + SKVN child theme CSS, no header builder plugin
+- [ ] Footer baseline implemented with theme pattern/template + SKVN child theme CSS, no footer builder plugin
 - [ ] Block styles implemented
 - [ ] Starter patterns implemented
+- [ ] Trust feature strip reusable pattern implemented
+- [ ] Newsletter signup band reusable pattern implemented with replaceable image block and no custom form handler
+- [ ] Homepage test page assembled in WP editor with placeholder content/images to validate layout before finalizing reusable patterns
 - [ ] Runtime smoke test passed
 - [ ] Human approves milestone completion
 

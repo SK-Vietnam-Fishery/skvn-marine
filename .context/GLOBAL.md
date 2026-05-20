@@ -16,6 +16,7 @@
 - Rank Math â€” SEO, schema
 - Polylang â€” multilingual (standby V1, activate later)
 - Antispam Bee â€” comment spam. CF7 honeypot + optional Turnstile â€” form spam
+- Out of the Block: OpenStreetMap â€” map/contact section block engine
 - Swiper â€” slider block frontend runtime
 - IntersectionObserver â€” scroll reveal
 - Shared animation runtime (`assets/js/animations.js`) â€” fade/parallax/magnetic

@@ -70,6 +70,124 @@ Custom block strategy:
 
 ---
 
+## Homepage Test Page Workflow
+
+V1 layout development should use a WordPress test page before finalizing reusable patterns.
+
+Test prompts are stored in `docs/frontpage-testing.md`.
+
+Method:
+
+```text
+Create a WP test page
+→ assemble the full homepage using core blocks, WooCommerce native blocks, map block, placeholder/network images, and English placeholder copy
+→ apply SKVN wrapper classes and Tailwind/WindPress utility classes
+→ code/refine child theme CSS and theme patterns
+→ refresh desktop/mobile views
+→ compare against the reference layout and acceptance checklist
+→ extract stable sections into reusable theme patterns
+```
+
+Test page should cover:
+
+- Top utility bar and main header.
+- Hero panel with image/media composition.
+- Category strip.
+- Combo/product card section.
+- Why-choose/trust strips.
+- Featured product section using WooCommerce-native direction or placeholders.
+- Promo/cold-chain banner.
+- Process steps.
+- Map/contact section.
+- Newsletter signup band with replaceable image block.
+- Footer.
+
+Rules:
+
+- Use English placeholder copy; exact translation is not required.
+- Images may be placeholders or remote images, but final CSS must not hardcode image URLs.
+- Tailwind/WindPress class choices should be explicit enough to verify layout behavior.
+- Do not create custom blocks until the pattern approach proves insufficient.
+- Do not add new builder plugins for this workflow.
+- Mobile checks are mandatory before marking a section stable.
+
+---
+
+## Header / Footer
+
+V1 decision:
+
+- Use GeneratePress header/footer baseline plus SKVN child theme CSS.
+- Do not add a header/footer builder plugin by default.
+- If a template reference looks good, translate its structure into theme CSS, WordPress menus, and theme pattern/template code.
+
+Header should include:
+
+- Logo/site identity.
+- Native WordPress menu.
+- Primary CTA such as Request a Quote when needed.
+- Responsive mobile navigation using GeneratePress baseline behavior unless a clear gap appears.
+
+Footer should include:
+
+- Company information.
+- Product/category links.
+- Contact information.
+- Optional trust feature strip above footer.
+- Optional newsletter signup band above footer.
+- Optional certification/social area if content is available.
+
+Future plugin/builder condition:
+
+- Reconsider a builder plugin only if non-technical editors must frequently redesign global header/footer layouts without developer support.
+
+---
+
+## Trust Strip / Newsletter Band
+
+V1 decision:
+
+- Implement as reusable theme patterns with SKVN child theme CSS.
+- Do not create a custom block by default.
+- Do not add a new newsletter plugin by default.
+- If newsletter submission must work in V1, use CF7 markup/shortcode and keep form classes aligned with the project form system.
+- Do not custom-code a newsletter form handler in the theme.
+
+Trust feature strip should include:
+
+- Icon/image.
+- Short headline.
+- Supporting text.
+- Four-column desktop layout.
+- Responsive two-column/tablet and single-column/mobile layout.
+
+Newsletter signup band should include:
+
+- Title.
+- Short description.
+- Email field and submit button or CF7 form placeholder.
+- Replaceable Image block for product/carton artwork.
+- Image overhang outside the band on desktop.
+
+Theme CSS should handle:
+
+- Stable wrapper classes such as `skvn-trust-strip`, `skvn-newsletter-band`, `skvn-newsletter-media`, and `skvn-newsletter-media--overhang`.
+- Image positioning and responsive fallback.
+- Preventing overhanging image from covering text or form controls.
+- Mobile stack where image no longer overhangs if space is limited.
+
+Editor behavior:
+
+- Image source must stay editable via the core Image block.
+- User should be able to replace the artwork with Upload/Media Library without touching code.
+- CSS must not hardcode the image URL.
+
+Future custom block condition:
+
+- Consider a custom block only if editors need locked controls for image position, overhang amount, mobile visibility, layout variant, or form source.
+
+---
+
 ## Hero / Front Panel
 
 The hero direction is a large visual front panel with possible layered composition:
@@ -262,7 +380,8 @@ Out of the Block: OpenStreetMap block
 Pattern should include:
 
 - Map block
-- Contact card
+- Contact card overlaid on the map on desktop, aligned to the right side.
+- Card company name heading.
 - Address
 - Phone/email
 - CTA button
@@ -271,10 +390,28 @@ Theme CSS should handle:
 
 - Map height
 - Border radius
+- Contact card overlay positioning on desktop.
+- Contact card white background, subtle shadow, compact spacing, and 8px or smaller radius unless the design system later changes it.
+- Pin/marker emphasis near the left side of the map composition.
 - Responsive stack
 - Popup typography
 - Spacing
 - Visual framing
+
+Target visual direction:
+
+```text
+Full-width map panel
++ large blue map pin emphasis on the left
++ floating white company contact card on the right
++ dark blue bottom band or surrounding section frame where needed
+```
+
+Mobile behavior:
+
+- Keep map readable.
+- Move contact card below or above the map if overlay would reduce legibility.
+- Phone/email remain visible without hover.
 
 Do not create a custom map block in V1.
 
@@ -365,6 +502,8 @@ Do in V1:
 - Child theme baseline
 - Design system / tokens / typography
 - Block styles
+- Header/footer baseline using GeneratePress + SKVN child theme CSS
+- Trust strip and newsletter signup reusable patterns
 - Hero pattern
 - Feature strip pattern
 - Stat/icon card pattern
