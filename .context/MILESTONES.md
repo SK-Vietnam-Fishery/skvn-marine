@@ -52,7 +52,7 @@ Acceptance:
 - [x] `skvn-marine-blocks` plugin active in runtime root
 - [x] External required plugins installed in runtime root, not source repo
 - [x] PHP server smoke test returns HTTP 200 on `http://localhost:8080`
-- [ ] Theme PHP syntax check passed after latest code changes
+- [x] Theme PHP syntax check passed after latest code changes
 - [ ] Plugin build check passed after latest code changes
 - [ ] Human approves milestone completion
 

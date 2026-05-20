@@ -29,12 +29,20 @@ Mỗi task bắt đầu bằng 4 bước này, không có ngoại lệ:
 2. Đọc .context/MILESTONES.md   → biết milestone hiện tại và checklist liên quan
 3. Đọc .context/TENSIONS_OPEN.md     → check toàn bộ OPEN tensions
 4. Đọc .context/TENSIONS_ACTIVE.md   → check RESOLVED_ACTIVE tensions của milestone hiện tại, dùng tag filter
-5. Đọc .context/<module>.md          → load context của module sắp sửa
+5. Đọc .context/modules/<module>.md  → load context của module sắp sửa
 ```
 
-Nếu `.context/<module>.md` chưa tồn tại → load `GLOBAL.md` + hỏi lại trước khi tạo file mới.
+Nếu `.context/modules/<module>.md` chưa tồn tại → load `GLOBAL.md` + hỏi lại trước khi tạo file mới.
 
 Nếu `[manual]` section trong module file còn template placeholder (`<!-- Viết tại đây -->`) → **DỪNG, báo lại**, không tự điền assumption.
+
+### Context load rules
+
+- `.context/planning/*.md` chỉ đọc khi task liên quan scope, UX direction, layout strategy, version planning, hoặc quyết định future block boundary.
+- `.context/proposals/` là local review/discussion artifact, không phải active protocol. Không load mặc định và không treat như source of truth.
+- `.context/MILESTONES_HISTORY.md` không load mặc định. Chỉ đọc khi audit milestone cũ, migrate milestone, hoặc human yêu cầu.
+- `.context/TENSIONS_HISTORY.md` không load mặc định. Chỉ đọc khi audit quyết định cũ, migrate tension, hoặc human yêu cầu.
+- Folder structure giúp human đọc đỡ rối; startup protocol trong `AGENTS.md` mới là source of truth cho agent load order.
 
 ---
 
@@ -141,10 +149,16 @@ Tag taxonomy hiện tại:
 
 ```text
 agent
+a11y
 blocks
+editor-governance
+map
 milestone
 multilingual
+patterns
 php
+planning
+product-data
 quote-flow
 schema
 slider
@@ -318,7 +332,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 [ ] context-gen check-consistency . passed
 [ ] MILESTONES.md updated nếu milestone checklist/status thay đổi
 [ ] Chỉ archive resolved tensions khi human chuyển version/milestone mới
-[ ] .context/<module>.md updated nếu có decision mới
+[ ] .context/modules/<module>.md updated nếu có decision mới
 ```
 
 ---

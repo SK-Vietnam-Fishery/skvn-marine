@@ -43,6 +43,26 @@
 ---
 
 <!-- MANUAL_START -->
+[manual] Context Map Layout
+
+Active context module files live in `.context/modules/`.
+
+Current module context files:
+
+- `.context/modules/THEME_SKVN_MARINE.md`
+- `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md`
+- `.context/modules/QUOTE_FLOW.md`
+
+Planning snapshots live in `.context/planning/` and use a three-digit ordering prefix, starting at `000_`.
+
+Current planning file:
+
+- `.context/planning/000_VERSION_0_1_0_PLANNING.md`
+
+Proposal files under `.context/proposals/` are not active protocol and are ignored by git. Do not load them unless the human explicitly asks to review a proposal.
+
+---
+
 [manual] Architecture Decisions â€” Project-Wide
 
 **A1. Child theme, khÃ´ng fork GeneratePress**
