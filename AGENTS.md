@@ -44,6 +44,13 @@ Nếu `[manual]` section trong module file còn template placeholder (`<!-- Vi�
 - `.context/TENSIONS_HISTORY.md` không load mặc định. Chỉ đọc khi audit quyết định cũ, migrate tension, hoặc human yêu cầu.
 - Folder structure giúp human đọc đỡ rối; startup protocol trong `AGENTS.md` mới là source of truth cho agent load order.
 
+### Encoding rules
+
+- Context, docs, PHP, CSS, JS/TS, JSON, and HTML files must remain UTF-8.
+- Do not save text files through a tool path that turns Vietnamese or punctuation into mojibake.
+- In PowerShell, read/write text explicitly as UTF-8 when touching context/docs, for example `Get-Content -Encoding UTF8` and .NET `UTF8Encoding(false)` for bulk rewrites.
+- If mojibake appears after reading a file, stop and fix encoding before making semantic edits.
+
 ---
 
 ## 2. Architecture — Biết rõ trước khi code
