@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.4.0 — Woo Product Sections**
+Current: **V1 / 0.5.0 — SKVN Full Width Layout**
 Status: **IN_PROGRESS**
 Started: **2026-05-21**
 
@@ -37,22 +37,26 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.4.0 — Woo Product Sections
+### 0.5.0 — SKVN Full Width Layout
 
 Status: **IN_PROGRESS**
 Started: **2026-05-21**
 
 Acceptance:
 
-- [x] V1 decision: use WooCommerce native blocks/patterns
-- [x] Woo native product patterns created/styled
-- [x] Product card visual styling implemented
-- [x] Mobile CTA remains visible
-- [x] No custom Product Grid/List blocks in V1
+- [x] `SKVN Full Width` page template exists in child theme
+- [x] Template keeps GeneratePress header/footer intact
+- [x] Template removes the narrow default content wrapper for selected pages
+- [x] `.alignfull` sections can reach viewport width
+- [x] Inner content remains constrained to SKVN wide width
+- [ ] Pattern UI test page uses the full-width layout
+- [ ] Desktop hero headline no longer collapses into a narrow column
+- [ ] Mobile has no horizontal scroll
+- [x] PHP syntax check passed
 - [ ] Runtime smoke test passed
 - [ ] Human approves milestone completion
 
-### 0.5.0 — Quote Flow Integration
+### 0.5.1 — Quote Flow Integration
 
 Status: **PENDING**
 

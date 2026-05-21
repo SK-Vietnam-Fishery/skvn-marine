@@ -86,3 +86,30 @@ Test debt carried into V1:
 - Create a `Slider Runtime Test 0.3.0` page in runtime.
 - Insert `skvn-marine/slider` with at least 3 `skvn-marine/slide` children.
 - Verify frontend slider initialization, arrows, dots, keyboard navigation, hover pause, reduced-motion autoplay behavior, and console status.
+
+---
+
+## V1 / 0.4.0 — Woo Product Sections
+
+Status: **CARRIED_WITH_TEST_DEBT**
+Started: **2026-05-21**
+Carried forward: **2026-05-21**
+Approved by human to continue: **2026-05-21**
+
+Acceptance:
+
+- [x] V1 decision: use WooCommerce native blocks/patterns
+- [x] Woo native product patterns created/styled
+- [x] Product card visual styling implemented
+- [x] Mobile CTA remains visible
+- [x] No custom Product Grid/List blocks in V1
+- [ ] Runtime smoke test passed
+- [x] Human approves continuing to 0.5.0 with test debt
+
+Test debt carried into V1:
+
+- Create a `Woo Product Sections Test 0.4.0` page in runtime.
+- Insert `SKVN Woo Category Strip` and `SKVN Woo Product Grid`.
+- Verify categories/products render from real WooCommerce data.
+- Verify product card CTA remains visible on mobile.
+- Verify no invalid block warning after save/reload.

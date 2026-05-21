@@ -8,6 +8,7 @@ GeneratePress child theme for SKVN Marine visual system.
 
 - Theme styles and tokens.
 - GeneratePress child customization.
+- Page templates and full-width layout surfaces.
 - Block styles.
 - Patterns.
 - Woo visual overrides.
@@ -28,6 +29,17 @@ Current token intent:
 - Primary blue: `#0369a1`
 - Support mint: `#ddfaf4`
 - Premium gold: `#e9c766`
+
+## [manual] Layout Direction
+
+- 0.5.0 introduces a reusable page layout named `SKVN Full Width`.
+- The layout is not landing-page specific. It is the general canvas for homepage, product overview, campaign, and UI test pages that need full-width Gutenberg sections.
+- Keep GeneratePress header/footer intact.
+- Remove or bypass the narrow default content wrapper only for pages explicitly using this template/layout.
+- `alignfull` sections should reach viewport width.
+- Inner content must stay constrained by SKVN design widths.
+- Do not fix this by editing GeneratePress parent files.
+- Do not create a custom block for this layout in V1.
 
 ## [manual] Forbidden
 

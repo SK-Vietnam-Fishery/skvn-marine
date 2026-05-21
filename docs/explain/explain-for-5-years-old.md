@@ -306,6 +306,41 @@ Lưu ý:
 
 Phần này đã pass source-level test. Chưa được tính runtime pass cho tới khi insert pattern vào WordPress page có sản phẩm WooCommerce thật.
 
+### 12. SKVN Full Width layout
+
+File:
+
+```text
+wp-content/themes/skvn-marine/template-skvn-full-width.php
+wp-content/themes/skvn-marine/style.css
+tests/full-width-layout.test.mjs
+```
+
+Đã làm:
+
+```text
+SKVN Full Width page template
+Full-width Gutenberg content surface
+alignfull viewport-width escape
+alignwide SKVN wide-width constraint
+Header/footer vẫn dùng WordPress/GeneratePress layer
+```
+
+Tại sao làm:
+
+Trang test bị kẹt trong layout mặc định quá hẹp. Hero background có thể tràn ra, nhưng content bên trong vẫn bị ép làm chữ vỡ dòng xấu. Layout này tạo một mặt bằng riêng cho những page cần dựng bằng pattern full-width: homepage, product overview, campaign page, và UI test page.
+
+Lý do không gọi là `Landing`:
+
+```text
+Nó không chỉ dùng cho landing page.
+Nó là canvas full-width dùng lại cho nhiều loại page.
+```
+
+Lưu ý:
+
+Phần này đã pass source/PHP syntax test. Runtime visual vẫn phải mở page thật, chọn template `SKVN Full Width`, rồi chụp desktop/mobile.
+
 ---
 
 ## Đã Test Gì
@@ -375,6 +410,26 @@ Pattern dùng Woo native Product Categories
 CSS product card tồn tại
 CTA mobile luôn visible
 Không tạo custom product-grid/product-list block trong V1
+```
+
+File:
+
+```text
+tests/full-width-layout.test.mjs
+```
+
+Test này kiểm tra:
+
+```text
+SKVN Full Width template tồn tại
+Template gọi get_header()
+Template gọi get_footer()
+Template render the_content()
+Template không reference trực tiếp GeneratePress parent internals
+CSS có class full-width layout
+alignfull có thể reach 100vw
+alignwide giữ SKVN wide width
+Layout có guard chống horizontal scroll
 ```
 
 ### PHP syntax pass
@@ -640,8 +695,32 @@ Runtime smoke test passed
 Human approves milestone completion
 ```
 
+0.4.0 đã được carry sang 0.5.0 với test debt theo lệnh human.
+
+0.5.0 hiện có các mục đã pass mức source/code:
+
+```text
+SKVN Full Width page template exists
+Header/footer calls preserved
+Default narrow wrapper bypassed by template
+alignfull CSS escape implemented
+alignwide SKVN width constraint implemented
+PHP syntax check passed
+```
+
+0.5.0 còn thiếu:
+
+```text
+Apply template to a runtime page
+Runtime desktop screenshot
+Runtime mobile screenshot
+Confirm hero headline no longer collapses
+Confirm no mobile horizontal scroll
+Human approves milestone completion
+```
+
 Current milestone:
 
 ```text
-V1 / 0.4.0 — Woo Product Sections
+V1 / 0.5.0 — SKVN Full Width Layout
 ```

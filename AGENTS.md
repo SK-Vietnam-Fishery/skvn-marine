@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 0.4.0 — Woo Product Sections**
+Current milestone: **V1 / 0.5.0 — SKVN Full Width Layout**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -352,7 +352,8 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 0.2.0 | Design system, block styles, patterns |
 | 0.3.0 | Slider/Slide block |
 | 0.4.0 | Woo product grid/list |
-| 0.5.0 | Quote flow integration |
+| 0.5.0 | SKVN Full Width layout |
+| 0.5.1 | Quote flow integration |
 | 1.0.0 | V1 launch-ready |
 
 ---

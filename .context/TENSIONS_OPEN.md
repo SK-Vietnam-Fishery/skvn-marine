@@ -14,7 +14,7 @@ Proposal:   Dùng CF7 webhook (`add_action 'wpcf7_mail_sent'`) để POST trực
 Constraint: Chưa có quyết định chính thức. n8n webhook phải được protect (hard URL + optional secret).
 Severity:   high
 Tags:       quote-flow, php
-Milestone:  V1 / 0.5.0
+Milestone:  V1 / 0.5.1
 Status:     OPEN
 Resolved:
 Decision:   OPEN
@@ -56,7 +56,7 @@ Proposal:   V1: chỉ dùng CF7 honeypot. Turnstile thêm khi spam tăng.
 Constraint: "Cloudflare Turnstile or reCAPTCHA if spam increases"
 Severity:   low
 Tags:       quote-flow, spam-protection
-Milestone:  V1 / 0.5.0
+Milestone:  V1 / 0.5.1
 Status:     OPEN
 Resolved:
 Decision:   Lean toward: honeypot only V1, Turnstile on-demand.

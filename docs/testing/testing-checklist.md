@@ -59,13 +59,17 @@ Observed in local runtime:
 ```text
 An `alignfull` group inside the pattern test page still appears constrained by the page/content container.
 The visual result looks like a large page wrapper with the content box trapped inside instead of the hero band reaching full viewport width.
-Local runtime was laggy, so no screenshot evidence is available yet.
+Screenshot evidence is now available from 2026-05-21 local runtime.
+The light-blue hero background reaches the viewport, but the hero grid/content is still visually trapped in a narrow centered column.
+The headline wraps too aggressively because the text column is too narrow for the intended desktop hero layout.
+The media column renders, but the composition does not match the intended wide ecommerce landing-page hero.
 ```
 
 Reference note:
 
 ```text
 See user-provided diagram: page wrapper, header/menu inside, and content area still boxed instead of full-width.
+See user-provided screenshot: C:/Users/VPF-Champion/Downloads/Screenshot 2026-05-21 at 14-31-52 Minh Hai Fish Local.png
 ```
 
 Test snippet used:
@@ -127,10 +131,65 @@ Likely investigation targets:
 Do not close until:
 
 ```text
-[ ] Runtime screenshot captured.
+[x] Runtime screenshot captured.
 [ ] Desktop full-width hero band reaches viewport width.
 [ ] Inner hero content remains constrained to SKVN wide width.
 [ ] Mobile has no horizontal scroll.
+[ ] Desktop headline keeps intended line breaks and does not collapse into a narrow text column.
+[ ] Desktop image column aligns with the hero content and supports the intended wide composition.
+```
+
+## 0.5.0 SKVN Full Width Layout
+
+Objective:
+
+```text
+Create a reusable theme-owned page layout for pages that need full-width Gutenberg sections without losing GeneratePress header/footer.
+```
+
+Scope:
+
+```text
+In scope:
+- SKVN Full Width page template/layout.
+- Full-width content surface for selected pages.
+- alignfull escape behavior.
+- Inner SKVN max-width constraints.
+- Pattern UI test page validation.
+
+Out of scope:
+- Quote flow integration.
+- Custom product grid/list blocks.
+- Custom hero block.
+- Editing GeneratePress parent theme.
+```
+
+Acceptance:
+
+```text
+[x] Page can select/use SKVN Full Width at source/template level.
+[x] Header/footer calls remain in the template.
+[x] Default narrow page content wrapper is bypassed by the template source.
+[x] alignfull section backgrounds can reach viewport width at CSS contract level.
+[x] Inner content remains aligned to SKVN wide container at CSS contract level.
+[ ] Desktop hero headline no longer collapses into an unintended narrow column.
+[ ] Image/media column aligns with the intended wide composition.
+[ ] Mobile has no horizontal scroll.
+[x] PHP syntax check passes.
+[ ] Runtime screenshot reviewed.
+```
+
+Test method:
+
+```text
+1. Apply SKVN Full Width to Pattern UI Test 0.2.0 or a new layout test page.
+2. Insert the existing homepage/pattern hero test content.
+3. Preview desktop at wide viewport.
+4. Confirm hero background reaches viewport width.
+5. Confirm hero inner grid uses SKVN wide width, not the old narrow content column.
+6. Preview mobile.
+7. Confirm no horizontal scroll and no overlap.
+8. Record PASS / FAIL / NEEDS REVISION.
 ```
 
 ## Encoding Guardrail
