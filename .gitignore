@@ -32,6 +32,9 @@ wp-config.php
 # Log files
 *.log
 
+# Local deploy artifact
+/build/
+
 # Local machine environment notes
 /.local/
 
