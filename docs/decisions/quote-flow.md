@@ -1,0 +1,69 @@
+# Request a Quote Flow
+
+## Decision
+
+The Request a Quote flow stays on the same website.
+
+Do not redirect users to a separate contact site in V1.
+
+## V1 Flow
+
+```txt
+Product page / Product grid
+→ Request a Quote CTA
+→ /request-a-quote/?product_id=123
+→ Contact Form 7 form
+→ CFDB7 stores submission
+→ n8n webhook processes lead
+→ /quote-thank-you/
+```
+
+## Recommended Form Fields
+
+Required:
+
+- Full name
+- Company name
+- Email
+- Country
+- Product interest
+- Quantity / estimated volume
+- Message
+
+Optional:
+
+- Phone / WhatsApp
+- Destination port
+- Packaging requirement
+- Certification requirement
+
+Hidden/context fields:
+
+- product_id
+- product_sku
+- product_name
+- product_url
+- source_url
+- utm_source
+- utm_medium
+- utm_campaign
+- utm_content
+- utm_term
+
+## Caching
+
+Cache product pages.
+
+Do not cache:
+
+- `/request-a-quote/`
+- `/quote-thank-you/`
+- CF7 AJAX endpoints if caching causes issues
+
+## V2/V3 Ideas
+
+- Quote modal on desktop
+- Multi-product quote form
+- Add-to-quote basket
+- CRM integration
+- Sales dashboard

@@ -1,0 +1,96 @@
+{
+  "version": 3,
+  "settings": {
+    "layout": {
+      "contentSize": "760px",
+      "wideSize": "1200px"
+    },
+    "color": {
+      "palette": [
+        {
+          "slug": "skvn-blue-950",
+          "color": "#082f49",
+          "name": "SKVN Blue 950"
+        },
+        {
+          "slug": "skvn-blue-900",
+          "color": "#0c4a6e",
+          "name": "SKVN Blue 900"
+        },
+        {
+          "slug": "skvn-blue-700",
+          "color": "#0369a1",
+          "name": "SKVN Blue 700"
+        },
+        {
+          "slug": "skvn-mint-100",
+          "color": "#ddfaf4",
+          "name": "SKVN Mint 100"
+        },
+        {
+          "slug": "skvn-gold-300",
+          "color": "#e9c766",
+          "name": "SKVN Gold 300"
+        },
+        {
+          "slug": "skvn-teal-600",
+          "color": "#0d9488",
+          "name": "SKVN Teal 600"
+        },
+        {
+          "slug": "skvn-sky-50",
+          "color": "#f0f9ff",
+          "name": "SKVN Sky 50"
+        },
+        {
+          "slug": "skvn-slate-700",
+          "color": "#334155",
+          "name": "SKVN Slate 700"
+        },
+        {
+          "slug": "skvn-white",
+          "color": "#ffffff",
+          "name": "SKVN White"
+        }
+      ]
+    },
+    "typography": {
+      "fontSizes": [
+        {
+          "slug": "sm",
+          "size": "0.875rem",
+          "name": "Small"
+        },
+        {
+          "slug": "base",
+          "size": "1rem",
+          "name": "Base"
+        },
+        {
+          "slug": "lg",
+          "size": "1.125rem",
+          "name": "Large"
+        },
+        {
+          "slug": "xl",
+          "size": "1.25rem",
+          "name": "XL"
+        },
+        {
+          "slug": "display",
+          "size": "4rem",
+          "name": "Display"
+        }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var(--wp--preset--color--skvn-white)",
+      "text": "var(--wp--preset--color--skvn-slate-700)"
+    },
+    "typography": {
+      "fontFamily": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    }
+  }
+}

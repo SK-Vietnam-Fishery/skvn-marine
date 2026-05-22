@@ -1,0 +1,26 @@
+<?php
+/**
+ * SKVN Marine child theme functions.
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$skvn_marine_includes = array(
+	'inc/setup.php',
+	'inc/enqueue.php',
+	'inc/block-styles.php',
+	'inc/media.php',
+	'inc/plugin-notices.php',
+	'inc/woocommerce.php',
+	'inc/windpress.php',
+);
+
+foreach ( $skvn_marine_includes as $skvn_marine_include ) {
+	$skvn_marine_path = get_stylesheet_directory() . '/' . $skvn_marine_include;
+
+	if ( file_exists( $skvn_marine_path ) ) {
+		require_once $skvn_marine_path;
+	}
+}

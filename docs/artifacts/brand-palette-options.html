@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SKVN Marine Brand Palette Options</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --page-bg: #eef4f8;
+      --ink: #172033;
+      --muted: #667085;
+      --line: rgba(15, 23, 42, 0.1);
+      --radius: 8px;
+      --shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--page-bg);
+      color: var(--ink);
+    }
+
+    .page {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 48px;
+    }
+
+    .intro {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .intro h1 {
+      margin: 0;
+      font-size: 32px;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .intro p {
+      max-width: 780px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+    }
+
+    .palette {
+      --deep: #082f49;
+      --primary: #0369a1;
+      --soft: #e0f2fe;
+      --accent: color-mix(in srgb, #bbf2e6 48%, white);
+      --paper: #ffffff;
+      --copy: #334155;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .palette--deep-ocean {
+      --deep: #082f49;
+      --primary: #0369a1;
+      --soft: #e0f2fe;
+      --accent: color-mix(in srgb, #bbf2e6 48%, white);
+      --paper: #ffffff;
+      --copy: #334155;
+    }
+
+    .palette--grouper-luxury {
+      --deep: #061c2e;
+      --primary: #0b4f71;
+      --soft: #f1f5f9;
+      --accent: #c8a24a;
+      --paper: #ffffff;
+      --copy: #1f2937;
+    }
+
+    .palette--mahi-fresh {
+      --deep: #063b5c;
+      --primary: #0891b2;
+      --soft: #ccfbf1;
+      --accent: #eab308;
+      --paper: #ffffff;
+      --copy: #334155;
+    }
+
+    .palette--frozen-export {
+      --deep: #0f2f57;
+      --primary: #1d75b9;
+      --soft: #eaf6ff;
+      --accent: #22c7b8;
+      --paper: #ffffff;
+      --copy: #475569;
+    }
+
+    .palette--black-label {
+      --deep: #07111f;
+      --primary: #123a5a;
+      --soft: #f8fafc;
+      --accent: #bfa76a;
+      --paper: #ffffff;
+      --copy: #64748b;
+    }
+
+    .palette__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 18px;
+      background: var(--deep);
+      color: #ffffff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .brand__mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--primary);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .nav {
+      display: flex;
+      gap: 14px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(220px, 0.9fr);
+      min-height: 326px;
+      background: linear-gradient(90deg, var(--paper) 0%, var(--soft) 100%);
+    }
+
+    .hero__copy {
+      padding: 34px 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero h2 {
+      max-width: 520px;
+      margin: 0;
+      color: var(--deep);
+      font-size: 38px;
+      line-height: 1.04;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      max-width: 480px;
+      margin: 16px 0 0;
+      color: var(--copy);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 16px;
+      border: 1px solid var(--primary);
+      border-radius: 999px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .button--primary {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .hero__visual {
+      position: relative;
+      display: grid;
+      align-content: end;
+      min-height: 100%;
+      padding: 22px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0)),
+        var(--primary);
+    }
+
+    .seafood-box {
+      display: grid;
+      gap: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.44);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.92);
+      padding: 16px;
+      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.16);
+    }
+
+    .seafood-box__image {
+      position: relative;
+      min-height: 126px;
+      overflow: hidden;
+      border-radius: 6px;
+      background:
+        radial-gradient(circle at 20% 36%, var(--accent) 0 10%, transparent 11%),
+        radial-gradient(circle at 54% 55%, var(--primary) 0 13%, transparent 14%),
+        radial-gradient(circle at 76% 30%, var(--deep) 0 9%, transparent 10%),
+        linear-gradient(135deg, var(--soft), #ffffff);
+    }
+
+    .seafood-box__image::before,
+    .seafood-box__image::after {
+      content: "";
+      position: absolute;
+      height: 28px;
+      border: 4px solid var(--deep);
+      border-left: 0;
+      border-radius: 0 999px 999px 0;
+      opacity: 0.72;
+    }
+
+    .seafood-box__image::before {
+      width: 118px;
+      top: 44px;
+      left: 32px;
+      transform: rotate(-9deg);
+    }
+
+    .seafood-box__image::after {
+      width: 90px;
+      right: 28px;
+      bottom: 28px;
+      transform: rotate(11deg);
+    }
+
+    .seafood-box strong {
+      color: var(--deep);
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .seafood-box span {
+      color: var(--copy);
+      font-size: 12px;
+    }
+
+    .trust {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--line);
+    }
+
+    .trust__item {
+      display: grid;
+      gap: 8px;
+      min-height: 92px;
+      padding: 16px;
+      background: #ffffff;
+    }
+
+    .trust__icon {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--soft);
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    .trust__item b {
+      color: var(--deep);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .trust__item span {
+      color: var(--copy);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .footer-band {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 18px;
+      background: var(--deep);
+      color: #ffffff;
+    }
+
+    .footer-band strong {
+      display: block;
+      font-size: 15px;
+    }
+
+    .footer-band span {
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 12px;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 6px;
+      min-width: 190px;
+    }
+
+    .swatch {
+      min-height: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 6px;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 16px 18px 18px;
+      background: #ffffff;
+      border-top: 1px solid var(--line);
+    }
+
+    .note {
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--soft) 48%, white);
+    }
+
+    .note b {
+      color: var(--deep);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .note span {
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .section-lab {
+      --deep: #082f49;
+      --primary: #0369a1;
+      --soft: #e0f2fe;
+      --accent: color-mix(in srgb, #bbf2e6 48%, white);
+      --paper: #ffffff;
+      --copy: #334155;
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .section-lab__header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 20px;
+      padding: 24px;
+      background: linear-gradient(90deg, #ffffff 0%, var(--soft) 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-lab__header h2 {
+      margin: 0;
+      color: var(--deep);
+      font-size: 28px;
+      line-height: 1.15;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .section-lab__header p {
+      max-width: 700px;
+      margin: 8px 0 0;
+      color: var(--copy);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .section-lab__tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--deep);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .demo-section {
+      padding: 26px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .demo-section:last-child {
+      border-bottom: 0;
+    }
+
+    .demo-section__title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .demo-section__title h3 {
+      margin: 0;
+      color: var(--deep);
+      font-size: 20px;
+      line-height: 1.2;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .demo-section__title span {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .why-card {
+      display: grid;
+      gap: 10px;
+      min-height: 166px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+    }
+
+    .why-card__icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--soft);
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    .why-card b {
+      color: var(--deep);
+      font-size: 14px;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    .why-card p {
+      margin: 0;
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .standards {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .standards__visual {
+      position: relative;
+      min-height: 280px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0)),
+        var(--primary);
+    }
+
+    .standards__visual::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border-radius: 6px;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.22) 0 2px, transparent 2px 28px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0 2px, transparent 2px 28px);
+      opacity: 0.78;
+    }
+
+    .standards__badge {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      max-width: 250px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: #ffffff;
+      box-shadow: 0 16px 28px rgba(0, 0, 0, 0.16);
+    }
+
+    .standards__badge strong {
+      display: block;
+      color: var(--deep);
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .standards__badge span {
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .standard-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .standard-card {
+      display: grid;
+      gap: 8px;
+      min-height: 134px;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--soft) 38%, white);
+    }
+
+    .standard-card strong {
+      color: var(--deep);
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .standard-card span {
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      counter-reset: workflow;
+    }
+
+    .workflow__step {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      min-height: 158px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+    }
+
+    .workflow__step::before {
+      counter-increment: workflow;
+      content: counter(workflow, decimal-leading-zero);
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--deep);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .workflow__step b {
+      color: var(--deep);
+      font-size: 13px;
+      line-height: 1.25;
+      text-transform: uppercase;
+    }
+
+    .workflow__step span {
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .accent-test {
+      --deep: #082f49;
+      --primary: #0369a1;
+      --soft: #e0f2fe;
+      --gold: #e9c766;
+      --mint: color-mix(in srgb, #bbf2e6 48%, white);
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .accent-test__header {
+      display: grid;
+      gap: 8px;
+      padding: 24px;
+      border-bottom: 1px solid var(--line);
+      background: var(--deep);
+      color: #ffffff;
+    }
+
+    .accent-test__header h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.15;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .accent-test__header p {
+      max-width: 860px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .accent-test__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .accent-panel {
+      display: grid;
+      gap: 16px;
+      padding: 22px;
+      background: #ffffff;
+    }
+
+    .accent-panel--gold {
+      --accent-demo: var(--gold);
+      --accent-text: #082f49;
+      --accent-border: rgba(214, 181, 109, 0.55);
+    }
+
+    .accent-panel--mint {
+      --accent-demo: var(--mint);
+      --accent-text: #075985;
+      --accent-border: rgba(34, 197, 184, 0.3);
+    }
+
+    .accent-panel__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .accent-panel__top h3 {
+      margin: 0;
+      color: var(--deep);
+      font-size: 18px;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .accent-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 10px;
+      border: 1px solid var(--accent-border);
+      border-radius: 999px;
+      background: var(--accent-demo);
+      color: var(--accent-text);
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .accent-preview {
+      display: grid;
+      grid-template-columns: 1fr 190px;
+      min-height: 220px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    .accent-preview__copy {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 22px;
+      background: linear-gradient(90deg, #ffffff 0%, var(--soft) 100%);
+    }
+
+    .accent-preview__copy b {
+      color: var(--deep);
+      font-size: 22px;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+
+    .accent-preview__copy span {
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .accent-preview__cta {
+      display: inline-flex;
+      width: max-content;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 13px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .accent-preview__side {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 18px;
+      background: var(--primary);
+    }
+
+    .accent-mini-card {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid var(--accent-border);
+      border-radius: var(--radius);
+      background: var(--accent-demo);
+      color: var(--accent-text);
+    }
+
+    .accent-mini-card strong {
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+
+    .accent-mini-card span {
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .accent-verdict {
+      display: grid;
+      gap: 6px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--accent-demo) 42%, white);
+    }
+
+    .accent-verdict b {
+      color: var(--deep);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .accent-verdict span {
+      color: var(--copy);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 1180px) {
+      .options {
+        grid-template-columns: 1fr;
+      }
+
+      .why-grid,
+      .workflow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .standards {
+        grid-template-columns: 1fr;
+      }
+
+      .accent-test__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        width: min(100% - 20px, 1480px);
+        padding-top: 20px;
+      }
+
+      .intro h1 {
+        font-size: 26px;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .hero,
+      .notes,
+      .footer-band {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h2 {
+        font-size: 30px;
+      }
+
+      .trust {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .swatches {
+        width: 100%;
+      }
+
+      .section-lab__header,
+      .standard-list,
+      .why-grid,
+      .workflow {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-section__title {
+        display: grid;
+      }
+
+      .accent-preview {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="intro">
+      <h1>SKVN Marine - B2B Seafood Brand Palette Trials</h1>
+      <p>Static artifact showing how each palette can work across navigation, hero, product card, trust strip, call to action, and footer/newsletter surfaces. Current direction: blue-first system with soft mint as the main support accent and bright gold as a limited premium cue.</p>
+    </header>
+
+    <section class="section-lab" aria-label="Selected palette section render">
+      <div class="section-lab__header">
+        <div>
+          <h2>Selected palette render - Premium Deep Ocean</h2>
+          <p>This block tests the palette on real B2B homepage sections: why buyers choose the company, factory standards, and the working process from inquiry to delivery.</p>
+        </div>
+        <span class="section-lab__tag">Option 1 applied</span>
+      </div>
+
+      <section class="demo-section" aria-label="Why choose us section">
+        <div class="demo-section__title">
+          <h3>Why choose us</h3>
+          <span>Trust section</span>
+        </div>
+        <div class="why-grid">
+          <article class="why-card">
+            <span class="why-card__icon">Q</span>
+            <b>Stable quality control</b>
+            <p>Each batch is checked for sizing, temperature, packing condition, and export documents before shipment.</p>
+          </article>
+          <article class="why-card">
+            <span class="why-card__icon">O</span>
+            <b>Clear origin records</b>
+            <p>Buyer-facing documentation helps distributors track species, catch area, processing date, and carton identity.</p>
+          </article>
+          <article class="why-card">
+            <span class="why-card__icon">C</span>
+            <b>Cold-chain discipline</b>
+            <p>Frozen products are handled with a conservative temperature process from storage to container loading.</p>
+          </article>
+          <article class="why-card">
+            <span class="why-card__icon">B</span>
+            <b>B2B packing support</b>
+            <p>Carton labels, private label needs, and mixed container planning can be prepared for recurring buyers.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-label="Factory standards section">
+        <div class="demo-section__title">
+          <h3>Factory standards</h3>
+          <span>Capability section</span>
+        </div>
+        <div class="standards">
+          <div class="standards__visual">
+            <div class="standards__badge">
+              <strong>8,000+</strong>
+              <span>Square meters of cold storage, processing, inspection, and export handling space.</span>
+            </div>
+          </div>
+          <div class="standard-list">
+            <article class="standard-card"><strong>HACCP mindset</strong><span>Designed for controlled food safety workflows and repeatable inspection points.</span></article>
+            <article class="standard-card"><strong>Temperature log</strong><span>Frozen handling is tracked from receiving to storage and container dispatch.</span></article>
+            <article class="standard-card"><strong>Export documents</strong><span>Commercial invoice, packing list, origin documents, and buyer-specific paperwork support.</span></article>
+            <article class="standard-card"><strong>Packing control</strong><span>Carton weight, label placement, glaze rate, and species naming are checked before loading.</span></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="demo-section" aria-label="Working process section">
+        <div class="demo-section__title">
+          <h3>Working process</h3>
+          <span>Buyer journey</span>
+        </div>
+        <div class="workflow">
+          <article class="workflow__step"><b>Inquiry</b><span>Buyer sends species, size, packing, volume, and target market requirements.</span></article>
+          <article class="workflow__step"><b>Specification</b><span>Sales team confirms product grade, carton plan, documentation, and lead time.</span></article>
+          <article class="workflow__step"><b>Sample or quote</b><span>Quotation is prepared with packing terms, frozen condition, and shipment assumptions.</span></article>
+          <article class="workflow__step"><b>Production</b><span>Processing, freezing, packing, and inspection follow the agreed buyer specification.</span></article>
+          <article class="workflow__step"><b>Delivery</b><span>Goods are loaded into container with final document check and buyer update.</span></article>
+        </div>
+      </section>
+    </section>
+
+    <section class="accent-test" aria-label="Accent color comparison">
+      <div class="accent-test__header">
+        <h2>Accent comparison - soft mint selected</h2>
+        <p>Soft mint is the selected support accent because it keeps the brand clean, cold, and operational. Gold remains useful only as a small premium cue.</p>
+      </div>
+      <div class="accent-test__grid">
+        <article class="accent-panel accent-panel--gold">
+          <div class="accent-panel__top">
+            <h3>Gold accent</h3>
+            <span class="accent-chip">Premium cue</span>
+          </div>
+          <div class="accent-preview">
+            <div class="accent-preview__copy">
+              <b>Premium export seafood</b>
+              <span>Gold works when the section needs value, certification, premium species, or high-trust B2B positioning.</span>
+              <span class="accent-preview__cta">Request quote</span>
+            </div>
+            <div class="accent-preview__side">
+              <div class="accent-mini-card"><strong>Top grade</strong><span>Good for grouper, black-label products, and certificate badges.</span></div>
+            </div>
+          </div>
+          <div class="accent-verdict"><b>Verdict</b><span>Keep as secondary. Use sparingly on badges, price/value cues, certificate highlights, and premium species labels.</span></div>
+        </article>
+
+        <article class="accent-panel accent-panel--mint">
+          <div class="accent-panel__top">
+            <h3>Soft mint accent</h3>
+            <span class="accent-chip">Recommended</span>
+          </div>
+          <div class="accent-preview">
+            <div class="accent-preview__copy">
+              <b>Clean cold-chain process</b>
+              <span>Mint works when the section needs freshness, hygiene, process clarity, frozen handling, or QA support.</span>
+              <span class="accent-preview__cta">View process</span>
+            </div>
+            <div class="accent-preview__side">
+              <div class="accent-mini-card"><strong>Fresh & clean</strong><span>Good for process cards, feature strips, factory standards, and form backgrounds.</span></div>
+            </div>
+          </div>
+          <div class="accent-verdict"><b>Verdict</b><span>Use as the main support accent for trust strips, process cards, factory standards, QA sections, forms, and freshness cues.</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="options" aria-label="Brand palette options">
+      <article class="palette palette--deep-ocean">
+        <div class="palette__bar">
+          <div class="brand"><span class="brand__mark">S</span><span>Premium Deep Ocean</span></div>
+          <nav class="nav" aria-label="Demo navigation"><span>Products</span><span>Factory</span><span>Export</span><span>Contact</span></nav>
+        </div>
+        <div class="hero">
+          <div class="hero__copy">
+            <p class="eyebrow">Reliable cold-chain supply</p>
+            <h2>Premium seafood for export buyers</h2>
+            <p>Deep navy creates authority, bright blue keeps the site clear, and soft mint supports freshness, cold-chain, and factory-process clarity.</p>
+            <div class="actions"><a class="button button--primary" href="#">Request quote</a><a class="button" href="#">View species</a></div>
+          </div>
+          <div class="hero__visual"><div class="seafood-box"><div class="seafood-box__image"></div><strong>Frozen grouper fillet</strong><span>IQF packed - B2B carton ready</span></div></div>
+        </div>
+        <div class="trust"><div class="trust__item"><span class="trust__icon">1</span><b>Traceable</b><span>Origin and batch documents.</span></div><div class="trust__item"><span class="trust__icon">2</span><b>Cold chain</b><span>Stable frozen logistics.</span></div><div class="trust__item"><span class="trust__icon">3</span><b>Export ready</b><span>Carton and label support.</span></div><div class="trust__item"><span class="trust__icon">4</span><b>Premium</b><span>Gold stays for small badges.</span></div></div>
+        <div class="footer-band"><div><strong>Best for corporate B2B seafood</strong><span>Selected direction. Strongest fit for trust-first export positioning.</span></div><div class="swatches"><span class="swatch" style="background:#082f49"></span><span class="swatch" style="background:#0369a1"></span><span class="swatch" style="background:#e0f2fe"></span><span class="swatch" style="background:#ffffff"></span><span class="swatch" style="background:#ddfaf4"></span><span class="swatch" style="background:#e9c766"></span></div></div>
+        <div class="notes"><div class="note"><b>Use</b><span>Header, footer, hero title, mint support cards, process sections, trust strip.</span></div><div class="note"><b>Watch</b><span>Do not let gold dominate. Keep it for certification and premium cues only.</span></div></div>
+      </article>
+
+      <article class="palette palette--grouper-luxury">
+        <div class="palette__bar">
+          <div class="brand"><span class="brand__mark">S</span><span>Grouper Luxury</span></div>
+          <nav class="nav" aria-label="Demo navigation"><span>Products</span><span>Factory</span><span>Export</span><span>Contact</span></nav>
+        </div>
+        <div class="hero">
+          <div class="hero__copy">
+            <p class="eyebrow">High-value species program</p>
+            <h2>Luxury-grade grouper supply</h2>
+            <p>Darker marine tones make the brand feel selective and stable. Teal supports freshness without turning the site into a light retail look.</p>
+            <div class="actions"><a class="button button--primary" href="#">Request quote</a><a class="button" href="#">View capacity</a></div>
+          </div>
+          <div class="hero__visual"><div class="seafood-box"><div class="seafood-box__image"></div><strong>Premium grouper loin</strong><span>Consistent sizing for distributors</span></div></div>
+        </div>
+        <div class="trust"><div class="trust__item"><span class="trust__icon">1</span><b>Selective</b><span>Premium buyer signal.</span></div><div class="trust__item"><span class="trust__icon">2</span><b>Fresh</b><span>Teal freshness accent.</span></div><div class="trust__item"><span class="trust__icon">3</span><b>Stable</b><span>Dark base for trust.</span></div><div class="trust__item"><span class="trust__icon">4</span><b>Focused</b><span>Good for fewer hero colors.</span></div></div>
+        <div class="footer-band"><div><strong>Best for premium grouper positioning</strong><span>Feels more exclusive than Option 1, but less broad-market friendly.</span></div><div class="swatches"><span class="swatch" style="background:#061c2e"></span><span class="swatch" style="background:#0b4f71"></span><span class="swatch" style="background:#0f766e"></span><span class="swatch" style="background:#f1f5f9"></span><span class="swatch" style="background:#c8a24a"></span><span class="swatch" style="background:#1f2937"></span></div></div>
+        <div class="notes"><div class="note"><b>Use</b><span>Premium product cards, certificate bands, sales deck pages.</span></div><div class="note"><b>Watch</b><span>Can become too dark if all sections use navy blocks.</span></div></div>
+      </article>
+
+      <article class="palette palette--mahi-fresh">
+        <div class="palette__bar">
+          <div class="brand"><span class="brand__mark">S</span><span>Mahi Mahi Fresh</span></div>
+          <nav class="nav" aria-label="Demo navigation"><span>Products</span><span>Factory</span><span>Export</span><span>Contact</span></nav>
+        </div>
+        <div class="hero">
+          <div class="hero__copy">
+            <p class="eyebrow">Fresh look, export discipline</p>
+            <h2>Bright mahi mahi and reef fish</h2>
+            <p>Cyan and aqua make seafood feel clean and lively. Yellow should be used as a small highlight for freshness, not as the dominant brand color.</p>
+            <div class="actions"><a class="button button--primary" href="#">Request quote</a><a class="button" href="#">Browse products</a></div>
+          </div>
+          <div class="hero__visual"><div class="seafood-box"><div class="seafood-box__image"></div><strong>Mahi mahi portions</strong><span>Bright, clean, export friendly</span></div></div>
+        </div>
+        <div class="trust"><div class="trust__item"><span class="trust__icon">1</span><b>Fresh</b><span>High energy seafood cue.</span></div><div class="trust__item"><span class="trust__icon">2</span><b>Clean</b><span>Aqua support surfaces.</span></div><div class="trust__item"><span class="trust__icon">3</span><b>Clear</b><span>Good for product lists.</span></div><div class="trust__item"><span class="trust__icon">4</span><b>Fast</b><span>Works for quick CTA.</span></div></div>
+        <div class="footer-band"><div><strong>Best for fresh, approachable export brand</strong><span>Useful if the site should feel younger and more direct.</span></div><div class="swatches"><span class="swatch" style="background:#063b5c"></span><span class="swatch" style="background:#0891b2"></span><span class="swatch" style="background:#ccfbf1"></span><span class="swatch" style="background:#eab308"></span><span class="swatch" style="background:#ffffff"></span><span class="swatch" style="background:#334155"></span></div></div>
+        <div class="notes"><div class="note"><b>Use</b><span>Mahi mahi pages, category chips, fresh/frozen labels.</span></div><div class="note"><b>Watch</b><span>Yellow can feel retail if used on large panels.</span></div></div>
+      </article>
+
+      <article class="palette palette--frozen-export">
+        <div class="palette__bar">
+          <div class="brand"><span class="brand__mark">S</span><span>Frozen Export Clean</span></div>
+          <nav class="nav" aria-label="Demo navigation"><span>Products</span><span>Factory</span><span>Export</span><span>Contact</span></nav>
+        </div>
+        <div class="hero">
+          <div class="hero__copy">
+            <p class="eyebrow">Factory and logistics first</p>
+            <h2>Frozen seafood export system</h2>
+            <p>Clean blue with teal accent is good for factory, capability, cold storage, and logistics sections where buyers need clarity more than luxury.</p>
+            <div class="actions"><a class="button button--primary" href="#">Request quote</a><a class="button" href="#">See factory</a></div>
+          </div>
+          <div class="hero__visual"><div class="seafood-box"><div class="seafood-box__image"></div><strong>Frozen export carton</strong><span>Cold storage and shipment ready</span></div></div>
+        </div>
+        <div class="trust"><div class="trust__item"><span class="trust__icon">1</span><b>Cold</b><span>Frozen process signal.</span></div><div class="trust__item"><span class="trust__icon">2</span><b>Modern</b><span>Clean factory feel.</span></div><div class="trust__item"><span class="trust__icon">3</span><b>Global</b><span>Export capability tone.</span></div><div class="trust__item"><span class="trust__icon">4</span><b>Readable</b><span>Strong UI clarity.</span></div></div>
+        <div class="footer-band"><div><strong>Best for factory and frozen export credibility</strong><span>Most operational. Strong for capability, QA, and logistics pages.</span></div><div class="swatches"><span class="swatch" style="background:#0f2f57"></span><span class="swatch" style="background:#1d75b9"></span><span class="swatch" style="background:#eaf6ff"></span><span class="swatch" style="background:#22c7b8"></span><span class="swatch" style="background:#ffffff"></span><span class="swatch" style="background:#475569"></span></div></div>
+        <div class="notes"><div class="note"><b>Use</b><span>Capacity blocks, QA sections, B2B forms, logistics map.</span></div><div class="note"><b>Watch</b><span>Less premium than gold-accent options unless imagery is strong.</span></div></div>
+      </article>
+
+      <article class="palette palette--black-label">
+        <div class="palette__bar">
+          <div class="brand"><span class="brand__mark">S</span><span>Black Label Seafood</span></div>
+          <nav class="nav" aria-label="Demo navigation"><span>Products</span><span>Factory</span><span>Export</span><span>Contact</span></nav>
+        </div>
+        <div class="hero">
+          <div class="hero__copy">
+            <p class="eyebrow">Reserved premium supply</p>
+            <h2>Black label seafood program</h2>
+            <p>Near-black navy and muted gold create the highest premium mood. It works when photography and product quality are strong enough to carry the brand.</p>
+            <div class="actions"><a class="button button--primary" href="#">Request quote</a><a class="button" href="#">View program</a></div>
+          </div>
+          <div class="hero__visual"><div class="seafood-box"><div class="seafood-box__image"></div><strong>Reserved buyer program</strong><span>Premium SKUs for stable partners</span></div></div>
+        </div>
+        <div class="trust"><div class="trust__item"><span class="trust__icon">1</span><b>Elite</b><span>Highest premium mood.</span></div><div class="trust__item"><span class="trust__icon">2</span><b>Serious</b><span>Strong buyer confidence.</span></div><div class="trust__item"><span class="trust__icon">3</span><b>Sharp</b><span>Good with real photos.</span></div><div class="trust__item"><span class="trust__icon">4</span><b>Limited</b><span>Works for top SKUs.</span></div></div>
+        <div class="footer-band"><div><strong>Best for premium catalog or black-label line</strong><span>Strong visual flavor, but riskier as the whole brand system.</span></div><div class="swatches"><span class="swatch" style="background:#07111f"></span><span class="swatch" style="background:#123a5a"></span><span class="swatch" style="background:#356a8a"></span><span class="swatch" style="background:#f8fafc"></span><span class="swatch" style="background:#bfa76a"></span><span class="swatch" style="background:#64748b"></span></div></div>
+        <div class="notes"><div class="note"><b>Use</b><span>Premium SKU pages, certificates, trade-deck cover sections.</span></div><div class="note"><b>Watch</b><span>Can feel too luxury/restaurant if product data is not visible.</span></div></div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

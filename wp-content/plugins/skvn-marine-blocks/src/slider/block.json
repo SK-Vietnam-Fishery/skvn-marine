@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "skvn-marine/slider",
+  "version": "0.1.0",
+  "title": "SKVN Slider",
+  "category": "design",
+  "icon": "images-alt2",
+  "description": "Swiper-powered slider skeleton with stacked editor preview.",
+  "textdomain": "skvn-marine-blocks",
+  "attributes": {
+    "autoplay": {
+      "type": "boolean",
+      "default": true
+    },
+    "delay": {
+      "type": "number",
+      "default": 5000
+    },
+    "loop": {
+      "type": "boolean",
+      "default": true
+    },
+    "arrows": {
+      "type": "boolean",
+      "default": true
+    },
+    "dots": {
+      "type": "boolean",
+      "default": true
+    },
+    "effect": {
+      "type": "string",
+      "default": "slide"
+    },
+    "slidesPerView": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "allowedBlocks": [
+    "skvn-marine/slide"
+  ],
+  "supports": {
+    "html": false
+  }
+}
