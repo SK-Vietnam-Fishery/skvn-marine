@@ -113,3 +113,26 @@ Test debt carried into V1:
 - Verify categories/products render from real WooCommerce data.
 - Verify product card CTA remains visible on mobile.
 - Verify no invalid block warning after save/reload.
+
+---
+
+## V1 / 0.5.0 — SKVN Full Width Layout
+
+Status: **DONE**
+Started: **2026-05-21**
+Completed: **2026-05-22**
+Approved by human: **2026-05-22**
+
+Acceptance:
+
+- [x] `SKVN Full Width` page template exists in child theme
+- [x] Template keeps GeneratePress header/footer intact
+- [x] Template removes the narrow default content wrapper for selected pages
+- [x] `.alignfull` sections can reach viewport width
+- [x] Inner content remains constrained to SKVN wide width
+- [x] Pattern UI test page uses the full-width layout
+- [x] Desktop hero headline no longer collapses into a narrow column
+- [x] Mobile has no horizontal scroll
+- [x] PHP syntax check passed
+- [x] Runtime smoke test passed
+- [x] Human approves milestone completion

@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.5.0 — SKVN Full Width Layout**
+Current: **V1 / 0.5.1 — Quote Flow Integration**
 Status: **IN_PROGRESS**
-Started: **2026-05-21**
+Started: **2026-05-22**
 
 AGENTS.md current milestone phải match file này.
 
@@ -37,28 +37,10 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.5.0 — SKVN Full Width Layout
-
-Status: **IN_PROGRESS**
-Started: **2026-05-21**
-
-Acceptance:
-
-- [x] `SKVN Full Width` page template exists in child theme
-- [x] Template keeps GeneratePress header/footer intact
-- [x] Template removes the narrow default content wrapper for selected pages
-- [x] `.alignfull` sections can reach viewport width
-- [x] Inner content remains constrained to SKVN wide width
-- [ ] Pattern UI test page uses the full-width layout
-- [ ] Desktop hero headline no longer collapses into a narrow column
-- [ ] Mobile has no horizontal scroll
-- [x] PHP syntax check passed
-- [ ] Runtime smoke test passed
-- [ ] Human approves milestone completion
-
 ### 0.5.1 — Quote Flow Integration
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
+Started: **2026-05-22**
 
 Acceptance:
 

@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 0.5.0 — SKVN Full Width Layout**
+Current milestone: **V1 / 0.5.1 — Quote Flow Integration**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
