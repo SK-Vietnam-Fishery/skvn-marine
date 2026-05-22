@@ -322,6 +322,47 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 
 ---
 
+## 7.1 Layout Translator CLI
+
+Dev-only CLI để dịch HTML/CSS artifact hoặc screenshot reference thành Gutenberg pattern components.
+
+Path:
+
+```text
+tools/layout-translator/translate-layout.mjs
+```
+
+Lệnh:
+
+```bash
+node tools/layout-translator/translate-layout.mjs --input docs/artifacts/example.html
+node tools/layout-translator/translate-layout.mjs --input docs/artifacts/example.html --output docs/artifacts/example.translation.md
+node tools/layout-translator/translate-layout.mjs --input reference.png --kind screenshot --title "Hero Reference"
+```
+
+Output bắt buộc:
+
+```text
+gutenberg_markup
+required_classes
+theme_css_contract
+animation_contract
+assets_needed
+not_translated
+risks
+```
+
+Rules:
+
+- CLI chỉ là dev tool trong source repo, không chạy trong WordPress runtime.
+- Không paste raw `<style>` hoặc `<script>` vào `gutenberg_markup`.
+- Text/button/content chính phải là Gutenberg editable content.
+- Decorative/background/motion chỉ xuất contract cho theme CSS hoặc shared animation runtime.
+- Không tạo custom block nếu core Gutenberg blocks + theme pattern đủ dùng.
+- Screenshot mode chỉ tạo scaffold/contract, không tự nhận diện pixel như computer vision.
+
+---
+
 ## 8. Self-Check Trước Khi Submit
 
 ```
