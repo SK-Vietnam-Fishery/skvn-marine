@@ -16,7 +16,7 @@
 - Rank Math — SEO, schema
 - Polylang — multilingual (standby V1, activate later)
 - Antispam Bee — comment spam. CF7 honeypot + optional Turnstile — form spam
-- Out of the Block: OpenStreetMap — map/contact section block engine
+- OpenStreetMap iframe embed — map/contact section, wrapped by theme CSS
 - Swiper — slider block frontend runtime
 - IntersectionObserver — scroll reveal
 - Shared animation runtime (`assets/js/animations.js`) — fade/parallax/magnetic
@@ -126,6 +126,9 @@ File: `inc/media.php`, prefix: `skvn_marine_auto_set_image_alt_from_title()`.
 **A8. Dependency policy**
 Mỗi dependency mới PHẢI document: purpose, alternative, bundle impact, load scope, removal plan.
 KHÔNG add dependency không có rationale.
+
+**A9. Map/contact V1 fallback**
+Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu cầu PHP 8.1, nên V1 dùng OpenStreetMap iframe embed trong Gutenberg/HTML content, bọc bằng SKVN theme CSS. Không thêm map plugin mới trong V1 nếu iframe đủ dùng.
 
 ---
 

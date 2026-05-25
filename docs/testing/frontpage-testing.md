@@ -506,7 +506,7 @@ What must change before SKVN implementation:
 - Header/footer should remain GeneratePress + child theme CSS/pattern direction, not a builder plugin.
 - Product cards should map toward WooCommerce categories/products, not static product logic.
 - Certification badges can be static placeholders in V1, but should be replaceable images/content.
-- The map is currently a static image. SKVN test 3 must use **Out of the Block: OpenStreetMap**, wrapped by SKVN map/contact classes.
+- The map is currently a static image. SKVN test 3 must use an OpenStreetMap iframe embed, wrapped by SKVN map/contact classes.
 - Inline styles and raw SVG repetition are acceptable in a prototype only; final pattern should move repeated visuals into theme styles or reusable block composition.
 
 ### Test Goal
@@ -522,7 +522,7 @@ This test validates:
 - Product category section suitable for WooCommerce-native categories.
 - Certification strip.
 - Capacity/stat card pattern.
-- OpenStreetMap contact section, not static map imagery.
+- OpenStreetMap iframe contact section, not static map imagery.
 - Responsive stacking without overlap.
 
 ### Page Structure
@@ -534,7 +534,7 @@ This test validates:
 5. Product categories
 6. Certification band
 7. Capacity stats
-8. OpenStreetMap/contact split section
+8. OpenStreetMap iframe/contact split section
 9. Footer
 
 ### Tailwind Layout Spec
@@ -663,7 +663,7 @@ OpenStreetMap/contact split:
 <section class="bg-white px-4 py-12 md:px-6 lg:px-8">
   <div class="mx-auto grid max-w-7xl overflow-hidden rounded-lg border border-slate-200 shadow-lg lg:grid-cols-[1.15fr_0.85fr]">
     <div class="relative min-h-[420px] bg-slate-100">
-      <!-- Insert Out of the Block: OpenStreetMap block here. Do not use a static map image. -->
+      <!-- Insert OpenStreetMap iframe embed here. Do not use a static map image or map plugin for V1. -->
       <div class="absolute left-6 bottom-6 max-w-xs rounded-lg bg-white p-5 shadow-xl">
     </div>
     <aside class="bg-skvn-blue-800 p-8 text-white lg:p-10">
@@ -750,7 +750,7 @@ Send a Quote Request
 The map area must be built with:
 
 ```text
-Out of the Block: OpenStreetMap block
+OpenStreetMap iframe embed
 + SKVN wrapper/card classes
 + Contact card overlay or split panel
 ```
@@ -762,6 +762,7 @@ Static map image
 Hardcoded map screenshot
 Custom map block
 New map plugin
+Out of the Block: OpenStreetMap in V1, because target shared host supports PHP 8.0 only
 ```
 
 Desktop behavior:
@@ -795,7 +796,7 @@ Phone/email remain visible without hover
 [ ] Product section can map to WooCommerce native categories/products.
 [ ] Certification badges are replaceable content/images.
 [ ] Capacity cards use reusable stat-card direction.
-[ ] Contact map uses Out of the Block: OpenStreetMap, not static image.
+[ ] Contact map uses OpenStreetMap iframe embed, not static image.
 [ ] No image URL is hardcoded in CSS.
 [ ] CTA buttons remain visible on mobile.
 [ ] Text does not overflow containers.

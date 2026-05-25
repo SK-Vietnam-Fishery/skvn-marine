@@ -19,7 +19,7 @@ V3 may evolve into a reusable base theme for multiple websites.
 - Lead automation: n8n webhook
 - SEO: Rank Math + GEO/AEO-oriented content structure
 - Multilingual candidate: Polylang
-- Map block engine: Out of the Block: OpenStreetMap
+- Map engine: OpenStreetMap iframe embed for V1
 - Spam baseline: Antispam Bee for comments, separate protection for CF7 forms
 - Image strategy: WebP, SEO filenames, auto ALT from attachment title if empty
 
@@ -91,12 +91,17 @@ Rationale:
 - n8n lead automation
 - Rank Math SEO
 - Antispam Bee comment spam protection
-- Out of the Block: OpenStreetMap map block
 - Polylang multilingual if activated
 
 ## Map / Contact Section Direction
 
-Use Out of the Block: OpenStreetMap as the map engine. The SKVN theme owns the section composition and visual treatment.
+Use an OpenStreetMap iframe embed for V1. The SKVN theme owns the section composition and visual treatment.
+
+Reason:
+
+- Target shared host supports PHP 8.0 only.
+- `Out of the Block: OpenStreetMap` requires PHP 8.1.
+- The V1 map/contact requirement can be satisfied with an iframe, core content, and SKVN theme CSS.
 
 Target layout:
 
@@ -106,6 +111,7 @@ Target layout:
 - Contact card includes company name, address, phone, and email.
 - Dark blue surrounding band or bottom frame can be used when it supports the page composition.
 - On mobile, stack the contact card above or below the map instead of forcing an overlay.
+- Do not add a replacement map plugin in V1 unless iframe embed proves insufficient.
 
 ### Recommended runtime plugins
 
@@ -115,4 +121,3 @@ Target layout:
 - Contact Form 7
 - Contact Form CFDB7
 - Antispam Bee
-- Out of the Block: OpenStreetMap

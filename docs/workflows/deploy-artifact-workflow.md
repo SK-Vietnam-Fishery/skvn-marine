@@ -23,6 +23,10 @@ build/wp-content/themes/skvn-marine/
 build/wp-content/plugins/skvn-marine-blocks/
 ```
 
+Upload the folders above to the online site. Do not upload directly from
+`wp-content/themes/skvn-marine/` or `wp-content/plugins/skvn-marine-blocks/`
+because the build step strips development-only files from the plugin artifact.
+
 ## Upload
 
 Copy these two folders into the target site's matching WordPress folders:

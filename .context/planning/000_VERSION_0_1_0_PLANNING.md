@@ -80,7 +80,7 @@ Method:
 
 ```text
 Create a WP test page
-→ assemble the full homepage using core blocks, WooCommerce native blocks, map block, placeholder/network images, and English placeholder copy
+→ assemble the full homepage using core blocks, WooCommerce native blocks, OpenStreetMap iframe embed, placeholder/network images, and English placeholder copy
 → apply SKVN wrapper classes and Tailwind/WindPress utility classes
 → code/refine child theme CSS and theme patterns
 → refresh desktop/mobile views
@@ -366,20 +366,21 @@ Reason:
 
 Selected direction:
 
-- Use **Out of the Block: OpenStreetMap** as the map engine.
+- Use OpenStreetMap iframe embed for V1.
 - SKVN theme provides the pattern and visual wrapper.
+- Reason: target shared host supports PHP 8.0 only; `Out of the Block: OpenStreetMap` requires PHP 8.1.
 
 V1 implementation should be:
 
 ```text
-Out of the Block: OpenStreetMap block
+Core HTML block or pattern markup containing an OpenStreetMap iframe
 + SKVN contact/location pattern
 + SKVN CSS wrapper
 ```
 
 Pattern should include:
 
-- Map block
+- OSM iframe embed, not a map plugin block
 - Contact card overlaid on the map on desktop, aligned to the right side.
 - Card company name heading.
 - Address
@@ -414,10 +415,11 @@ Mobile behavior:
 - Phone/email remain visible without hover.
 
 Do not create a custom map block in V1.
+Do not add a new map plugin in V1 unless iframe embed proves insufficient.
 
 Future condition:
 
-- If the site needs stronger brand control, fewer map POIs, or custom tile styling, evaluate Mapbox/custom tile provider later.
+- If the site needs stronger brand control, fewer map POIs, custom tile styling, multiple markers, or richer editor controls, evaluate Mapbox/custom tile provider or a PHP-compatible map plugin later.
 
 ---
 
@@ -481,7 +483,6 @@ External plugins discussed for V1 runtime:
 - Rank Math
 - Antispam Bee
 - WindPress
-- Out of the Block: OpenStreetMap
 
 Polylang:
 
@@ -509,7 +510,7 @@ Do in V1:
 - Stat/icon card pattern
 - About/factory pattern
 - WooCommerce product/category sections using native blocks
-- Map/contact pattern using Out of the Block: OpenStreetMap
+- Map/contact pattern using OpenStreetMap iframe embed
 - Slider block
 - Accordion block
 - Quote flow using CF7 + CFDB7 + n8n
@@ -536,6 +537,6 @@ V1 uses Gutenberg patterns and theme CSS for most visual sections. Custom blocks
 
 Product data uses WooCommerce native products, categories, attributes, and native WooCommerce blocks/patterns in V1.
 
-Map uses Out of the Block: OpenStreetMap as the map engine, wrapped by SKVN patterns and CSS.
+Map uses OpenStreetMap iframe embed in V1, wrapped by SKVN patterns and CSS. A map plugin is deferred because the target shared host only supports PHP 8.0.
 
 Hero, feature strip, stat/icon cards, about/factory, and map/contact are implemented as theme patterns first. Custom wrapper blocks may be considered later only if editor controls become necessary.
