@@ -50,6 +50,9 @@ cpSync(themeSource, themeTarget, {
 mkdirSync(pluginTarget, { recursive: true });
 cpSync(resolve(pluginSource, 'skvn-marine-blocks.php'), resolve(pluginTarget, 'skvn-marine-blocks.php'));
 cpSync(resolve(pluginSource, 'build'), resolve(pluginTarget, 'build'), { recursive: true });
+if (existsSync(resolve(pluginSource, 'assets'))) {
+	cpSync(resolve(pluginSource, 'assets'), resolve(pluginTarget, 'assets'), { recursive: true });
+}
 
 console.log(`Deploy artifact ready: ${artifactRoot}`);
 console.log('Copy these two folders to the target WordPress site:');
