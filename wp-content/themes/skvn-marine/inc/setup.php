@@ -22,6 +22,9 @@ function skvn_marine_setup() {
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'woocommerce' );
+	add_theme_support( 'editor-styles' );
+
+	add_editor_style( 'style.css' );
 
 	register_nav_menus(
 		array(

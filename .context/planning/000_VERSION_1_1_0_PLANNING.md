@@ -70,6 +70,150 @@ Custom block strategy:
 
 ---
 
+## HTML-2-Gutenberg Planning
+
+Planning status: **DECIDED AS FUTURE WORK**.
+
+User-facing feature name:
+
+```text
+HTML-2-Gutenberg
+```
+
+Positioning:
+
+```text
+Best for SEO
+```
+
+Reason:
+
+- Final output remains semantic WordPress/Gutenberg content.
+- Headings, paragraphs, buttons, links, and images stay editable.
+- Theme CSS owns presentation through stable `skvn-*` classes.
+- The site avoids screenshot-as-content, canvas text, raw prototype embeds, and inline style/script content.
+
+### Scope Split
+
+HTML-2-Gutenberg should be split into progressive milestones:
+
+1. **Manual HTML/Tailwind Intake**
+   - Human provides an HTML artifact.
+   - Recommended source is an external AI-generated Tailwind HTML artifact.
+   - The translator reads HTML structure and utility classes as layout intent.
+   - Output is Gutenberg block markup plus SKVN contracts.
+
+2. **Manual Gutenberg Publishing**
+   - Human reviews translated output.
+   - Human pastes Gutenberg markup into the editor.
+   - No auto page creation in the first cut.
+
+3. **Admin Publisher Tool**
+   - Future tool accepts reviewed Gutenberg markup.
+   - Form fields: page title, author, status.
+   - Creates a new WordPress page.
+   - Belongs to plugin/admin tooling, not theme visual CSS.
+
+4. **AI-Assisted / Pro Intake**
+   - Future/pro scope only.
+   - Direct screenshot upload.
+   - AI API parsing.
+   - Auto-generate HTML/Tailwind intermediate artifact.
+   - Review before publishing.
+
+### V1 Decision
+
+V1 does **not** ship runtime AI API integration.
+
+V1 does **not** parse screenshots directly.
+
+V1 HTML-2-Gutenberg intake accepts only human-provided HTML/Tailwind artifacts.
+
+Recommended user workflow:
+
+```text
+Screenshot / visual idea
+-> use external free AI tool to recreate or parse into Tailwind HTML
+-> provide HTML artifact to SKVN HTML-2-Gutenberg workflow
+-> receive Gutenberg markup + required skvn-* classes + contracts
+-> paste into Gutenberg Code Editor
+```
+
+### Guardrails
+
+- Tailwind is an input language, not the production contract.
+- Do not paste Tailwind-heavy prototype markup directly into page content.
+- Do not include raw `<style>` or `<script>` in page content.
+- Do not turn text or CTA content into images.
+- Do not add AI SDK/API dependencies in V1.
+- Do not store API keys in WordPress admin for V1.
+- Do not create a custom block if core Gutenberg blocks plus pattern CSS are sufficient.
+- Do not auto-create pages until publisher validation is separately designed.
+
+### Future Milestone Candidates
+
+#### Candidate: V1 / 1.1.0 - HTML-2-Gutenberg Manual Workflow
+
+Goal:
+
+- Make manual HTML/Tailwind artifact translation repeatable enough for launch-prep content work.
+
+Acceptance:
+
+- [ ] Project skill or prompt exists for requesting Tailwind HTML artifacts from external AI tools.
+- [ ] HTML-2-Gutenberg workflow doc defines intake, output, guardrails, and review checklist.
+- [ ] Example HTML artifact can be translated into Gutenberg block markup.
+- [ ] Output includes `gutenberg_markup`, `required_classes`, `theme_css_contract`, `animation_contract`, `assets_needed`, `not_translated`, and `risks`.
+- [ ] Paste-ready Gutenberg test file exists for manual editor smoke test.
+- [ ] No AI API or screenshot parser is shipped.
+
+Out of scope:
+
+- Admin page publisher.
+- Screenshot upload.
+- AI API integration.
+- Automatic page creation.
+
+#### Candidate: V2 - HTML-2-Gutenberg Publisher
+
+Goal:
+
+- Add a protected admin workflow that creates a new page from reviewed Gutenberg markup.
+
+Acceptance:
+
+- [ ] Admin-only access gate.
+- [ ] Form fields for page title, author, and status.
+- [ ] Gutenberg markup validation blocks raw `<style>` and `<script>`.
+- [ ] `core/html` usage is warned or restricted.
+- [ ] New page is created as draft by default.
+- [ ] Theme continues to own visual presentation.
+
+Out of scope:
+
+- AI API integration.
+- Screenshot parsing.
+
+#### Candidate: V2+ / Pro - AI-Assisted Intake
+
+Goal:
+
+- Add optional AI-assisted screenshot or HTML parsing after manual workflow is stable.
+
+Acceptance:
+
+- [ ] API key storage and capability model approved.
+- [ ] Cost/rate-limit behavior documented.
+- [ ] Timeout and retry behavior documented.
+- [ ] Prompt/content logging policy documented.
+- [ ] Human review remains required before publishing.
+
+Out of scope:
+
+- Shipping AI parsing in V1.
+
+---
+
 ## Homepage Test Page Workflow
 
 V1 layout development should use a WordPress test page before finalizing reusable patterns.

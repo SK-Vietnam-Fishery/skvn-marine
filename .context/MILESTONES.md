@@ -33,6 +33,18 @@ Khi chuyển milestone:
 5. Giữ lại OPEN tensions còn liên quan trong `.context/TENSIONS_OPEN.md`.
 6. Không tự archive hoặc tự chuyển milestone nếu human chưa approve.
 
+## Version Naming Rule
+
+- Version dùng SemVer: `MAJOR.MINOR.PATCH`.
+- `MAJOR` tăng khi đổi phase lớn hoặc đổi kiến trúc/phạm vi sản phẩm lớn, ví dụ `1.x.x` → `2.0.0`.
+- `MINOR` tăng khi thêm feature/scope mới nhưng vẫn cùng major, ví dụ `1.0.0` → `1.1.0`.
+- `PATCH` tăng khi fix, hardening, hoặc integration nhỏ trong cùng minor, ví dụ `0.5.0` → `0.5.1`.
+- Version launch-ready của một major là `MAJOR.0.0`, ví dụ `1.0.0` là V1 launch-ready, `2.0.0` là V2 launch-ready.
+- Không dùng nhãn kiểu `1.0.0 Prep` cho feature mới. Nếu là prep trước launch, nó phải nằm trong milestone trước launch hoặc ghi `Future Candidate`.
+- Nếu chưa chắc version của future work, ghi `Future Candidate` thay vì tự gán version.
+- Planning filename phải khớp target version chính, ví dụ `001_VERSION_1_1_0_<TOPIC>_PLANNING.md` hoặc `002_VERSION_2_0_0_<TOPIC>_PLANNING.md`.
+- Không đổi current milestone/version nếu chưa có human approve rõ ràng.
+
 ---
 
 ## V1 Checkpoints

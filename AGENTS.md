@@ -356,6 +356,19 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 0.5.1 | Quote flow integration |
 | 1.0.0 | V1 launch-ready |
 
+### Version naming rules
+
+- Version dùng SemVer: `MAJOR.MINOR.PATCH`.
+- `MAJOR` tăng khi đổi phase lớn hoặc đổi kiến trúc/phạm vi sản phẩm lớn, ví dụ `1.x.x` → `2.0.0`.
+- `MINOR` tăng khi thêm feature/scope mới nhưng vẫn cùng major, ví dụ `1.0.0` → `1.1.0`.
+- `PATCH` tăng khi fix, hardening, hoặc integration nhỏ trong cùng minor, ví dụ `0.5.0` → `0.5.1`.
+- Version launch-ready của một major là `MAJOR.0.0`, ví dụ `1.0.0` là V1 launch-ready, `2.0.0` là V2 launch-ready.
+- Không dùng nhãn kiểu `1.0.0 Prep` cho feature mới. Nếu là prep trước launch, nó phải nằm trong milestone trước launch hoặc ghi `Future Candidate`.
+- Future planning phải ghi đúng target version dự kiến. Nếu chưa chắc version, ghi `Future Candidate` thay vì tự gán version.
+- Tên file planning phải khớp version chính trong nội dung. Ví dụ planning cho `1.1.0` dùng dạng `001_VERSION_1_1_0_<TOPIC>_PLANNING.md`; planning cho `2.0.0` dùng dạng `002_VERSION_2_0_0_<TOPIC>_PLANNING.md`.
+- Không đổi tên planning file hoặc milestone version nếu chưa có human xác nhận.
+- Khi đổi version/milestone thật, phải update đồng bộ `AGENTS.md`, `.context/MILESTONES.md`, và file planning/docs liên quan.
+
 ---
 
 ## 10. Không thuộc phạm vi V1
