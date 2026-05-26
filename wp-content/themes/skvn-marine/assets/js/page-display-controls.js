@@ -59,6 +59,7 @@
 				CONTROLS.map( function ( control ) {
 					return createElement( ToggleControl, {
 						key: control.key,
+						className: 'skvn-page-display-control',
 						label: control.label,
 						help: control.help,
 						checked: !! meta[ control.key ],

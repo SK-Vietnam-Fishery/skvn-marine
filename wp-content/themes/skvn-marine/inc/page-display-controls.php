@@ -68,9 +68,10 @@ function skvn_marine_enqueue_page_display_controls() {
 
 	$theme_dir = get_stylesheet_directory();
 	$theme_uri = get_stylesheet_directory_uri();
-	$path      = $theme_dir . '/assets/js/page-display-controls.js';
+	$script_path = $theme_dir . '/assets/js/page-display-controls.js';
+	$style_path  = $theme_dir . '/assets/css/page-display-controls-editor.css';
 
-	if ( ! file_exists( $path ) ) {
+	if ( ! file_exists( $script_path ) ) {
 		return;
 	}
 
@@ -86,9 +87,18 @@ function skvn_marine_enqueue_page_display_controls() {
 			'wp-i18n',
 			'wp-plugins',
 		),
-		filemtime( $path ),
+		filemtime( $script_path ),
 		true
 	);
+
+	if ( file_exists( $style_path ) ) {
+		wp_enqueue_style(
+			'skvn-marine-page-display-controls',
+			$theme_uri . '/assets/css/page-display-controls-editor.css',
+			array( 'wp-components' ),
+			filemtime( $style_path )
+		);
+	}
 }
 
 /**

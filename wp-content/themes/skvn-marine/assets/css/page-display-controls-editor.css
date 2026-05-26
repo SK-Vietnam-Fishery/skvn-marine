@@ -1,0 +1,23 @@
+.skvn-page-display-panel .skvn-page-display-control.components-base-control {
+	margin-bottom: 2px;
+}
+
+.skvn-page-display-panel .skvn-page-display-control .components-base-control__field {
+	align-items: center;
+	margin-bottom: 0;
+}
+
+.skvn-page-display-panel .skvn-page-display-control .components-form-toggle {
+	flex: 0 0 auto;
+	margin-top: 0;
+}
+
+.skvn-page-display-panel .skvn-page-display-control .components-toggle-control__label {
+	line-height: 20px;
+}
+
+.skvn-page-display-panel .skvn-page-display-control .components-base-control__help {
+	margin-bottom: 0;
+	margin-left: 40px;
+	margin-top: 2px;
+}

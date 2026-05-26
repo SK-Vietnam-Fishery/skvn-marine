@@ -284,6 +284,26 @@ body.admin-bar .site-header {
 	width: 100%;
 }
 
+.skvn-full-width-canvas .entry-content > .mhf-maintenance,
+.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-maintenance {
+	min-height: 100vh;
+	min-height: 100svh;
+}
+
+body.admin-bar.skvn-full-width-canvas .entry-content > .mhf-maintenance,
+body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-maintenance {
+	min-height: calc(100vh - 32px);
+	min-height: calc(100svh - 32px);
+}
+
+@media (max-width: 782px) {
+	body.admin-bar.skvn-full-width-canvas .entry-content > .mhf-maintenance,
+	body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-maintenance {
+		min-height: calc(100vh - 46px);
+		min-height: calc(100svh - 46px);
+	}
+}
+
 .skvn-pattern-test-page {
 	background: var(--skvn-color-white);
 }
