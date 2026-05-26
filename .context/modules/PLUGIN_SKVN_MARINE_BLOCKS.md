@@ -2,7 +2,7 @@
 
 ## [manual] Role
 
-Custom Gutenberg blocks with logic.
+Custom Gutenberg blocks with logic, and future plugin-owned editor/admin tooling.
 
 ## [manual] Architecture
 
@@ -93,6 +93,31 @@ src/
 - V1 KHÔNG build custom `skvn-marine/product-list`.
 - V1 dùng WooCommerce native blocks/patterns cho product grid/list.
 - V2 mới thêm Product Grid/List custom hoặc style blocks liên quan nếu cần.
+
+## [manual] Future Admin Tooling
+
+HTML-2-Gutenberg tooling belongs to this plugin, not the theme.
+
+Plugin responsibilities for HTML-2-Gutenberg:
+
+- HTML artifact intake.
+- Translation workflow/tooling.
+- Gutenberg markup validation.
+- Future admin publisher/create-page flow.
+- Custom blocks only when core Gutenberg blocks plus theme patterns are insufficient.
+
+Theme `skvn-marine` still owns the visual output contract:
+
+- `skvn-*` classes.
+- Theme CSS.
+- Design tokens.
+- Patterns.
+- Editor/frontend CSS parity.
+- Shared animation runtime.
+
+Do not implement the HTML-2-Gutenberg admin tool in the theme.
+
+Do not make this plugin own the primary SKVN visual system.
 
 ## [manual] Rules
 

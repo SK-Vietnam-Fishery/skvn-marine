@@ -41,6 +41,37 @@ Current token intent:
 - Do not fix this by editing GeneratePress parent files.
 - Do not create a custom block for this layout in V1.
 
+## [manual] Page Display Controls
+
+- 0.5.1 introduces page-level controls for marketing-owned pages that need alternate chrome.
+- Required controls: Hide site header, Hide site footer.
+- Store per-page values in post meta using `_skvn_` meta keys.
+- The frontend must apply controls without editing GeneratePress parent files.
+- Prefer editor/admin UI controls over raw class names.
+- Do not add a header/footer builder plugin by default.
+
+## [manual] HTML-2-Gutenberg Boundary
+
+Theme owns the visual output contract for HTML-2-Gutenberg, not the translator tool.
+
+Theme responsibilities:
+
+- `skvn-*` class styling.
+- Design tokens.
+- Block styles.
+- Patterns.
+- Editor/frontend CSS parity.
+- Background/decorative animation and shared animation runtime.
+
+Plugin `skvn-marine-blocks` owns the HTML-2-Gutenberg tool itself:
+
+- HTML artifact intake.
+- Translation workflow/tooling.
+- Validation.
+- Future admin publisher/create-page flow.
+
+Do not implement HTML-2-Gutenberg admin/tooling logic in the theme.
+
 ## [manual] Forbidden
 
 - Do not edit parent GeneratePress.

@@ -22,7 +22,7 @@ echo wp_kses_post($content);
 
 Do not implement a custom quote form handler.
 
-Current 0.5.1 scope is quote UI/editor controls only.
+Current 0.5.1 scope is page display/sidebar controls only. Quote UI moves to 0.6.0.
 
 Future form milestones use:
 

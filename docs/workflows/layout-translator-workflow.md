@@ -61,7 +61,7 @@ Do not add API keys, AI SDK dependencies, screenshot upload handling, or runtime
 - Source repo is `D:\Github\skvn-marine`, not the WordPress runtime root.
 - GeneratePress parent is not edited.
 - Theme `skvn-marine` owns visual system, theme CSS, design tokens, block styles, patterns, background/decorative animation, and shared animation runtime.
-- Plugin `skvn-marine-blocks` owns custom Gutenberg blocks with logic or complex interaction state.
+- Plugin `skvn-marine-blocks` owns HTML-2-Gutenberg tooling, validators, admin publisher flow, and custom Gutenberg blocks with logic or complex interaction state.
 - Core Gutenberg blocks own editable text, headings, paragraphs, buttons, images, groups, and columns.
 - HTML-2-Gutenberg intake is manual in V1; users provide the HTML artifact.
 - Screenshot-to-HTML parsing is delegated to external AI tools in V1.
@@ -72,6 +72,39 @@ Do not add API keys, AI SDK dependencies, screenshot upload handling, or runtime
 - Do not create a custom block when core blocks plus a pattern are enough.
 - Do not add dependencies without rationale.
 - Do not ship AI API integration until a future/pro milestone explicitly approves credential, cost, timeout, logging, and data-handling rules.
+
+## Ownership Boundary
+
+HTML-2-Gutenberg is split across plugin and theme:
+
+```text
+skvn-marine-blocks plugin
+-> HTML artifact intake
+-> translation workflow/tooling
+-> validation
+-> future admin publisher/create-page flow
+-> custom blocks only when core blocks are insufficient
+
+skvn-marine theme
+-> skvn-* visual system
+-> theme CSS contracts
+-> design tokens
+-> block styles
+-> patterns
+-> editor/frontend style parity
+-> shared animation runtime
+```
+
+Decision rule:
+
+```text
+If changing the theme would remove the tool itself, the tool belongs to the plugin.
+If changing the theme would only change the look of translated output, the visual contract belongs to the theme.
+```
+
+Do not implement HTML-2-Gutenberg admin tooling inside the theme.
+
+Do not make the plugin own the primary SKVN visual system.
 
 ## Input Review
 

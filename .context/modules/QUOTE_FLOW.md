@@ -4,21 +4,21 @@
 
 Use same-site Request a Quote page.
 
-Current 0.5.1 scope is quote UI and editor controls only.
+Quote UI/page surface is deferred to V1 / 0.6.0.
 
-CF7/CFDB7 implementation is deferred to the next milestone after 0.5.1.
+CF7/CFDB7 implementation is deferred until after 0.6.0.
 
 n8n automation is deferred until after version 1.0.0.
 
 ## [manual] Stack
 
-- 0.5.1: visual quote path, request quote page surface, CTA styling, editor/sidebar-controlled UI.
-- Next milestone after 0.5.1: Contact Form 7 + CFDB7.
+- 0.6.0: visual quote path, request quote page surface, CTA styling, editor/sidebar-controlled UI.
+- After 0.6.0: Contact Form 7 + CFDB7.
 - After 1.0.0: n8n webhook automation.
 
 ## [manual] Flow
 
-0.5.1:
+0.6.0:
 
 Product CTA → `/request-a-quote/?product_id=123` → same-site quote UI/page surface.
 

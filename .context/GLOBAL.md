@@ -12,7 +12,7 @@
 - WooCommerce — native products, categories, attributes
 - WindPress (Tailwind integration) — utility classes, animations, responsive
 - Plugin: `skvn-marine-blocks` — custom Gutenberg blocks (TypeScript, @wordpress/scripts)
-- Quote UI first — CF7/CFDB7 deferred until after 0.5.1; n8n deferred until after 1.0.0
+- Page display/sidebar controls in 0.5.1; Quote UI in 0.6.0; CF7/CFDB7 after 0.6.0; n8n after 1.0.0
 - Rank Math — SEO, schema
 - Polylang — multilingual (standby V1, activate later)
 - Antispam Bee — comment spam. CF7 honeypot + optional Turnstile — form spam
@@ -108,8 +108,11 @@ Invariant: custom blocks KHÔNG được đặt trong theme.
 Dùng WooCommerce native products. Custom fields (ACF/Meta Box) chỉ thêm khi WC attributes không đủ.
 
 **A4. Quote path phased by milestone**
-0.5.1 tập trung quote UI, same-site request quote page surface, CTA, và editor/sidebar controls. CF7/CFDB7 implementation dời sang milestone sau 0.5.1. n8n automation dời sau version 1.0.0. KHÔNG custom-code form handler. KHÔNG popup/modal làm primary flow.
+0.5.1 tập trung page-level display/sidebar controls. Quote UI, same-site request quote page surface, and CTA polish dời sang 0.6.0. CF7/CFDB7 implementation dời sau 0.6.0. n8n automation dời sau version 1.0.0. KHÔNG custom-code form handler. KHÔNG popup/modal làm primary flow.
 URL pattern giữ: `/request-a-quote/?product_id=123`
+
+**A10. Page display controls**
+Page-level controls such as Hide site header and Hide site footer belong to the `skvn-marine` child theme. Use safe editor/admin controls and page meta; do not require marketing users to type raw classes. Do not add a header/footer builder plugin by default.
 
 **A5. Animation runtime dùng chung**
 `assets/js/animations.js` là single runtime. KHÔNG tạo animation logic riêng per block trừ khi bắt buộc.
@@ -139,7 +142,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 - KHÔNG rename namespace `skvn-marine`, prefix `skvn_marine_` / `skvn_marine_blocks_`, CSS prefix `skvn-`
 - KHÔNG overwrite manual image ALT
 - KHÔNG auto-generate caption ở V1
-- KHÔNG custom-code quote form handler — CF7/CFDB7 sẽ xử lý ở milestone sau 0.5.1
+- KHÔNG custom-code quote form handler — CF7/CFDB7 sẽ xử lý sau 0.6.0
 - KHÔNG expose n8n webhook unprotected; n8n deferred until after 1.0.0
 - KHÔNG log credential dù debug
 - PHP: input phải sanitize, output phải escape (`esc_html`, `esc_attr`, `esc_url`, `wp_kses_post`)
@@ -153,7 +156,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 **V1 (current)** — Một website B2B marine, local-first
 - Theme child + design system + block styles + patterns
 - Plugin blocks: Slider, Accordion, Product Grid, Product List
-- Quote UI/editor controls in 0.5.1; CF7/CFDB7 after 0.5.1; n8n after 1.0.0
+- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; CF7/CFDB7 after 0.6.0; n8n after 1.0.0
 - English content, prepare cho multilingual nhưng KHÔNG activate Polylang
 
 **V2 (future)**
@@ -174,7 +177,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 [manual] Open Decisions (chưa resolve — xem TENSIONS_OPEN.md)
 
 1. V1 product grid/list: WooCommerce native blocks trước hay custom blocks ngay?
-2. Sidebar/editor control scope for quote UI and marketing-owned surfaces
+2. Exact sidebar/admin control flow for page display options
 3. Polylang: activate V1 hay chỉ prepare?
 4. Slider editor UX: stacked / selected-slide-preview / carousel preview?
 5. Future CF7 spam layer when CF7 returns to scope

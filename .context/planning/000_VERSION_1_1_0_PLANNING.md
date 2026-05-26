@@ -93,6 +93,39 @@ Reason:
 - Theme CSS owns presentation through stable `skvn-*` classes.
 - The site avoids screenshot-as-content, canvas text, raw prototype embeds, and inline style/script content.
 
+### Ownership Boundary
+
+HTML-2-Gutenberg is not a theme feature by itself.
+
+Plugin `skvn-marine-blocks` owns:
+
+- HTML artifact intake.
+- Translation workflow/tooling.
+- Validation.
+- Future admin publisher/create-page flow.
+- Custom blocks only when core Gutenberg blocks are insufficient.
+
+Theme `skvn-marine` owns:
+
+- `skvn-*` visual system.
+- Theme CSS contracts.
+- Design tokens.
+- Block styles.
+- Patterns.
+- Editor/frontend style parity.
+- Shared animation runtime.
+
+Decision rule:
+
+```text
+If changing the theme would remove the tool itself, the tool belongs to the plugin.
+If changing the theme would only change the visual output, the visual contract belongs to the theme.
+```
+
+Do not implement HTML-2-Gutenberg admin tooling inside the theme.
+
+Do not make the plugin own the primary SKVN visual system.
+
 ### Scope Split
 
 HTML-2-Gutenberg should be split into progressive milestones:
@@ -657,7 +690,7 @@ Do in V1:
 - Map/contact pattern using OpenStreetMap iframe embed
 - Slider block
 - Accordion block
-- Quote UI/editor controls in 0.5.1; CF7/CFDB7 after 0.5.1; n8n automation after 1.0.0
+- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; CF7/CFDB7 after 0.6.0; n8n automation after 1.0.0
 - Product data entry using WooCommerce
 
 Do not do in V1 by default:

@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.5.1 — Quote UI & Editor Controls**
+Current: **V1 / 0.5.1 — Page Display & Sidebar Controls**
 Status: **IN_PROGRESS**
 Started: **2026-05-22**
 
@@ -49,15 +49,30 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.5.1 — Quote UI & Editor Controls
+### 0.5.1 — Page Display & Sidebar Controls
 
 Status: **IN_PROGRESS**
 Started: **2026-05-22**
 
 Acceptance:
 
-- [ ] CF7/CFDB7 deferred to the next milestone after 0.5.1
+- [ ] CF7/CFDB7 deferred until after V1 / 0.6.0
 - [ ] n8n deferred until after version 1.0.0
+- [ ] Quote UI/page surface moved to V1 / 0.6.0
+- [ ] Page editor exposes a Hide site header toggle
+- [ ] Page editor exposes a Hide site footer toggle
+- [ ] Toggle values are saved as page meta with `skvn_marine_`/`_skvn_` naming
+- [ ] Frontend applies header/footer visibility per page without editing GeneratePress parent
+- [ ] Controls are available through admin/editor UI, not raw class input
+- [ ] Runtime visual smoke test passed
+- [ ] Human approves milestone completion
+
+### 0.6.0 — Quote UI & Editor Controls
+
+Status: **PENDING**
+
+Acceptance:
+
 - [ ] Quote CTA visual path uses `/request-a-quote/?product_id=123`
 - [ ] Request quote page visual surface exists or is planned as an editor-owned page
 - [ ] Quote UI uses project visual classes/tokens

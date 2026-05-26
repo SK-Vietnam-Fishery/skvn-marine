@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 0.5.1 — Quote UI & Editor Controls**
+Current milestone: **V1 / 0.5.1 — Page Display & Sidebar Controls**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -283,11 +283,19 @@ if (!prefersReduced) { /* run animation */ }
 - Pagination cho Product List
 - Mobile: CTA (Request a Quote) luôn visible, KHÔNG chỉ hiện khi hover
 
+### Page Display / Sidebar Controls
+
+- Current 0.5.1 scope: page-level controls for hiding site header/footer and other safe editor/sidebar controls for marketing-owned pages.
+- Header/footer visibility belongs to the theme layer because it controls GeneratePress visual/layout output.
+- Prefer page-level editor/sidebar toggles over raw class input.
+- Do not add a header/footer builder plugin in V1 unless human explicitly changes dependency policy.
+- Do not edit GeneratePress parent theme.
+
 ### Quote Flow / Quote UI
 
 - URL pattern: `/request-a-quote/?product_id=123`
-- Current 0.5.1 scope: visual quote path, quote page surface, CTA styling, and editor/sidebar-controlled UI where needed.
-- CF7/CFDB7 implementation is deferred to the next milestone after 0.5.1.
+- Quote UI/page surface is deferred to V1 / 0.6.0.
+- CF7/CFDB7 implementation is deferred until after 0.6.0.
 - n8n automation is deferred until after version 1.0.0.
 - Do not custom-code quote form handling while CF7 is deferred.
 - Future CF7 markup must use class `skvn-form`, `skvn-quote-form`, `skvn-button`, `skvn-button--primary`.
@@ -357,7 +365,8 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 0.3.0 | Slider/Slide block |
 | 0.4.0 | Woo product grid/list |
 | 0.5.0 | SKVN Full Width layout |
-| 0.5.1 | Quote UI and editor controls |
+| 0.5.1 | Page display and sidebar controls |
+| 0.6.0 | Quote UI and editor controls |
 | 1.0.0 | V1 launch-ready |
 
 ### Version naming rules

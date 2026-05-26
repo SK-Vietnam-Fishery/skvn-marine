@@ -8,11 +8,12 @@ Do not redirect users to a separate contact site in V1.
 
 Human scope update on 2026-05-26:
 
-- 0.5.1 focuses on quote UI and editor/sidebar-controlled visual editing.
-- CF7/CFDB7 implementation is deferred to the next milestone after 0.5.1.
+- 0.5.1 focuses on page display/sidebar controls.
+- 0.6.0 focuses on quote UI and editor/sidebar-controlled visual editing.
+- CF7/CFDB7 implementation is deferred until after 0.6.0.
 - n8n automation is deferred until after version 1.0.0.
 
-## 0.5.1 Flow
+## 0.6.0 Flow
 
 ```txt
 Product page / Product grid

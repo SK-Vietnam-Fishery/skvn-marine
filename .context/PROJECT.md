@@ -6,7 +6,7 @@
 - V3 may become a reusable base theme.
 - Use GeneratePress child theme, not a fork, for V1.
 - Use WooCommerce native product model.
-- Quote UI/editor controls are current 0.5.1 scope; CF7/CFDB7 are deferred until after 0.5.1; n8n is deferred until after 1.0.0.
+- Page display/sidebar controls are current 0.5.1 scope; Quote UI/editor controls move to 0.6.0; CF7/CFDB7 are deferred until after 0.6.0; n8n is deferred until after 1.0.0.
 - Use Rank Math for SEO and GEO/AEO-friendly content structure.
 - Use Polylang as multilingual candidate.
 - Use WindPress/Tailwind for design system implementation.
@@ -27,7 +27,7 @@
 
 ## [manual] Open Decisions
 
-- Sidebar/editor control scope for quote UI and marketing-owned surfaces.
+- Exact sidebar/admin control flow for page display options.
 - Future CF7/n8n integration approach after 1.0.0.
 - Polylang activation timing.
 - SEO/GEO content template details.
