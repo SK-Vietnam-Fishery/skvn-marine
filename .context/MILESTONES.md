@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.5.1 — Quote Flow Integration**
+Current: **V1 / 0.5.1 — Quote UI & Editor Controls**
 Status: **IN_PROGRESS**
 Started: **2026-05-22**
 
@@ -49,20 +49,20 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.5.1 — Quote Flow Integration
+### 0.5.1 — Quote UI & Editor Controls
 
 Status: **IN_PROGRESS**
 Started: **2026-05-22**
 
 Acceptance:
 
-- [ ] CF7 ↔ n8n method resolved
-- [ ] Request quote page exists
-- [ ] Required hidden fields prepared
-- [ ] CF7 markup uses project classes
-- [ ] Thank-you page exists
-- [ ] n8n webhook remains protected
-- [ ] Runtime smoke test passed
+- [ ] CF7/CFDB7 deferred to the next milestone after 0.5.1
+- [ ] n8n deferred until after version 1.0.0
+- [ ] Quote CTA visual path uses `/request-a-quote/?product_id=123`
+- [ ] Request quote page visual surface exists or is planned as an editor-owned page
+- [ ] Quote UI uses project visual classes/tokens
+- [ ] Editing controls that marketing users need are exposed through sidebar controls, not raw class input
+- [ ] Runtime visual smoke test passed
 - [ ] Human approves milestone completion
 
 ### 1.0.0 — V1 Launch Ready
@@ -71,10 +71,12 @@ Status: **PENDING**
 
 Acceptance:
 
+- [ ] Basic CF7/CFDB7 quote form works without n8n automation
 - [ ] Accessibility pass
 - [ ] Mobile QA pass
 - [ ] SEO/GEO structure pass
 - [ ] Performance and asset loading review
 - [ ] No forbidden parent-theme changes
 - [ ] No external plugins committed to source repo
+- [ ] n8n remains deferred/unexposed unless human explicitly moves it into scope
 - [ ] Human approves V1 launch readiness

@@ -20,17 +20,19 @@ echo wp_kses_post($content);
 
 ## Forms
 
-V1 should not implement a custom quote form handler.
+Do not implement a custom quote form handler.
 
-Use:
+Current 0.5.1 scope is quote UI/editor controls only.
+
+Future form milestones use:
 
 - Contact Form 7 for form handling
 - CFDB7 for database table/submission storage
-- n8n webhook for lead automation
+- n8n webhook for lead automation after 1.0.0
 
 ## n8n Webhook
 
-Webhook must not be left completely unprotected.
+n8n is deferred until after 1.0.0. If/when added, webhook must not be left completely unprotected.
 
 Recommended:
 
@@ -42,7 +44,7 @@ Recommended:
 ## Spam
 
 - Antispam Bee is for comment spam.
-- CF7 form should use dedicated protection:
+- Future CF7 form should use dedicated protection:
   - honeypot
   - Cloudflare Turnstile or reCAPTCHA if spam increases
   - rate limiting later if needed

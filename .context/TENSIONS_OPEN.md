@@ -7,20 +7,6 @@
 
 ---
 
-## [2025-01-01 00:00] | quote-flow
-Tension:    CF7 ↔ n8n integration method: CF7 webhook trực tiếp hay CF7 send email → n8n catch email?
-Context:    Planning phase — quote flow chưa implement
-Proposal:   Dùng CF7 webhook (`add_action 'wpcf7_mail_sent'`) để POST trực tiếp đến n8n webhook URL
-Constraint: Chưa có quyết định chính thức. n8n webhook phải được protect (hard URL + optional secret).
-Severity:   high
-Tags:       quote-flow, php
-Milestone:  V1 / 0.5.1
-Status:     OPEN
-Resolved:
-Decision:   OPEN
-
----
-
 ## [2025-01-01 00:00] | multilingual
 Tension:    Polylang activate ngay V1 hay chỉ prepare (text domain + no hardcoded strings)?
 Context:    Planning phase
@@ -47,16 +33,3 @@ Status:     OPEN
 Resolved:
 Decision:   Lean toward: stacked preview.
 
----
-
-## [2025-01-01 00:00] | spam-protection
-Tension:    Cloudflare Turnstile cho CF7: add ngay V1 hay delay?
-Context:    Planning phase
-Proposal:   V1: chỉ dùng CF7 honeypot. Turnstile thêm khi spam tăng.
-Constraint: "Cloudflare Turnstile or reCAPTCHA if spam increases"
-Severity:   low
-Tags:       quote-flow, spam-protection
-Milestone:  V1 / 0.5.1
-Status:     OPEN
-Resolved:
-Decision:   Lean toward: honeypot only V1, Turnstile on-demand.

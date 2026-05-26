@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 0.5.1 — Quote Flow Integration**
+Current milestone: **V1 / 0.5.1 — Quote UI & Editor Controls**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -283,12 +283,16 @@ if (!prefersReduced) { /* run animation */ }
 - Pagination cho Product List
 - Mobile: CTA (Request a Quote) luôn visible, KHÔNG chỉ hiện khi hover
 
-### Quote Flow
+### Quote Flow / Quote UI
 
 - URL pattern: `/request-a-quote/?product_id=123`
-- Hidden fields bắt buộc: `product_id`, `product_sku`, `product_name`, `product_url`, `source_url`, UTM fields
-- CF7 markup dùng class `skvn-form`, `skvn-quote-form`, `skvn-button`, `skvn-button--primary`
-- n8n webhook: hard-to-guess URL + optional shared secret header. KHÔNG expose unprotected.
+- Current 0.5.1 scope: visual quote path, quote page surface, CTA styling, and editor/sidebar-controlled UI where needed.
+- CF7/CFDB7 implementation is deferred to the next milestone after 0.5.1.
+- n8n automation is deferred until after version 1.0.0.
+- Do not custom-code quote form handling while CF7 is deferred.
+- Future CF7 markup must use class `skvn-form`, `skvn-quote-form`, `skvn-button`, `skvn-button--primary`.
+- Future hidden fields: `product_id`, `product_sku`, `product_name`, `product_url`, `source_url`, UTM fields.
+- Future n8n webhook: hard-to-guess URL + optional shared secret header. KHÔNG expose unprotected.
 
 ---
 
@@ -353,7 +357,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 0.3.0 | Slider/Slide block |
 | 0.4.0 | Woo product grid/list |
 | 0.5.0 | SKVN Full Width layout |
-| 0.5.1 | Quote flow integration |
+| 0.5.1 | Quote UI and editor controls |
 | 1.0.0 | V1 launch-ready |
 
 ### Version naming rules

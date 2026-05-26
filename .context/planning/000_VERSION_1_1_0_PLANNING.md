@@ -657,7 +657,7 @@ Do in V1:
 - Map/contact pattern using OpenStreetMap iframe embed
 - Slider block
 - Accordion block
-- Quote flow using CF7 + CFDB7 + n8n
+- Quote UI/editor controls in 0.5.1; CF7/CFDB7 after 0.5.1; n8n automation after 1.0.0
 - Product data entry using WooCommerce
 
 Do not do in V1 by default:
