@@ -291,6 +291,14 @@ if (!prefersReduced) { /* run animation */ }
 - Do not add a header/footer builder plugin in V1 unless human explicitly changes dependency policy.
 - Do not edit GeneratePress parent theme.
 
+### Site Branding / Visual Registry
+
+- Trước khi code bất kỳ thay đổi branding/visual-token nào, agent PHẢI đọc và cập nhật `docs/standards/site-branding-guideline.md` nếu quyết định mới làm thay đổi registry, token, asset ownership, hoặc customization rule.
+- Branding source of truth dạng docs hiện tại là `docs/standards/site-branding-guideline.md`.
+- Theme owns primary brand system: `style.css`, `theme.json`, patterns, block styles, editor/frontend parity, theme screenshot.
+- Plugin chỉ được giữ plugin-specific branding assets/tooling; KHÔNG làm source of truth cho visual system.
+- Không code branding rải rác trước khi docs nêu rõ biến/class/asset đó nằm ở file nào.
+
 ### Quote Flow / Quote UI
 
 - URL pattern: `/request-a-quote/?product_id=123`
@@ -331,6 +339,31 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 ## Tensions / Conflicts
 [Ghi nếu biết trước có conflict, để agent xử lý đúng]
 ```
+
+---
+
+## 7.1 Project Skill Copy
+
+Project keeps a repo-local copy of the HTML-2-Gutenberg skill for audit and handoff:
+
+```text
+.agents/skills/html-2-gutenberg/SKILL.md
+```
+
+The auto-discovered machine-local install may live at:
+
+```text
+C:\Users\VPF-Champion\.codex\skills\html-2-gutenberg\SKILL.md
+```
+
+When updating HTML-2-Gutenberg rules, keep both copies in sync if the machine-local skill exists.
+
+HTML-2-Gutenberg boundary:
+
+- Plugin `skvn-marine-blocks` owns artifact intake, translation tooling, validation, and future admin publisher/create-page flow.
+- Theme `skvn-marine` owns visual output contract: `skvn-*` classes, CSS, tokens, patterns, editor/frontend parity, and shared animation runtime.
+- Do not paste raw `<style>`, `<script>`, base64/data URI image, or decorative SVG/canvas into Gutenberg content.
+- Do not implement HTML-2-Gutenberg tooling/admin logic in the theme.
 
 ---
 

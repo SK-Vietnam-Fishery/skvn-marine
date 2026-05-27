@@ -76,6 +76,8 @@ Do not implement HTML-2-Gutenberg admin/tooling logic in the theme.
 
 Brand customization is allowed, but brand variables and assets must be managed through the registry in `docs/standards/site-branding-guideline.md`.
 
+Before coding any branding, visual token, theme screenshot, pattern identity, or editor visual parity change, update or verify `docs/standards/site-branding-guideline.md` first. Do not implement scattered branding changes until the docs state which file owns the variable, class, or asset.
+
 Theme-owned brand sources:
 
 - CSS tokens and component styles: `wp-content/themes/skvn-marine/style.css`.

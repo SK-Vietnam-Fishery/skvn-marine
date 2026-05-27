@@ -9,6 +9,8 @@ SKVN Marine can be customized, but customization must be managed through known f
 
 This document defines where brand variables, visual assets, and editor-facing branding decisions live.
 
+Before coding any branding change, update or verify this document first. If a new token, class family, screenshot/icon asset, editor style rule, or customization control is introduced, this document must state which file owns it.
+
 ## Brand Layers
 
 | Layer | Owner | Editable by | Rule |
@@ -74,6 +76,7 @@ When the importer outputs a new `skvn-*` class, record the class contract in the
 
 ## Guardrails
 
+- Update or verify this guideline before coding branding changes.
 - Do not place raw `<style>` or `<script>` in Gutenberg content.
 - Do not edit GeneratePress parent files.
 - Do not move brand tokens into the plugin.
