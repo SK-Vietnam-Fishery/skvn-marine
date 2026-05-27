@@ -93,6 +93,10 @@ Current active docs:
 - `docs/workflows/theme-development-workflow.md`
 - `docs/explain/explain-for-5-years-old.md`
 - `docs/artifacts/brand-palette-options.html`
+- `docs/artifacts/meta-ai-tailwind-artifacts-review.md`
+- `docs/artifacts/benchmark-templates/README.md`
+- `docs/artifacts/benchmark-templates/render-notes.md`
+- `docs/artifacts/page-blueprints/README.md`
 
 ---
 

@@ -20,6 +20,62 @@ Run directly inside the Debian shell:
 source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine && node tools/build-deploy-artifact.mjs
 ```
 
+## Upcoming Toolchain Check
+
+Status: planned small task, not required for the immediate onsite zip build.
+
+Current recorded local toolchain:
+
+```text
+Node.js: 20.20.2
+npm:     10.8.2
+```
+
+npm 11 is stable enough to evaluate, but treat the npm 10 -> npm 11 move as
+a toolchain validation task instead of mixing it into a normal deploy build.
+
+Planned check:
+
+```bash
+source /home/shinkuro/.nvm/nvm.sh
+nvm use 20
+npm install -g npm@11.15.0
+cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks
+npm ci
+npm run build
+```
+
+Acceptance:
+
+```text
+[ ] npm reports 11.15.0.
+[ ] npm ci completes.
+[ ] npm run build completes.
+[ ] package-lock.json diff is reviewed.
+[ ] Deploy artifact build still completes from repo root.
+[ ] Editor and frontend smoke tests still pass.
+[ ] If accepted, update local environment docs/toolchain notes.
+```
+
+## Package Zip Files
+
+After the build command succeeds, run these inside Debian from the repo root:
+
+```bash
+bash tools/package-theme-zip.sh
+bash tools/package-plugin-zip.sh
+```
+
+Zip output:
+
+```text
+build/skvn-marine.zip
+build/skvn-marine-blocks.zip
+```
+
+Each zip contains one top-level folder, so WordPress can unpack it into the
+matching theme/plugin directory.
+
 ## Output
 
 The deployable output is gitignored:

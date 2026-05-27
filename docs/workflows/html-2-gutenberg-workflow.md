@@ -135,6 +135,12 @@ Reference pattern:
 wp-content/themes/skvn-marine/patterns/artifact-exporter-test.php
 ```
 
+Reviewed Meta AI/Tailwind artifact inventory:
+
+```text
+docs/artifacts/meta-ai-tailwind-artifacts-review.md
+```
+
 Rules:
 
 - Reuse existing class families before inventing new ones.
