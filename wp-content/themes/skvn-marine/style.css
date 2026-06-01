@@ -11,14 +11,14 @@ Author: SKVN
 */
 
 :root {
-	--skvn-color-blue-950: #082f49;
-	--skvn-color-blue-900: #0c4a6e;
-	--skvn-color-blue-700: #0369a1;
+	--skvn-color-blue-950: #073b5a;
+	--skvn-color-blue-900: #0f5c8c;
+	--skvn-color-blue-700: #1e79be;
 	--skvn-color-mint-100: #ddfaf4;
 	--skvn-color-gold-300: #e9c766;
 	--skvn-color-teal-600: #0d9488;
-	--skvn-color-sky-50: #f0f9ff;
-	--skvn-color-slate-700: #334155;
+	--skvn-color-sky-50: #eaf7ff;
+	--skvn-color-slate-700: #0f172a;
 	--skvn-color-white: #ffffff;	
 	--skvn-accent-support: var(--skvn-color-mint-100);
 	--skvn-accent-premium: var(--skvn-color-gold-300);
@@ -27,7 +27,7 @@ Author: SKVN
 	--skvn-content-width: 760px;
 	--skvn-wide-width: 1200px;
 	--skvn-shadow-card-hover: 0 4px 8px rgba(8, 47, 73, 0.1), 0 12px 24px rgba(8, 47, 73, 0.14);
-	--skvn-border: rgba(51, 65, 85, 0.14);
+	--skvn-border: rgba(15, 23, 42, 0.14);
 
 }
 
@@ -110,14 +110,14 @@ body {
 }
 
 .wp-block-button.skvn-button--secondary .wp-block-button__link {
-	background: transparent;
-	border: 1px solid rgba(255, 255, 255, 0.32);
-	color: var(--skvn-color-white);
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(30, 121, 190, 0.28);
+	color: var(--skvn-color-blue-900);
 }
 
 .wp-block-button.skvn-button--secondary .wp-block-button__link:hover {
-	background: rgba(255, 255, 255, 0.1);
-	color: var(--skvn-color-white);
+	background: var(--skvn-color-sky-50);
+	color: var(--skvn-color-blue-950);
 }
 
 .skvn-card {
@@ -450,7 +450,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 
 /* ── skvn-newsletter-band — missing theme class ── */
 .skvn-newsletter-band {
-  background-color: var(--skvn-color-navy, #082f49);
+  background-color: var(--skvn-color-blue-900);
   color: #fff;
   padding-block: var(--skvn-space-xl, 4rem);
 }
@@ -806,9 +806,9 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 
 .skvn-translated-hero {
 	background:
-		linear-gradient(90deg, rgba(8, 47, 73, 0.98), rgba(12, 74, 110, 0.95)),
-		var(--skvn-color-blue-950);
-	color: var(--skvn-color-white);
+		linear-gradient(135deg, var(--skvn-color-sky-50) 0%, var(--skvn-color-white) 56%, rgba(221, 250, 244, 0.72) 100%),
+		var(--skvn-color-white);
+	color: var(--skvn-color-slate-700);
 	padding-block: 5rem;
 }
 
@@ -833,7 +833,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 
 .skvn-translated-hero__eyebrow,
 .skvn-section__eyebrow {
-	color: var(--skvn-color-gold-300);
+	color: var(--skvn-color-blue-700);
 	font-size: 0.78rem;
 	font-weight: 800;
 	letter-spacing: 0.08em;
@@ -846,7 +846,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 }
 
 .skvn-translated-hero__heading {
-	color: var(--skvn-color-white);
+	color: var(--skvn-color-blue-950);
 	font-size: 2.25rem;
 	font-weight: 800;
 	letter-spacing: 0;
@@ -856,7 +856,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 }
 
 .skvn-translated-hero__lead {
-	color: rgba(255, 255, 255, 0.84);
+	color: rgba(15, 23, 42, 0.78);
 	font-size: 1.05rem;
 	line-height: 1.7;
 	margin-block: 0 1.75rem;
@@ -877,7 +877,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 }
 
 .skvn-translated-hero__image img {
-	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+	box-shadow: 0 24px 60px rgba(7, 59, 90, 0.14);
 }
 
 .skvn-placeholder-media img {

@@ -25,10 +25,19 @@ GeneratePress child theme for SKVN Marine visual system.
 
 Current token intent:
 
-- Navy: `#082f49`
-- Primary blue: `#0369a1`
+- Deep navy: `#073b5a`
+- Trust blue: `#0f5c8c`
+- Primary blue: `#1e79be`
+- Fresh sky: `#eaf7ff`
 - Support mint: `#ddfaf4`
 - Premium gold: `#e9c766`
+- Text slate: `#0f172a`
+
+0.5.1 visual hotfix:
+
+- Translated artifact heroes should use fresh sky/white surfaces instead of full navy backgrounds by default.
+- Deep navy remains available for text, footer, and trust surfaces.
+- Brand profile/sidebar color controls remain deferred to V1 / 0.7.0; do not add a new token UI in 0.5.1.
 
 ## [manual] Layout Direction
 

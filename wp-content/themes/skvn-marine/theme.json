@@ -9,17 +9,17 @@
       "palette": [
         {
           "slug": "skvn-blue-950",
-          "color": "#082f49",
+          "color": "#073b5a",
           "name": "SKVN Blue 950"
         },
         {
           "slug": "skvn-blue-900",
-          "color": "#0c4a6e",
+          "color": "#0f5c8c",
           "name": "SKVN Blue 900"
         },
         {
           "slug": "skvn-blue-700",
-          "color": "#0369a1",
+          "color": "#1e79be",
           "name": "SKVN Blue 700"
         },
         {
@@ -39,12 +39,12 @@
         },
         {
           "slug": "skvn-sky-50",
-          "color": "#f0f9ff",
+          "color": "#eaf7ff",
           "name": "SKVN Sky 50"
         },
         {
           "slug": "skvn-slate-700",
-          "color": "#334155",
+          "color": "#0f172a",
           "name": "SKVN Slate 700"
         },
         {
