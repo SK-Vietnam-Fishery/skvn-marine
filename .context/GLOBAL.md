@@ -62,6 +62,7 @@ Current planning file:
 - `.context/planning/001_VERSION_0_7_0_BRAND_PROFILE_PLANNING.md`
 - `.context/planning/002_VERSION_1_1_0_VISUAL_GOVERNANCE_PLANNING.md`
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md`
+- `.context/planning/004_VERSION_0_8_0_EDITOR_CONTROLS_PLANNING.md`
 
 Proposal files under `.context/proposals/` are not active protocol and are ignored by git. Do not load them unless the human explicitly asks to review a proposal.
 
@@ -80,6 +81,7 @@ Current active docs:
 - `docs/decisions/caching-strategy.md`
 - `docs/decisions/css-change-logs.md`
 - `docs/decisions/design-direction.md`
+- `docs/decisions/page-display-controls.md`
 - `docs/decisions/product-data-model.md`
 - `docs/decisions/quote-flow.md`
 - `docs/decisions/slider-block.md`

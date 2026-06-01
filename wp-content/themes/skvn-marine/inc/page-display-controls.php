@@ -7,16 +7,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const SKVN_MARINE_PAGE_DISPLAY_META = array(
+const SKVN_MARINE_PAGE_DISPLAY_BOOLEAN_META = array(
 	'_skvn_hide_header',
 	'_skvn_hide_footer',
 	'_skvn_hide_title',
 	'_skvn_full_width_canvas',
 );
+const SKVN_MARINE_PAGE_DISPLAY_PRESET_META = '_skvn_page_display_preset';
+const SKVN_MARINE_PAGE_DISPLAY_PRESETS     = array(
+	'default',
+	'skvn_landing_canvas',
+	'custom',
+);
 
 add_action( 'init', 'skvn_marine_register_page_display_meta' );
 add_action( 'enqueue_block_editor_assets', 'skvn_marine_enqueue_page_display_controls' );
 add_filter( 'body_class', 'skvn_marine_page_display_body_classes' );
+add_filter( 'generate_sidebar_layout', 'skvn_marine_page_display_sidebar_layout' );
 
 /**
  * Register page display meta for editor sidebar controls.
@@ -24,7 +31,7 @@ add_filter( 'body_class', 'skvn_marine_page_display_body_classes' );
  * @return void
  */
 function skvn_marine_register_page_display_meta() {
-	foreach ( SKVN_MARINE_PAGE_DISPLAY_META as $meta_key ) {
+	foreach ( SKVN_MARINE_PAGE_DISPLAY_BOOLEAN_META as $meta_key ) {
 		register_post_meta(
 			'page',
 			$meta_key,
@@ -38,6 +45,35 @@ function skvn_marine_register_page_display_meta() {
 			)
 		);
 	}
+
+	register_post_meta(
+		'page',
+		SKVN_MARINE_PAGE_DISPLAY_PRESET_META,
+		array(
+			'type'              => 'string',
+			'single'            => true,
+			'default'           => 'default',
+			'show_in_rest'      => true,
+			'sanitize_callback' => 'skvn_marine_sanitize_page_display_preset',
+			'auth_callback'     => 'skvn_marine_can_edit_page_display_meta',
+		)
+	);
+}
+
+/**
+ * Sanitize the page display preset.
+ *
+ * @param mixed $value Raw preset value.
+ * @return string
+ */
+function skvn_marine_sanitize_page_display_preset( $value ) {
+	$value = is_string( $value ) ? sanitize_key( $value ) : 'default';
+
+	if ( ! in_array( $value, SKVN_MARINE_PAGE_DISPLAY_PRESETS, true ) ) {
+		return 'default';
+	}
+
+	return $value;
 }
 
 /**
@@ -126,10 +162,65 @@ function skvn_marine_page_display_body_classes( $classes ) {
 	);
 
 	foreach ( $class_map as $meta_key => $class_name ) {
-		if ( (bool) get_post_meta( $post_id, $meta_key, true ) ) {
+		if ( skvn_marine_page_uses_display_feature( $post_id, $meta_key ) ) {
 			$classes[] = $class_name;
 		}
 	}
 
 	return $classes;
+}
+
+/**
+ * Force the GeneratePress sidebar layout when the SKVN canvas owns page width.
+ *
+ * @param string $layout GeneratePress sidebar layout.
+ * @return string
+ */
+function skvn_marine_page_display_sidebar_layout( $layout ) {
+	if ( ! is_page() ) {
+		return $layout;
+	}
+
+	$post_id = get_queried_object_id();
+
+	if ( $post_id && skvn_marine_page_uses_display_feature( $post_id, '_skvn_full_width_canvas' ) ) {
+		return 'no-sidebar';
+	}
+
+	return $layout;
+}
+
+/**
+ * Check whether a display feature is enabled directly or by preset.
+ *
+ * @param int    $post_id Post ID.
+ * @param string $meta_key Display feature meta key.
+ * @return bool
+ */
+function skvn_marine_page_uses_display_feature( $post_id, $meta_key ) {
+	if ( (bool) get_post_meta( $post_id, $meta_key, true ) ) {
+		return true;
+	}
+
+	$preset   = get_post_meta( $post_id, SKVN_MARINE_PAGE_DISPLAY_PRESET_META, true );
+	$features = skvn_marine_get_page_display_preset_features( $preset );
+
+	return ! empty( $features[ $meta_key ] );
+}
+
+/**
+ * Get display features enabled by a preset.
+ *
+ * @param string $preset Page display preset.
+ * @return array<string,bool>
+ */
+function skvn_marine_get_page_display_preset_features( $preset ) {
+	if ( 'skvn_landing_canvas' !== $preset ) {
+		return array();
+	}
+
+	return array(
+		'_skvn_hide_title'        => true,
+		'_skvn_full_width_canvas' => true,
+	);
 }

@@ -64,6 +64,7 @@ Acceptance:
 - [x] Toggle values are saved as page meta with `skvn_marine_`/`_skvn_` naming
 - [x] Frontend applies header/footer visibility per page without editing GeneratePress parent
 - [x] Controls are available through admin/editor UI, not raw class input
+- [x] Page editor exposes an SKVN Landing Canvas preset for the standard hide-title/full-width/no-sidebar page setup
 - [x] HTML-2-Gutenberg brand-mapping contract documented for manual translation output
 - [x] Real Tailwind artifact CSS hardening decision documented in `docs/decisions/css-change-logs.md`
 - [ ] Runtime visual smoke test passed
@@ -100,6 +101,29 @@ Acceptance:
 - [ ] Editor and frontend use the same token contract.
 - [ ] HTML-2-Gutenberg output can report `brand_source_scan`, `brand_mapping`, `brand_mismatch`, and `token_changes_needed`.
 - [ ] No raw prototype colors are required in Gutenberg content.
+- [ ] GeneratePress parent remains untouched.
+
+### 0.8.0 — SKVN Editor Controls
+
+Status: **PENDING**
+
+Purpose:
+
+- Add Elementor-inspired but token-governed sidebar controls for SKVN-owned Gutenberg blocks and translated layout surfaces.
+- Let editors adjust tone, spacing, width, margin, padding, responsive visibility, and block-specific behavior without raw classes, raw hex values, or unrestricted inline CSS.
+- Keep theme-owned visual tokens as the source of truth while plugin-owned blocks expose safe presets.
+
+Acceptance:
+
+- [ ] Editor controls contract is documented before code.
+- [ ] Theme owns tone, spacing, width, radius, shadow, and visual classes.
+- [ ] Plugin owns block sidebar UI, block attributes, saved markup, and interactive block behavior.
+- [ ] Controls are grouped into Content, Style, Layout, and Advanced sections.
+- [ ] Margin and padding controls use presets/tokens first, with responsive overrides only where needed.
+- [ ] No freeform raw class input is required for marketing editors.
+- [ ] No raw hex/rgb/hsl values or arbitrary inline spacing values are required in Gutenberg content.
+- [ ] Slider editor UX tension is resolved before implementing slider-specific controls.
+- [ ] Editor and frontend output stay visually aligned.
 - [ ] GeneratePress parent remains untouched.
 
 ### 1.0.0 — V1 Launch Ready
