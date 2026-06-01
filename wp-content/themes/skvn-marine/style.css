@@ -1217,3 +1217,588 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 		padding: 1.5rem;
 	}
 }
+
+/* -------------------------------------------------------------
+   1. Section header — centered variant
+   Used by: Testimonials, Pricing, Process
+   ------------------------------------------------------------- */
+.skvn-section__header--centered {
+	text-align: center;
+	max-width: 640px;
+	margin-inline: auto;
+	margin-bottom: 3.5rem;
+}
+ 
+.skvn-section__header--centered .skvn-section__eyebrow,
+.skvn-section__header--centered .skvn-section__heading {
+	text-align: center;
+}
+ 
+/* -------------------------------------------------------------
+   2. Card grid — 3-col
+   Override wp-block-columns for equal-height card grids
+   ------------------------------------------------------------- */
+.skvn-card-grid.skvn-card-grid--3 {
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.5rem;
+	align-items: stretch;
+}
+ 
+.skvn-card-grid.skvn-card-grid--3 > .wp-block-column {
+	flex: unset !important;
+	width: unset !important;
+}
+ 
+@media (max-width: 1024px) {
+	.skvn-card-grid.skvn-card-grid--3 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+ 
+@media (max-width: 640px) {
+	.skvn-card-grid.skvn-card-grid--3 {
+		grid-template-columns: 1fr;
+	}
+}
+ 
+/* -------------------------------------------------------------
+   3. Stat card (About section — 2×2 grid)
+   ------------------------------------------------------------- */
+.skvn-stat-grid {
+	display: grid !important;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.25rem;
+	margin-bottom: 1.25rem;
+}
+ 
+.skvn-stat-grid:last-child {
+	margin-bottom: 0;
+}
+ 
+.skvn-stat-grid > .wp-block-column {
+	flex: unset !important;
+}
+ 
+.skvn-stat-card {
+	background: var(--skvn-color-white);
+	border: 1px solid var(--skvn-border);
+	border-radius: var(--skvn-radius-card);
+	padding: 2rem;
+	box-shadow: var(--skvn-shadow-card);
+}
+ 
+.skvn-stat-card__number {
+	font-size: clamp(2rem, 4vw, 2.75rem);
+	font-weight: 900;
+	color: var(--skvn-color-blue-950);
+	line-height: 1;
+	margin: 0 !important;
+}
+ 
+.skvn-stat-card__label {
+	font-size: 0.8125rem;
+	font-weight: 500;
+	color: #64748b;
+	margin-top: 0.75rem !important;
+	margin-bottom: 0 !important;
+}
+ 
+.skvn-translated-split--about .skvn-translated-split__grid {
+	align-items: flex-start;
+}
+ 
+.skvn-section__subheading {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: var(--skvn-color-blue-950);
+	margin-top: 1.5rem;
+	margin-bottom: 0;
+}
+ 
+/* -------------------------------------------------------------
+   4. Card — testimonial variant
+   ------------------------------------------------------------- */
+.skvn-card--testimonial {
+	background: var(--skvn-color-white);
+	border: 1px solid var(--skvn-border);
+	border-radius: var(--skvn-radius-card);
+	padding: 1.75rem;
+	box-shadow: var(--skvn-shadow-card);
+	height: 100%;
+}
+ 
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-card--testimonial {
+		transition: box-shadow 150ms ease, transform 150ms ease;
+	}
+ 
+	.skvn-card--testimonial:hover {
+		box-shadow: var(--skvn-shadow-card-hover);
+		transform: translateY(-2px);
+	}
+}
+ 
+.skvn-card__author {
+	display: flex !important;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+ 
+.skvn-card__avatar {
+	flex-shrink: 0;
+	width: 48px !important;
+	height: 48px !important;
+	border-radius: 50% !important;
+	overflow: hidden;
+	margin: 0 !important;
+}
+ 
+.skvn-card__avatar img {
+	width: 48px;
+	height: 48px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+ 
+.skvn-card__author-name {
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--skvn-color-blue-950);
+	margin: 0 !important;
+	line-height: 1.3;
+}
+ 
+.skvn-card__author-role {
+	font-size: 0.6875rem;
+	color: #94a3b8;
+	margin: 0.125rem 0 0 !important;
+	line-height: 1.3;
+}
+ 
+.skvn-card__quote {
+	font-size: 0.875rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.65;
+	font-style: italic;
+	margin: 0 !important;
+}
+ 
+/* -------------------------------------------------------------
+   5. Process card
+   ------------------------------------------------------------- */
+.skvn-card.skvn-process-card {
+	background: var(--skvn-color-white);
+	border: 1px solid var(--skvn-border);
+	border-radius: var(--skvn-radius-card);
+	padding: 2rem;
+	box-shadow: var(--skvn-shadow-card);
+	height: 100%;
+}
+ 
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-card.skvn-process-card {
+		transition: box-shadow 200ms ease;
+	}
+ 
+	.skvn-card.skvn-process-card:hover {
+		box-shadow: var(--skvn-shadow-card-hover);
+	}
+}
+ 
+.skvn-process-card__step {
+	font-size: 3.75rem;
+	font-weight: 900;
+	color: var(--skvn-color-blue-700);
+	opacity: 0.1;
+	line-height: 1;
+	margin: 0 0 -1.25rem !important;
+	user-select: none;
+	pointer-events: none;
+}
+ 
+.skvn-process-card__title {
+	font-size: 1.0625rem;
+	font-weight: 700;
+	color: var(--skvn-color-blue-950);
+	position: relative;
+	margin: 0 0 0.75rem !important;
+}
+ 
+.skvn-process-card > .wp-block-paragraph {
+	font-size: 0.875rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.65;
+	margin: 0 !important;
+}
+ 
+/* -------------------------------------------------------------
+   6. Pricing cards
+   ------------------------------------------------------------- */
+.skvn-pricing-grid {
+	align-items: stretch !important;
+	position: relative;
+}
+ 
+.skvn-card--pricing {
+	background: var(--skvn-color-white);
+	border: 1px solid var(--skvn-border);
+	border-radius: var(--skvn-radius-card);
+	padding: 2rem;
+	box-shadow: var(--skvn-shadow-card);
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	position: relative;
+}
+ 
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-card--pricing:not(.skvn-card--pricing-featured) {
+		transition: box-shadow 200ms ease;
+	}
+ 
+	.skvn-card--pricing:not(.skvn-card--pricing-featured):hover {
+		box-shadow: var(--skvn-shadow-card-hover);
+	}
+}
+ 
+.skvn-card--pricing-featured {
+	background: var(--skvn-color-blue-950);
+	border-color: var(--skvn-color-blue-950);
+	box-shadow: 0 8px 24px rgba(8, 47, 73, 0.35);
+}
+ 
+@media (min-width: 1024px) {
+	.skvn-card--pricing-featured {
+		margin-top: -1rem;
+		margin-bottom: 1rem;
+	}
+}
+ 
+.skvn-pricing__plan {
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: var(--skvn-color-blue-950);
+	margin: 0 !important;
+}
+ 
+.skvn-card--pricing-featured .skvn-pricing__plan {
+	color: var(--skvn-color-white);
+}
+ 
+.skvn-pricing__desc {
+	font-size: 0.8125rem;
+	color: #64748b;
+	margin: 0.25rem 0 0 !important;
+}
+ 
+.skvn-card--pricing-featured .skvn-pricing__desc {
+	color: rgba(255, 255, 255, 0.6);
+}
+ 
+.skvn-pricing__price {
+	font-size: 2.25rem;
+	font-weight: 900;
+	color: var(--skvn-color-blue-950);
+	margin: 1.5rem 0 0 !important;
+	line-height: 1;
+}
+ 
+.skvn-card--pricing-featured .skvn-pricing__price {
+	color: var(--skvn-color-white);
+}
+ 
+.skvn-pricing__badge {
+	position: absolute;
+	top: -0.75rem;
+	right: 1.5rem;
+	background: var(--skvn-color-blue-700);
+	color: var(--skvn-color-white);
+	font-size: 0.6875rem;
+	font-weight: 700;
+	padding: 0.25rem 0.75rem;
+	border-radius: 999px;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin: 0 !important;
+	line-height: 1.6;
+}
+ 
+.skvn-pricing__features {
+	list-style: none !important;
+	margin: 1.5rem 0 1.5rem !important;
+	padding: 0 !important;
+	flex: 1;
+}
+ 
+.skvn-pricing__features li {
+	font-size: 0.875rem;
+	color: var(--skvn-color-slate-700);
+	padding: 0.5rem 0 0.5rem 1.75rem;
+	position: relative;
+	border: none !important;
+}
+ 
+.skvn-card--pricing-featured .skvn-pricing__features li {
+	color: rgba(255, 255, 255, 0.75);
+}
+ 
+/* Check icon via CSS mask-image — Option A */
+.skvn-pricing__features li::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 1.125rem;
+	height: 1.125rem;
+	background-color: #22c55e;
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+	mask-size: contain;
+	mask-repeat: no-repeat;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4L19 7'/%3E%3C/svg%3E");
+	-webkit-mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+}
+ 
+.skvn-card--pricing .wp-block-buttons {
+	margin-top: auto !important;
+}
+ 
+/* -------------------------------------------------------------
+   7. Quote section
+   ------------------------------------------------------------- */
+.skvn-section.skvn-quote-section {
+	background: var(--skvn-color-white);
+}
+ 
+.skvn-quote-section__card {
+	max-width: 800px;
+	margin-inline: auto;
+	background: linear-gradient(to bottom, var(--skvn-color-sky-50), var(--skvn-color-white));
+	border: 1px solid var(--skvn-border);
+	border-radius: 2.5rem;
+	padding: 4rem;
+	text-align: center;
+	position: relative;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+ 
+/* Floating quote icon via pseudo-element */
+.skvn-quote-section__card::before {
+	content: "";
+	position: absolute;
+	top: -1.5rem;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 3rem;
+	height: 3rem;
+	background-color: var(--skvn-color-blue-700);
+	border-radius: 0.875rem;
+	box-shadow: 0 4px 12px rgba(3, 105, 161, 0.35);
+	mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.95.76-3 .66-1.06 1.8-1.86 3.43-2.41L10.5 5c-1.61.478-2.974 1.21-4.09 2.198-1.117.99-1.904 2.09-2.36 3.3-.457 1.21-.614 2.43-.47 3.65.14 1.22.636 2.28 1.484 3.18.848.9 1.97 1.35 3.364 1.35.88 0 1.63-.295 2.25-.885.617-.59.926-1.35.926-2.28zm8.808 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.95.1-1.95.76-3 .66-1.06 1.8-1.86 3.43-2.41L19.308 5c-1.61.478-2.974 1.21-4.09 2.198-1.117.99-1.904 2.09-2.36 3.3-.457 1.21-.614 2.43-.47 3.65.14 1.22.636 2.28 1.484 3.18.848.9 1.97 1.35 3.364 1.35.88 0 1.63-.295 2.25-.885.617-.59.926-1.35.926-2.28z'/%3E%3C/svg%3E");
+	mask-size: 60%;
+	mask-repeat: no-repeat;
+	mask-position: center;
+	-webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M11.192 15.757c0-.88-.23-1.618-.69-2.217-.326-.412-.768-.683-1.327-.812-.55-.128-1.07-.137-1.54-.028-.16-.95.1-1.95.76-3 .66-1.06 1.8-1.86 3.43-2.41L10.5 5c-1.61.478-2.974 1.21-4.09 2.198-1.117.99-1.904 2.09-2.36 3.3-.457 1.21-.614 2.43-.47 3.65.14 1.22.636 2.28 1.484 3.18.848.9 1.97 1.35 3.364 1.35.88 0 1.63-.295 2.25-.885.617-.59.926-1.35.926-2.28zm8.808 0c0-.88-.23-1.618-.69-2.217-.326-.42-.77-.692-1.327-.817-.56-.124-1.074-.13-1.54-.022-.16-.95.1-1.95.76-3 .66-1.06 1.8-1.86 3.43-2.41L19.308 5c-1.61.478-2.974 1.21-4.09 2.198-1.117.99-1.904 2.09-2.36 3.3-.457 1.21-.614 2.43-.47 3.65.14 1.22.636 2.28 1.484 3.18.848.9 1.97 1.35 3.364 1.35.88 0 1.63-.295 2.25-.885.617-.59.926-1.35.926-2.28z'/%3E%3C/svg%3E");
+	-webkit-mask-size: 60%;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+}
+ 
+.skvn-quote-section__avatar {
+	display: block !important;
+	width: 80px !important;
+	height: 80px !important;
+	border-radius: 50% !important;
+	margin: 0 auto 1.5rem !important;
+	box-shadow: 0 0 0 4px var(--skvn-color-white), 0 4px 12px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+ 
+.skvn-quote-section__avatar img {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+ 
+/* Override WP default blockquote border */
+.skvn-quote-section__blockquote {
+	border: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+ 
+.skvn-quote-section__blockquote p {
+	font-size: clamp(1.0625rem, 2vw, 1.25rem);
+	font-weight: 500;
+	color: var(--skvn-color-blue-950);
+	line-height: 1.65;
+	margin: 0 !important;
+}
+ 
+.skvn-quote-section__blockquote cite {
+	display: block;
+	margin-top: 2rem;
+	font-style: normal;
+	font-weight: 700;
+	color: var(--skvn-color-blue-950);
+	font-size: 0.9375rem;
+}
+ 
+.skvn-quote-section__blockquote cite::before {
+	content: "";
+}
+ 
+@media (max-width: 640px) {
+	.skvn-quote-section__card {
+		padding: 3rem 1.5rem;
+		border-radius: 1.5rem;
+	}
+}
+ 
+/* -------------------------------------------------------------
+   8. Portfolio header row
+   ------------------------------------------------------------- */
+.skvn-portfolio__header.wp-block-columns {
+	display: flex !important;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+	margin-bottom: 3rem;
+}
+ 
+.skvn-portfolio__header .wp-block-column:last-child {
+	flex: 0 0 auto !important;
+	width: auto !important;
+}
+ 
+.skvn-button--text .wp-block-button__link {
+	background: transparent !important;
+	color: var(--skvn-color-blue-950);
+	padding: 0;
+	font-size: 0.875rem;
+	font-weight: 600;
+	text-decoration: none;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+}
+ 
+.skvn-button--text .wp-block-button__link:hover {
+	color: var(--skvn-color-blue-700);
+}
+ 
+/* -------------------------------------------------------------
+   9. CTA band
+   ------------------------------------------------------------- */
+.skvn-cta-band {
+	padding-block: 5rem;
+}
+ 
+.skvn-cta-band__inner {
+	text-align: center;
+}
+ 
+.skvn-cta-band__heading {
+	font-size: clamp(1.5rem, 3vw, 2.25rem) !important;
+	font-weight: 700 !important;
+	color: var(--skvn-color-white) !important;
+	margin-bottom: 0.75rem !important;
+}
+ 
+.skvn-cta-band__lead {
+	font-size: 1.0625rem;
+	color: rgba(255, 255, 255, 0.8);
+	margin-bottom: 2rem !important;
+}
+ 
+.skvn-button--white .wp-block-button__link {
+	background: var(--skvn-color-white) !important;
+	color: var(--skvn-color-blue-700) !important;
+	font-weight: 600;
+	border-radius: 0.625rem;
+	padding: 0.875rem 2rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+ 
+.skvn-button--white .wp-block-button__link:hover {
+	background: var(--skvn-color-sky-50) !important;
+	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+ 
+/* -------------------------------------------------------------
+   10. Portfolio grid — Option A (CSS override on core/gallery)
+   ------------------------------------------------------------- */
+.skvn-portfolio-grid.wp-block-gallery {
+	display: grid !important;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 1rem;
+}
+ 
+.skvn-portfolio-grid .wp-block-image {
+	margin: 0 !important;
+}
+ 
+.skvn-portfolio-grid .wp-block-image figure {
+	position: relative;
+	aspect-ratio: 1 / 1;
+	overflow: hidden;
+	border-radius: var(--skvn-radius-card);
+	margin: 0;
+}
+ 
+.skvn-portfolio-grid .wp-block-image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+ 
+.skvn-portfolio-grid .wp-block-image figcaption {
+	position: absolute;
+	inset: 0;
+	background: rgba(8, 47, 73, 0.8);
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	padding: 1.25rem;
+	color: var(--skvn-color-white);
+	font-size: 0.875rem;
+	font-weight: 600;
+	opacity: 0;
+	margin: 0;
+}
+ 
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-portfolio-grid .wp-block-image figcaption {
+		transition: opacity 200ms ease;
+	}
+ 
+	.skvn-portfolio-grid .wp-block-image:hover figcaption {
+		opacity: 1;
+	}
+}
+ 
+/* Touch devices — always show overlay */
+@media (hover: none) {
+	.skvn-portfolio-grid .wp-block-image figcaption {
+		opacity: 1;
+	}
+}
+ 
+@media (max-width: 1024px) {
+	.skvn-portfolio-grid.wp-block-gallery {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+ 
+@media (max-width: 640px) {
+	.skvn-portfolio-grid.wp-block-gallery {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+ 
