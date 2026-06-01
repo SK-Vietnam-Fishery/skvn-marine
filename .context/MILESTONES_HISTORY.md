@@ -136,3 +136,32 @@ Acceptance:
 - [x] PHP syntax check passed
 - [x] Runtime smoke test passed
 - [x] Human approves milestone completion
+
+---
+
+## V1 / 0.5.1 — Page Display & Sidebar Controls
+
+Status: **DONE**
+Started: **2026-05-22**
+Completed: **2026-06-01**
+Approved by human: **2026-06-01**
+
+Acceptance:
+
+- [x] CF7/CFDB7 deferred until after V1 / 0.6.0
+- [x] n8n deferred until after version 1.0.0
+- [x] Quote UI/page surface moved to V1 / 0.6.0
+- [x] Page editor exposes a Hide site header toggle
+- [x] Page editor exposes a Hide site footer toggle
+- [x] Toggle values are saved as page meta with `skvn_marine_`/`_skvn_` naming
+- [x] Frontend applies header/footer visibility per page without editing GeneratePress parent
+- [x] Controls are available through admin/editor UI, not raw class input
+- [x] Page editor exposes an SKVN Landing Canvas preset for the standard hide-title/full-width/no-sidebar page setup
+- [x] HTML-2-Gutenberg brand-mapping contract documented for manual translation output
+- [x] Real Tailwind artifact CSS hardening decision documented in `docs/decisions/css-change-logs.md`
+- [x] Runtime visual smoke test passed
+- [x] Human approves milestone completion
+
+Notes:
+
+- Human confirmed basic hero/section editing and page-display behavior were tested before moving to V1 / 0.6.0.

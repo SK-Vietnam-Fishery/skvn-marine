@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.5.1 — Page Display & Sidebar Controls**
+Current: **V1 / 0.6.0 — Quote UI & Editor Controls**
 Status: **IN_PROGRESS**
-Started: **2026-05-22**
+Started: **2026-06-01**
 
 AGENTS.md current milestone phải match file này.
 
@@ -49,30 +49,10 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.5.1 — Page Display & Sidebar Controls
-
-Status: **IN_PROGRESS**
-Started: **2026-05-22**
-
-Acceptance:
-
-- [x] CF7/CFDB7 deferred until after V1 / 0.6.0
-- [x] n8n deferred until after version 1.0.0
-- [x] Quote UI/page surface moved to V1 / 0.6.0
-- [x] Page editor exposes a Hide site header toggle
-- [x] Page editor exposes a Hide site footer toggle
-- [x] Toggle values are saved as page meta with `skvn_marine_`/`_skvn_` naming
-- [x] Frontend applies header/footer visibility per page without editing GeneratePress parent
-- [x] Controls are available through admin/editor UI, not raw class input
-- [x] Page editor exposes an SKVN Landing Canvas preset for the standard hide-title/full-width/no-sidebar page setup
-- [x] HTML-2-Gutenberg brand-mapping contract documented for manual translation output
-- [x] Real Tailwind artifact CSS hardening decision documented in `docs/decisions/css-change-logs.md`
-- [ ] Runtime visual smoke test passed
-- [ ] Human approves milestone completion
-
 ### 0.6.0 — Quote UI & Editor Controls
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
+Started: **2026-06-01**
 
 Acceptance:
 

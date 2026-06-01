@@ -16,7 +16,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 0.5.1 — Page Display & Sidebar Controls**
+Current milestone: **V1 / 0.6.0 — Quote UI & Editor Controls**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
