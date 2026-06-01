@@ -34,6 +34,7 @@
 | WindPress config | `inc/windpress.php` | Theme | WindPress integration hooks |
 | Animation runtime | `assets/js/animations.js` | Theme | Shared — KHÔNG tách per-block |
 | Patterns | `patterns/*.php` | Theme | Block patterns |
+| Layout Translator CLI | `tools/layout-translator/translate-layout.mjs` | Dev tool | HTML/CSS artifact → Gutenberg markup contract |
 | Plugin root | `skvn-marine-blocks/` | Plugin | skvn-marine-blocks.php |
 | Slider block | `src/slider/` + `src/slide/` | Plugin | Swiper frontend, stacked editor preview |
 | Accordion block | `src/accordion/` | Plugin | Keyboard nav bắt buộc |
