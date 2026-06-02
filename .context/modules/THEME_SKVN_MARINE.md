@@ -132,6 +132,12 @@ Brand customization is allowed, but brand variables and assets must be managed t
 
 Before coding any branding, visual token, theme screenshot, pattern identity, or editor visual parity change, update or verify `docs/standards/site-branding-guideline.md` first. Do not implement scattered branding changes until the docs state which file owns the variable, class, or asset.
 
+V1 / 0.7.0 brand profile source of truth:
+
+- `docs/decisions/brand-profile-theme-tokens.md`
+
+This document defines semantic profile aliases, current token mapping, `theme.json` / `style.css` sync pairs, editor/frontend contract, HTML-2-Gutenberg brand report mapping, and external implementation references. Runtime token changes must follow it.
+
 Theme-owned brand sources:
 
 - CSS tokens and component styles: `wp-content/themes/skvn-marine/style.css`.

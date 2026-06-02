@@ -72,6 +72,11 @@ Purpose:
 - Create a theme-owned brand profile layer so translated Gutenberg pages map prototype colors and visual intent into SKVN theme tokens instead of raw artifact colors.
 - Keep HTML-2-Gutenberg as a translator/tooling concern, while the theme owns actual brand variables, editor/frontend parity, and visual output.
 
+Prework:
+
+- `docs/decisions/brand-profile-theme-tokens.md` exists as a draft/working source for future 0.7 implementation.
+- Prework does not start or complete the milestone while current milestone remains V1 / 0.6.0.
+
 Acceptance:
 
 - [ ] Brand profile source of truth is documented before code.

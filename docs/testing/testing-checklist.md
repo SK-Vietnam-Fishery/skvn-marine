@@ -2,28 +2,28 @@
 
 ## 0.2.0 Carried Test Debt
 
-- [ ] WordPress runtime responds at `http://localhost:8080/wp-login.php`.
-- [ ] `skvn-marine` child theme is active in runtime.
-- [ ] `SKVN Homepage Test Layout` pattern can be inserted into a page.
-- [ ] Test page uses full-width/no-sidebar setup where available.
-- [ ] Default page title is hidden when testing a custom hero.
-- [ ] Desktop screenshot reviewed.
-- [ ] Mobile screenshot reviewed.
-- [ ] Result recorded as PASS / FAIL / NEEDS REVISION.
+- [x] WordPress runtime responds at `http://localhost:8080/wp-login.php`.
+- [x] `skvn-marine` child theme is active in runtime.
+- [x] `SKVN Homepage Test Layout` pattern can be inserted into a page.
+- [x] Test page uses full-width/no-sidebar setup where available.
+- [x] Default page title is hidden when testing a custom hero.
+- [x] Desktop screenshot reviewed.
+- [x] Mobile screenshot reviewed.
+- [x] Result recorded as PASS / FAIL / NEEDS REVISION.
 
 ## Theme
 
-- [ ] GeneratePress parent installed.
-- [ ] `skvn-marine` child theme active.
-- [ ] Theme `screenshot.png` exists for admin preview.
-- [ ] Frontend loads.
-- [ ] Admin loads.
-- [ ] Block editor opens.
-- [ ] Product page renders.
-- [ ] Blog post renders.
-- [ ] Homepage renders.
-- [ ] No PHP fatal error.
-- [ ] Console has no serious JS errors.
+- [x] GeneratePress parent installed.
+- [x] `skvn-marine` child theme active.
+- [x] Theme `screenshot.png` exists for admin preview.
+- [x] Frontend loads.
+- [x] Admin loads.
+- [x] Block editor opens.
+- [x] Product page renders.
+- [x] Blog post renders.
+- [x] Homepage renders.
+- [x] No PHP fatal error.
+- [x] Console has no serious JS errors.
 
 ## Header/Footer Baseline
 

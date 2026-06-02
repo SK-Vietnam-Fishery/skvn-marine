@@ -32,6 +32,7 @@ Before coding any branding change, update or verify this document first. If a ne
 
 | Concern | Primary file | Secondary file | Notes |
 |---|---|---|---|
+| Brand profile contract | `docs/decisions/brand-profile-theme-tokens.md` | `.context/planning/001_VERSION_0_7_0_BRAND_PROFILE_PLANNING.md` | Source of truth for 0.7 semantic profile names and sync rules |
 | CSS color tokens | `wp-content/themes/skvn-marine/style.css` `:root` | `wp-content/themes/skvn-marine/theme.json` palette | Keep names and values aligned |
 | Layout widths | `wp-content/themes/skvn-marine/style.css` `--skvn-content-width`, `--skvn-wide-width` | `wp-content/themes/skvn-marine/theme.json` layout | Gutenberg editor and frontend must match |
 | Typography base | `wp-content/themes/skvn-marine/style.css` body/headings | `wp-content/themes/skvn-marine/theme.json` typography | System font stack in V1 |
@@ -53,11 +54,37 @@ Before coding any branding change, update or verify this document first. If a ne
 
 ## Customization Order
 
+0. Check `docs/decisions/brand-profile-theme-tokens.md` before changing profile-level tokens.
 1. Update `theme.json` presets and `style.css` `:root` tokens together.
 2. Update component CSS in `style.css`.
 3. Update or add patterns in `wp-content/themes/skvn-marine/patterns/`.
 4. Update editor parity if frontend and editor drift.
 5. Update screenshots/icons only after the visual direction is approved.
+
+## Brand Profile Contract
+
+V1 / 0.7.0 introduces semantic profile aliases for artifact mapping and editor/frontend parity.
+
+Canonical profile roles:
+
+```text
+primary
+accent
+dark/navy
+surface
+soft surface
+text
+muted text
+border
+CTA
+card radius
+card shadow
+section spacing
+content width
+wide width
+```
+
+The detailed token names, current value mapping, `theme.json` sync pairs, and external references live in `docs/decisions/brand-profile-theme-tokens.md`.
 
 ## Visual Rules
 
