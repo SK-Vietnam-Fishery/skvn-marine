@@ -12,7 +12,7 @@
 - WooCommerce — native products, categories, attributes
 - WindPress (Tailwind integration) — utility classes, animations, responsive
 - Plugin: `skvn-marine-blocks` — custom Gutenberg blocks (TypeScript, @wordpress/scripts)
-- Page display/sidebar controls in 0.5.1; Quote UI in 0.6.0; CF7/CFDB7 after 0.6.0; n8n after 1.0.0
+- Page display/sidebar controls completed in 0.5.1; Quote UI completed in 0.6.0; basic CF7/CFDB7 quote form in 0.7.0; onsite quote-flow test debt resolves in 0.10.0; n8n after 1.0.0
 - Rank Math — SEO, schema
 - Polylang — multilingual (standby V1, activate later)
 - Antispam Bee — comment spam. CF7 honeypot + optional Turnstile — form spam
@@ -34,7 +34,6 @@
 | WindPress config | `inc/windpress.php` | Theme | WindPress integration hooks |
 | Animation runtime | `assets/js/animations.js` | Theme | Shared — KHÔNG tách per-block |
 | Patterns | `patterns/*.php` | Theme | Block patterns |
-| Layout Translator CLI | `tools/layout-translator/translate-layout.mjs` | Dev tool | HTML/CSS artifact → Gutenberg markup contract |
 | Plugin root | `skvn-marine-blocks/` | Plugin | skvn-marine-blocks.php |
 | Slider block | `src/slider/` + `src/slide/` | Plugin | Swiper frontend, stacked editor preview |
 | Accordion block | `src/accordion/` | Plugin | Keyboard nav bắt buộc |
@@ -59,14 +58,7 @@ Planning snapshots live in `.context/planning/` and use a three-digit ordering p
 
 Current planning file:
 
-- `.context/planning/000_VERSION_1_1_0_PLANNING.md`
-- `.context/planning/001_VERSION_0_7_0_BRAND_PROFILE_PLANNING.md`
-- `.context/planning/002_VERSION_1_1_0_VISUAL_GOVERNANCE_PLANNING.md`
-- `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md`
-- `.context/planning/004_VERSION_0_8_0_EDITOR_CONTROLS_PLANNING.md`
-- `.context/planning/005_VERSION_2_0_0_FOOTER_BUILDER_PLANNING.md`
-- `.context/planning/006_VERSION_1_1_0_PRODUCT_PAGE_SIDEBAR_PLANNING.md`
-- `.context/planning/007_VERSION_0_7_1_SKVN_ADAPTIVE_GRID_PLANNING.md`
+- `.context/planning/000_VERSION_0_1_0_PLANNING.md`
 
 Proposal files under `.context/proposals/` are not active protocol and are ignored by git. Do not load them unless the human explicitly asks to review a proposal.
 
@@ -81,32 +73,23 @@ Project docs under `docs/` are grouped by reading purpose:
 
 Current active docs:
 
-- `docs/decisions/architecture.md` — quyết định kiến trúc V1: GeneratePress child theme, plugin boundary, WooCommerce baseline, quote/map/plugin ownership.
-- `docs/decisions/brand-profile-theme-tokens.md` — draft/working contract cho 0.7 brand profile: semantic token names, theme.json/style.css sync, editor/frontend và HTML-2-Gutenberg mapping.
-- `docs/decisions/caching-strategy.md` — cache rules V1: dev no full-page cache, production exclusions cho Woo/quote pages, future Redis/CDN direction.
-- `docs/decisions/css-change-logs.md` — log quyết định CSS hardening từ Tailwind artifact debug; ghi class/token nào đã scan, fix nào allowed, và lessons cho HTML-2-Gutenberg.
-- `docs/decisions/design-direction.md` — visual direction hiện tại: blue-first, mint support accent, gold limited premium cue, token usage rules.
-- `docs/decisions/page-display-controls.md` — quyết định page preset/sidebar controls: SKVN Landing Canvas, hide title/header/footer/full-width meta, GeneratePress boundary, 0.8 editor debt.
-- `docs/decisions/product-data-model.md` — product model V1: dùng WooCommerce native products/categories/attributes, product card variants, technical fields deferred.
-- `docs/decisions/quote-flow.md` — quote flow source: 0.6 same-site `/request-a-quote/?product_id=123`, CF7/CFDB7 after 0.6, n8n after 1.0.
-- `docs/decisions/slider-block.md` — slider/slide block decision: plugin ownership, Swiper rationale, controls, motion/a11y rules, phased architecture.
-- `docs/standards/ai-rules.md` — compact AI guardrails: naming prefixes, forbidden edits, dependency rule, task format, file scope, tension rule.
-- `docs/standards/security-guidelines.md` — PHP sanitize/escape rules, no custom quote handler, future CF7/n8n/spam/upload security notes, dependency policy.
-- `docs/standards/site-branding-guideline.md` — brand governance registry: which files own tokens/assets/editor parity, visual rules, HTML-2-Gutenberg brand guardrails.
-- `docs/testing/frontpage-testing.md` — carried homepage/frontpage runtime test plan: create WP editor test page, desktop/mobile checks, screenshot pass rule.
-- `docs/testing/quote-flow-onsite-test.md` — onsite 0.6 quote UI test plan: product CTA URL, single product CTA, request quote page, editor stability, visual smoke.
-- `docs/testing/testing-checklist.md` — consolidated project test checklist across theme, homepage, full-width, quote flow, Woo product sections, custom blocks, slider.
-- `docs/workflows/context-map-workflow.md` — how to maintain `.context/`, tension files, milestone/history files, and when to update decision docs/module context.
-- `docs/workflows/deploy-artifact-workflow.md` — package theme/plugin deploy artifacts and ZIPs via WSL/Node, with artifact contents and upload rules.
-- `docs/workflows/html-2-gutenberg-workflow.md` — workflow for translating HTML/Tailwind artifacts into safe Gutenberg markup using SKVN theme classes/tokens.
-- `docs/workflows/onsite-qa-checklist.md` — manual onsite deploy QA: preflight, backup, upload/activation order, full-width/Woo smoke, logs, rollback, pass evidence.
-- `docs/workflows/theme-development-workflow.md` — theme dev workflow: local/runtime expectations, build/test/deploy habits, and feature sequencing notes.
-- `docs/explain/explain-for-5-years-old.md` — simplified project explanation and status notes for human review without deep technical context.
-- `docs/artifacts/brand-palette-options.html` — visual artifact for comparing brand palette options and CTA/card/color treatments.
-- `docs/artifacts/meta-ai-tailwind-artifacts-review.md` — review notes from external AI/Tailwind artifact experiments; use as critique/input, not source of truth.
-- `docs/artifacts/benchmark-templates/README.md` — index for benchmark Gutenberg/HTML templates used to test translated layouts.
-- `docs/artifacts/benchmark-templates/render-notes.md` — render QA notes for benchmark templates, including broken/editor/frontend layout observations.
-- `docs/artifacts/page-blueprints/README.md` — index of page blueprint artifacts, including request quote intro and seafood export homepage candidates.
+- `docs/decisions/architecture.md`
+- `docs/decisions/caching-strategy.md`
+- `docs/decisions/design-direction.md`
+- `docs/decisions/product-data-model.md`
+- `docs/decisions/quote-flow.md`
+- `docs/decisions/slider-block.md`
+- `docs/standards/ai-rules.md`
+- `docs/standards/security-guidelines.md`
+- `docs/testing/frontpage-testing.md`
+- `docs/testing/testing-checklist.md`
+- `docs/workflows/context-map-workflow.md`
+- `docs/workflows/deploy-artifact-workflow.md`
+- `docs/workflows/layout-translator-workflow.md`
+- `docs/workflows/onsite-qa-checklist.md`
+- `docs/workflows/theme-development-workflow.md`
+- `docs/explain/explain-for-5-years-old.md`
+- `docs/artifacts/brand-palette-options.html`
 
 ---
 
@@ -125,7 +108,7 @@ Invariant: custom blocks KHÔNG được đặt trong theme.
 Dùng WooCommerce native products. Custom fields (ACF/Meta Box) chỉ thêm khi WC attributes không đủ.
 
 **A4. Quote path phased by milestone**
-0.5.1 tập trung page-level display/sidebar controls. Quote UI, same-site request quote page surface, and CTA polish dời sang 0.6.0. CF7/CFDB7 implementation dời sau 0.6.0. n8n automation dời sau version 1.0.0. KHÔNG custom-code form handler. KHÔNG popup/modal làm primary flow.
+0.5.1 completed page-level display/sidebar controls. 0.6.0 completed Quote UI, same-site request quote page surface, and CTA polish. 0.7.0 implements the basic CF7/CFDB7 quote form. Onsite hidden/context field and full UX smoke test debt is deferred to 0.10.0. n8n automation dời sau version 1.0.0. KHÔNG custom-code form handler. KHÔNG popup/modal làm primary flow.
 URL pattern giữ: `/request-a-quote/?product_id=123`
 
 **A10. Page display controls**
@@ -159,7 +142,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 - KHÔNG rename namespace `skvn-marine`, prefix `skvn_marine_` / `skvn_marine_blocks_`, CSS prefix `skvn-`
 - KHÔNG overwrite manual image ALT
 - KHÔNG auto-generate caption ở V1
-- KHÔNG custom-code quote form handler — CF7/CFDB7 sẽ xử lý sau 0.6.0
+- KHÔNG custom-code quote form handler — 0.7.0 dùng CF7/CFDB7
 - KHÔNG expose n8n webhook unprotected; n8n deferred until after 1.0.0
 - KHÔNG log credential dù debug
 - PHP: input phải sanitize, output phải escape (`esc_html`, `esc_attr`, `esc_url`, `wp_kses_post`)
@@ -173,7 +156,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 **V1 (current)** — Một website B2B marine, local-first
 - Theme child + design system + block styles + patterns
 - Plugin blocks: Slider, Accordion, Product Grid, Product List
-- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; CF7/CFDB7 after 0.6.0; n8n after 1.0.0
+- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; basic CF7/CFDB7 quote form in 0.7.0; onsite quote-flow test debt in 0.10.0; n8n after 1.0.0
 - English content, prepare cho multilingual nhưng KHÔNG activate Polylang
 
 **V2 (future)**
@@ -197,7 +180,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 2. Exact sidebar/admin control flow for page display options
 3. Polylang: activate V1 hay chỉ prepare?
 4. Slider editor UX: stacked / selected-slide-preview / carousel preview?
-5. Future CF7 spam layer when CF7 returns to scope
+5. CF7 spam layer for 0.7.0 basic quote form
 6. V2 hosting/deployment approach cụ thể
 7. V3: stay GeneratePress hay custom base theme?
 

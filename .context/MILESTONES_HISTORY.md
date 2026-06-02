@@ -143,8 +143,8 @@ Acceptance:
 
 Status: **DONE**
 Started: **2026-05-22**
-Completed: **2026-06-01**
-Approved by human: **2026-06-01**
+Completed: **2026-06-02**
+Approved by human: **2026-06-02**
 
 Acceptance:
 
@@ -156,12 +156,23 @@ Acceptance:
 - [x] Toggle values are saved as page meta with `skvn_marine_`/`_skvn_` naming
 - [x] Frontend applies header/footer visibility per page without editing GeneratePress parent
 - [x] Controls are available through admin/editor UI, not raw class input
-- [x] Page editor exposes an SKVN Landing Canvas preset for the standard hide-title/full-width/no-sidebar page setup
-- [x] HTML-2-Gutenberg brand-mapping contract documented for manual translation output
-- [x] Real Tailwind artifact CSS hardening decision documented in `docs/decisions/css-change-logs.md`
 - [x] Runtime visual smoke test passed
 - [x] Human approves milestone completion
 
-Notes:
+---
 
-- Human confirmed basic hero/section editing and page-display behavior were tested before moving to V1 / 0.6.0.
+## V1 / 0.6.0 — Quote UI & Editor Controls
+
+Status: **DONE**
+Started: **2026-06-02**
+Completed: **2026-06-02**
+Approved by human: **2026-06-02**
+
+Acceptance:
+
+- [x] Quote CTA visual path uses `/request-a-quote/?product_id=123`
+- [x] Request quote page visual surface exists or is planned as an editor-owned page
+- [x] Quote UI uses project visual classes/tokens
+- [x] Editing controls that marketing users need are exposed through sidebar controls, not raw class input
+- [x] Runtime visual smoke test passed
+- [x] Human approves milestone completion

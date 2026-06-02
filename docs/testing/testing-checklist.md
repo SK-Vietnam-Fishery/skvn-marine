@@ -37,8 +37,8 @@
 
 ## Homepage Test Pattern
 
-- [ ] Hero content and media do not overlap.
-- [ ] Trust strip displays 4 items on desktop.
+- [x] Hero content and media do not overlap.
+- [x] Trust strip displays 4 items on desktop.
 - [ ] Trust strip stacks cleanly on mobile.
 - [ ] Why choose cards use soft mint support accent appropriately.
 - [ ] Factory/process sections keep blue-first visual direction.

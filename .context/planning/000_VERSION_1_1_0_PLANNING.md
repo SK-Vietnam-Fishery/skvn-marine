@@ -696,7 +696,7 @@ Do in V1:
 - Map/contact pattern using OpenStreetMap iframe embed
 - Slider block
 - Accordion block
-- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; CF7/CFDB7 after 0.6.0; n8n automation after 1.0.0
+- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; basic CF7/CFDB7 quote form in 0.7.0; n8n automation after 1.0.0
 - Product data entry using WooCommerce
 
 Do not do in V1 by default:
