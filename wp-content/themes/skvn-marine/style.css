@@ -1345,12 +1345,12 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 }
  
 /* -------------------------------------------------------------
-   2. Card grid — 3-col
+   2. Card grid — adaptive
    Override wp-block-columns for equal-height card grids
    ------------------------------------------------------------- */
 .skvn-card-grid.skvn-card-grid--3 {
 	display: grid !important;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 	gap: 1.5rem;
 	align-items: stretch;
 }
