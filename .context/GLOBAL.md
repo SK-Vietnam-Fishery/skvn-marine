@@ -64,6 +64,7 @@ Current planning file:
 - `.context/planning/002_VERSION_1_1_0_VISUAL_GOVERNANCE_PLANNING.md`
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md`
 - `.context/planning/004_VERSION_0_8_0_EDITOR_CONTROLS_PLANNING.md`
+- `.context/planning/005_VERSION_2_0_0_FOOTER_BUILDER_PLANNING.md`
 
 Proposal files under `.context/proposals/` are not active protocol and are ignored by git. Do not load them unless the human explicitly asks to review a proposal.
 

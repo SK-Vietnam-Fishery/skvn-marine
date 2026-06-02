@@ -17,6 +17,7 @@ const SKVN_MARINE_PAGE_DISPLAY_PRESET_META = '_skvn_page_display_preset';
 const SKVN_MARINE_PAGE_DISPLAY_PRESETS     = array(
 	'default',
 	'skvn_landing_canvas',
+	'skvn_request_quote_page',
 	'custom',
 );
 
@@ -215,7 +216,7 @@ function skvn_marine_page_uses_display_feature( $post_id, $meta_key ) {
  * @return array<string,bool>
  */
 function skvn_marine_get_page_display_preset_features( $preset ) {
-	if ( 'skvn_landing_canvas' !== $preset ) {
+	if ( ! in_array( $preset, array( 'skvn_landing_canvas', 'skvn_request_quote_page' ), true ) ) {
 		return array();
 	}
 

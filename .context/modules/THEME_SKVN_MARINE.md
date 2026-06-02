@@ -59,6 +59,7 @@ Current token intent:
 - Prefer editor/admin UI controls over raw class names.
 - Do not add a header/footer builder plugin by default.
 - Page preset `SKVN Landing Canvas` groups the standard marketing-page setup into one editor action: hide page title and enable the full-width/no-sidebar SKVN canvas.
+- Page preset `SKVN Request Quote Page` groups the 0.6 quote-page setup into one editor action: hide page title and enable the full-width/no-sidebar SKVN canvas.
 - The preset is stored in `_skvn_page_display_preset`; direct toggles remain available for overrides and debugging.
 - Do not blindly write GeneratePress layout metabox meta. Use SKVN meta/classes and safe GeneratePress filters where audited.
 - Design debt for V1 / 0.8.0: frontend title visibility must be separated from editor title identity. A hidden frontend title should not make the Gutenberg title field/identity surface disappear while editing.

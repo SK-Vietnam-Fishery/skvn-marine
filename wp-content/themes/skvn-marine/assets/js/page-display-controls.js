@@ -44,6 +44,10 @@
 			value: 'skvn_landing_canvas',
 		},
 		{
+			label: __( 'SKVN Request Quote Page', 'skvn-marine' ),
+			value: 'skvn_request_quote_page',
+		},
+		{
 			label: __( 'Custom settings', 'skvn-marine' ),
 			value: 'custom',
 		},
@@ -76,7 +80,7 @@
 			} );
 		}
 
-		if ( preset === 'skvn_landing_canvas' ) {
+		if ( preset === 'skvn_landing_canvas' || preset === 'skvn_request_quote_page' ) {
 			nextMeta._skvn_hide_header = false;
 			nextMeta._skvn_hide_footer = false;
 			nextMeta._skvn_hide_title = true;
@@ -115,7 +119,7 @@
 				createElement( SelectControl, {
 					className: 'skvn-page-display-preset',
 					label: __( 'Page preset', 'skvn-marine' ),
-					help: __( 'Apply the standard page setup in one step. SKVN Landing Canvas hides the page title and enables the full-width, no-sidebar canvas.', 'skvn-marine' ),
+					help: __( 'Apply the page setup in one step. SKVN Request Quote Page prepares the quote surface without requiring raw CSS classes.', 'skvn-marine' ),
 					value: preset,
 					options: PRESET_OPTIONS,
 					onChange: function ( value ) {

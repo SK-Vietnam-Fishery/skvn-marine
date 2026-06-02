@@ -73,7 +73,7 @@ Use this only if `/request-a-quote/` does not already exist.
 2. Title: Request a Quote.
 3. Slug/permalink: request-a-quote.
 4. Insert pattern: SKVN Request Quote Page.
-5. If page display/sidebar controls are available, use the expected marketing page layout controls.
+5. In the editor sidebar, set SKVN Page Display -> Page preset -> SKVN Request Quote Page.
 6. Publish.
 7. Open `/request-a-quote/`.
 ```
@@ -84,6 +84,7 @@ Pass criteria:
 [ ] Page loads without fatal error.
 [ ] Pattern inserts without invalid block warning.
 [ ] Page uses SKVN visual classes/tokens.
+[ ] Page setup uses the SKVN Request Quote Page sidebar preset; no raw custom class input is required for page chrome/layout setup.
 [ ] No real form submission is expected in 0.6.0.
 [ ] Placeholder/contact path is clear enough for visual smoke.
 ```
@@ -202,6 +203,7 @@ Expected:
 [ ] No invalid block warning appears.
 [ ] Text edits persist after reload.
 [ ] Marketing users do not need to enter raw custom classes for normal copy edits.
+[ ] Marketing users can choose the SKVN Request Quote Page preset from the editor sidebar.
 [ ] The frontend still matches the intended visual surface after save.
 ```
 
