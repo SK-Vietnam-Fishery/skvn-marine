@@ -50,6 +50,14 @@ Current token intent:
 - Do not fix this by editing GeneratePress parent files.
 - Do not create a custom block for this layout in V1.
 
+## [manual] Grid Layout Ownership
+
+- Gutenberg-native dynamic grids should treat the editor Columns setting as source of truth when the block exposes a clear column count in saved markup.
+- If a Gutenberg-native grid is set to 3 columns, item 4 and item 5 should wrap to the next row rather than being auto-fit into more columns on wide screens.
+- Fixed theme presets such as stat grids, semantic hero/split grids, footer grids, or process layouts are theme-controlled. Their column-count controls should be hidden, disabled, or replaced with a label such as `Theme layout controls this grid`.
+- `SKVN Adaptive Grid` is the planned SKVN-owned auto-responsive grid contract. It should use SKVN presets such as min item width/density instead of exposing a raw column count.
+- `SKVN Adaptive Grid` contract documentation belongs to milestone `0.7.1`; custom block/editor control implementation remains deferred to `0.8.0` unless human explicitly changes scope.
+
 ## [manual] Page Display Controls
 
 - 0.5.1 introduces page-level controls for marketing-owned pages that need alternate chrome.

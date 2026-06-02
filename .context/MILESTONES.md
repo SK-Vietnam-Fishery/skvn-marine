@@ -60,8 +60,8 @@ Acceptance:
 - [x] Request quote page visual surface exists or is planned as an editor-owned page
 - [x] Quote UI uses project visual classes/tokens
 - [x] Editing controls that marketing users need are exposed through sidebar controls, not raw class input
-- [ ] Runtime visual smoke test passed
-- [ ] Human approves milestone completion
+- [x] Runtime visual smoke test passed
+- [x] Human approves milestone completion
 
 ### 0.7.0 — Brand Profile & Theme Tokens
 
@@ -86,6 +86,25 @@ Acceptance:
 - [ ] Editor and frontend use the same token contract.
 - [ ] HTML-2-Gutenberg output can report `brand_source_scan`, `brand_mapping`, `brand_mismatch`, and `token_changes_needed`.
 - [ ] No raw prototype colors are required in Gutenberg content.
+- [ ] GeneratePress parent remains untouched.
+
+### 0.7.1 — SKVN Adaptive Grid Contract
+
+Status: **PENDING**
+
+Purpose:
+
+- Define `SKVN Adaptive Grid` as a SKVN-owned responsive layout contract for auto-fitting item grids.
+- Keep the contract separate from Gutenberg-native Columns/Gallery behavior: Gutenberg-native blocks should respect their Columns setting as source of truth.
+- Document which fixed theme presets should hide, disable, or label irrelevant core Columns controls instead of exposing controls that frontend CSS ignores.
+
+Acceptance:
+
+- [ ] `SKVN Adaptive Grid` naming and CSS contract are documented before any custom block/editor UI work.
+- [ ] Adaptive grids use SKVN-owned presets such as min item width/density instead of a user-editable raw column count.
+- [ ] Gutenberg-native dynamic grids preserve Columns setting as source of truth where core markup exposes it.
+- [ ] Fixed theme presets identify their layout as theme-controlled and do not present misleading column-count controls.
+- [ ] Block/editor control implementation remains deferred to `0.8.0 — SKVN Editor Controls` unless human explicitly changes scope.
 - [ ] GeneratePress parent remains untouched.
 
 ### 0.8.0 — SKVN Editor Controls

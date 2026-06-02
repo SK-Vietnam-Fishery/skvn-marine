@@ -297,6 +297,7 @@ HTML-2-Gutenberg boundary:
 | 0.5.1 | Page display and sidebar controls |
 | 0.6.0 | Quote UI and editor controls |
 | 0.7.0 | Brand profile and theme tokens |
+| 0.7.1 | SKVN Adaptive Grid contract |
 | 0.8.0 | SKVN editor controls |
 | 1.0.0 | V1 launch-ready |
 | 1.1.0 | Visual governance layer |

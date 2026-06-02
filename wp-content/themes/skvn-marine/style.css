@@ -1216,7 +1216,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 	}
 
 	.skvn-product-card-grid {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
 	}
 
 	.skvn-translated-hero__heading {
@@ -1875,7 +1875,7 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
    ------------------------------------------------------------- */
 .skvn-portfolio-grid.wp-block-gallery {
 	display: grid !important;
-	grid-template-columns: repeat(5, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
 	gap: 1rem;
 	margin-inline: auto;
 	max-width: var(--skvn-wide-width);
@@ -1950,13 +1950,13 @@ body.admin-bar.skvn-full-width-canvas .entry-content > .wp-block-html > .mhf-mai
 	}
 
 	.skvn-portfolio-grid.wp-block-gallery {
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
 	}
 }
  
 @media (max-width: 640px) {
 	.skvn-portfolio-grid.wp-block-gallery {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
 	}
 }
  
