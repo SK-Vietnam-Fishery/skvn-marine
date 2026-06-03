@@ -421,6 +421,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.1.0 | Layout Blocks |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.6.0 | SKVN Surface Presets |
+| 1.7.0 | Front page trang Chuyển đổi số |
 
 ### Version naming rules
 

@@ -120,6 +120,7 @@ Planning:
 Acceptance draft:
 
 - [ ] At least two real layout artifacts justify the same grid/card governance
+- [ ] Brainstorm trigger reviewed for `1.7.0 — Front page trang Chuyển đổi số`: identify which layout pieces can reuse card-grid/card, and which pieces need separate resource/search/taxonomy planning
 - [ ] Core block plus theme-pattern alternative is documented as too fragile or too slow for editors
 - [ ] `skvn-marine/card-grid` block exists in plugin
 - [ ] `skvn-marine/card` block exists in plugin
@@ -194,4 +195,35 @@ Acceptance draft:
 - [ ] Editor/frontend parity is checked for the first supported surface
 - [ ] At least one SKVN-owned block or layout surface can select a preset through safe controls
 - [ ] No raw class, raw CSS, or arbitrary color/blur/shadow input is required
+- [ ] Human approves milestone completion
+
+### 1.7.0 — Front page trang Chuyển đổi số
+
+Status: **PENDING**
+
+Purpose:
+
+- Plan and implement the front page inspired by `.local/test-artifacts/ChuyenDoiSo.html`.
+- Provide a document/resource front page with post list items that can show a thumbnail or fallback icon.
+- Display tags from the external plugin-owned taxonomy without recreating or renaming that taxonomy.
+- Display category lists and document/guide counts from real data, not hardcoded numbers.
+- Support whole-site search styling and integration boundary; search logic remains WordPress/search-plugin owned, while SKVN owns safe visual classes and optional wrapper/block rendering.
+
+Planning:
+
+- `.context/planning/010_VERSION_1_7_0_FRONT_PAGE_TRANG_CHUYEN_DOI_SO_PLANNING.md`
+
+Acceptance draft:
+
+- [ ] Human confirms the external plugin taxonomy names and search integration boundary
+- [ ] Front-page IA is documented before code: hero/search, resource list, category/count sidebar, access CTA, KPI strip, footer
+- [ ] Source data ownership is documented: external plugin taxonomy/search owns data, SKVN consumes and styles
+- [ ] Theme-owned visual classes are defined before plugin output depends on them
+- [ ] Post/resource list supports thumbnail or fallback icon
+- [ ] Tag/status badges are governed by presets/classes, not raw arbitrary classes
+- [ ] Category/document counts come from real WordPress data
+- [ ] Whole-site search form works with WordPress/search-plugin logic or documented hook fallback
+- [ ] Core Query Loop/pattern alternative is evaluated before creating a custom block
+- [ ] If a custom block is needed, it belongs in `skvn-marine-blocks` and degrades safely when the external taxonomy/search plugin is inactive
+- [ ] No raw Tailwind, inline CSS, or inline scripts from the benchmark artifact are used as production content
 - [ ] Human approves milestone completion

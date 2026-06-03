@@ -60,6 +60,7 @@ Current planning file:
 
 - `.context/planning/000_VERSION_1_1_0_PLANNING.md`
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — checkpoint plan for layout blocks promoted from `.context/proposals/proposal-layout-blocks.md`. Covers `skvn-marine/card-grid`, `skvn-marine/card`, and quote/testimonial block evaluation for repeated artifact sections that are too fragile for core blocks plus raw class names.
+- `.context/planning/010_VERSION_1_7_0_FRONT_PAGE_TRANG_CHUYEN_DOI_SO_PLANNING.md` — future front-page planning for the external `ChuyenDoiSo.html` benchmark: document/resource list, taxonomy/category counts from real data, whole-site search styling/hook boundary, and layout patterns discovered during the 1.1.0 brainstorm trigger.
 
 Future plugin architecture planning:
 
