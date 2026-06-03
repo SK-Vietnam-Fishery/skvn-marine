@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.9.0 — Footer Page Settings**
+Current: **V1 / 0.10.0 — Onsite Test Debt Resolution**
 Status: **IN_PROGRESS**
 Started: **2026-06-03**
 
@@ -52,42 +52,17 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.9.0 — Footer Page Settings
+### 0.10.0 — Onsite Test Debt Resolution
 
 Status: **IN_PROGRESS**
 Started: **2026-06-03**
 
-Purpose:
-
-- Add a plugin settings page that stores the selected reusable footer page ID in `skvn_footer_page_id`.
-- Let the theme render the selected footer page into GeneratePress' `generate_footer` surface.
-- Keep GeneratePress as the footer foundation and fall back to the default GeneratePress footer when no page is selected.
-- Implement the footer settings code as a migration-ready module inside the current `skvn-marine-blocks` plugin; do not create or rename to `gutenberg-supercharger` or `gutenberg-turbo` in 0.9.0.
-- Treat `Gutenberg Supercharger` as a possible V4 / 4.0.0 umbrella-plugin direction and standard/core product name only. `Gutenberg Supercharger Stage 2` is the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
-
 Acceptance:
 
-- [x] Plugin settings page stores `skvn_footer_page_id`
-- [x] Setting value is restricted to a valid WordPress page ID
-- [x] Theme `inc/footer.php` renders the selected footer page through `generate_footer`
-- [x] Default GeneratePress footer remains the fallback when no page is selected
-- [x] No custom CPT is introduced
-- [x] No display rules system is introduced
-- [x] Footer settings are module-shaped inside `skvn-marine-blocks`, with current slug/text domain/option key preserved
-- [x] No `gutenberg-supercharger`/`gutenberg-turbo` plugin, plugin slug rename, namespace rename, or option-key rename is introduced
-- [x] GeneratePress parent remains untouched
-- [x] Footer output is escaped/sanitized through WordPress-safe rendering paths
-- [ ] Online smoke test confirms selected footer page renders
-- [ ] Online smoke test confirms fallback footer works
-- [x] Online test checklist/report exists in `docs/testing/footer-page-settings-0.9.0.md` and `docs/decisions/footer-page-settings-0.9.0.md`
-- [ ] Human approves milestone completion
-
-### 0.10.0 — Onsite Quote Flow Test Debt Resolution
-
-Status: **PENDING**
-
-Acceptance:
-
+- [ ] Human runs `docs/testing/footer-page-settings-0.9.0.md` on the online site and reports evidence
+- [ ] Footer Page Settings selected footer page renders online
+- [ ] Footer Page Settings default GeneratePress fallback works online
+- [ ] Footer Page Settings invalid page ID fallback is confirmed or mismatch is documented
 - [ ] Human runs `docs/testing/onsite-editor-controls-0.8.0.md` on the onsite site and reports evidence
 - [ ] Agent reminds human to validate 0.8.0 editor/frontend visual parity before closing onsite test debt
 - [ ] SKVN Accordion editor controls persist after save/reload onsite
@@ -107,7 +82,7 @@ Acceptance:
 - [ ] Thank-you/success UX confirmed
 - [ ] Desktop/mobile screenshots reviewed
 - [ ] Console/log issues recorded or confirmed clean
-- [ ] Human approves closing quote-flow onsite test debt
+- [ ] Human approves closing onsite test debt
 
 ### 1.0.0 — V1 Launch Ready
 

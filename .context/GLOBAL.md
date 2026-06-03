@@ -12,7 +12,7 @@
 - WooCommerce — native products, categories, attributes
 - WindPress (Tailwind integration) — optional/prototyping aid; not the production visual-system source of truth
 - Plugin: `skvn-marine-blocks` — custom Gutenberg blocks (TypeScript, @wordpress/scripts)
-- Page display/sidebar controls completed in 0.5.1; Quote UI completed in 0.6.0; basic CF7/CFDB7 source/docs contract in 0.7.0; quote-flow runtime verification/handoff in 0.7.1; SKVN Editor Controls in 0.8.0; Footer Page Settings in 0.9.0; onsite quote-flow test debt resolves in 0.10.0; n8n after 1.0.0
+- Page display/sidebar controls completed in 0.5.1; Quote UI completed in 0.6.0; basic CF7/CFDB7 source/docs contract in 0.7.0; quote-flow runtime verification/handoff in 0.7.1; SKVN Editor Controls in 0.8.0; Footer Page Settings in 0.9.0; onsite/online test debt resolves in 0.10.0; n8n after 1.0.0
 - Rank Math — SEO, schema
 - Polylang — multilingual (standby V1, activate later)
 - Antispam Bee — comment spam. CF7 honeypot + optional Turnstile — form spam
@@ -174,7 +174,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 **V1 (current)** — Một website B2B marine, local-first
 - Theme child + design system + block styles + patterns
 - Plugin blocks: Slider, Accordion, Product Grid, Product List
-- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; basic CF7/CFDB7 source/docs contract in 0.7.0; quote-flow runtime verification/handoff in 0.7.1; SKVN Editor Controls in 0.8.0; Footer Page Settings in 0.9.0; onsite quote-flow test debt in 0.10.0; n8n after 1.0.0
+- Page display/sidebar controls in 0.5.1; Quote UI/editor controls in 0.6.0; basic CF7/CFDB7 source/docs contract in 0.7.0; quote-flow runtime verification/handoff in 0.7.1; SKVN Editor Controls in 0.8.0; Footer Page Settings in 0.9.0; onsite/online test debt in 0.10.0; n8n after 1.0.0
 - English content, prepare cho multilingual nhưng KHÔNG activate Polylang
 
 **V2 (future)**

@@ -3,7 +3,7 @@
 Status:
 
 ```text
-READY_FOR_HUMAN_ONSITE_TEST
+DEFERRED_TO_V1_0.10.0_BY_HUMAN
 ```
 
 Purpose:
@@ -16,6 +16,13 @@ Local runtime note:
 
 ```text
 Human asked not to run local runtime smoke testing for 0.9.0 because local runtime is slow and token-expensive. Use this checklist for online/onsite evidence instead.
+```
+
+Deferred note:
+
+```text
+Human approved moving from 0.9.0 to 0.10.0 on 2026-06-03 while carrying this online footer settings test debt to V1 / 0.10.0.
+When V1 / 0.10.0 becomes current, run this checklist before closing onsite test debt.
 ```
 
 ## Preconditions

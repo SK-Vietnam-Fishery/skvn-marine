@@ -311,3 +311,44 @@ Carried to 0.10.0:
 - Confirm frontend output matches editor intent.
 - Review desktop/mobile screenshots.
 - Record console/editor errors or confirm clean.
+
+---
+
+## V1 / 0.9.0 — Footer Page Settings
+
+Status: **CARRIED_TO_0.10.0**
+Started: **2026-06-03**
+Carried forward: **2026-06-03**
+Approved by human to continue: **2026-06-03**
+
+Purpose:
+
+- Add a plugin settings page that stores the selected reusable footer page ID in `skvn_footer_page_id`.
+- Let the theme render the selected footer page into GeneratePress' `generate_footer` surface.
+- Keep GeneratePress as the footer foundation and fall back to the default GeneratePress footer when no page is selected.
+- Implement the footer settings code as a migration-ready module inside the current `skvn-marine-blocks` plugin; do not create or rename to `gutenberg-supercharger` or `gutenberg-turbo` in 0.9.0.
+- Treat `Gutenberg Supercharger` as a possible V4 / 4.0.0 umbrella-plugin direction and standard/core product name only. `Gutenberg Supercharger Stage 2` is the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
+
+Acceptance:
+
+- [x] Plugin settings page stores `skvn_footer_page_id`
+- [x] Setting value is restricted to a valid WordPress page ID
+- [x] Theme `inc/footer.php` renders the selected footer page through `generate_footer`
+- [x] Default GeneratePress footer remains the fallback when no page is selected
+- [x] No custom CPT is introduced
+- [x] No display rules system is introduced
+- [x] Footer settings are module-shaped inside `skvn-marine-blocks`, with current slug/text domain/option key preserved
+- [x] No `gutenberg-supercharger`/`gutenberg-turbo` plugin, plugin slug rename, namespace rename, or option-key rename is introduced
+- [x] GeneratePress parent remains untouched
+- [x] Footer output is escaped/sanitized through WordPress-safe rendering paths
+- [ ] Online smoke test confirms selected footer page renders
+- [ ] Online smoke test confirms fallback footer works
+- [x] Online test checklist/report exists in `docs/testing/footer-page-settings-0.9.0.md` and `docs/decisions/footer-page-settings-0.9.0.md`
+- [x] Human approves continuing to 0.10.0 with online test debt
+
+Carried to 0.10.0:
+
+- Run `docs/testing/footer-page-settings-0.9.0.md` on the online site.
+- Confirm selected footer page renders.
+- Confirm default GeneratePress fallback works.
+- Confirm invalid page ID fallback or document mismatch.

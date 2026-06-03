@@ -1,7 +1,7 @@
 # Footer Page Settings — 0.9.0 Report
 
 Date: 2026-06-03
-Status: Implemented, pending human online smoke evidence.
+Status: Implemented, online smoke evidence carried to V1 / 0.10.0.
 
 ## Scope
 
@@ -50,5 +50,5 @@ docs/testing/footer-page-settings-0.9.0.md
 Runtime note:
 
 ```text
-Human asked not to deploy or test through the local WordPress runtime for 0.9.0. Online/onsite smoke evidence remains pending.
+Human asked not to deploy or test through the local WordPress runtime for 0.9.0. Online/onsite smoke evidence is carried to V1 / 0.10.0.
 ```
