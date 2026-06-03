@@ -59,3 +59,17 @@ Milestone:  V1 / 0.7.0
 Status:     ARCHIVED
 Resolved:   2026-06-02
 Decision:   0.7.0 scope is basic CF7/CFDB7 quote form. n8n automation remains deferred until after version 1.0.0.
+
+---
+
+## [2025-01-01 00:00] | slider
+Tension:    Slider editor UX: stacked / selected-slide-preview / lightweight carousel?
+Context:    Planning phase — slider block chưa implement
+Proposal:   Stacked (slides xếp chồng trong editor, Swiper chỉ chạy frontend)
+Constraint: "Not fully decided yet. V1 editor view should likely render slides stacked or in a simplified preview."
+Severity:   low
+Tags:       blocks, slider
+Milestone:  V1 / 0.8.0
+Status:     ARCHIVED
+Resolved:   2026-06-03
+Decision:   Use stacked/simplified slider preview in the editor. Do not run Swiper autoplay in the editor. Slider sidebar behavior controls may persist as saved attributes, but frontend Swiper runtime remains frontend-only and must respect prefers-reduced-motion.

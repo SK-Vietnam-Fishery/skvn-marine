@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 0.8.0 — SKVN Editor Controls**
+Current milestone: **V1 / 0.9.0 — Footer Page Settings**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 

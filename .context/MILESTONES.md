@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 0.8.0 — SKVN Editor Controls**
+Current: **V1 / 0.9.0 — Footer Page Settings**
 Status: **IN_PROGRESS**
 Started: **2026-06-03**
 
@@ -52,35 +52,10 @@ Khi chuyển milestone:
 
 ## V1 Checkpoints
 
-### 0.8.0 — SKVN Editor Controls
+### 0.9.0 — Footer Page Settings
 
 Status: **IN_PROGRESS**
 Started: **2026-06-03**
-
-Purpose:
-
-- Add Elementor-inspired but token-governed sidebar controls for SKVN-owned Gutenberg blocks and translated layout surfaces.
-- Let editors adjust tone, spacing, width, margin, padding, responsive visibility, and block-specific behavior without raw classes, raw hex values, or unrestricted inline CSS.
-- Keep theme-owned visual tokens as the source of truth while plugin-owned blocks expose safe presets.
-
-Acceptance:
-
-- [x] Editor controls contract is documented before code in `docs/decisions/skvn-editor-controls-0.8.0.md`
-- [x] Onsite editor-controls test checklist exists in `docs/testing/onsite-editor-controls-0.8.0.md`
-- [x] Theme owns tone, spacing, width, radius, shadow, and visual classes for the first `SKVN Accordion` control pass
-- [x] Plugin owns block sidebar UI, block attributes, saved markup, and interactive block behavior for the first `SKVN Accordion` control pass
-- [x] Controls are grouped into Content, Style, Layout, and Advanced sections for `SKVN Accordion`
-- [x] Margin and padding controls use presets/tokens first, with responsive overrides only where needed
-- [x] No freeform raw class input is required for marketing editors in `SKVN Accordion`
-- [x] No raw hex/rgb/hsl values or arbitrary inline spacing values are required in `SKVN Accordion`
-- [x] Slider editor UX tension is resolved before implementing slider-specific controls
-- [ ] Editor and frontend output stay visually aligned
-- [ ] GeneratePress parent remains untouched
-- [ ] Human approves milestone completion
-
-### 0.9.0 — Footer Page Settings
-
-Status: **PENDING**
 
 Purpose:
 
@@ -112,6 +87,11 @@ Status: **PENDING**
 
 Acceptance:
 
+- [ ] Human runs `docs/testing/onsite-editor-controls-0.8.0.md` on the onsite site and reports evidence
+- [ ] Agent reminds human to validate 0.8.0 editor/frontend visual parity before closing onsite test debt
+- [ ] SKVN Accordion editor controls persist after save/reload onsite
+- [ ] SKVN Accordion frontend output matches editor intent onsite
+- [ ] Desktop/mobile visual smoke for 0.8.0 editor controls is reviewed
 - [ ] Human runs `docs/testing/onsite-quote-flow-0.7.1.md` on the onsite site and reports evidence
 - [ ] Human runs `docs/testing/onsite-quote-flow-0.7.0.md` on the onsite site
 - [ ] Agent reminds human to open the related docs/files listed in the 0.7.0 deferred test debt section

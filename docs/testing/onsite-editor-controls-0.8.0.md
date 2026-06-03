@@ -3,7 +3,7 @@
 Status:
 
 ```text
-READY_FOR_HUMAN_ONSITE_TEST_AFTER_0.8.0_CODE_EXISTS
+DEFERRED_TO_V1_0.10.0_BY_HUMAN
 ```
 
 Purpose:
@@ -11,6 +11,13 @@ Purpose:
 ```text
 Validate SKVN Editor Controls in the real onsite WordPress editor and frontend.
 Do not run this on local unless the human explicitly asks.
+```
+
+Deferred note:
+
+```text
+Human approved moving from 0.8.0 to 0.9.0 on 2026-06-03 while carrying this onsite editor-controls test debt to V1 / 0.10.0.
+When V1 / 0.10.0 becomes current, run this checklist before closing onsite test debt.
 ```
 
 ## Scope
