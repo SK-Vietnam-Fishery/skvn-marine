@@ -4,6 +4,7 @@
 	var Fragment = wp.element.Fragment;
 	var registerPlugin = wp.plugins.registerPlugin;
 	var PluginDocumentSettingPanel = wp.editPost.PluginDocumentSettingPanel;
+	var Notice = wp.components.Notice;
 	var SelectControl = wp.components.SelectControl;
 	var ToggleControl = wp.components.ToggleControl;
 	var useSelect = wp.data.useSelect;
@@ -126,6 +127,16 @@
 						editPost( { meta: applyPreset( meta, value ) } );
 					},
 				} ),
+				!! meta._skvn_hide_title &&
+					createElement(
+						Notice,
+						{
+							className: 'skvn-page-display-title-note',
+							isDismissible: false,
+							status: 'info',
+						},
+						__( 'Page title remains editable here and is hidden on the frontend.', 'skvn-marine' )
+					),
 				CONTROLS.map( function ( control ) {
 					return createElement( ToggleControl, {
 						key: control.key,

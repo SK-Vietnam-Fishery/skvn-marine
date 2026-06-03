@@ -2,6 +2,10 @@
 	margin-bottom: 14px;
 }
 
+.skvn-page-display-panel .skvn-page-display-title-note.components-notice {
+	margin: 0 0 14px;
+}
+
 .skvn-page-display-panel .skvn-page-display-control.components-base-control {
 	margin-bottom: 2px;
 }

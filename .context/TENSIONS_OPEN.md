@@ -19,17 +19,3 @@ Status:     OPEN
 Resolved:
 Decision:   Lean toward: chỉ prepare, KHÔNG activate Polylang V1.
 
----
-
-## [2025-01-01 00:00] | slider
-Tension:    Slider editor UX: stacked / selected-slide-preview / lightweight carousel?
-Context:    Planning phase — slider block chưa implement
-Proposal:   Stacked (slides xếp chồng trong editor, Swiper chỉ chạy frontend)
-Constraint: "Not fully decided yet. V1 editor view should likely render slides stacked or in a simplified preview."
-Severity:   low
-Tags:       blocks, slider
-Milestone:  V1 / 0.3.0
-Status:     OPEN
-Resolved:
-Decision:   Lean toward: stacked preview.
-

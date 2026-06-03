@@ -33,6 +33,12 @@ body {
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* 64px is Wordpress Logo in Editor */
+body.block-editor-iframe__body.editor-styles-wrapper.post-type-page {
+	box-sizing: border-box;
+	padding-left: 64px;
+}
+
 .skvn-container {
 	margin-inline: auto;
 	max-width: var(--skvn-wide-width);
@@ -1101,17 +1107,32 @@ body.admin-bar .site-header {
 	padding-inline: 1rem;
 }
 
-.skvn-card-grid.skvn-card-grid--3 {
+.skvn-card-grid {
 	align-items: stretch;
 	display: grid !important;
 	gap: 1.5rem;
-	grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.skvn-card-grid.skvn-card-grid--3 > .wp-block-column {
+.skvn-card-grid > .wp-block-column {
 	flex: unset !important;
 	min-width: 0;
 	width: unset !important;
+}
+
+.skvn-card-grid.skvn-card-grid--2 {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.skvn-card-grid.skvn-card-grid--3 {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.skvn-card-grid.skvn-card-grid--4 {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.skvn-card-grid.skvn-card-grid--5 {
+	grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .skvn-section__header--centered {
@@ -1722,13 +1743,19 @@ body.admin-bar .site-header {
 }
 
 @media (max-width: 1024px) {
-	.skvn-card-grid.skvn-card-grid--3 {
+	.skvn-card-grid.skvn-card-grid--3,
+	.skvn-card-grid.skvn-card-grid--4,
+	.skvn-card-grid.skvn-card-grid--5 {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
 @media (max-width: 640px) {
-	.skvn-card-grid.skvn-card-grid--3 {
+	.skvn-card-grid,
+	.skvn-card-grid.skvn-card-grid--2,
+	.skvn-card-grid.skvn-card-grid--3,
+	.skvn-card-grid.skvn-card-grid--4,
+	.skvn-card-grid.skvn-card-grid--5 {
 		grid-template-columns: 1fr;
 	}
 }

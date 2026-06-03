@@ -70,7 +70,7 @@ Acceptance:
 - [x] Margin and padding controls use presets/tokens first, with responsive overrides only where needed
 - [x] No freeform raw class input is required for marketing editors in `SKVN Accordion`
 - [x] No raw hex/rgb/hsl values or arbitrary inline spacing values are required in `SKVN Accordion`
-- [ ] Slider editor UX tension is resolved before implementing slider-specific controls
+- [x] Slider editor UX tension is resolved before implementing slider-specific controls
 - [ ] Editor and frontend output stay visually aligned
 - [ ] GeneratePress parent remains untouched
 - [ ] Human approves milestone completion
