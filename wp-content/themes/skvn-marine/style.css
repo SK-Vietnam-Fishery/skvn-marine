@@ -1584,6 +1584,33 @@ body.admin-bar .site-header {
 	box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
+.skvn-portfolio__header.wp-block-columns {
+	align-items: flex-end;
+	display: flex !important;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+	justify-content: center;
+	margin-bottom: 3rem;
+	position: relative;
+	text-align: center;
+	width: 100%;
+}
+
+.skvn-portfolio__header .wp-block-column:first-child {
+	flex: 1 1 100% !important;
+	min-width: 0;
+	width: 100%;
+}
+
+.skvn-portfolio__header .wp-block-column:last-child {
+	flex: 0 0 auto !important;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	width: auto !important;
+}
+
 .skvn-portfolio-grid.wp-block-gallery {
 	display: grid !important;
 	gap: 1rem;

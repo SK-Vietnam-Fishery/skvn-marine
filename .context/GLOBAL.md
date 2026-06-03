@@ -60,6 +60,10 @@ Current planning file:
 
 - `.context/planning/000_VERSION_1_1_0_PLANNING.md`
 
+Future plugin architecture planning:
+
+- `.context/planning/008_FUTURE_CANDIDATE_GUTENBERG_TURBO_PLANNING.md` — split small Gutenberg enhancement plugins first, then possibly consolidate into an umbrella plugin named `Gutenberg Turbo` / `Gutenberg Supercharger`.
+
 Proposal files under `.context/proposals/` are not active protocol and are ignored by git. Do not load them unless the human explicitly asks to review a proposal.
 
 Project docs under `docs/` are grouped by reading purpose:
