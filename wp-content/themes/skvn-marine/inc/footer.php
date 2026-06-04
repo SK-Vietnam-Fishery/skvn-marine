@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 const SKVN_MARINE_FOOTER_PAGE_OPTION = 'skvn_footer_page_id';
 
 add_action( 'wp', 'skvn_marine_maybe_replace_generatepress_footer' );
+add_filter( 'body_class', 'skvn_marine_footer_body_class' );
 
 /**
  * Replace the default GeneratePress footer only when a valid footer page is selected.
@@ -24,6 +25,20 @@ function skvn_marine_maybe_replace_generatepress_footer() {
 	remove_action( 'generate_footer', 'generate_construct_footer_widgets', 5 );
 	remove_action( 'generate_footer', 'generate_construct_footer' );
 	add_action( 'generate_footer', 'skvn_marine_render_footer_page', 10 );
+}
+
+/**
+ * Add a body class when the reusable footer page is active.
+ *
+ * @param string[] $classes Body classes.
+ * @return string[]
+ */
+function skvn_marine_footer_body_class( $classes ) {
+	if ( skvn_marine_get_footer_page() ) {
+		$classes[] = 'skvn-has-footer-page';
+	}
+
+	return $classes;
 }
 
 /**

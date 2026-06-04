@@ -177,6 +177,33 @@ Do not move the primary brand system into the plugin. Plugin assets may follow t
 - Do not edit GeneratePress parent theme.
 - Do not add a custom CPT or display-rules system for footer rendering in 0.9.0.
 
+0.11.0 planned footer appearance setting:
+
+- Decision contract: `docs/decisions/footer-appearance-settings-0.11.0.md`.
+- Plugin stores `skvn_footer_background_preset`; theme maps approved presets to CSS variables/tokens.
+- The selected footer background must apply to `.skvn-footer-page`.
+- The selected footer background must also apply to the outermost Gutenberg block `.skvn-site-footer` when the footer page content starts with:
+
+```html
+<!-- wp:group {"className":"skvn-site-footer","layout":{"type":"default"}} -->
+<div class="wp-block-group skvn-site-footer">
+```
+
+- Viewport space below the custom footer should use the same footer background, while `.site` keeps the normal page background.
+- Do not require marketing editors to type raw classes, raw CSS, or raw color values for this setting in 0.11.0.
+
+## [manual] Header Actions And B2B Search
+
+0.12.0 planned direction:
+
+- Decision contract: `docs/decisions/header-actions-search-0.12.0.md`.
+- Use Header Actions, not a full Header Builder, for the first phase.
+- GeneratePress header remains the shell; do not replace it with a Gutenberg header template in phase 1.
+- Theme owns GeneratePress hook integration, header action visual layout, responsive CSS, and `skvn-*` classes.
+- Header actions may include product search, post/site search, contact CTA, and optional Request Quote CTA.
+- Search results should be visually governed for B2B and separate Products from Related articles.
+- Search visual output belongs to theme CSS; search query/settings ownership stays outside theme.
+
 HTML-2-Gutenberg brand-mapping contract for 0.5.1:
 
 - Translator output must report `brand_source_scan`, `brand_mapping`, `brand_mismatch`, and `token_changes_needed`.

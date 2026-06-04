@@ -196,7 +196,25 @@ Planned 0.11.0 admin menu refinement:
 - Create a top-level `SKVN Marine` admin menu in the current `skvn-marine-blocks` plugin.
 - Put footer settings under the `SKVN Marine` admin menu as a tab/page.
 - Keep option key `skvn_footer_page_id` and existing render behavior unchanged.
+- Add footer background preset option `skvn_footer_background_preset`.
+- Sanitize footer background to approved presets only: `default`, `deep-navy`, `trust-blue`, `white`, `fresh-sky`.
+- Do not expose raw hex/rgb/hsl color input for the footer background in 0.11.0.
+- The background preset only applies when `skvn_footer_page_id` points to a valid published page.
 - Do not hardcode advanced menu ordering in SKVN code; onsite menu repositioning belongs to the external ASE plugin.
+
+0.11.0 decision contract:
+
+- `docs/decisions/footer-appearance-settings-0.11.0.md`
+
+Planned 0.12.0 header actions and B2B search:
+
+- Decision contract: `docs/decisions/header-actions-search-0.12.0.md`.
+- Add a future `SKVN Marine → Header` admin surface.
+- Store and sanitize header action settings for product search, post/site search, contact CTA, and optional Request Quote CTA.
+- Product search and post/site search may ship together but must keep explicit search targets: products, articles, or all site.
+- Phase 1 search should use native WordPress/WooCommerce queries with taxonomy/title-first matching.
+- Do not add Elastic/OpenSearch in phase 1.
+- Do not add custom search query cache, custom SQL cache table, or transient registry in phase 1; rely on native queries and available object cache.
 
 Future direction:
 

@@ -2,7 +2,7 @@
 
 File: `005_VERSION_2_0_0_FOOTER_BUILDER_PLANNING.md`
 Topic: Footer Builder — từ Settings Page (C) → Block Type (A) → Element System (B)
-Status: Future Candidate / planning only — chưa có human xác nhận version target chính thức
+Status: Future Candidate / planning only — target direction confirmed for GeneratePress migration start
 
 ---
 
@@ -11,13 +11,14 @@ Status: Future Candidate / planning only — chưa có human xác nhận version
 Footer editable trong Gutenberg được triển khai theo ba giai đoạn độc lập.
 Mỗi giai đoạn là một working product — không có trạng thái dở dang.
 
-Trigger chuyển sang giai đoạn B (Element System) là khi theme `skvn-marine` không còn là
-child theme của GeneratePress nữa. Lúc đó `generate_footer` hook biến mất, rendering engine
-phải được rebuild anyway — đó là thời điểm justification cho B rõ ràng nhất.
+Trigger chuyển sang giai đoạn B (Element System) là khi theme `skvn-marine` bắt đầu migrate
+khỏi GeneratePress. `2.0.0` là mốc bắt đầu migration; `3.0.0` là mốc hoàn tất bỏ GeneratePress
+và chạy như standalone/custom theme. Trong giai đoạn migration, nếu `generate_footer` hook còn tồn tại
+thì vẫn có thể giữ adapter tạm; khi hook biến mất, rendering engine phải được rebuild anyway.
 
 ```
-Giai đoạn C  →  Giai đoạn A  →  [trigger: bỏ GP]  →  Giai đoạn B
-V1 / 0.9.0       1.2.0 hoặc 1.3.0 candidate              V2.0.0+
+Giai đoạn C  →  Giai đoạn A  →  [2.0.0: start migrate GP]  →  [3.0.0: GP removed]
+V1 / 0.9.0       1.2.0 hoặc 1.3.0 candidate                 Element System matures
 ```
 
 ---
@@ -157,22 +158,21 @@ Theme:
 
 ### Target version
 
-**V2.0.0** — gắn với trigger bỏ GeneratePress.
+**V2.0.0** — bắt đầu migration bỏ GeneratePress.
+
+**V3.0.0** — hoàn tất migration: SKVN chạy standalone/custom theme, không còn phụ thuộc GeneratePress.
 
 ### Trigger bắt buộc
 
-Giai đoạn B CHỈ được bắt đầu khi cả hai điều kiện sau đều đúng:
+Giai đoạn B CHỈ được bắt đầu khi điều kiện sau đúng:
 
 ```
 1. Human tuyên bố chính thức chuyển theme skvn-marine
-   từ GeneratePress child sang standalone/custom base theme.
-
-2. generate_footer hook không còn tồn tại trong theme mới.
-   (Nếu base theme mới vẫn có hook tương đương, evaluate lại
-   xem có cần B không hay A đã đủ.)
+   khỏi GeneratePress child theo migration track 2.0.0 → 3.0.0.
 ```
 
-Không được bắt đầu B khi theme vẫn còn là GP child — không có justification.
+Nếu theme vẫn còn là GP child trong giai đoạn đầu 2.x, B chỉ được làm như migration adapter có kiểm soát.
+Không được giả định GeneratePress đã biến mất trước 3.0.0.
 
 ### Vấn đề giải quyết
 

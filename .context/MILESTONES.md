@@ -109,7 +109,12 @@ Purpose:
 - Move the existing SKVN Footer admin surface out of `Settings`.
 - Create a top-level `SKVN Marine` admin menu owned by `skvn-marine-blocks`.
 - Put the footer settings screen under the `SKVN Marine` admin menu as one tab/page.
+- Add a safe footer background preset setting for the selected footer page.
 - Leave admin menu ordering/repositioning to the external ASE plugin instead of hardcoding menu position rules in SKVN code.
+
+Decision contract:
+
+- `docs/decisions/footer-appearance-settings-0.11.0.md`
 
 Acceptance draft:
 
@@ -117,9 +122,49 @@ Acceptance draft:
 - [ ] Top-level `SKVN Marine` admin menu exists.
 - [ ] Footer settings are available under the `SKVN Marine` admin menu.
 - [ ] Existing option key `skvn_footer_page_id` remains unchanged.
+- [ ] New option key `skvn_footer_background_preset` stores an approved preset, not raw color input.
+- [ ] Footer background preset applies only when `skvn_footer_page_id` points to a valid published footer page.
+- [ ] Footer background preset affects `.skvn-footer-page` and the outermost `.skvn-site-footer` Gutenberg block.
+- [ ] Viewport space below the custom footer uses the same footer background preset.
+- [ ] Default GeneratePress fallback footer is unaffected by the footer background preset.
 - [ ] Existing footer rendering behavior remains unchanged.
 - [ ] Capability checks and nonce protection remain in place.
 - [ ] SKVN code does not hardcode advanced admin menu ordering; ASE handles menu repositioning onsite.
+- [ ] Human approves milestone completion.
+
+### 0.12.0 — SKVN Header Actions And B2B Search
+
+Status: **PENDING**
+
+Purpose:
+
+- Add governed header actions without replacing the GeneratePress header shell.
+- Support product search, post/site search, contact CTA, and optional Request Quote CTA.
+- Plan the B2B search results experience as a governed page that separates Products from Related articles.
+- Keep phase 1 search lightweight: taxonomy/title-first native WP/Woo queries, no Elastic/OpenSearch, and no custom query cache.
+
+Decision contract:
+
+- `docs/decisions/header-actions-search-0.12.0.md`
+
+Acceptance draft:
+
+- [ ] Human confirms 0.12.0 as the exact implementation target before code.
+- [ ] GeneratePress header remains the shell.
+- [ ] No GeneratePress parent files are edited.
+- [ ] `SKVN Marine → Header` settings are documented and implemented.
+- [ ] Product search can be enabled/disabled.
+- [ ] Post/site search can be enabled/disabled.
+- [ ] Contact button can be enabled/disabled.
+- [ ] Request Quote button can be enabled/disabled.
+- [ ] Search target is explicit: products, articles, or all site.
+- [ ] B2B search results page separates Products from Related articles.
+- [ ] Product matching uses product tags/categories/title before content fallback.
+- [ ] Related article matching uses post tags/categories/title before content fallback.
+- [ ] No Elastic/OpenSearch dependency is added in phase 1.
+- [ ] No custom query cache or SQL cache table is added in phase 1.
+- [ ] Header mobile behavior does not break GeneratePress navigation.
+- [ ] Keyboard/focus behavior is reviewed for search and buttons.
 - [ ] Human approves milestone completion.
 
 ## Future V1.x Checkpoints
@@ -151,8 +196,36 @@ Acceptance draft:
 - [ ] Editor preview matches frontend closely enough for layout decisions
 - [ ] Theme CSS implements all layout-critical `skvn-*` classes used by saved markup
 - [ ] No frontend JavaScript runtime is added unless a real interaction requires it
+- [ ] Layout blocks do not expose motion controls and do not depend on theme-only animation behavior
 - [ ] `skvn-marine/quote` is evaluated only after card-grid/card validation
 - [ ] Build passes for `skvn-marine-blocks`
+- [ ] Human approves milestone completion
+
+### Future Candidate — Gutenberg Supercharger Motion
+
+Status: **PENDING**
+
+Purpose:
+
+- Plan portable animation/motion support for plugin-owned blocks after V1 launch readiness.
+- Candidate promotion target after human approval: `1.2.0 — Gutenberg Supercharger Motion`.
+- Keep plugin-owned motion portable for possible future migration/rename toward `Gutenberg Supercharger`.
+
+Planning:
+
+- `.context/planning/011_FUTURE_CANDIDATE_GUTENBERG_SUPERCHARGER_MOTION_PLANNING.md`
+- `docs/decisions/block-animation-strategy.md`
+
+Acceptance draft:
+
+- [ ] Human approves exact target milestone/version before implementation
+- [ ] Animation remains out of scope for 0.10.0, 0.11.0, 1.0.0, and 1.1.0
+- [ ] Plugin-owned animation works without `skvn-marine` theme active
+- [ ] Plugin-owned animation ships required CSS/JS/keyframes/reduced-motion fallback inside the plugin
+- [ ] Device targeting uses independent Desktop/Tablet/Mobile checkboxes
+- [ ] No frontend content remains invisible when JS fails
+- [ ] Editor content remains visible and editable
+- [ ] Theme animation remains limited to core blocks, page sections, and theme decoration
 - [ ] Human approves milestone completion
 
 ### 1.4.0 — SKVN Theme Init Setup UI

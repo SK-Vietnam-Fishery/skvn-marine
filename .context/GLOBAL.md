@@ -61,6 +61,7 @@ Current planning file:
 - `.context/planning/000_VERSION_1_1_0_PLANNING.md`
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — checkpoint plan for layout blocks promoted from `.context/proposals/proposal-layout-blocks.md`. Covers `skvn-marine/card-grid`, `skvn-marine/card`, and quote/testimonial block evaluation for repeated artifact sections that are too fragile for core blocks plus raw class names.
 - `.context/planning/010_VERSION_1_7_0_FRONT_PAGE_TRANG_CHUYEN_DOI_SO_PLANNING.md` — future front-page planning for the external `ChuyenDoiSo.html` benchmark: document/resource list, taxonomy/category counts from real data, whole-site search styling/hook boundary, and layout patterns discovered during the 1.1.0 brainstorm trigger.
+- `.context/planning/011_FUTURE_CANDIDATE_GUTENBERG_SUPERCHARGER_MOTION_PLANNING.md` — future portable motion planning for `skvn-marine-blocks`, with possible later promotion to `1.2.0 — Gutenberg Supercharger Motion` only after human approval. Plugin-owned motion must ship its own CSS/JS/keyframes/fallbacks and remain portable without `skvn-marine` theme.
 
 Future plugin architecture planning:
 
@@ -86,6 +87,8 @@ Current active docs:
 - `docs/decisions/product-data-model.md`
 - `docs/decisions/quote-flow.md`
 - `docs/decisions/footer-page-settings-0.9.0.md`
+- `docs/decisions/footer-appearance-settings-0.11.0.md`
+- `docs/decisions/header-actions-search-0.12.0.md`
 - `docs/decisions/block-animation-strategy.md`
 - `docs/decisions/skvn-editor-controls-0.8.0.md`
 - `docs/decisions/slider-block.md`
@@ -180,6 +183,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 - English content, prepare cho multilingual nhưng KHÔNG activate Polylang
 
 **V2 (future)**
+- Start migration away from GeneratePress; `2.0.0` is the migration-start boundary, not the completion point.
 - Staging + Git deploy workflow
 - Redis object cache nếu cần
 - CDN cho static assets
@@ -187,7 +191,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 - Technical Product Card với specs table
 
 **V3 (future)**
-- Đánh giá lại: tiếp tục GeneratePress base hay custom base theme
+- Complete GeneratePress removal; `3.0.0` is the standalone/custom theme completion boundary.
 - Child theme support
 - Marketing governance layer
 - GitHub Actions release zip
