@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.0.0 — V1 Launch Ready**
+Current: **V1 / 0.12.0 — SKVN Header Actions And B2B Search**
 Status: **IN_PROGRESS**
 Started: **2026-06-05**
 
@@ -55,7 +55,7 @@ Khi chuyển milestone:
 
 ### 0.11.0 — SKVN Marine Admin Menu
 
-Status: **PENDING**
+Status: **CARRIED_TO_ONSITE_TEST_WITH_0.12.0**
 
 Purpose:
 
@@ -87,7 +87,7 @@ Acceptance draft:
 
 ### 0.12.0 — SKVN Header Actions And B2B Search
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
 
 Purpose:
 
@@ -102,7 +102,7 @@ Decision contract:
 
 Acceptance draft:
 
-- [ ] Human confirms 0.12.0 as the exact implementation target before code.
+- [x] Human confirms 0.12.0 as the exact implementation target before code.
 - [ ] GeneratePress header remains the shell.
 - [ ] No GeneratePress parent files are edited.
 - [ ] `SKVN Marine → Header` settings are documented and implemented.
@@ -122,7 +122,7 @@ Acceptance draft:
 
 ### 1.0.0 — V1 Launch Ready
 
-Status: **IN_PROGRESS**
+Status: **PENDING**
 
 Acceptance:
 

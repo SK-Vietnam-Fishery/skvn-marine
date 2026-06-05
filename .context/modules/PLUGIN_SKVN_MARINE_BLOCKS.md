@@ -217,6 +217,15 @@ Planned 0.12.0 header actions and B2B search:
 - Do not add Elastic/OpenSearch in phase 1.
 - Do not add custom search query cache, custom SQL cache table, or transient registry in phase 1; rely on native queries and available object cache.
 
+Implemented 0.12.0 source:
+
+- Module path: `wp-content/plugins/skvn-marine-blocks/modules/header-settings/header-settings.php`.
+- Bootstrap path: `wp-content/plugins/skvn-marine-blocks/skvn-marine-blocks.php`.
+- Admin surface: `SKVN Marine -> Header`.
+- Option key: `skvn_header_actions`.
+- Stored settings are sanitized to booleans, approved search targets (`products`, `articles`, `all`), approved layouts (`compact`, `full`), text labels, and URLs.
+- Header actions are disabled by default for safe deploy; human enables them onsite for testing.
+
 Planned V1.x SKVN Element CPT foundation:
 
 - Planning file: `.context/planning/014_VERSION_1_X_SKVN_ELEMENT_CPT_PLANNING.md`.

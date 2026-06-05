@@ -1,19 +1,49 @@
 # Header Actions And B2B Search — 0.12.0 Planning Contract
 
 Date: 2026-06-04
-Status: Planned / brainstorm accepted. Not implemented.
+Status: Implemented for onsite testing in V1 / 0.12.0.
 
 ## Scope
 
-This document records the agreed direction for a future header enhancement and B2B search experience.
+This document records the agreed direction, implementation research, and source contract for the V1 / 0.12.0 header enhancement and B2B search experience.
 
 Do not implement this in V1 / 0.10.0 or 0.11.0. 0.11.0 remains focused on the SKVN Marine admin menu and footer appearance settings.
 
-Candidate milestone:
+Current milestone:
 
 ```text
 0.12.0 — SKVN Header Actions And B2B Search
 ```
+
+## Research Notes
+
+Research date: 2026-06-05.
+
+Primary sources reviewed:
+
+- GeneratePress hook docs: `https://docs.generatepress.com/article/generate_after_header_content/`
+- GeneratePress hooks index: `https://docs.generatepress.com/collection/hooks/`
+- WordPress admin menu API: `https://developer.wordpress.org/reference/functions/add_menu_page/`
+- WordPress submenu API: `https://developer.wordpress.org/reference/functions/add_submenu_page/`
+- WordPress query preflight hook: `https://developer.wordpress.org/reference/hooks/pre_get_posts/`
+- WordPress search parsing internals: `https://developer.wordpress.org/reference/classes/wp_query/parse_search/`
+
+Findings:
+
+- GeneratePress exposes `generate_after_header_content` before the closing `.inside-header` element, so SKVN can add a governed action group inside the existing header shell without replacing GeneratePress header/navigation code.
+- GeneratePress documents a stable hook collection, supporting the V1.x decision to use hooks instead of editing the parent theme or building a full header template.
+- WordPress admin settings can live under a top-level admin menu using `add_menu_page()` and `add_submenu_page()`, matching the 0.11.0 `SKVN Marine` admin surface and the 0.12.0 `SKVN Marine -> Header` submenu.
+- WordPress search parsing supports title-oriented search behavior through query search columns. That supports the 0.12.0 strategy of taxonomy-first and title-first native queries before optional content fallback.
+- `pre_get_posts` is available for main-query changes, but 0.12.0 uses a governed `search.php` template with explicit `WP_Query` sections instead, because the product/article split is a display contract and should not force the default search archive into one mixed loop.
+
+Implementation decisions from research:
+
+- Header actions render through the child theme at `generate_after_header_content`; no GeneratePress parent file is edited.
+- Plugin-owned settings are stored in one option, `skvn_header_actions`, and sanitized by the plugin settings module.
+- Theme defensively sanitizes the same option before frontend render so the frontend does not depend on plugin helper functions being loaded in a specific order.
+- Header actions are disabled by default for safe deploy; onsite testing enables them through `SKVN Marine -> Header`.
+- Search result rendering is governed by `search.php` and separates Products from Related articles.
+- Phase 1 search uses native WordPress/WooCommerce taxonomy/title/content queries, no Elastic/OpenSearch, no custom SQL table, and no custom transient/cache registry.
 
 ## Header Direction
 

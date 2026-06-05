@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const SKVN_MARINE_FOOTER_PAGE_OPTION = 'skvn_footer_page_id';
+const SKVN_MARINE_FOOTER_BACKGROUND_OPTION = 'skvn_footer_background_preset';
 
 add_action( 'wp', 'skvn_marine_maybe_replace_generatepress_footer' );
 add_filter( 'body_class', 'skvn_marine_footer_body_class' );
@@ -36,9 +37,44 @@ function skvn_marine_maybe_replace_generatepress_footer() {
 function skvn_marine_footer_body_class( $classes ) {
 	if ( skvn_marine_get_footer_page() ) {
 		$classes[] = 'skvn-has-footer-page';
+		$classes[] = 'skvn-footer-bg-' . skvn_marine_get_footer_background_preset();
 	}
 
 	return $classes;
+}
+
+/**
+ * Sanitize the selected footer background preset.
+ *
+ * @param mixed $value Raw option value.
+ * @return string
+ */
+function skvn_marine_sanitize_footer_background_preset( $value ) {
+	$preset  = sanitize_key( wp_unslash( (string) $value ) );
+	$allowed = array(
+		'default'    => true,
+		'deep-navy'  => true,
+		'trust-blue' => true,
+		'white'      => true,
+		'fresh-sky'  => true,
+	);
+
+	if ( ! isset( $allowed[ $preset ] ) ) {
+		return 'default';
+	}
+
+	return $preset;
+}
+
+/**
+ * Get the sanitized selected footer background preset.
+ *
+ * @return string
+ */
+function skvn_marine_get_footer_background_preset() {
+	return skvn_marine_sanitize_footer_background_preset(
+		get_option( SKVN_MARINE_FOOTER_BACKGROUND_OPTION, 'default' )
+	);
 }
 
 /**

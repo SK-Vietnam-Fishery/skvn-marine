@@ -204,6 +204,15 @@ Do not move the primary brand system into the plugin. Plugin assets may follow t
 - Search results should be visually governed for B2B and separate Products from Related articles.
 - Search visual output belongs to theme CSS; search query/settings ownership stays outside theme.
 
+0.12.0 implemented source:
+
+- Header action render module: `wp-content/themes/skvn-marine/inc/header-actions.php`.
+- Theme bootstrap: `wp-content/themes/skvn-marine/functions.php`.
+- Search results template: `wp-content/themes/skvn-marine/search.php`.
+- Theme reads option `skvn_header_actions`, sanitizes defensively, and renders actions through `generate_after_header_content`.
+- Search results use governed sections for Products and Related articles, with taxonomy-first and title-first native `WP_Query` passes before content fallback.
+- Header action CSS and search result CSS live in `wp-content/themes/skvn-marine/style.css`.
+
 HTML-2-Gutenberg brand-mapping contract for 0.5.1:
 
 - Translator output must report `brand_source_scan`, `brand_mapping`, `brand_mismatch`, and `token_changes_needed`.

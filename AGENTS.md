@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.0.0 — V1 Launch Ready**
+Current milestone: **V1 / 0.12.0 — SKVN Header Actions And B2B Search**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 

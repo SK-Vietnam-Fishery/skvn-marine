@@ -8,6 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const SKVN_MARINE_BLOCKS_FOOTER_PAGE_OPTION = 'skvn_footer_page_id';
+const SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION = 'skvn_footer_background_preset';
 
 add_action( 'admin_menu', 'skvn_marine_blocks_footer_settings_menu' );
 add_action( 'admin_init', 'skvn_marine_blocks_register_footer_settings' );
@@ -18,11 +19,21 @@ add_action( 'admin_init', 'skvn_marine_blocks_register_footer_settings' );
  * @return void
  */
 function skvn_marine_blocks_footer_settings_menu() {
-	add_options_page(
-		esc_html__( 'SKVN Footer Settings', 'skvn-marine-blocks' ),
-		esc_html__( 'SKVN Footer', 'skvn-marine-blocks' ),
+	add_menu_page(
+		esc_html__( 'SKVN Marine', 'skvn-marine-blocks' ),
+		esc_html__( 'SKVN Marine', 'skvn-marine-blocks' ),
 		'manage_options',
-		'skvn-marine-footer-settings',
+		'skvn-marine',
+		'skvn_marine_blocks_render_footer_settings_page',
+		'dashicons-admin-site-alt3'
+	);
+
+	add_submenu_page(
+		'skvn-marine',
+		esc_html__( 'SKVN Footer Settings', 'skvn-marine-blocks' ),
+		esc_html__( 'Footer', 'skvn-marine-blocks' ),
+		'manage_options',
+		'skvn-marine',
 		'skvn_marine_blocks_render_footer_settings_page'
 	);
 }
@@ -43,9 +54,19 @@ function skvn_marine_blocks_register_footer_settings() {
 		)
 	);
 
+	register_setting(
+		'skvn_marine_blocks_footer_settings',
+		SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION,
+		array(
+			'type'              => 'string',
+			'sanitize_callback' => 'skvn_marine_blocks_sanitize_footer_background_preset',
+			'default'           => 'default',
+		)
+	);
+
 	add_settings_section(
 		'skvn_marine_blocks_footer_settings_main',
-		esc_html__( 'Reusable Footer Page', 'skvn-marine-blocks' ),
+		esc_html__( 'Reusable Footer', 'skvn-marine-blocks' ),
 		'skvn_marine_blocks_render_footer_settings_section',
 		'skvn-marine-footer-settings'
 	);
@@ -54,6 +75,14 @@ function skvn_marine_blocks_register_footer_settings() {
 		SKVN_MARINE_BLOCKS_FOOTER_PAGE_OPTION,
 		esc_html__( 'Footer page', 'skvn-marine-blocks' ),
 		'skvn_marine_blocks_render_footer_page_field',
+		'skvn-marine-footer-settings',
+		'skvn_marine_blocks_footer_settings_main'
+	);
+
+	add_settings_field(
+		SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION,
+		esc_html__( 'Footer background', 'skvn-marine-blocks' ),
+		'skvn_marine_blocks_render_footer_background_field',
 		'skvn-marine-footer-settings',
 		'skvn_marine_blocks_footer_settings_main'
 	);
@@ -79,6 +108,38 @@ function skvn_marine_blocks_sanitize_footer_page_id( $value ) {
 	}
 
 	return $page_id;
+}
+
+/**
+ * Get approved footer background presets.
+ *
+ * @return array<string,string>
+ */
+function skvn_marine_blocks_get_footer_background_presets() {
+	return array(
+		'default'    => esc_html__( 'Default', 'skvn-marine-blocks' ),
+		'deep-navy'  => esc_html__( 'Deep navy', 'skvn-marine-blocks' ),
+		'trust-blue' => esc_html__( 'Trust blue', 'skvn-marine-blocks' ),
+		'white'      => esc_html__( 'White', 'skvn-marine-blocks' ),
+		'fresh-sky'  => esc_html__( 'Fresh sky', 'skvn-marine-blocks' ),
+	);
+}
+
+/**
+ * Sanitize the selected footer background preset.
+ *
+ * @param mixed $value Raw option value.
+ * @return string
+ */
+function skvn_marine_blocks_sanitize_footer_background_preset( $value ) {
+	$preset  = sanitize_key( wp_unslash( (string) $value ) );
+	$allowed = skvn_marine_blocks_get_footer_background_presets();
+
+	if ( ! isset( $allowed[ $preset ] ) ) {
+		return 'default';
+	}
+
+	return $preset;
 }
 
 /**
@@ -111,6 +172,28 @@ function skvn_marine_blocks_render_footer_page_field() {
 }
 
 /**
+ * Render the footer background preset select field.
+ *
+ * @return void
+ */
+function skvn_marine_blocks_render_footer_background_field() {
+	$selected_preset = skvn_marine_blocks_get_footer_background_preset();
+	$presets         = skvn_marine_blocks_get_footer_background_presets();
+	?>
+	<select
+		name="<?php echo esc_attr( SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION ); ?>"
+		id="<?php echo esc_attr( SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION ); ?>"
+	>
+		<?php foreach ( $presets as $value => $label ) : ?>
+			<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $selected_preset, $value ); ?>>
+				<?php echo esc_html( $label ); ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+	<?php
+}
+
+/**
  * Render the footer settings admin page.
  *
  * @return void
@@ -121,7 +204,7 @@ function skvn_marine_blocks_render_footer_settings_page() {
 	}
 	?>
 	<div class="wrap">
-		<h1><?php echo esc_html__( 'SKVN Footer Settings', 'skvn-marine-blocks' ); ?></h1>
+		<h1><?php echo esc_html__( 'SKVN Marine Footer', 'skvn-marine-blocks' ); ?></h1>
 		<form action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" method="post">
 			<?php
 			settings_fields( 'skvn_marine_blocks_footer_settings' );
@@ -141,5 +224,16 @@ function skvn_marine_blocks_render_footer_settings_page() {
 function skvn_marine_blocks_get_footer_page_id() {
 	return skvn_marine_blocks_sanitize_footer_page_id(
 		get_option( SKVN_MARINE_BLOCKS_FOOTER_PAGE_OPTION, 0 )
+	);
+}
+
+/**
+ * Get the sanitized selected footer background preset.
+ *
+ * @return string
+ */
+function skvn_marine_blocks_get_footer_background_preset() {
+	return skvn_marine_blocks_sanitize_footer_background_preset(
+		get_option( SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION, 'default' )
 	);
 }
