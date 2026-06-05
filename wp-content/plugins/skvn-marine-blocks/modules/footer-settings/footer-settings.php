@@ -126,6 +126,41 @@ function skvn_marine_blocks_get_footer_background_presets() {
 }
 
 /**
+ * Get approved footer background preview colors.
+ *
+ * @return array<string,array{background:string,color:string,border:string}>
+ */
+function skvn_marine_blocks_get_footer_background_preview_styles() {
+	return array(
+		'default'    => array(
+			'background' => '#073b5a',
+			'color'      => '#ffffff',
+			'border'     => '#073b5a',
+		),
+		'deep-navy'  => array(
+			'background' => '#073b5a',
+			'color'      => '#ffffff',
+			'border'     => '#073b5a',
+		),
+		'trust-blue' => array(
+			'background' => '#0f5c8c',
+			'color'      => '#ffffff',
+			'border'     => '#0f5c8c',
+		),
+		'white'      => array(
+			'background' => '#ffffff',
+			'color'      => '#0f172a',
+			'border'     => '#cbd5e1',
+		),
+		'fresh-sky'  => array(
+			'background' => '#eaf7ff',
+			'color'      => '#0f172a',
+			'border'     => '#bfdbfe',
+		),
+	);
+}
+
+/**
  * Sanitize the selected footer background preset.
  *
  * @param mixed $value Raw option value.
@@ -179,6 +214,7 @@ function skvn_marine_blocks_render_footer_page_field() {
 function skvn_marine_blocks_render_footer_background_field() {
 	$selected_preset = skvn_marine_blocks_get_footer_background_preset();
 	$presets         = skvn_marine_blocks_get_footer_background_presets();
+	$preview_styles  = skvn_marine_blocks_get_footer_background_preview_styles();
 	?>
 	<select
 		name="<?php echo esc_attr( SKVN_MARINE_BLOCKS_FOOTER_BACKGROUND_OPTION ); ?>"
@@ -190,6 +226,28 @@ function skvn_marine_blocks_render_footer_background_field() {
 			</option>
 		<?php endforeach; ?>
 	</select>
+	<div
+		class="skvn-footer-background-previews"
+		style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:12px;max-width:760px;"
+		aria-label="<?php echo esc_attr__( 'Footer background preset previews', 'skvn-marine-blocks' ); ?>"
+	>
+		<?php foreach ( $presets as $value => $label ) : ?>
+			<?php
+			$style       = isset( $preview_styles[ $value ] ) ? $preview_styles[ $value ] : $preview_styles['default'];
+			$is_selected = $selected_preset === $value;
+			?>
+			<div
+				class="skvn-footer-background-preview"
+				<?php echo $is_selected ? 'aria-current="true"' : ''; ?>
+				style="<?php echo esc_attr( sprintf( 'background:%1$s;color:%2$s;border:1px solid %3$s;border-radius:6px;padding:10px 12px;min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:10px;', $style['background'], $style['color'], $style['border'] ) ); ?>"
+			>
+				<span><?php echo esc_html( $label ); ?></span>
+				<?php if ( $is_selected ) : ?>
+					<strong style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;"><?php echo esc_html__( 'Selected', 'skvn-marine-blocks' ); ?></strong>
+				<?php endif; ?>
+			</div>
+		<?php endforeach; ?>
+	</div>
 	<?php
 }
 

@@ -74,6 +74,8 @@ function skvn_marine_blocks_register_blocks() {
 		'slider',
 		'slide',
 		'accordion',
+		'card-grid',
+		'card',
 	);
 
 	foreach ( $blocks as $block ) {

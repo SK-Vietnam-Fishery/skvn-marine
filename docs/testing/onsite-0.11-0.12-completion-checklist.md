@@ -172,3 +172,35 @@ Final report format:
 - Console/PHP warnings:
 - Decision: approve closing 0.11/0.12? yes/no
 ```
+
+## Final Onsite Result — 2026-06-05
+
+Reported by human after launch:
+
+```text
+0.11/0.12 onsite pass result:
+- Footer admin/settings: PASS
+- Footer frontend: PASS
+- Header admin/settings: PASS
+- Header desktop: PASS
+- Header mobile: PASS
+- Product search: PASS
+- Article search: PASS
+- All-site search: PASS
+- Regression sweep: PASS
+- Console/PHP warnings: none reported
+- Decision: approve closing 0.11/0.12? yes
+```
+
+V1 launch smoke:
+
+```text
+- Accessibility pass
+- Mobile QA pass
+- SEO/GEO structure pass
+- Performance/asset loading review
+- No GeneratePress parent-theme changes
+- No external plugins committed to source repo
+- Human approves V1 launch readiness
+- n8n remains deferred/unexposed and is carried forward as a V1 -> V2 boundary review item.
+```

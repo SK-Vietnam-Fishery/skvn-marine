@@ -1664,12 +1664,24 @@ body.skvn-has-footer-page .site {
 	align-items: stretch;
 	display: grid !important;
 	gap: 1.5rem;
+	margin-inline: auto;
+	max-width: var(--skvn-wide-width);
+	width: 100%;
 }
 
-.skvn-card-grid > .wp-block-column {
+.skvn-card-grid > .wp-block-column,
+.skvn-card-grid > .wp-block-skvn-marine-card,
+.skvn-card-grid > .skvn-card,
+.skvn-card-grid > .wp-block-group {
 	flex: unset !important;
 	min-width: 0;
 	width: unset !important;
+}
+
+.skvn-card-grid > .wp-block-skvn-marine-card,
+.skvn-card-grid > .skvn-card,
+.skvn-card-grid > .wp-block-group {
+	height: 100%;
 }
 
 .skvn-card-grid.skvn-card-grid--2 {
@@ -1686,6 +1698,144 @@ body.skvn-has-footer-page .site {
 
 .skvn-card-grid.skvn-card-grid--5 {
 	grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.skvn-card-grid.skvn-card-grid--gap-sm {
+	gap: 1rem;
+}
+
+.skvn-card-grid.skvn-card-grid--gap-lg {
+	gap: 2rem;
+}
+
+.skvn-card-grid.skvn-card-grid--inset-none {
+	padding-inline: 0;
+}
+
+.skvn-card-grid.skvn-card-grid--inset-sm {
+	padding-inline: 0.75rem;
+}
+
+.skvn-card-grid.skvn-card-grid--inset-md {
+	padding-inline: 1.5rem;
+}
+
+.skvn-card-grid.skvn-card-grid--inset-lg {
+	padding-inline: 2rem;
+}
+
+.skvn-card-grid--content-left .skvn-card {
+	text-align: left;
+}
+
+.skvn-card-grid--content-center .skvn-card {
+	text-align: center;
+}
+
+.skvn-card-grid--content-right .skvn-card {
+	text-align: right;
+}
+
+.skvn-card-grid--content-justify .skvn-card {
+	text-align: left;
+}
+
+.skvn-card-grid--content-justify .skvn-card p {
+	text-align: justify;
+}
+
+.skvn-card-grid--content-center .skvn-card .wp-block-buttons {
+	justify-content: center;
+}
+
+.skvn-card-grid--content-right .skvn-card .wp-block-buttons {
+	justify-content: flex-end;
+}
+
+.skvn-card-grid--content-left .skvn-card .wp-block-buttons,
+.skvn-card-grid--content-justify .skvn-card .wp-block-buttons {
+	justify-content: flex-start;
+}
+
+.skvn-card-grid--equal-heights .skvn-card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.skvn-card-grid--equal-heights .skvn-card > .block-editor-inner-blocks,
+.skvn-card-grid--equal-heights .skvn-card > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+}
+
+.skvn-card-grid--card-style-elevated .skvn-card {
+	box-shadow: var(--skvn-shadow-card-hover);
+}
+
+.skvn-card-grid--card-style-bordered .skvn-card {
+	border-color: rgba(15, 92, 140, 0.28);
+	box-shadow: none;
+}
+
+.skvn-card-grid--card-style-featured .skvn-card,
+.skvn-card.skvn-card--featured {
+	border-color: rgba(30, 121, 190, 0.4);
+	box-shadow: 0 14px 34px rgba(8, 47, 73, 0.14);
+}
+
+.skvn-card.skvn-card--featured,
+.skvn-card.skvn-card--featured.skvn-card--pricing {
+	background: var(--skvn-color-sky-50);
+}
+
+.skvn-card.skvn-card--process-step {
+	overflow: hidden;
+	padding-top: 3rem;
+	position: relative;
+}
+
+.skvn-card__step-number {
+	color: rgba(30, 121, 190, 0.12);
+	font-size: 4.5rem;
+	font-weight: 900;
+	inset-block-start: 0.15rem;
+	inset-inline-end: 1rem;
+	line-height: 1;
+	pointer-events: none;
+	position: absolute;
+	z-index: 0;
+}
+
+.skvn-card.skvn-card--process-step > *:not(.skvn-card__step-number) {
+	position: relative;
+	z-index: 1;
+}
+
+.skvn-card.skvn-card--image-full-bleed > .wp-block-image:first-child {
+	margin: -1.25rem -1.25rem 1rem;
+}
+
+.skvn-card.skvn-card--image-full-bleed > .wp-block-image:first-child img {
+	aspect-ratio: 4 / 3;
+	border-radius: var(--skvn-radius-card) var(--skvn-radius-card) 0 0;
+	display: block;
+	height: auto;
+	object-fit: cover;
+	width: 100%;
+}
+
+.skvn-card.skvn-card--image-inset > .wp-block-image:first-child {
+	margin-block: 0 1rem;
+}
+
+.skvn-card.skvn-card--image-inset > .wp-block-image:first-child img {
+	aspect-ratio: 4 / 3;
+	border-radius: calc(var(--skvn-radius-card) * 0.75);
+	display: block;
+	object-fit: cover;
+	width: 100%;
 }
 
 .skvn-section__header--centered {
@@ -2365,6 +2515,10 @@ body.skvn-has-footer-page .site {
 	.skvn-card-grid.skvn-card-grid--4,
 	.skvn-card-grid.skvn-card-grid--5 {
 		grid-template-columns: 1fr;
+	}
+
+	.skvn-card-grid.skvn-card-grid--mobile-2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.skvn-trust-strip__item {

@@ -42,6 +42,14 @@ Brainstorm questions:
 - Do tag badges and category-count rows need theme-only patterns or plugin block controls?
 - What frontend behavior is purely styling vs. real plugin/search integration?
 
+Review result during `1.1.0 — Layout Blocks`:
+
+- `skvn-marine/card-grid` and `skvn-marine/card` can cover static or editor-curated card areas such as access CTA cards, KPI/support cards, and non-query feature/resource teaser cards.
+- The main resource/document list should not be forced into generic cards if it needs real query data, thumbnails/fallback icons, taxonomy badges, or access/status semantics. Keep a separate `resource-list` / Query Loop evaluation path.
+- Category/count rows need real WordPress data and should stay in the future taxonomy-count/search integration boundary, not the generic card-grid implementation.
+- Search styling can reuse theme-owned visual classes later, but search behavior remains WordPress/search-plugin owned.
+- Tag/status badges need governed classes or block controls later; do not solve them through raw Tailwind or generic card variants in 1.1.0.
+
 ## Candidate Contracts
 
 Theme classes to evaluate:

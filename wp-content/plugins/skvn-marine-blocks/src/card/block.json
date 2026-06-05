@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "skvn-marine/card",
+  "version": "1.1.0",
+  "title": "SKVN Card",
+  "category": "design",
+  "icon": "index-card",
+  "description": "Governed editable card for SKVN layout grids.",
+  "textdomain": "skvn-marine-blocks",
+  "attributes": {
+    "variant": {
+      "type": "string",
+      "default": "default"
+    },
+    "stepNumber": {
+      "type": "string",
+      "default": ""
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "imageTreatment": {
+      "type": "string",
+      "default": "full-bleed"
+    }
+  },
+  "supports": {
+    "html": false
+  }
+}

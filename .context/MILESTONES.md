@@ -55,7 +55,7 @@ Khi chuyển milestone:
 
 ### 1.1.0 — Layout Blocks
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
 
 Purpose:
 
@@ -73,20 +73,20 @@ Planning:
 
 Acceptance draft:
 
-- [ ] Footer background preset admin UI includes a stable swatch/preview treatment: dark backgrounds use light preview text, light backgrounds use dark preview text, and the native select remains accessible.
-- [ ] At least two real layout artifacts justify the same grid/card governance
-- [ ] Brainstorm trigger reviewed for `1.7.0 — Front page trang Chuyển đổi số`: identify which layout pieces can reuse card-grid/card, and which pieces need separate resource/search/taxonomy planning
-- [ ] Core block plus theme-pattern alternative is documented as too fragile or too slow for editors
-- [ ] `skvn-marine/card-grid` block exists in plugin
-- [ ] `skvn-marine/card` block exists in plugin
-- [ ] Blocks use `block.json`, TypeScript, and InnerBlocks
-- [ ] Card grid controls map inset, content alignment, image treatment, and equal-height presets to stable `skvn-*` classes
-- [ ] Editor preview matches frontend closely enough for layout decisions
-- [ ] Theme CSS implements all layout-critical `skvn-*` classes used by saved markup
-- [ ] No frontend JavaScript runtime is added unless a real interaction requires it
-- [ ] Layout blocks do not expose motion controls and do not depend on theme-only animation behavior
+- [x] Footer background preset admin UI includes a stable swatch/preview treatment: dark backgrounds use light preview text, light backgrounds use dark preview text, and the native select remains accessible.
+- [x] At least two real layout artifacts justify the same grid/card governance
+- [x] Brainstorm trigger reviewed for `1.7.0 — Front page trang Chuyển đổi số`: identify which layout pieces can reuse card-grid/card, and which pieces need separate resource/search/taxonomy planning
+- [x] Core block plus theme-pattern alternative is documented as too fragile or too slow for editors
+- [x] `skvn-marine/card-grid` block exists in plugin
+- [x] `skvn-marine/card` block exists in plugin
+- [x] Blocks use `block.json`, TypeScript, and InnerBlocks
+- [x] Card grid controls map inset, content alignment, image treatment, and equal-height presets to stable `skvn-*` classes
+- [x] Editor preview matches frontend closely enough for layout decisions
+- [x] Theme CSS implements all layout-critical `skvn-*` classes used by saved markup
+- [x] No frontend JavaScript runtime is added unless a real interaction requires it
+- [x] Layout blocks do not expose motion controls and do not depend on theme-only animation behavior
 - [ ] `skvn-marine/quote` is evaluated only after card-grid/card validation
-- [ ] Build passes for `skvn-marine-blocks`
+- [x] Build passes for `skvn-marine-blocks`
 - [ ] Human approves milestone completion
 
 ### 1.1.2 — Product Quote Flow & Map Block Testing

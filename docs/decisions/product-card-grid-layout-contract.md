@@ -69,3 +69,12 @@ Control rules:
 ```
 
 Dynamic WooCommerce product grid/list controls remain deferred unless human explicitly changes the product-block milestone scope.
+
+## 1.1.0 Layout Block Validation
+
+Two existing layout artifacts justify the same governed grid/card model:
+
+- `docs/artifacts/benchmark-templates/003-online-page-candidate.gutenberg.html` uses repeated product/category cards where grid inset, content alignment, and full-bleed image treatment need to stay consistent without raw class editing.
+- `docs/artifacts/page-blueprints/request-quote-gutenberg.md` uses repeated route/support cards; the render notes already flag the core Columns plus base `.skvn-card` approach as visually underweighted and too easy to drift through manual class handling.
+
+The core block plus theme-pattern alternative remains acceptable for one-off sections, but it is too fragile for repeated card artifacts because editors must remember a coupled wrapper/card class contract, column-count modifiers, CTA alignment classes, and image treatment rules. The `skvn-marine/card-grid` and `skvn-marine/card` blocks therefore map those choices to preset attributes and stable `skvn-*` classes while keeping content editable through InnerBlocks.

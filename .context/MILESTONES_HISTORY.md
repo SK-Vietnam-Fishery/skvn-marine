@@ -427,10 +427,10 @@ Acceptance:
 - [x] Onsite evidence confirms custom footer and fallback behavior.
 - [x] Human approves milestone completion after onsite evidence.
 
-Carry-forward target:
+Closed in 1.0.0 onsite launch pass:
 
-- V1 / 1.0.0 — run `docs/testing/footer-appearance-settings-0.11.0.md`.
-- V1 / 1.0.0 — run `docs/testing/onsite-0.11-0.12-completion-checklist.md`.
+- `docs/testing/footer-appearance-settings-0.11.0.md`.
+- `docs/testing/onsite-0.11-0.12-completion-checklist.md`.
 
 ---
 
@@ -469,10 +469,10 @@ Acceptance:
 - [x] Onsite evidence confirms keyboard/focus behavior for search and buttons.
 - [x] Human approves milestone completion after onsite evidence.
 
-Carry-forward target:
+Closed in 1.0.0 onsite launch pass:
 
-- V1 / 1.0.0 — run `docs/testing/header-actions-search-0.12.0.md`.
-- V1 / 1.0.0 — run `docs/testing/onsite-0.11-0.12-completion-checklist.md`.
+- `docs/testing/header-actions-search-0.12.0.md`.
+- `docs/testing/onsite-0.11-0.12-completion-checklist.md`.
 
 ---
 
