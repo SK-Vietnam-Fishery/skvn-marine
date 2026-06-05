@@ -25,6 +25,8 @@ skvn-product-card-grid--inset-md
 skvn-product-card-grid--inset-lg
 ```
 
+Default grid gutter comes from the same inner padding model used by section heading and lead text. This keeps the outer card edge aligned with the section text on desktop and prevents edge-sticking on mobile. Use inset presets only when cards need extra internal distance from the grid edge.
+
 Content alignment presets:
 
 ```text
