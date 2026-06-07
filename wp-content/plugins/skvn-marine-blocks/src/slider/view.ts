@@ -58,6 +58,9 @@ document
 					  }
 					: false,
 			effect: config.effect === 'fade' ? 'fade' : 'slide',
+			fadeEffect: {
+				crossFade: true,
+			},
 			keyboard: { enabled: true },
 			loop: Boolean( config.loop ),
 			navigation: config.arrows

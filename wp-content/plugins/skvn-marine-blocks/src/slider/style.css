@@ -88,11 +88,30 @@
 .skvn-slider--product-showcase .skvn-slide {
 	background: #f4f8fa;
 	color: #073b5a;
+	display: flex;
+	min-height: clamp(28rem, 58vh, 42rem);
 }
 
 .skvn-slider__showcase-layout {
 	align-items: center;
+	gap: clamp(1.5rem, 5vw, 4rem);
 	margin-block: 0;
+	margin-inline: auto;
+	width: min(100%, 72rem);
+}
+
+.skvn-slider--product-showcase .skvn-slide__background-image,
+.skvn-slider--product-showcase .skvn-slide__overlay,
+.skvn-slider--card-carousel .skvn-slide__background-image,
+.skvn-slider--card-carousel .skvn-slide__overlay {
+	display: none;
+}
+
+.skvn-slider--product-showcase .skvn-slide--has-background,
+.skvn-slider--product-showcase .skvn-slide--has-background :where(h1, h2, h3, h4, h5, h6, p),
+.skvn-slider--card-carousel .skvn-slide--has-background,
+.skvn-slider--card-carousel .skvn-slide--has-background :where(h1, h2, h3, h4, h5, h6, p) {
+	color: #073b5a;
 }
 
 .skvn-slider--product-showcase .wp-block-image,
@@ -101,6 +120,18 @@
 	border-radius: 0.5rem;
 	min-height: 12rem;
 	overflow: hidden;
+}
+
+.skvn-slider--product-showcase .wp-block-image img,
+.skvn-slider--card-carousel .wp-block-image img {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+.skvn-slider--product-showcase .wp-block-image img:not([src]),
+.skvn-slider--card-carousel .wp-block-image img:not([src]) {
+	display: none;
 }
 
 .skvn-slider--card-carousel .skvn-slide {

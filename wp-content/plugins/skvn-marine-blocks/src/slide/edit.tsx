@@ -3,9 +3,11 @@ import {
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
+	store as blockEditorStore,
 	useBlockProps,
 } from '@wordpress/block-editor';
 import { Button, PanelBody, RangeControl } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 const TEMPLATE = [
@@ -23,6 +25,7 @@ type SlideAttributes = {
 
 type SlideEditProps = {
 	attributes: SlideAttributes;
+	clientId: string;
 	setAttributes: ( attributes: Partial< SlideAttributes > ) => void;
 };
 
@@ -32,8 +35,30 @@ type SelectedImage = {
 	alt?: string;
 };
 
-export function Edit( { attributes, setAttributes }: SlideEditProps ) {
+export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) {
 	const hasImage = Boolean( attributes.backgroundImageUrl );
+	const parentSliderClientId = useSelect(
+		( select ) => {
+			const editor = select( blockEditorStore ) as {
+				getBlockName: ( blockClientId: string ) => string | null;
+				getBlockParents: ( blockClientId: string ) => string[];
+			};
+
+			return (
+				editor
+					.getBlockParents( clientId )
+					.find(
+						( parentClientId ) =>
+							editor.getBlockName( parentClientId ) ===
+							'skvn-marine/slider'
+					) || ''
+			);
+		},
+		[ clientId ]
+	);
+	const { selectBlock } = useDispatch( blockEditorStore ) as {
+		selectBlock: ( blockClientId: string ) => void;
+	};
 	const blockProps = useBlockProps( {
 		className: `skvn-slide skvn-slide--editor${
 			hasImage ? ' skvn-slide--has-background' : ''
@@ -57,6 +82,15 @@ export function Edit( { attributes, setAttributes }: SlideEditProps ) {
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<PanelBody title={ __( 'Slider settings', 'skvn-marine-blocks' ) }>
+					<Button
+						disabled={ ! parentSliderClientId }
+						onClick={ () => selectBlock( parentSliderClientId ) }
+						variant="secondary"
+					>
+						{ __( 'Open Slider settings', 'skvn-marine-blocks' ) }
+					</Button>
+				</PanelBody>
 				<PanelBody
 					title={ __( 'Background image', 'skvn-marine-blocks' ) }
 				>
