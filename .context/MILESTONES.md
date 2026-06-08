@@ -87,6 +87,42 @@ Acceptance draft:
 - [x] Onsite QA remains deferred to V1 / 1.2.9
 - [ ] Human approves milestone completion
 
+### 1.2.3 — SKVN Feature Showcase
+
+Status: **PENDING**
+
+Purpose:
+
+- Park and later activate the artifact-inspired `SKVN Feature Showcase` block.
+- Keep V1 / 1.2.1 limited to Slider Presets & Inserter while preserving drafted source for later.
+- Build a separate editorial showcase block rather than overloading the existing `SKVN Accordion`.
+- Use the human-approved mobile split state: intro/copy first, compact panel rail second.
+
+Planning:
+
+- `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`
+- `docs/decisions/feature-showcase-1.2.3.md`
+
+Parked source:
+
+- `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/`
+- Metadata is parked as `block.parked.json` until this milestone starts.
+
+Acceptance draft:
+
+- [ ] Human approves activating the parked block source
+- [ ] `SKVN Feature Showcase` appears under `SKVN Marine`
+- [ ] Block inserts useful editable sample content
+- [ ] Intro fields are editable
+- [ ] Four panel labels, headings, copy, and images are editable
+- [ ] Desktop expanding panel behavior works with hover and keyboard focus
+- [ ] Mobile uses the split intro plus panel rail state
+- [ ] Reduced-motion users do not receive forced panel animation
+- [ ] No Tailwind CDN, raw class input, or raw CSS input is required
+- [ ] Existing `SKVN Accordion` behavior remains unchanged
+- [ ] Plugin build passes
+- [ ] Onsite QA target is documented before milestone completion
+
 ### 1.2.9 — Slider & Motion Onsite QA
 
 Status: **PENDING**

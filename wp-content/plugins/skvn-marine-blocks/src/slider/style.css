@@ -73,16 +73,55 @@
 }
 
 .skvn-slider--hero .skvn-slide {
-	align-items: center;
+	align-items: flex-start;
 	background:
 		linear-gradient(135deg, rgba(7, 59, 90, 0.96), rgba(17, 119, 160, 0.82)),
 		#073b5a;
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	min-height: clamp(30rem, 68vh, 48rem);
+	padding-inline: max(clamp(1.5rem, 5vw, 4rem), calc((100vw - 72rem) / 2));
 }
 
-.skvn-slider--hero .skvn-slide__content {
+.skvn-slider--hero .skvn-slide__content,
+.skvn-slider--hero .skvn-slide > :not(.skvn-slide__background-image, .skvn-slide__overlay) {
 	max-width: 48rem;
+	width: 100%;
+}
+
+.skvn-slider--hero :where(h1, h2, h3, h4, h5, h6).wp-block-heading {
+	font-size: clamp(2.5rem, 6vw, 5.5rem);
+	font-weight: 800;
+	line-height: 0.98;
+	margin: 0;
+	text-shadow: 0 0.125rem 1.25rem rgba(0, 28, 45, 0.35);
+}
+
+.skvn-slider--hero .wp-block-paragraph,
+.skvn-slider--hero p {
+	font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+	line-height: 1.6;
+	margin-block: 1.25rem 0;
+	text-shadow: 0 0.0625rem 0.75rem rgba(0, 28, 45, 0.35);
+}
+
+.skvn-slider--hero .wp-block-buttons {
+	margin-block-start: 2rem;
+}
+
+.skvn-slider--hero .wp-block-button__link {
+	background: #fff;
+	border-radius: 999px;
+	color: #073b5a;
+	font-weight: 700;
+	padding: 0.85rem 1.35rem;
+}
+
+.skvn-slider--hero .wp-block-button__link:hover,
+.skvn-slider--hero .wp-block-button__link:focus {
+	background: #eaf7ff;
+	color: #073b5a;
 }
 
 .skvn-slider--product-showcase .skvn-slide {

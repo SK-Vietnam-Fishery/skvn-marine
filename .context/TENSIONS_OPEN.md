@@ -18,4 +18,3 @@ Milestone:  V1 / 1.0.0
 Status:     OPEN
 Resolved:
 Decision:   Lean toward: chỉ prepare, KHÔNG activate Polylang V1.
-

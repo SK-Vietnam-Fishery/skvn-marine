@@ -430,6 +430,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.1.2 | Product Quote Flow & Map Block Testing |
 | 1.2.0 | Slider Editor & Motion |
 | 1.2.1 | SKVN Slider Presets & Inserter |
+| 1.2.3 | SKVN Feature Showcase |
 | 1.2.9 | Slider & Motion Onsite QA |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.4.1 | Layout Blocks Validation & Quote Evaluation |
