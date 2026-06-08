@@ -22,6 +22,11 @@ import cardMetadata from './card/block.json';
 import { Edit as CardEdit } from './card/edit';
 import { save as cardSave } from './card/save';
 
+import featureShowcaseMetadata from './feature-showcase/block.json';
+import { Edit as FeatureShowcaseEdit } from './feature-showcase/edit';
+import { save as featureShowcaseSave } from './feature-showcase/save';
+import './feature-showcase/style.css';
+
 registerBlockType( accordionMetadata.name, {
 	...accordionMetadata,
 	edit: AccordionEdit,
@@ -51,4 +56,10 @@ registerBlockType( cardMetadata.name, {
 	...cardMetadata,
 	edit: CardEdit,
 	save: cardSave,
+} );
+
+registerBlockType( featureShowcaseMetadata.name, {
+	...featureShowcaseMetadata,
+	edit: FeatureShowcaseEdit,
+	save: featureShowcaseSave,
 } );

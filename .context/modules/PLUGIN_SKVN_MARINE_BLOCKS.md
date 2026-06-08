@@ -318,15 +318,15 @@ Implemented V1 / 1.2.1:
 - Card Carousel saves one responsive preset flag and maps it to Swiper 3/2/1 breakpoints without changing the runtime dependency.
 - Existing Slider serialization remains unchanged when the new preset attributes are absent/default.
 
-Planned V1 / 1.2.3 Feature Showcase:
+Implemented V1 / 1.2.3 Feature Showcase:
 
 - Planning file: `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`.
 - Decision doc: `docs/decisions/feature-showcase-1.2.3.md`.
 - Human-approved name: `SKVN Feature Showcase`.
 - Block slug: `skvn-marine/feature-showcase`.
-- Source may be parked under `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/`.
-- While parked, metadata must be named `block.parked.json` because the build pipeline auto-copies `block.json` files under `src/`.
-- During `1.2.1`, parked source must not be imported or registered from `src/index.ts`, must not appear in the inserter, and must not ship active build metadata.
+- Source is active under `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/`.
+- Metadata is `block.json` and the block is registered from `src/index.ts`.
+- Build output includes `build/feature-showcase/block.json`.
 - Do not overload the existing `SKVN Accordion`; Feature Showcase is a separate editorial image-panel block.
 - Mobile behavior should intentionally use the split state from the artifact: intro/copy first, compact panel rail second.
 

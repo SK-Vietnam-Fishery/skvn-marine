@@ -1,7 +1,7 @@
 # Feature Showcase — 1.2.3 Decision
 
 Date: 2026-06-08
-Status: planned; source parked
+Status: implemented; onsite QA pending
 Milestone: V1 / 1.2.3
 
 ## Decision
@@ -34,22 +34,19 @@ responsive design:
 - image labels become a compact panel rail
 - the layout avoids forcing hover-only behavior onto mobile users
 
-## Parking Decision
+## Activation Decision
 
-Initial source exists in `src/feature-showcase/`, but it is parked until V1 /
-1.2.3.
+Initial source existed in `src/feature-showcase/` and was parked during V1 /
+1.2.1. It was activated when V1 / 1.2.3 started.
 
-For V1 / 1.2.1:
+For V1 / 1.2.3:
 
-- the block must not be registered from `src/index.ts`
-- it must not appear in the Block Inserter
-- its metadata must stay named `block.parked.json`, not `block.json`, because
-  the build pipeline auto-copies `block.json` files under `src/`
-- generated build metadata for the block must not be shipped as active runtime
-  metadata
+- the block is registered from `src/index.ts`
+- it appears under the `SKVN Marine` Block Inserter category
+- metadata is named `block.json`
+- generated build metadata is emitted at `build/feature-showcase/block.json`
 
-This preserves the implementation draft without expanding the active 1.2.1
-milestone.
+The V1 / 1.2.1 parking decision is archived in tension history.
 
 ## Implementation Rules
 
@@ -61,20 +58,16 @@ milestone.
 - Support keyboard focus, not only hover.
 - Keep existing Accordion behavior unchanged.
 
-## Future Activation
-
-When V1 / 1.2.3 becomes active, review the parked source against this decision
-and the planning file before registering the block.
-
-Activation starts by renaming:
-
-```text
-wp-content/plugins/skvn-marine-blocks/src/feature-showcase/block.parked.json
--> wp-content/plugins/skvn-marine-blocks/src/feature-showcase/block.json
-```
+## Implementation Source
 
 Planning source:
 
 ```text
 .context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md
+```
+
+Onsite QA:
+
+```text
+docs/testing/onsite-feature-showcase-1.2.3.md
 ```

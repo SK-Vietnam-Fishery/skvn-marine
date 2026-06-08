@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKVN Marine Blocks
  * Description: Custom Gutenberg blocks for SKVN Marine.
- * Version: 1.2.1
+ * Version: 1.2.3
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Text Domain: skvn-marine-blocks
@@ -156,6 +156,7 @@ function skvn_marine_blocks_register_blocks() {
 		'accordion',
 		'card-grid',
 		'card',
+		'feature-showcase',
 	);
 
 	foreach ( $blocks as $block ) {
@@ -169,7 +170,7 @@ function skvn_marine_blocks_register_blocks() {
 			}
 
 			if (
-				in_array( $block, array( 'slider', 'slide' ), true ) &&
+				in_array( $block, array( 'slider', 'slide', 'feature-showcase' ), true ) &&
 				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
 			) {
 				$args['editor_style_handles'] = array( 'skvn-marine-blocks-editor' );
@@ -184,6 +185,13 @@ function skvn_marine_blocks_register_blocks() {
 				wp_style_is( 'skvn-marine-slider-view', 'registered' )
 			) {
 				$args['style_handles'] = array( 'skvn-marine-slider-view' );
+			}
+
+			if (
+				'feature-showcase' === $block &&
+				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
+			) {
+				$args['style_handles'] = array( 'skvn-marine-blocks-editor' );
 			}
 
 			if (

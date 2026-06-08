@@ -23,6 +23,10 @@ type FeatureShowcaseSaveProps = {
 	attributes: FeatureShowcaseAttributes;
 };
 
+function stripMarkup( value: string ) {
+	return value.replace( /<[^>]*>/g, '' ).trim();
+}
+
 export function save( { attributes }: FeatureShowcaseSaveProps ) {
 	const blockProps = useBlockProps.save( {
 		className: 'skvn-feature-showcase',
@@ -74,6 +78,9 @@ export function save( { attributes }: FeatureShowcaseSaveProps ) {
 				<div className="skvn-feature-showcase__panels">
 					{ items.map( ( item, index ) => (
 						<article
+							aria-label={ `Feature ${ index + 1 }: ${ stripMarkup(
+								item.heading
+							) }` }
 							className="skvn-feature-showcase__panel"
 							key={ index }
 							tabIndex={ 0 }

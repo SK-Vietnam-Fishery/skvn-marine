@@ -102,6 +102,11 @@
 	transition: flex 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.skvn-feature-showcase__panel:focus-visible {
+	outline: 2px solid #59a8ff;
+	outline-offset: -2px;
+}
+
 .skvn-feature-showcase__panel:last-child {
 	border-inline-end: 0;
 	flex: 1 1 auto;
@@ -113,10 +118,9 @@
 }
 
 .skvn-feature-showcase__panels .skvn-feature-showcase__panel:hover,
-.skvn-feature-showcase__panels .skvn-feature-showcase__panel:focus {
+.skvn-feature-showcase__panels .skvn-feature-showcase__panel:focus,
+.skvn-feature-showcase__panels .skvn-feature-showcase__panel:focus-within {
 	flex: 1 1 auto;
-	outline: 2px solid rgba(89, 168, 255, 0.85);
-	outline-offset: -2px;
 }
 
 .skvn-feature-showcase__image {
@@ -134,7 +138,8 @@
 
 .skvn-feature-showcase__panel:last-child .skvn-feature-showcase__image,
 .skvn-feature-showcase__panel:hover .skvn-feature-showcase__image,
-.skvn-feature-showcase__panel:focus .skvn-feature-showcase__image {
+.skvn-feature-showcase__panel:focus .skvn-feature-showcase__image,
+.skvn-feature-showcase__panel:focus-within .skvn-feature-showcase__image {
 	opacity: 0.92;
 	transform: scale(1);
 }
@@ -148,7 +153,8 @@
 }
 
 .skvn-feature-showcase__panel:hover .skvn-feature-showcase__panel-shade,
-.skvn-feature-showcase__panel:focus .skvn-feature-showcase__panel-shade {
+.skvn-feature-showcase__panel:focus .skvn-feature-showcase__panel-shade,
+.skvn-feature-showcase__panel:focus-within .skvn-feature-showcase__panel-shade {
 	opacity: 1;
 }
 
@@ -182,7 +188,8 @@
 }
 
 .skvn-feature-showcase__panel:hover .skvn-feature-showcase__panel-body,
-.skvn-feature-showcase__panel:focus .skvn-feature-showcase__panel-body {
+.skvn-feature-showcase__panel:focus .skvn-feature-showcase__panel-body,
+.skvn-feature-showcase__panel:focus-within .skvn-feature-showcase__panel-body {
 	opacity: 1;
 	transform: translateY(0);
 }
@@ -236,15 +243,19 @@
 	.skvn-feature-showcase__panel,
 	.skvn-feature-showcase__panel:last-child,
 	.skvn-feature-showcase__panels:hover .skvn-feature-showcase__panel,
-	.skvn-feature-showcase__panels:focus-within .skvn-feature-showcase__panel,
-	.skvn-feature-showcase__panels .skvn-feature-showcase__panel:hover,
-	.skvn-feature-showcase__panels .skvn-feature-showcase__panel:focus {
+	.skvn-feature-showcase__panels:focus-within .skvn-feature-showcase__panel {
 		flex: 0 0 3.75rem;
 		scroll-snap-align: start;
 	}
 
+	.skvn-feature-showcase__panels .skvn-feature-showcase__panel:hover,
+	.skvn-feature-showcase__panels .skvn-feature-showcase__panel:focus,
+	.skvn-feature-showcase__panels .skvn-feature-showcase__panel:focus-within {
+		flex: 0 0 min(82vw, 28rem);
+	}
+
 	.skvn-feature-showcase__panel-body {
-		display: none;
+		inset-inline: 3.75rem 1.25rem;
 	}
 
 	.skvn-feature-showcase__panel-shade {
@@ -254,7 +265,8 @@
 	.skvn-feature-showcase__image,
 	.skvn-feature-showcase__panel:last-child .skvn-feature-showcase__image,
 	.skvn-feature-showcase__panel:hover .skvn-feature-showcase__image,
-	.skvn-feature-showcase__panel:focus .skvn-feature-showcase__image {
+	.skvn-feature-showcase__panel:focus .skvn-feature-showcase__image,
+	.skvn-feature-showcase__panel:focus-within .skvn-feature-showcase__image {
 		opacity: 0.52;
 		transform: scale(1.05);
 	}

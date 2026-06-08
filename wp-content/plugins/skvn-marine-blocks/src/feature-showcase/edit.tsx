@@ -45,6 +45,10 @@ function getItems( items: FeatureItem[] = EMPTY_ITEMS ) {
 	return items.slice( 0, 4 );
 }
 
+function stripMarkup( value: string ) {
+	return value.replace( /<[^>]*>/g, '' ).trim();
+}
+
 export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) {
 	const blockProps = useBlockProps( { className: 'skvn-feature-showcase' } );
 	const items = getItems( attributes.items );
@@ -147,6 +151,9 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 				<div className="skvn-feature-showcase__panels">
 					{ items.map( ( item, index ) => (
 						<article
+							aria-label={ `${ __( 'Feature', 'skvn-marine-blocks' ) } ${
+								index + 1
+							}: ${ stripMarkup( item.heading ) }` }
 							className="skvn-feature-showcase__panel"
 							key={ index }
 							tabIndex={ 0 }
@@ -215,6 +222,36 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 										value={ item.imageId }
 									/>
 								</MediaUploadCheck>
+								{ item.imageUrl && (
+									<>
+										<TextControl
+											label={ __(
+												'Image alt text',
+												'skvn-marine-blocks'
+											) }
+											onChange={ ( imageAlt ) =>
+												setItem( index, { imageAlt } )
+											}
+											value={ item.imageAlt }
+										/>
+										<Button
+											isDestructive
+											onClick={ () =>
+												setItem( index, {
+													imageAlt: '',
+													imageId: 0,
+													imageUrl: '',
+												} )
+											}
+											variant="link"
+										>
+											{ __(
+												'Remove image',
+												'skvn-marine-blocks'
+											) }
+										</Button>
+									</>
+								) }
 							</div>
 						</article>
 					) ) }

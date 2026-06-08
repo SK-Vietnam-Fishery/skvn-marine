@@ -586,3 +586,45 @@ Deferred by explicit human decision:
 Next milestone:
 
 - V1 / 1.2.1 — SKVN Slider Presets & Inserter.
+
+---
+
+## V1 / 1.2.1 — SKVN Slider Presets & Inserter
+
+Status: **DONE — FRONTEND ARCHITECTURE FIX DEFERRED**
+Started: **2026-06-07**
+Completed: **2026-06-08**
+Approved by human: **2026-06-08**
+
+Purpose:
+
+- Register one `SKVN Marine` Block Inserter category.
+- Add Hero Slider, Product Showcase, and Card Carousel as variations/templates
+  over the existing Slider/Slide blocks and Swiper runtime.
+- Keep native Gutenberg stacked editing and List View operations.
+
+Acceptance:
+
+- [x] Human approved the add-and-see preset direction and rejected a custom slide manager for MVP.
+- [x] `SKVN Marine` appears as a dedicated Block Inserter category.
+- [x] Existing SKVN-owned blocks appear under `SKVN Marine`.
+- [x] Hero Slider, Product Showcase, and Card Carousel appear as inserter choices.
+- [x] Presets reuse `skvn-marine/slider`, `skvn-marine/slide`, and one Swiper runtime.
+- [x] No slide manager, selected-slide canvas, or setup modal was introduced.
+- [x] Native Gutenberg List View and block actions remain usable.
+- [x] Existing Slider serialization remained valid.
+- [x] Plugin build passed.
+- [x] Human approved milestone completion and transition to V1 / 1.2.3.
+
+Deferred:
+
+- Frontend Hero Slider media/content frame bug is documented in
+  `docs/testing/slider-frontend-media-content-layer-bug-1.2.1.md`.
+- The static markup workaround was rejected to avoid compound deprecation debt.
+- Dynamic Slider rendering architecture is planned for V1 / 1.3.0.
+- Slider/motion onsite QA must be reconciled with the V1 / 1.3.0 migration
+  before the deferred QA milestone is closed.
+
+Next milestone:
+
+- V1 / 1.2.3 — SKVN Feature Showcase.

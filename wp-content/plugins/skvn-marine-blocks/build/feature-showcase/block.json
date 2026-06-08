@@ -1,0 +1,85 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "skvn-marine/feature-showcase",
+  "version": "1.2.3",
+  "title": "SKVN Feature Showcase",
+  "category": "skvn-marine",
+  "icon": "excerpt-view",
+  "description": "Editorial feature showcase with expanding image panels and a mobile rail layout.",
+  "textdomain": "skvn-marine-blocks",
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "default": "Premium Ocean Catch"
+    },
+    "headingBefore": {
+      "type": "string",
+      "default": "Global"
+    },
+    "headingAccent": {
+      "type": "string",
+      "default": "Seafood"
+    },
+    "headingAfter": {
+      "type": "string",
+      "default": "Exporter"
+    },
+    "intro": {
+      "type": "string",
+      "default": "Premium wild-caught seafood prepared for demanding buyers in the United States, Japan, and the European Union."
+    },
+    "metaLabel": {
+      "type": "string",
+      "default": "Compliance Standards"
+    },
+    "metaText": {
+      "type": "string",
+      "default": "HACCP - BRC GLOBAL - IFS"
+    },
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "kicker": "01 . OCEAN GROUPER",
+          "heading": "Ocean Grouper Fillet",
+          "copy": "Wild-caught grouper prepared for premium restaurant and export programs.",
+          "imageId": 0,
+          "imageUrl": "",
+          "imageAlt": ""
+        },
+        {
+          "kicker": "02 . IQF TUNNEL FREEZING",
+          "heading": "IQF Freezing Technology",
+          "copy": "Fast freezing preserves texture, freshness, and product consistency.",
+          "imageId": 0,
+          "imageUrl": "",
+          "imageAlt": ""
+        },
+        {
+          "kicker": "03 . BARRAMUNDI",
+          "heading": "Premium Barramundi",
+          "copy": "Sustainably prepared seafood for retail and foodservice buyers.",
+          "imageId": 0,
+          "imageUrl": "",
+          "imageAlt": ""
+        },
+        {
+          "kicker": "04 . EXPORT PROCESSING PLANT",
+          "heading": "Global Standard Processing",
+          "copy": "Controlled processing environments support demanding export requirements.",
+          "imageId": 0,
+          "imageUrl": "",
+          "imageAlt": ""
+        }
+      ]
+    }
+  },
+  "supports": {
+    "align": [
+      "wide",
+      "full"
+    ],
+    "html": false
+  }
+}

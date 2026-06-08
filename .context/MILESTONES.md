@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.2.1 — SKVN Slider Presets & Inserter**
+Current: **V1 / 1.2.3 — SKVN Feature Showcase**
 Status: **IN_PROGRESS**
-Started: **2026-06-07**
+Started: **2026-06-08**
 
 AGENTS.md current milestone phải match file này.
 
@@ -54,42 +54,9 @@ Khi chuyển milestone:
 
 ## Current V1.x Checkpoint
 
-### 1.2.1 — SKVN Slider Presets & Inserter
-
-Status: **IN_PROGRESS**
-
-Purpose:
-
-- Make SKVN-owned blocks immediately discoverable under one `SKVN Marine` Block Inserter category.
-- Expose three add-and-see Slider presets: Hero Slider, Product Showcase, and Card Carousel.
-- Reuse the existing Slider/Slide blocks and Swiper runtime through native Gutenberg variations/templates.
-- Keep the stacked editor and native Gutenberg List View/actions; do not build a slide manager.
-
-Planning:
-
-- `.context/planning/015_VERSION_1_2_1_SKVN_SLIDER_PRESETS_AND_INSERTER_PLANNING.md`
-- `docs/decisions/slider-presets-and-inserter-1.2.1.md`
-- Init prompt: `docs/artifacts/init-prompt-v1-1.2.1-slider-presets.md`
-
-Acceptance draft:
-
-- [x] Human approves the add-and-see preset direction and rejects a custom slide manager for MVP
-- [x] `SKVN Marine` appears as a dedicated Block Inserter category
-- [x] Existing SKVN-owned blocks appear under `SKVN Marine`
-- [x] `SKVN Hero Slider` appears as an inserter choice with useful editable sample content
-- [x] `SKVN Product Showcase` appears as an inserter choice with a flow-based media/content split
-- [x] `SKVN Card Carousel` appears as an inserter choice with responsive 3/2/1 slides per view
-- [x] Presets reuse `skvn-marine/slider`, `skvn-marine/slide`, and one Swiper runtime
-- [x] No slide manager, selected-slide canvas, or setup modal is introduced
-- [x] Native Gutenberg List View and block actions remain usable
-- [x] Existing Slider content remains valid
-- [x] Plugin build passes
-- [x] Onsite QA remains deferred to V1 / 1.2.9
-- [ ] Human approves milestone completion
-
 ### 1.2.3 — SKVN Feature Showcase
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
 
 Purpose:
 
@@ -103,25 +70,25 @@ Planning:
 - `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`
 - `docs/decisions/feature-showcase-1.2.3.md`
 
-Parked source:
+Source:
 
 - `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/`
-- Metadata is parked as `block.parked.json` until this milestone starts.
+- Metadata is active as `block.json`.
 
 Acceptance draft:
 
-- [ ] Human approves activating the parked block source
-- [ ] `SKVN Feature Showcase` appears under `SKVN Marine`
-- [ ] Block inserts useful editable sample content
-- [ ] Intro fields are editable
-- [ ] Four panel labels, headings, copy, and images are editable
-- [ ] Desktop expanding panel behavior works with hover and keyboard focus
-- [ ] Mobile uses the split intro plus panel rail state
-- [ ] Reduced-motion users do not receive forced panel animation
-- [ ] No Tailwind CDN, raw class input, or raw CSS input is required
-- [ ] Existing `SKVN Accordion` behavior remains unchanged
-- [ ] Plugin build passes
-- [ ] Onsite QA target is documented before milestone completion
+- [x] Human approves activating the parked block source
+- [x] `SKVN Feature Showcase` appears under `SKVN Marine`
+- [x] Block inserts useful editable sample content
+- [x] Intro fields are editable
+- [x] Four panel labels, headings, copy, and images are editable
+- [x] Desktop expanding panel behavior supports hover and keyboard focus in source
+- [x] Mobile uses the split intro plus panel rail state in source
+- [x] Reduced-motion users do not receive forced panel animation
+- [x] No Tailwind CDN, raw class input, or raw CSS input is required
+- [x] Existing `SKVN Accordion` behavior remains unchanged
+- [x] Plugin build passes
+- [x] Onsite QA target is documented before milestone completion
 
 ### 1.2.9 — Slider & Motion Onsite QA
 
@@ -298,6 +265,62 @@ Acceptance draft:
 - [ ] `skvn-marine/quote` is evaluated after validation evidence is available
 - [ ] Any source defects found during validation are fixed and re-tested
 - [ ] Human approves closing the deferred `1.1.0` validation
+
+### 1.5.0 — Fullscreen Step Slider
+
+Status: **PENDING**
+
+Purpose:
+
+- Add a dedicated fullscreen process/timeline Slider block for urgent landing
+  page storytelling needs.
+- Build it on top of the V1 / 1.3.0 dynamic Slider rendering foundation instead
+  of creating a second Slider engine.
+- Provide bottom tab navigation with per-step progress, media/content layers,
+  and motion presets suitable for sequential process narratives.
+- Keep Gutenberg-native editing with InnerBlocks and child step blocks; do not
+  switch to a `slides` array or custom slide repeater.
+
+Planning:
+
+- `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`
+- `docs/decisions/fullscreen-step-slider-1.5.0.md`
+- External research input: `fullscreen-step-slider-report.md`
+
+Dependencies:
+
+- V1 / 1.3.0 dynamic Slider render architecture must be complete enough to
+  provide shared render, media/content, Swiper, reduced-motion, and deploy
+  artifact conventions.
+- Reconcile whether V1 / 1.3.1 Slider migration QA runs before or alongside
+  this milestone.
+
+Constraints:
+
+- Implement as separate blocks such as `skvn-marine/step-slider` and
+  `skvn-marine/step-slide`, not as a fourth variation of `skvn-marine/slider`.
+- Reuse Swiper; do not introduce a custom autoplay timer/controller that
+  competes with Swiper.
+- Use governed presets for height, overlay, motion, CTA, and tab styling instead
+  of raw arbitrary color, pixel, timing, or class inputs.
+- Preserve keyboard navigation, touch behavior, reduced-motion fallback, and
+  no-JS readability.
+- Do not include video support unless the milestone explicitly budgets media
+  performance, inactive-slide pause, poster, and mobile autoplay behavior.
+
+Acceptance draft:
+
+- [ ] Architecture contract is approved before source implementation
+- [ ] `skvn-marine/step-slider` and `skvn-marine/step-slide` ownership is documented
+- [ ] Step Slider uses dynamic PHP render and shared Slider foundation
+- [ ] Editor uses Gutenberg-native InnerBlocks/List View operations
+- [ ] Bottom tab navigation reflects slide order and active state
+- [ ] Progress bar synchronizes with Swiper autoplay, click, hover/focus pause, and reduced motion
+- [ ] Wipe/text motion uses governed presets and has reduced-motion fallback
+- [ ] Mobile tab UI remains readable without overflow
+- [ ] No custom slide manager, `slides` array, or second runtime is introduced
+- [ ] Plugin build, PHP syntax checks, deploy artifact audit, and onsite QA pass
+- [ ] Human approves milestone completion
 
 ### 1.6.0 — SKVN Surface Presets
 

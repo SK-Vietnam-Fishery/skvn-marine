@@ -1,8 +1,8 @@
 # Version 1.2.3 — SKVN Feature Showcase Planning
 
-Status: planned
+Status: implemented; onsite QA pending
 Created: 2026-06-08
-Human direction: park implementation until 1.2.3
+Human direction: activate implementation in 1.2.3
 
 ## Purpose
 
@@ -53,27 +53,22 @@ Reasons:
 - It needs a different saved structure and responsive behavior.
 - Naming it Accordion would confuse editors and future QA.
 
-## Parked Code
+## Activated Code
 
-Initial source was drafted during 1.2.1 and intentionally parked:
+Initial source was drafted during 1.2.1, parked, then activated when V1 / 1.2.3
+started:
 
-- `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/block.parked.json`
+- `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/block.json`
 - `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/edit.tsx`
 - `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/save.tsx`
 - `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/style.css`
 
-For 1.2.1 it must remain inactive:
+Activation completed:
 
-- do not import/register it from `src/index.ts`
-- do not ship `build/feature-showcase/block.json`
-- do not include its CSS in `style-index.ts.css`
-
-Parking note:
-
-- The metadata file is named `block.parked.json` during 1.2.1 because the
-  WordPress build pipeline auto-copies every `block.json` under `src/`.
-- When 1.2.3 starts, rename it back to `block.json`, import/register the block
-  from `src/index.ts`, then rebuild.
+- metadata is named `block.json`
+- `src/index.ts` imports/registers the block
+- `style.css` is included in the editor/frontend style bundle
+- `build/feature-showcase/block.json` is emitted by the build
 
 ## Responsive Contract
 
@@ -114,15 +109,15 @@ Mobile:
 
 ## Acceptance Draft
 
-- [ ] Human approves activating the parked block source.
-- [ ] `SKVN Feature Showcase` appears under `SKVN Marine`.
-- [ ] Block inserts useful editable sample content.
-- [ ] Intro fields are editable.
-- [ ] Four panel labels, headings, copy, and images are editable.
-- [ ] Desktop expanding panel behavior works with hover and keyboard focus.
-- [ ] Mobile uses the split intro plus panel rail state.
-- [ ] Reduced-motion users do not receive forced panel animation.
-- [ ] No Tailwind CDN, raw class input, or raw CSS input is required.
-- [ ] Existing `SKVN Accordion` behavior remains unchanged.
-- [ ] Plugin build passes.
-- [ ] Onsite QA target is documented before milestone completion.
+- [x] Human approves activating the parked block source.
+- [x] `SKVN Feature Showcase` appears under `SKVN Marine`.
+- [x] Block inserts useful editable sample content.
+- [x] Intro fields are editable.
+- [x] Four panel labels, headings, copy, and images are editable.
+- [x] Desktop expanding panel behavior supports hover and keyboard focus in source.
+- [x] Mobile uses the split intro plus panel rail state in source.
+- [x] Reduced-motion users do not receive forced panel animation.
+- [x] No Tailwind CDN, raw class input, or raw CSS input is required.
+- [x] Existing `SKVN Accordion` behavior remains unchanged.
+- [x] Plugin build passes.
+- [x] Onsite QA target is documented before milestone completion.

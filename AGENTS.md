@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.2.1 — SKVN Slider Presets & Inserter**
+Current milestone: **V1 / 1.2.3 — SKVN Feature Showcase**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -435,6 +435,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.0 | Slider Dynamic Rendering Architecture |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.4.1 | Layout Blocks Validation & Quote Evaluation |
+| 1.5.0 | Fullscreen Step Slider |
 | 1.6.0 | SKVN Surface Presets |
 | 1.7.0 | Front page trang Chuyển đổi số |
 
