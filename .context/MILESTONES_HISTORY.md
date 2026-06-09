@@ -628,3 +628,48 @@ Deferred:
 Next milestone:
 
 - V1 / 1.2.3 — SKVN Feature Showcase.
+
+---
+
+## V1 / 1.2.3 — SKVN Feature Showcase
+
+Status: **DONE — ONSITE QA CARRIED TO 1.2.9**
+Started: **2026-06-08**
+Completed: **2026-06-09**
+Approved by human: **2026-06-09**
+
+Purpose:
+
+- Activate and refactor `SKVN Feature Showcase` into a reusable panel-only block.
+- Keep the B2B seafood editorial intro as an optional theme pattern.
+- Preserve the existing standard Accordion as a separate content contract.
+
+Completed:
+
+- [x] Registered `skvn-marine/feature-showcase` under `SKVN Marine`.
+- [x] Added editable panel count, order, label, heading, copy, image, and ALT.
+- [x] Added horizontal and vertical desktop layouts.
+- [x] Added desktop hover/focus activation and mobile tap disclosure.
+- [x] Added governed Ocean, Deep navy, Marine teal, and Fresh sky color packages.
+- [x] Preserved native `details`/`summary`, keyboard access, no-JS readability,
+      and reduced-motion fallback.
+- [x] Prevented active-panel collapse and image/content flashing.
+- [x] Improved panel response by animating `flex-grow` instead of the full
+      `flex` shorthand.
+- [x] Added the `B2B Seafood Feature Showcase` theme pattern.
+- [x] Restored Gutenberg normal/wide/full width semantics under
+      `SKVN Full Width Canvas`.
+- [x] Documented the full-width surface plus governed inner-container contract.
+- [x] Plugin build, PHP lint, diff check, and context consistency passed.
+
+Carried to V1 / 1.2.9:
+
+- Onsite Feature Showcase interaction and responsive verification.
+- Real Media Library image and ALT verification.
+- B2B pattern editor/frontend parity.
+- Full Width Canvas normal, wide, and full alignment verification.
+- Legacy saved-pattern compatibility verification.
+
+Next milestone:
+
+- V1 / 1.2.9 — Slider & Motion Onsite QA.

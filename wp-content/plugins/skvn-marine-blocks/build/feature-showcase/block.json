@@ -34,6 +34,16 @@
         "none"
       ]
     },
+    "gradientPreset": {
+      "type": "string",
+      "default": "",
+      "enum": [
+        "",
+        "deep-navy",
+        "marine-teal",
+        "fresh-sky"
+      ]
+    },
     "items": {
       "type": "array",
       "default": [

@@ -1,7 +1,7 @@
 # Feature Showcase — 1.2.3 Decision
 
 Date: 2026-06-08
-Status: source implemented; onsite QA pending
+Status: milestone complete; onsite QA carried to V1 / 1.2.9
 Milestone: V1 / 1.2.3
 
 ## Updated Decision — Panel-Only Block
@@ -37,6 +37,11 @@ Approved implementation:
 - fine-pointer desktop devices activate panels on hover
 - touch/coarse-pointer devices keep tap activation
 - enhanced summary clicks prevent the native close-then-reopen toggle frame
+- gradient styling is governed by contrast-safe presets, not raw colors
+- each gradient preset controls panel, rail, overlay, heading, copy, label,
+  index, and border colors as one package
+- the light `Fresh sky` preset uses dark navy/slate text and a light image
+  overlay
 - horizontal and vertical desktop layouts share the same markup
 - mobile supports `accordion` and `hidden`
 - panel count is not capped at four
@@ -95,6 +100,7 @@ The V1 / 1.2.1 parking decision is archived in tension history.
 - Do not use Tailwind CDN.
 - Do not save raw Tailwind classes as production content.
 - Do not expose raw CSS or arbitrary class input to editors.
+- Do not expose raw gradient or color values; use approved contrast packages.
 - Preserve `prefers-reduced-motion`.
 - Support keyboard focus, not only hover.
 - Keep existing Accordion behavior unchanged.
@@ -119,8 +125,27 @@ Core Group / Columns
 └── SKVN Feature Showcase panel-only block
 ```
 
-The pattern may be implemented later as a WordPress pattern. The block itself
-must stay reusable without the text stack.
+The pattern is implemented as:
+
+```text
+wp-content/themes/skvn-marine/patterns/b2b-seafood-feature-showcase.php
+```
+
+Its layout contract is:
+
+```text
+Outer alignfull Group with layout: default
+└── Named inner Columns grid constrained to --skvn-wide-width
+```
+
+The outer Group owns the full-width background and section padding. The inner
+grid owns centering and readable maximum width. Do not use a constrained outer
+Group for this composition because Gutenberg will apply `contentSize` to the
+Columns child. The block itself must stay reusable without the text stack.
+
+`SKVN Full Width Canvas` only opens the GeneratePress shell. It preserves
+Gutenberg's three width levels: normal blocks use `--skvn-content-width`,
+`.alignwide` uses `--skvn-wide-width`, and only `.alignfull` fills the canvas.
 
 ## Implementation Source
 

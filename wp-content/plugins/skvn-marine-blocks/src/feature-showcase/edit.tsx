@@ -44,7 +44,12 @@ function getClassName( attributes: FeatureShowcaseAttributes ) {
 		'skvn-feature-showcase--editor',
 		`skvn-feature-showcase--${ attributes.desktopLayout }`,
 		`skvn-feature-showcase--mobile-${ attributes.mobileBehavior }`,
-	].join( ' ' );
+		attributes.gradientPreset
+			? `skvn-feature-showcase--gradient-${ attributes.gradientPreset }`
+			: '',
+	]
+		.filter( Boolean )
+		.join( ' ' );
 }
 
 export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) {
@@ -141,6 +146,36 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 							},
 						] }
 						value={ attributes.defaultOpen }
+					/>
+				</PanelBody>
+				<PanelBody title={ __( 'Style', 'skvn-marine-blocks' ) }>
+					<SelectControl
+						label={ __( 'Gradient background', 'skvn-marine-blocks' ) }
+						onChange={ ( gradientPreset ) =>
+							setAttributes( {
+								gradientPreset:
+									gradientPreset as FeatureShowcaseAttributes[ 'gradientPreset' ],
+							} )
+						}
+						options={ [
+							{
+								label: __( 'Ocean', 'skvn-marine-blocks' ),
+								value: '',
+							},
+							{
+								label: __( 'Deep navy', 'skvn-marine-blocks' ),
+								value: 'deep-navy',
+							},
+							{
+								label: __( 'Marine teal', 'skvn-marine-blocks' ),
+								value: 'marine-teal',
+							},
+							{
+								label: __( 'Fresh sky', 'skvn-marine-blocks' ),
+								value: 'fresh-sky',
+							},
+						] }
+						value={ attributes.gradientPreset }
 					/>
 				</PanelBody>
 			</InspectorControls>

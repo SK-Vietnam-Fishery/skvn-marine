@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.2.3 — SKVN Feature Showcase**
+Current: **V1 / 1.2.9 — Slider & Motion Onsite QA**
 Status: **IN_PROGRESS**
-Started: **2026-06-08**
+Started: **2026-06-09**
 
 AGENTS.md current milestone phải match file này.
 
@@ -54,59 +54,23 @@ Khi chuyển milestone:
 
 ## Current V1.x Checkpoint
 
-### 1.2.3 — SKVN Feature Showcase
-
-Status: **IN_PROGRESS**
-
-Purpose:
-
-- Activate and refactor the artifact-inspired `SKVN Feature Showcase` block into
-  a reusable panel group.
-- Keep V1 / 1.2.1 limited to Slider Presets & Inserter while preserving drafted source for later.
-- Build a separate feature panel block rather than overloading the existing `SKVN Accordion`.
-- Move the surrounding B2B seafood intro/meta typography into a pattern, not
-  required block attributes.
-
-Planning:
-
-- `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`
-- `docs/decisions/feature-showcase-1.2.3.md`
-
-Source:
-
-- `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/`
-- Metadata is active as `block.json`.
-
-Acceptance draft:
-
-- [x] Human approves activating the parked block source
-- [x] `SKVN Feature Showcase` appears under `SKVN Marine`
-- [x] Block inserts useful editable sample content
-- [x] Block contract is refactored to panel-only, with no required intro/meta text stack
-- [x] Panel count can be changed by editors
-- [x] Desktop layout direction can be changed by editors
-- [x] Panel labels, headings, copy, and images are editable
-- [x] Desktop expanding panel behavior supports hover and keyboard focus in source
-- [x] Mobile uses compact headers with focus/tap reveal behavior
-- [x] Reduced-motion users do not receive forced panel animation
-- [x] No Tailwind CDN, raw class input, or raw CSS input is required
-- [x] Existing `SKVN Accordion` behavior remains unchanged
-- [x] Plugin build passes
-- [x] Onsite QA target is documented before milestone completion
-
 ### 1.2.9 — Slider & Motion Onsite QA
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
+Started: **2026-06-09**
 
 Purpose:
 
 - Consolidate onsite QA deferred from 1.2.0 and 1.2.1.
 - Verify Slider image editing, preset insertion, frontend Swiper behavior, Accordion interaction, Card motion, accessibility, responsive behavior, and fallbacks.
+- Verify Feature Showcase interaction, gradient presets, B2B pattern composition,
+  and Gutenberg normal/wide/full alignment behavior carried from 1.2.3.
 - Keep implementation milestones moving without falsely marking unrun onsite tests as passed.
 
 Testing:
 
 - `docs/testing/onsite-slider-motion-1.2.9.md`
+- `docs/testing/onsite-feature-showcase-1.2.3.md`
 
 Acceptance draft:
 
@@ -116,6 +80,9 @@ Acceptance draft:
 - [ ] Human verifies Slider keyboard, autoplay, reduced-motion, navigation, and responsive behavior
 - [ ] Human verifies Accordion interaction and accessibility
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
+- [ ] Human verifies Feature Showcase desktop hover/focus, mobile tap, gradients, and images
+- [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
+- [ ] Human verifies Full Width Canvas preserves normal, wide, and full Gutenberg alignment semantics
 - [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
 - [ ] Any source defects are fixed and re-tested
 - [ ] Human approves closing consolidated Slider/Motion QA

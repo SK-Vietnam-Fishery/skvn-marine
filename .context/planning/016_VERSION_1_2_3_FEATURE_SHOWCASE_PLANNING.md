@@ -1,6 +1,6 @@
 # Version 1.2.3 — SKVN Feature Showcase Planning
 
-Status: source implemented; onsite QA pending
+Status: milestone complete; onsite QA carried to V1 / 1.2.9
 Created: 2026-06-08
 Human direction: activate implementation in 1.2.3
 

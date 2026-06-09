@@ -58,6 +58,46 @@ Current token intent:
 - `SKVN Adaptive Grid` is the planned SKVN-owned auto-responsive grid contract. It should use SKVN presets such as min item width/density instead of exposing a raw column count.
 - `SKVN Adaptive Grid` contract documentation belongs to milestone `0.7.1`; custom block/editor control implementation remains deferred to `0.8.0` unless human explicitly changes scope.
 
+## [manual] Gutenberg Width And Canvas Contract
+
+`SKVN Full Width Canvas` opens the GeneratePress page shell; it must not make
+every top-level Gutenberg block full width.
+
+Required frontend width semantics:
+
+```text
+Top-level block without alignment -> --skvn-content-width
+Top-level .alignwide             -> --skvn-wide-width
+Top-level .alignfull             -> full page canvas
+```
+
+Implementation rules:
+
+- `.skvn-full-width-canvas` may remove GeneratePress shell width, margin,
+  padding, and sidebar constraints.
+- Do not apply `max-width: none` to every `.entry-content > *`.
+- A full-width marketing pattern should use an outer `alignfull` Group with
+  `layout: default`.
+- The outer Group owns surface background and section padding.
+- A named inner grid owns `max-width: var(--skvn-wide-width)`, `width: 100%`,
+  and `margin-inline: auto`.
+- Do not increase global `theme.json` `contentSize` to repair one pattern.
+- Do not depend on generated `wp-container-*` classes.
+- Do not use `!important` to defeat Gutenberg constrained layout.
+
+Agent debugging checklist:
+
+1. Inspect the saved Gutenberg comment markup and the rendered frontend HTML.
+2. Record the block's `align` and `layout.type`.
+3. Inspect ancestor classes: `body`, `.site`, `.site-content`,
+   `.entry-content`, and direct block wrapper.
+4. Compare computed `width`, `max-width`, and horizontal margins at each
+   ancestor.
+5. Search theme CSS for `.entry-content > *`, `.alignwide`, `.alignfull`,
+   `contentSize`, and `wideSize` before changing component CSS.
+6. Fix the owning layout layer instead of forcing width inside the custom
+   block.
+
 ## [manual] Page Display Controls
 
 - 0.5.1 introduces page-level controls for marketing-owned pages that need alternate chrome.

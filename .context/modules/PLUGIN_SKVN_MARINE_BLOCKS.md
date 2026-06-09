@@ -334,6 +334,11 @@ Implemented V1 / 1.2.3 Feature Showcase:
 - `src/feature-showcase/view.ts` progressively enhances that markup to keep exactly one panel active, close siblings when another panel opens, and prevent the active/only panel from collapsing into an empty surface.
 - On fine-pointer devices, panel hover activates the corresponding `details`; on touch/coarse-pointer devices, summary tap remains the activation path.
 - Enhanced summary clicks prevent the native details toggle before activating the target, avoiding a transient all-closed flash.
+- Feature Showcase gradient choices are governed contrast packages: Ocean,
+  Deep navy, Marine teal, and Fresh sky. A package controls the panel, rail,
+  overlay, text, label, index, and border colors together.
+- Fresh sky uses dark text and a light image overlay; editors do not enter raw
+  colors or gradients.
 - The first activated static markup is preserved through a Gutenberg deprecation and legacy CSS until old content is resaved.
 
 0.5.1 brand-mapping contract:

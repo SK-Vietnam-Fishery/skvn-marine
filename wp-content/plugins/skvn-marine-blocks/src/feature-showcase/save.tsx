@@ -10,7 +10,12 @@ function getClassName( attributes: FeatureShowcaseAttributes ) {
 		'skvn-feature-showcase',
 		`skvn-feature-showcase--${ attributes.desktopLayout }`,
 		`skvn-feature-showcase--mobile-${ attributes.mobileBehavior }`,
-	].join( ' ' );
+		attributes.gradientPreset
+			? `skvn-feature-showcase--gradient-${ attributes.gradientPreset }`
+			: '',
+	]
+		.filter( Boolean )
+		.join( ' ' );
 }
 
 function isInitiallyOpen(

@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.2.3 — SKVN Feature Showcase**
+Current milestone: **V1 / 1.2.9 — Slider & Motion Onsite QA**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 

@@ -921,17 +921,22 @@ body.skvn-has-footer-page .site {
 }
 
 .skvn-full-width-canvas .entry-content > * {
-	margin-left: 0;
-	margin-right: 0;
-	max-width: none;
+	box-sizing: border-box;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: var(--skvn-content-width);
 	width: 100%;
+}
+
+.skvn-full-width-canvas .entry-content > .alignwide {
+	max-width: var(--skvn-wide-width);
 }
 
 .skvn-full-width-canvas .entry-content > .alignfull {
 	box-sizing: border-box;
 	margin-left: 0;
 	margin-right: 0;
-	max-width: 100%;
+	max-width: none;
 	width: 100%;
 }
 
@@ -2724,5 +2729,98 @@ body.skvn-has-footer-page .site {
 
 	.skvn-map-contact__card {
 		padding: 1.5rem;
+	}
+}
+.skvn-b2b-showcase-pattern {
+	background: #0d151d;
+	color: #f8fbff;
+	padding: clamp(2rem, 4vw, 4rem);
+}
+
+.skvn-b2b-showcase-pattern__grid {
+	gap: clamp(2rem, 5vw, 4rem);
+	margin-inline: auto;
+	max-width: var(--skvn-wide-width);
+	width: 100%;
+}
+
+.skvn-b2b-showcase-pattern.is-layout-constrained
+	> .skvn-b2b-showcase-pattern__grid {
+	max-width: var(--skvn-wide-width);
+}
+
+.skvn-b2b-editorial {
+	display: flex;
+	flex-direction: column;
+	min-height: 30rem;
+	padding-block: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.skvn-b2b-editorial__eyebrow,
+.skvn-b2b-editorial__meta-label {
+	color: #59a8ff;
+	font-size: 0.75rem;
+	letter-spacing: 0.18em;
+	line-height: 1.4;
+	margin: 0 0 1rem;
+	text-transform: uppercase;
+}
+
+.skvn-b2b-editorial__heading {
+	color: #fff;
+	font-size: clamp(2.75rem, 5vw, 4.75rem);
+	font-weight: 300;
+	letter-spacing: 0;
+	line-height: 0.98;
+	margin: 0;
+}
+
+.skvn-b2b-editorial__heading-accent {
+	color: #dcecff;
+	font-weight: 700;
+}
+
+.skvn-b2b-editorial__copy {
+	border-top: 1px solid rgba(148, 163, 184, 0.45);
+	color: #a8b6c8;
+	font-size: 0.95rem;
+	line-height: 1.8;
+	margin: 1.75rem 0 0;
+	padding-block-start: 1.75rem;
+}
+
+.skvn-b2b-editorial__meta {
+	margin-block-start: auto;
+	padding-block-start: 2rem;
+}
+
+.skvn-b2b-editorial__meta-text {
+	color: #a8b6c8;
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	margin: 0;
+	text-transform: uppercase;
+}
+
+.skvn-b2b-showcase-pattern__panels {
+	min-width: 0;
+}
+
+@media (max-width: 781px) {
+	.skvn-b2b-showcase-pattern {
+		padding: 2.5rem 1rem;
+	}
+
+	.skvn-b2b-showcase-pattern__grid {
+		gap: 2.5rem;
+	}
+
+	.skvn-b2b-editorial {
+		min-height: 32rem;
+	}
+
+	.skvn-b2b-editorial__heading {
+		font-size: clamp(2.75rem, 15vw, 4.25rem);
 	}
 }

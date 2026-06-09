@@ -1,8 +1,14 @@
 # B2B Seafood Editorial Showcase Pattern
 
-Status: saved as pattern blueprint
+Status: implemented as WordPress pattern
 Created: 2026-06-08
 Related milestone: V1 / 1.2.3
+
+Implementation:
+
+```text
+wp-content/themes/skvn-marine/patterns/b2b-seafood-feature-showcase.php
+```
 
 ## Purpose
 
@@ -78,15 +84,20 @@ The panel block itself should render as mobile accordion/collapsed card rows:
      [copy]
 ```
 
-## Future WordPress Pattern Notes
+## WordPress Pattern Contract
 
-When implemented as a WordPress pattern:
+The implemented WordPress pattern must:
 
 - Use core Group/Columns/Heading/Paragraph blocks for the text stack.
 - Use governed SKVN classes or future typography/surface presets.
 - Do not duplicate Feature Showcase item data in the text column.
 - Do not require raw class input for marketing editors.
 - Keep the pattern optional; `SKVN Feature Showcase` must still work alone.
+- Use an outer `alignfull` Group with `layout: default`.
+- Let the outer Group own the background and section padding.
+- Let `.skvn-b2b-showcase-pattern__grid` own wide max-width and centering.
+- Do not use a constrained outer Group because it applies `contentSize` to the
+  Columns child.
 
 ## Non-Goals
 
