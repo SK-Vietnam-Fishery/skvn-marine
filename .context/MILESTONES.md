@@ -62,8 +62,8 @@ Purpose:
 To do:
 
 - [x] Fix Color drift `theme.json` and  `style.css`
-- [ ] Setup baseline to implement customize
-- [ ] Check `theme.json`
+- [x] Setup baseline to implement customize
+- [x] Check `theme.json`
 
 ### 1.2.9 — Slider & Motion Onsite QA
 
@@ -86,14 +86,14 @@ Testing:
 Acceptance draft:
 
 - [ ] Human verifies all three Slider presets insert useful sample content
-- [ ] Human verifies Slider image choose/replace/remove and editor persistence
+- [x] Human verifies Slider image choose/replace/remove and editor persistence
 - [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts
 - [x] Human verifies Slider keyboard, autoplay, reduced-motion, navigation, and responsive behavior
 - [ ] Human verifies Accordion interaction and accessibility
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
-- [ ] Human verifies Feature Showcase desktop hover/focus, mobile tap, gradients, and images
+- [x] Human verifies Feature Showcase desktop hover/focus, mobile tap, gradients, and images
 - [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
-- [ ] Human verifies Full Width Canvas preserves normal, wide, and full Gutenberg alignment semantics
+- [x] Human verifies Full Width Canvas preserves normal, wide, and full Gutenberg alignment semantics
 - [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
 - [ ] Any source defects are fixed and re-tested
 - [ ] Human approves closing consolidated Slider/Motion QA

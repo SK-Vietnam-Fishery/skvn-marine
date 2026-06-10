@@ -18,6 +18,7 @@ $skvn_marine_includes = array(
 	'inc/plugin-notices.php',
 	'inc/woocommerce.php',
 	'inc/windpress.php',
+	'inc/typography.php',
 );
 
 foreach ( $skvn_marine_includes as $skvn_marine_include ) {
