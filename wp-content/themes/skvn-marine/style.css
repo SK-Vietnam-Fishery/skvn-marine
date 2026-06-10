@@ -21,9 +21,15 @@ Author: SKVN
 	--skvn-color-fresh-sky: #eaf7ff;
 	--skvn-color-sky-50: #f0f9ff;
 	--skvn-color-slate-700: #334155;
+	--skvn-color-slate-900: #0f172a;
 	--skvn-color-white: #ffffff;
 	--skvn-accent-support: var(--skvn-color-mint-100);
 	--skvn-accent-premium: var(--skvn-color-gold-300);
+	/* Heading semantic tokens */
+	--skvn-heading-color: var(--wp--preset--color--skvn-blue-950);
+	--skvn-heading-weight-display: 800;
+	--skvn-heading-weight-primary: 700;
+	--skvn-heading-weight-secondary: 600;
 	--skvn-footer-bg: var(--skvn-color-blue-950);
 	--skvn-footer-border: rgba(255, 255, 255, 0.14);
 	--skvn-footer-chip-bg: var(--skvn-color-white);
@@ -67,6 +73,7 @@ h6,
 .wp-block-heading {
 	font-family: var(--skvn-font-heading);
 	letter-spacing: 0;
+	color: var(--skvn-heading-color);
 }
 
 /* 64px is Wordpress Logo in Editor */

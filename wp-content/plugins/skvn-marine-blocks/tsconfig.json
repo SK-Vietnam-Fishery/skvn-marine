@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-	  "jsx": "react-jsx"
+	  "jsx": "react"
   },
   "extends": "@wordpress/scripts/config/tsconfig.json",
   // "compilerOptions": {

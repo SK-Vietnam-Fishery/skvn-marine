@@ -24,8 +24,14 @@ const SKVN_MARINE_PAGE_DISPLAY_PRESETS     = array(
 add_action( 'init', 'skvn_marine_register_page_display_meta' );
 add_action( 'enqueue_block_editor_assets', 'skvn_marine_enqueue_page_display_controls' );
 add_filter( 'body_class', 'skvn_marine_page_display_body_classes' );
-add_filter( 'generate_sidebar_layout', 'skvn_marine_page_display_sidebar_layout' );
+add_filter( 'skvn_marine_sidebar_layout', 'skvn_marine_page_display_sidebar_layout' );
 
+// Bridge GP → SKVN filter
+if (defined('GENERATE_VERSION')){
+	add_filter('generate_sidebar_layout', function($layout){
+		return apply_filters('skvn_marine_sidebar_layout', $layout);
+	});
+}
 /**
  * Register page display meta for editor sidebar controls.
  *

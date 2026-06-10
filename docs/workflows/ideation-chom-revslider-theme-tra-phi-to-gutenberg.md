@@ -57,6 +57,7 @@ Có thể đính kèm:
 
 ---
 
+
 ## 2. Phân rã thiết kế
 
 ### Composition
@@ -371,6 +372,13 @@ flowchart LR
 - [ ] Build/lint passes
 - [ ] Onsite test documented
 ```
+
+---
+
+## 12. Lưu trữ
+
+Tất cả idea được lưu trữ trong thư mục `docs\ideations` dưới dạng markdown và được phân loại bởi Agent vào file tương ứng
+
 
 ---
 

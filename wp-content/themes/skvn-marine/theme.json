@@ -6,20 +6,22 @@
       "wideSize": "1200px"
     },
     "color": {
+      "custom": false,
+      "customGradient": false,
       "palette": [
         {
           "slug": "skvn-blue-950",
-          "color": "#073b5a",
+          "color": "#082f49",
           "name": "SKVN Blue 950"
         },
         {
           "slug": "skvn-blue-900",
-          "color": "#0f5c8c",
+          "color": "#0c4a6e",
           "name": "SKVN Blue 900"
         },
         {
           "slug": "skvn-blue-700",
-          "color": "#1e79be",
+          "color": "#0369a1",
           "name": "SKVN Blue 700"
         },
         {
@@ -44,8 +46,13 @@
         },
         {
           "slug": "skvn-slate-700",
-          "color": "#0f172a",
+          "color": "#334155",
           "name": "SKVN Slate 700"
+        },
+        {
+          "slug": "skvn-slate-900",
+          "color": "#0f172a",
+          "name": "SKVN Slate 900"
         },
         {
           "slug": "skvn-white",
@@ -97,8 +104,26 @@
           "slug": "display",
           "size": "4rem",
           "name": "Display"
-        }
-      ]
+        },
+        {
+          "slug": "2xl",
+          "size": "1.5rem",
+          "name": "2XL"
+        },
+        { 
+          "slug": "3xl", 
+          "size": "1.875rem", 
+          "name": "3XL" 
+        },
+        { 
+          "slug": "4xl", 
+          "size": "2.25rem", 
+          "name": "4XL" 
+        },
+        { "slug": "5xl", 
+        "size": "3rem", 
+        "name": "5XL" 
+      }]
     }
   },
   "styles": {
@@ -107,7 +132,40 @@
       "text": "var(--wp--preset--color--skvn-slate-700)"
     },
     "typography": {
-      "fontFamily": "var(--wp--preset--font-family--skvn-system)"
+      "fontFamily": "var(--wp--preset--font-family--skvn-system)",
+      "customFontSize": "false"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--skvn-heading)",
+          "fontWeight": "700"
+        }
+      },
+      "h1": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--5xl)",
+          "fontWeight": "800"
+        }
+      },
+      "h2": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--4xl)",
+          "fontWeight": "700"
+        }
+      },
+      "h3": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--3xl)",
+          "fontWeight": "600"
+        }
+      },
+      "h4": {
+        "typography": {
+          "fontSize": "var(--wp--preset--font-size--2xl)",
+          "fontWeight": "600"
+        }
+      }
     }
   }
 }

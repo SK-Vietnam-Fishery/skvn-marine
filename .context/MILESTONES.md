@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.2.9 — Slider & Motion Onsite QA**
+Current: **V1 / 1.2.4 — Prepare for custom color and heading**
 Status: **IN_PROGRESS**
 Started: **2026-06-09**
 
@@ -54,6 +54,17 @@ Khi chuyển milestone:
 
 ## Current V1.x Checkpoint
 
+### 1.2.4 Prepare for custom color and heading
+Purpose:
+
+- Prepare for Customize Heading and Color Palette
+
+To do:
+
+- [x] Fix Color drift `theme.json` and  `style.css`
+- [ ] Setup baseline to implement customize
+- [ ] Check `theme.json`
+
 ### 1.2.9 — Slider & Motion Onsite QA
 
 Status: **IN_PROGRESS**
@@ -77,7 +88,7 @@ Acceptance draft:
 - [ ] Human verifies all three Slider presets insert useful sample content
 - [ ] Human verifies Slider image choose/replace/remove and editor persistence
 - [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts
-- [ ] Human verifies Slider keyboard, autoplay, reduced-motion, navigation, and responsive behavior
+- [x] Human verifies Slider keyboard, autoplay, reduced-motion, navigation, and responsive behavior
 - [ ] Human verifies Accordion interaction and accessibility
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
 - [ ] Human verifies Feature Showcase desktop hover/focus, mobile tap, gradients, and images

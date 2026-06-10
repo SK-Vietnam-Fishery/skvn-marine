@@ -11,6 +11,12 @@ const SKVN_MARINE_HEADER_ACTIONS_OPTION = 'skvn_header_actions';
 
 add_action( 'generate_after_header_content', 'skvn_marine_render_header_actions', 20 );
 
+// Bridge GP → SKVN hook, chỉ tồn tại khi GP còn
+if (defined('GENERATE_VERSION')){
+	add_action('generate_after_header_content', function(){
+		do_action('skvn_marine_after_header');
+	}, 20);
+}
 /**
  * Get default header action settings.
  *
