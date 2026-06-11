@@ -4,6 +4,7 @@
 	--skvn-feature-index: #72b7f4;
 	--skvn-feature-label: rgba(248, 251, 255, 0.9);
 	--skvn-feature-panel-bg: #0d3a56;
+	--skvn-feature-rail-size: 3.25rem;
 	--skvn-feature-rail-bg: rgba(8, 52, 78, 0.82);
 	--skvn-feature-shade-end: rgba(5, 14, 23, 0.08);
 	--skvn-feature-shade-start: rgba(5, 14, 23, 0.94);
@@ -66,7 +67,7 @@
 	border: 0;
 	box-sizing: border-box;
 	color: inherit;
-	flex: 0 0 4.75rem;
+	flex: 0 0 var(--skvn-feature-rail-size);
 	margin: 0;
 	min-width: 0;
 	overflow: hidden;
@@ -79,7 +80,7 @@
 }
 
 .skvn-feature-showcase__item[open] {
-	flex: 1 0 4.75rem;
+	flex: 1 0 var(--skvn-feature-rail-size);
 }
 
 .skvn-feature-showcase__summary {
@@ -94,7 +95,7 @@
 	list-style: none;
 	padding: 1.25rem;
 	position: absolute;
-	width: 4.75rem;
+	width: var(--skvn-feature-rail-size);
 	z-index: 3;
 }
 
@@ -126,7 +127,7 @@
 
 .skvn-feature-showcase__body {
 	height: 100%;
-	inset: 0 0 0 4.75rem;
+	inset: 0;
 	opacity: 0;
 	overflow: hidden;
 	position: absolute;
@@ -156,7 +157,8 @@
 }
 
 .skvn-feature-showcase__content {
-	inset: auto clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3.5rem);
+	inset: auto clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3.5rem)
+		calc(var(--skvn-feature-rail-size) + clamp(1.5rem, 4vw, 3rem));
 	max-width: 34rem;
 	position: absolute;
 	z-index: 2;
@@ -182,7 +184,7 @@
 }
 
 .skvn-feature-showcase--vertical .skvn-feature-showcase__item {
-	flex-basis: 4.75rem;
+	flex-basis: var(--skvn-feature-rail-size);
 }
 
 .skvn-feature-showcase--vertical
@@ -204,6 +206,10 @@
 
 .skvn-feature-showcase--vertical .skvn-feature-showcase__body {
 	inset: 0;
+}
+
+.skvn-feature-showcase--vertical .skvn-feature-showcase__content {
+	inset-inline-start: clamp(1.5rem, 4vw, 3rem);
 }
 
 .skvn-feature-showcase--editor {
