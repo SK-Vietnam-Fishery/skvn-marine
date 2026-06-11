@@ -207,7 +207,69 @@ There must be one active frontend render engine: PHP.
 - Confirm the Slider render module exists in the zip.
 - Complete onsite QA under V1 / 1.3.1.
 
-## 11. Acceptance
+## 11. V1 / 1.3.3 Shared Autoplay Follow-Up Boundary
+
+V1 / 1.3.3 adds Feature Showcase autoplay and panel links after V1 / 1.3.0
+implementation and V1 / 1.3.1 onsite QA confirm Slider stability.
+
+Planning:
+
+```text
+.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md
+```
+
+Agents changing Slider in V1 / 1.3.0 must keep the following behavior
+separable so V1 / 1.3.3 can share real invariants without rewriting the Slider
+controller:
+
+- reduced-motion detection
+- delay normalization and editor delay options
+- pointer-hover pause/resume policy
+- keyboard-focus-within pause/resume policy
+- document visibility pause/resume policy
+
+During V1 / 1.3.0:
+
+- Prefer the existing `src/shared/motion.ts` reduced-motion helper instead of
+  creating another Slider-only detector.
+- Keep Swiper-specific calls behind small Slider-local callbacks so a later
+  shared pause/resume event binder can call `pause` and `resume` without owning
+  Swiper.
+- Keep delay parsing separate from Swiper initialization.
+- Preserve current saved delay values and frontend behavior.
+- Do not restrict the Slider editor to `3/5/7/9s` during this milestone.
+- Do not add Feature Showcase autoplay or LinkControl to the V1 / 1.3.0 scope.
+
+After V1 / 1.3.1 stability verification, V1 / 1.3.3 may extract shared code only
+where there are two real consumers or a project invariant:
+
+- `prefersReducedMotion()` from `src/shared/motion.ts`
+- governed delay constants and editor marks for `3000`, `5000`, `7000`, and
+  `9000`
+- delay normalization
+- pointer/focus pause-resume event binding
+- document visibility pause-resume binding
+
+Compatibility rule:
+
+- Existing Slider content may contain delay values outside `3/5/7/9s`.
+- V1 / 1.3.3 must not silently change those saved values or their frontend
+  timing.
+- If the Slider editor adopts the governed presets, define how legacy values
+  display and persist before restricting the control.
+
+Do not share:
+
+- Swiper instances or modules
+- navigation, pagination, loop, effects, or breakpoint logic
+- Slider config parsing that is unrelated to autoplay invariants
+- Feature Showcase sibling-`details` synchronization or panel activation
+- a generic carousel controller
+
+Swiper remains the Slider's only movement controller. Feature Showcase keeps a
+block-local timer and must not initialize Swiper.
+
+## 12. Acceptance
 
 - Existing Slider content opens without invalid-block recovery.
 - Existing Slider content renders through PHP without requiring bulk resave.
@@ -223,7 +285,7 @@ There must be one active frontend render engine: PHP.
 - Plugin build, PHP lint, compatibility checks, and onsite QA pass.
 - Human explicitly approves milestone completion.
 
-## 12. Archived Evidence
+## 13. Archived Evidence
 
 Archived files are historical evidence, not active instructions.
 
@@ -243,5 +305,6 @@ Archived files are historical evidence, not active instructions.
 Active related documents:
 
 - `docs/testing/onsite-slider-motion-1.3.1.md`
+- `.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
 - `docs/decisions/fullscreen-step-slider-1.5.0.md`
 - `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`

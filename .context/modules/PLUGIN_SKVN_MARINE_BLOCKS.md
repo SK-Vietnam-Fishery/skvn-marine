@@ -374,6 +374,29 @@ Implemented V1 / 1.2.3 Feature Showcase:
   colors or gradients.
 - The first activated static markup is preserved through a Gutenberg deprecation and legacy CSS until old content is resaved.
 
+Planned V1 / 1.3.3 Feature Showcase autoplay and panel links:
+
+- Planning file:
+  `.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`.
+- Do not begin implementation until V1 / 1.3.0 dynamic rendering and V1 /
+  1.3.1 onsite Slider QA confirm stable autoplay, hover/focus pause, reduced
+  motion, compatibility, and no-JavaScript behavior.
+- Feature Showcase adds governed `hover` and `autoplay` interaction modes.
+- Autoplay delay uses a snapping WordPress RangeControl with only `3`, `5`,
+  `7`, and `9` second values; no arbitrary timing input.
+- Each panel may use Gutenberg LinkControl for an optional CTA destination.
+  The CTA belongs inside panel content; do not turn `details`, `summary`, or the
+  whole interactive panel into a navigation link.
+- Feature Showcase keeps native `details`/`summary` and a block-local timer; it
+  must not initialize Swiper.
+- After Slider stability is verified, Slider and Feature Showcase may share
+  reduced-motion, delay normalization/marks, pointer/focus pause-resume, and
+  document visibility policy.
+- Slider keeps Swiper as its only movement controller. Feature Showcase keeps
+  ownership of sibling-details synchronization and panel activation.
+- Existing Slider and Feature Showcase saved content must remain compatible
+  before editor controls are restricted to shared presets.
+
 0.5.1 brand-mapping contract:
 
 - Treat artifact colors and Tailwind classes as source hints, not production contracts.

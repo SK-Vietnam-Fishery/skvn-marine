@@ -173,6 +173,55 @@ Acceptance draft:
 - [ ] Any source defects are fixed and re-tested
 - [ ] Human approves closing Slider Dynamic Rendering onsite QA
 
+### 1.3.3 — Feature Showcase Autoplay And Panel Links
+
+Status: **PENDING**
+
+Purpose:
+
+- Add governed Hover and Autoplay interaction modes to
+  `skvn-marine/feature-showcase`.
+- Add a magnetic/snapping delay control limited to `3`, `5`, `7`, and `9`
+  seconds.
+- Add one optional Gutenberg LinkControl destination per panel, rendered as a
+  CTA inside panel content rather than turning `summary` into a link.
+- Share reduced-motion, governed delay, pause/resume, and document visibility
+  invariants with Slider after Slider stability is verified.
+
+Planning:
+
+- `.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
+
+Dependencies:
+
+- V1 / 1.3.0 dynamic Slider rendering must be complete.
+- V1 / 1.3.1 onsite QA must confirm Slider autoplay, hover/focus pause,
+  accessibility, reduced motion, compatibility, and no-JavaScript behavior are
+  stable.
+
+Constraints:
+
+- Keep Feature Showcase on native `details`/`summary`; do not initialize Swiper.
+- Keep Swiper as the Slider's only movement controller.
+- Do not run autoplay in Gutenberg.
+- Do not expose arbitrary delay values.
+- Do not wrap the panel or `summary` in a navigation link.
+- Existing Feature Showcase and Slider content must remain valid and editable.
+
+Acceptance draft:
+
+- [ ] V1 / 1.3.0 and V1 / 1.3.1 stability gates are complete
+- [ ] Hover and Autoplay modes work without an all-closed state
+- [ ] Delay control snaps only to `3s`, `5s`, `7s`, and `9s`
+- [ ] Hover, keyboard focus, document visibility, and reduced motion pause or disable autoplay correctly
+- [ ] Each panel supports an optional Gutenberg LinkControl CTA
+- [ ] CTA interaction does not conflict with disclosure activation
+- [ ] Existing Feature Showcase content opens without invalid-block recovery
+- [ ] Shared autoplay helpers do not regress Slider runtime behavior
+- [ ] No-JavaScript disclosure and links remain usable
+- [ ] Plugin build and onsite QA pass
+- [ ] Human approves milestone completion
+
 ### 1.4.0 — SKVN Theme Init Setup UI
 
 Status: **PENDING**
