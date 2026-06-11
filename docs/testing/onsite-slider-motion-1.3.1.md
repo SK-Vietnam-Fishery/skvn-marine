@@ -57,7 +57,16 @@ unless the dynamic rendering migration changes those surfaces.
 5. Confirm Hero heading, lead, and CTA remain readable above the overlay.
 6. Confirm arrows, dots, keyboard navigation, loop, autoplay, and pause-on-hover follow preset/settings behavior.
 7. Confirm Swiper layout/navigation CSS loads without relying on the SKVN theme.
-8. Enable Reduce motion and confirm autoplay is disabled.
+8. While an autoplay Slider is moving, switch to another browser tab long
+   enough to exceed its configured delay. Confirm the hidden Slider does not
+   advance continuously in the background.
+9. Return to the Slider tab and confirm autoplay resumes only when the Slider
+   is not hovered and keyboard focus is not inside it.
+10. Repeat the tab switch while the pointer remains over the Slider, then once
+    while keyboard focus is on an arrow or pagination control. Confirm returning
+    to the tab does not resume autoplay until hover/focus leaves the Slider.
+11. Enable Reduce motion and confirm autoplay is disabled and does not resume
+    after a tab visibility change.
 
 ## Editor Checks
 
@@ -110,6 +119,8 @@ unless the dynamic rendering migration changes those surfaces.
 - All three Slider presets are discoverable under `SKVN Marine` and insert useful content immediately.
 - Card Carousel responds 3/2/1 across desktop/tablet/mobile.
 - Slider editor remains stacked and editable; frontend initializes as Swiper.
+- Autoplay pauses while the document is hidden and resumes conservatively only
+  when autoplay is enabled, Reduce motion is off, and pointer/focus is outside.
 - Accordion interaction, ARIA state, focus, and keyboard navigation work.
 - Accordion content is never clipped after open/close or rapid toggling.
 - Card controls save and reload correctly.
@@ -124,6 +135,8 @@ unless the dynamic rendering migration changes those surfaces.
 - Browser/device and viewport width.
 - Screenshot or short screen recording.
 - Exact block preset, trigger, and device-toggle combination.
+- Whether the failure occurred before hiding the tab, while hidden, or after
+  returning, and whether pointer hover or keyboard focus remained inside.
 - Whether Reduce motion or JavaScript-disable mode was active.
 - Console error text and stack trace, if present.
 - Whether the issue occurs in editor, frontend, or both.

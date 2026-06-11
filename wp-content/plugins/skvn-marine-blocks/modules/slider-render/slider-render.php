@@ -108,8 +108,7 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 			$attributes['delay'] ?? 5000,
 			5000,
 			1000,
-			12000,
-			500
+			12000
 		),
 		'loop'          => isset( $attributes['loop'] ) ? (bool) $attributes['loop'] : true,
 		'arrows'        => isset( $attributes['arrows'] ) ? (bool) $attributes['arrows'] : true,

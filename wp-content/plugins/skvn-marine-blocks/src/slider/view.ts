@@ -8,6 +8,7 @@ import {
 	Pagination,
 } from 'swiper/modules';
 import { __ } from '@wordpress/i18n';
+import { prefersReducedMotion } from '../shared/motion';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
@@ -40,10 +41,6 @@ type SliderElement = HTMLElement & {
 	swiper?: Swiper;
 };
 
-const prefersReduced = window.matchMedia(
-	'(prefers-reduced-motion: reduce)'
-).matches;
-
 function clampInteger(
 	value: unknown,
 	fallback: number,
@@ -53,6 +50,10 @@ function clampInteger(
 	return typeof value === 'number' && Number.isFinite( value )
 		? Math.min( maximum, Math.max( minimum, Math.round( value ) ) )
 		: fallback;
+}
+
+function normalizeSliderDelay( value: unknown ) {
+	return clampInteger( value, 5000, 1000, 12000 );
 }
 
 function parseSliderConfig( rawConfig: string ): NormalizedSliderConfig {
@@ -69,7 +70,7 @@ function parseSliderConfig( rawConfig: string ): NormalizedSliderConfig {
 	return {
 		autoplay:
 			typeof parsed.autoplay === 'boolean' ? parsed.autoplay : true,
-		delay: clampInteger( parsed.delay, 5000, 1000, 12000 ),
+		delay: normalizeSliderDelay( parsed.delay ),
 		loop: typeof parsed.loop === 'boolean' ? parsed.loop : true,
 		arrows: typeof parsed.arrows === 'boolean' ? parsed.arrows : true,
 		dots: typeof parsed.dots === 'boolean' ? parsed.dots : true,
@@ -93,6 +94,7 @@ document
 		const rawConfig = slider.getAttribute( 'data-skvn-slider' ) || '{}';
 		const config = parseSliderConfig( rawConfig );
 		const usesCardBreakpoints = config.responsiveSlides === '3-2-1';
+		const reducedMotion = prefersReducedMotion();
 
 		slider.dataset.skvnSliderInitialized = 'true';
 		slider.classList.add( 'skvn-slider--initialized' );
@@ -126,7 +128,7 @@ document
 					),
 				},
 				autoplay:
-					config.autoplay && ! prefersReduced
+					config.autoplay && ! reducedMotion
 						? {
 								delay: config.delay,
 								pauseOnMouseEnter: true,
@@ -167,20 +169,62 @@ document
 					: config.slidesPerView,
 			} );
 
-			slider.addEventListener( 'focusin', () => {
+			let pointerInside = false;
+			let focusInside = slider.contains( document.activeElement );
+
+			const pauseAutoplay = () => {
 				swiper.autoplay?.pause();
+			};
+			const resumeAutoplay = () => {
+				if (
+					config.autoplay &&
+					! prefersReducedMotion() &&
+					! document.hidden &&
+					! pointerInside &&
+					! focusInside
+				) {
+					swiper.autoplay?.resume();
+					return;
+				}
+
+				pauseAutoplay();
+			};
+
+			slider.addEventListener( 'pointerenter', ( event ) => {
+				if ( event.pointerType !== 'mouse' ) {
+					return;
+				}
+
+				pointerInside = true;
+				pauseAutoplay();
+			} );
+			slider.addEventListener( 'pointerleave', ( event ) => {
+				if ( event.pointerType !== 'mouse' ) {
+					return;
+				}
+
+				pointerInside = false;
+				resumeAutoplay();
+			} );
+			slider.addEventListener( 'focusin', () => {
+				focusInside = true;
+				pauseAutoplay();
 			} );
 			slider.addEventListener( 'focusout', () => {
 				window.setTimeout( () => {
-					if (
-						! slider.contains( document.activeElement ) &&
-						config.autoplay &&
-						! prefersReduced
-					) {
-						swiper.autoplay?.resume();
-					}
+					focusInside = slider.contains( document.activeElement );
+					resumeAutoplay();
 				}, 0 );
 			} );
+			document.addEventListener( 'visibilitychange', () => {
+				if ( document.hidden ) {
+					pauseAutoplay();
+					return;
+				}
+
+				resumeAutoplay();
+			} );
+			resumeAutoplay();
 		} catch {
 			delete slider.dataset.skvnSliderInitialized;
 			slider.classList.remove( 'skvn-slider--initialized' );
