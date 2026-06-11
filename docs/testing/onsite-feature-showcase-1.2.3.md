@@ -1,7 +1,7 @@
 # Onsite Feature Showcase Test — V1 / 1.2.3
 
-Status: carried forward for onsite verification
-Target milestone: V1 / 1.2.9
+Status: partially passed; B2B pattern layout check carried forward
+Target milestone: V1 / 1.3.1
 
 ## Target URL/Page
 

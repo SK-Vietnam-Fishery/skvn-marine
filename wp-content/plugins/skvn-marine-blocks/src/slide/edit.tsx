@@ -37,31 +37,47 @@ type SelectedImage = {
 
 export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) {
 	const hasImage = Boolean( attributes.backgroundImageUrl );
-	const parentSliderClientId = useSelect(
+	const parentSlider = useSelect(
 		( select ) => {
 			const editor = select( blockEditorStore ) as {
+				getBlockAttributes: (
+					blockClientId: string
+				) => Record< string, unknown > | null;
 				getBlockName: ( blockClientId: string ) => string | null;
 				getBlockParents: ( blockClientId: string ) => string[];
 			};
-
-			return (
+			const parentClientId =
 				editor
 					.getBlockParents( clientId )
 					.find(
-						( parentClientId ) =>
-							editor.getBlockName( parentClientId ) ===
+						( parentId ) =>
+							editor.getBlockName( parentId ) ===
 							'skvn-marine/slider'
-					) || ''
-			);
+					) || '';
+
+			return {
+				clientId: parentClientId,
+				preset: parentClientId
+					? String(
+							editor.getBlockAttributes( parentClientId )
+								?.preset || ''
+					  )
+					: '',
+			};
 		},
 		[ clientId ]
 	);
+	const supportsBackgroundImage = ! [
+		'product-showcase',
+		'card-carousel',
+	].includes( parentSlider.preset );
+	const showsBackgroundImage = supportsBackgroundImage && hasImage;
 	const { selectBlock } = useDispatch( blockEditorStore ) as {
 		selectBlock: ( blockClientId: string ) => void;
 	};
 	const blockProps = useBlockProps( {
 		className: `skvn-slide skvn-slide--editor${
-			hasImage ? ' skvn-slide--has-background' : ''
+			showsBackgroundImage ? ' skvn-slide--has-background' : ''
 		}`,
 	} );
 	const selectImage = ( image: SelectedImage ) => {
@@ -84,65 +100,96 @@ export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) 
 			<InspectorControls>
 				<PanelBody title={ __( 'Slider settings', 'skvn-marine-blocks' ) }>
 					<Button
-						disabled={ ! parentSliderClientId }
-						onClick={ () => selectBlock( parentSliderClientId ) }
+						disabled={ ! parentSlider.clientId }
+						onClick={ () => selectBlock( parentSlider.clientId ) }
 						variant="secondary"
 					>
 						{ __( 'Open Slider settings', 'skvn-marine-blocks' ) }
 					</Button>
 				</PanelBody>
-				<PanelBody
-					title={ __( 'Background image', 'skvn-marine-blocks' ) }
-				>
-					<MediaUploadCheck>
-						<MediaUpload
-							allowedTypes={ [ 'image' ] }
-							onSelect={ selectImage }
-							render={ ( { open } ) => (
-								<Button onClick={ open } variant="secondary">
-									{ hasImage
-										? __(
-												'Replace image',
-												'skvn-marine-blocks'
-										  )
-										: __(
-												'Choose image',
-												'skvn-marine-blocks'
-										  ) }
-								</Button>
-							) }
-							value={ attributes.backgroundImageId }
-						/>
-					</MediaUploadCheck>
-					{ hasImage && (
-						<Button
-							isDestructive
-							onClick={ removeImage }
-							variant="link"
-						>
-							{ __( 'Remove image', 'skvn-marine-blocks' ) }
-						</Button>
-					) }
-					{ hasImage && (
-						<RangeControl
-							label={ __(
-								'Overlay opacity',
+				{ supportsBackgroundImage ? (
+					<PanelBody
+						title={ __( 'Background image', 'skvn-marine-blocks' ) }
+					>
+						<MediaUploadCheck>
+							<MediaUpload
+								allowedTypes={ [ 'image' ] }
+								onSelect={ selectImage }
+								render={ ( { open } ) => (
+									<Button onClick={ open } variant="secondary">
+										{ hasImage
+											? __(
+													'Replace image',
+													'skvn-marine-blocks'
+											  )
+											: __(
+													'Choose image',
+													'skvn-marine-blocks'
+											  ) }
+									</Button>
+								) }
+								value={ attributes.backgroundImageId }
+							/>
+						</MediaUploadCheck>
+						{ hasImage && (
+							<Button
+								isDestructive
+								onClick={ removeImage }
+								variant="link"
+							>
+								{ __(
+									'Remove image',
+									'skvn-marine-blocks'
+								) }
+							</Button>
+						) }
+						{ hasImage && (
+							<RangeControl
+								label={ __(
+									'Overlay opacity',
+									'skvn-marine-blocks'
+								) }
+								max={ 80 }
+								min={ 0 }
+								onChange={ ( overlayOpacity ) =>
+									setAttributes( {
+										overlayOpacity: overlayOpacity || 0,
+									} )
+								}
+								step={ 5 }
+								value={ attributes.overlayOpacity }
+							/>
+						) }
+					</PanelBody>
+				) : (
+					hasImage && (
+						<PanelBody
+							title={ __(
+								'Unused background image',
 								'skvn-marine-blocks'
 							) }
-							max={ 80 }
-							min={ 0 }
-							onChange={ ( overlayOpacity ) =>
-								setAttributes( {
-									overlayOpacity: overlayOpacity || 0,
-								} )
-							}
-							step={ 5 }
-							value={ attributes.overlayOpacity }
-						/>
-					) }
-				</PanelBody>
+						>
+							<p>
+								{ __(
+									'This Slider preset uses its Image block instead of a Slide background image.',
+									'skvn-marine-blocks'
+								) }
+							</p>
+							<Button
+								isDestructive
+								onClick={ removeImage }
+								variant="secondary"
+							>
+								{ __(
+									'Remove unused background',
+									'skvn-marine-blocks'
+								) }
+							</Button>
+						</PanelBody>
+					)
+				) }
 			</InspectorControls>
-			{ hasImage ? (
+			{ showsBackgroundImage ? (
 				<>
 					<img
 						alt={ attributes.backgroundImageAlt }
@@ -155,7 +202,7 @@ export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) 
 						style={ { opacity: attributes.overlayOpacity / 100 } }
 					/>
 				</>
-			) : (
+			) : supportsBackgroundImage ? (
 				<MediaUploadCheck>
 					<MediaUpload
 						allowedTypes={ [ 'image' ] }
@@ -174,7 +221,7 @@ export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) 
 						) }
 					/>
 				</MediaUploadCheck>
-			) }
+			) : null }
 			<div className="skvn-slide__content">
 				<InnerBlocks template={ TEMPLATE } />
 			</div>

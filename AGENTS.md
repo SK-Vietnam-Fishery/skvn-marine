@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.2.9 — Slider & Motion Onsite QA**
+Current milestone: **V1 / 1.3.0 — Slider Dynamic Rendering Architecture**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -148,6 +148,46 @@ node tools/build-deploy-artifact.mjs
 bash tools/package-plugin-zip.sh
 unzip -l build/skvn-marine-blocks.zip | grep 'skvn-marine-blocks/modules/'
 ```
+
+### Command responsiveness — Bắt buộc
+
+- Nếu một command không trả output, không kết thúc trong thời gian quan sát hợp
+  lý, hoặc bị tool timeout, agent phải **DỪNG ngay**.
+- Không tự retry command đó.
+- Không chạy thêm bản command thứ hai.
+- Không poll process, `sleep` rồi kiểm tra lặp lại, hoặc tiếp tục chờ vô hạn.
+- Agent phải báo human ngay và đưa nguyên command chính xác để human chạy thủ
+  công.
+- Rule này áp dụng cho mọi command, đặc biệt là command giao tiếp với WSL,
+  `npm run build`, WP-CLI, server, database, packaging, và deploy tooling.
+- Với WSL: nếu command không phản hồi hoặc timeout một lần, ưu tiên bàn giao cho
+  human vì human thao tác terminal trực tiếp nhanh và đáng tin cậy hơn.
+- Agent chỉ được chạy lại sau khi human cung cấp output hoặc yêu cầu rõ ràng
+  agent thử lại.
+
+### Agent + Human collaboration — Bắt buộc
+
+- Workflow của project này là **agent phối hợp với human**, không phải agent tự
+  làm mọi thứ bằng mọi giá.
+- Agent chịu trách nhiệm đọc context, phân tích, sửa source, chuẩn bị test,
+  kiểm tra phần có thể kiểm tra nhanh và đưa hướng dẫn/lệnh chính xác.
+- Human có thể chạy terminal/WSL, thao tác WordPress onsite, quan sát UI, cung
+  cấp screenshot/log/output, hoặc thực hiện bước nào human làm nhanh và đáng
+  tin cậy hơn.
+- Khi nhận ra human có thể hoàn thành một bước nhanh hơn, agent phải bàn giao
+  sớm với command hoặc checklist rõ ràng; không kéo dài bằng retry, polling,
+  automation phức tạp, hoặc tự debug môi trường vô hạn.
+- Nhờ human thực hiện một bước phù hợp là workflow bình thường, không phải task
+  failure hay phương án cuối cùng.
+- Sau khi human trả output/evidence, agent tiếp tục từ kết quả đó; không bắt
+  human lặp lại context hoặc công việc đã hoàn thành.
+- Agent phải nói rõ:
+  - agent đã làm gì;
+  - human cần chạy/check gì;
+  - output/evidence nào cần gửi lại;
+  - agent sẽ tiếp tục phần nào sau khi nhận kết quả.
+- Các bước cần credential, quyết định sản phẩm, onsite visual judgment, hoặc
+  terminal tương tác ưu tiên phối hợp với human thay vì agent tự suy đoán.
 
 ### Onsite-first UX/runtime testing
 
@@ -455,6 +495,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.2.3 | SKVN Feature Showcase |
 | 1.2.9 | Slider & Motion Onsite QA |
 | 1.3.0 | Slider Dynamic Rendering Architecture |
+| 1.3.1 | Slider Dynamic Rendering Onsite QA |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.4.1 | Layout Blocks Validation & Quote Evaluation |
 | 1.5.0 | Fullscreen Step Slider |
@@ -560,6 +601,10 @@ Chạy plugin build bằng Node trong WSL:
 ```bash
 wsl -d Debian -- bash -lc "source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build"
 ```
+
+Nếu command WSL không trả output, không kết thúc, hoặc timeout: áp dụng
+`Command responsiveness` ở Section 3. Agent phải dừng và đưa command cho human;
+không retry, không poll process, và không chờ tiếp.
 
 ### Source repo chỉ chứa
 

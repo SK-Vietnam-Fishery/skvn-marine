@@ -1,8 +1,9 @@
 # V1 / 1.3.0 — Slider Dynamic Rendering Architecture Planning
 
-Status: PENDING
+Status: IN_PROGRESS
 Created: 2026-06-08
-Current milestone remains: V1 / 1.2.1
+Started: 2026-06-11
+Current milestone: V1 / 1.3.0
 
 ## 1. Decision
 
@@ -42,7 +43,9 @@ Keep static/editor-owned:
 - Block attributes.
 - InnerBlocks structure and editable content.
 - Slider variations/templates.
-- Editor stacked preview.
+- Editor preview. Hero may remain vertically readable; carousel/showcase
+  presets use the approved non-moving 5x2 grid from
+  `docs/decisions/slider-carousel-showcase-ux.md`.
 - Gutenberg List View and native block actions.
 
 Move to dynamic/server-owned:
@@ -149,6 +152,8 @@ Editor:
 - Confirm no invalid/recovery warning.
 - Edit, reorder, duplicate, and remove slides.
 - Insert all three presets.
+- Confirm carousel/showcase presets use a non-moving grid and enforce the
+  approved 10-Slide maximum without running Swiper in the editor.
 
 Frontend:
 
@@ -186,5 +191,5 @@ Until 1.3.0 starts:
 - Keep the bug documented.
 - Do not implement the superseded static markup migration.
 - Do not mark frontend Slider QA as passed.
-- Reconcile the execution order of 1.2.9 onsite QA and 1.3.0 migration before
-  either milestone is started, so QA tests the intended render architecture.
+- Run the remaining onsite QA under V1 / 1.3.1 after the 1.3.0 migration so
+  QA tests the intended dynamic render architecture.

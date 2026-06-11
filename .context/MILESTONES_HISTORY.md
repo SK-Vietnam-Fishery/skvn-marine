@@ -673,3 +673,58 @@ Carried to V1 / 1.2.9:
 Next milestone:
 
 - V1 / 1.2.9 — Slider & Motion Onsite QA.
+
+---
+
+## V1 / 1.2.4 — Prepare for custom color and heading
+
+Status: **CLOSED — SCOPE CLEANUP**
+Started: **2026-06-09**
+Moved forward by human: **2026-06-11**
+
+Completed:
+
+- [x] Fixed color drift between `theme.json` and `style.css`.
+- [x] Established the customization baseline.
+- [x] Reviewed `theme.json`.
+
+Not completed in this milestone:
+
+- Typography settings block setup was not accepted as complete.
+- The human explicitly moved development forward to V1 / 1.3.0.
+- Any future typography/customization work must be scheduled under an approved
+  milestone instead of remaining attached to 1.2.4.
+
+---
+
+## V1 / 1.2.9 — Slider & Motion Onsite QA
+
+Status: **CLOSED — REMAINING QA MOVED TO 1.3.1**
+Started: **2026-06-09**
+Moved forward by human: **2026-06-11**
+
+Passed by human feedback:
+
+- [x] Slider image choose, replace, remove, and editor persistence.
+- [x] Slider keyboard, autoplay, reduced-motion, navigation, and responsive behavior.
+- [x] Feature Showcase desktop hover/focus, mobile tap, gradients, and images.
+- [x] Full Width Canvas normal, wide, and full alignment semantics.
+
+Moved to V1 / 1.3.1:
+
+- Slider preset sample-content insertion.
+- Hero, Product Showcase, and Card Carousel frontend layouts.
+- Existing-content migration and invalid-block checks after dynamic rendering.
+- Accordion interaction and accessibility.
+- Card motion device targeting and no-JS/reduced-motion fallbacks.
+- B2B Seafood Feature Showcase pattern editor/frontend layout.
+- Final invalid-block, console, layout, cache, defect, and approval checks.
+
+Reason:
+
+- Slider frontend QA should validate the V1 / 1.3.0 dynamic rendering contract,
+  not the superseded static frontend architecture.
+
+Next milestone:
+
+- V1 / 1.3.0 — Slider Dynamic Rendering Architecture.

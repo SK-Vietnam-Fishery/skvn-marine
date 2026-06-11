@@ -1,8 +1,13 @@
-# Onsite Slider & Motion 1.2.9 Test
+# Onsite Slider Dynamic Rendering & Motion 1.3.1 Test
 
 Status: **DEFERRED**
-Deferred on: **2026-06-07**
-Target milestone: **V1 / 1.2.9 — Slider & Motion Onsite QA**
+Deferred on: **2026-06-11**
+Target milestone: **V1 / 1.3.1 — Slider Dynamic Rendering Onsite QA**
+
+This checklist carries only the checks that were not completed before V1 /
+1.3.0. Previously passed Slider image editing, Slider controls, Feature
+Showcase interaction, and Full Width Canvas checks do not need to be repeated
+unless the dynamic rendering migration changes those surfaces.
 
 ## Target
 
@@ -12,7 +17,7 @@ Target milestone: **V1 / 1.2.9 — Slider & Motion Onsite QA**
 
 ## Preconditions
 
-- Deploy the completed `1.2.1` or later compatible `skvn-marine-blocks` development build.
+- Deploy the completed `1.3.0` dynamic-rendering development build.
 - Clear page/cache layers that can retain old plugin JavaScript or CSS.
 - Keep the browser console open during frontend checks.
 - Use a draft or private test page instead of changing production content directly.
@@ -37,26 +42,22 @@ Target milestone: **V1 / 1.2.9 — Slider & Motion Onsite QA**
 2. Confirm all three Slider presets appear without requiring search.
 3. Confirm each preset inserts useful sample content immediately with no setup modal.
 4. Confirm Hero Slider, Product Showcase, and Card Carousel have visibly different intended structures.
-5. Confirm each stacked Slide shows `Choose background image` instead of only bare heading/copy fields where the preset uses background images.
-6. Choose an image from the WordPress Media Library for Slide 1.
-7. Confirm the selected image appears as the Slide background in the editor.
-8. Edit the heading, lead paragraph, and CTA button directly over the image.
-9. Change Overlay opacity between 0% and 80% and confirm the preview updates.
-10. Use `Replace image`, select a different image, and confirm the preview updates.
-11. Use `Remove image` and confirm the media chooser returns without deleting text/CTA content.
-12. Use native Gutenberg List View/actions to reorder, duplicate, and remove a Slide.
-13. Save and reload the editor.
-14. Confirm preset structures, images, overlay settings, and order persist without invalid-block or recovery warnings.
+5. Open at least one Slider saved before 1.3.0.
+6. Confirm existing Slider content opens without invalid-block or recovery warnings.
+7. Use native Gutenberg List View/actions to reorder, duplicate, and remove a Slide.
+8. Save and reload the editor.
+9. Confirm preset structures and order persist without invalid-block or recovery warnings.
 
 ## Slider Frontend Checks
 
 1. Confirm Hero Slider and Product Showcase show one slide at a time.
 2. Confirm Card Carousel shows 3 cards on desktop, 2 on tablet, and 1 on mobile.
-3. Confirm each background image covers its slide without stretching.
-4. Confirm heading, lead, and CTA remain readable above the overlay.
-5. Confirm arrows, dots, keyboard navigation, loop, autoplay, and pause-on-hover follow preset/settings behavior.
-6. Confirm Swiper layout/navigation CSS loads without relying on the SKVN theme.
-7. Enable Reduce motion and confirm autoplay is disabled.
+3. Confirm Hero background images cover their slides without stretching.
+4. Confirm Product Showcase and Card Carousel render only their Image block media, including Slides that previously stored an unused background image.
+5. Confirm Hero heading, lead, and CTA remain readable above the overlay.
+6. Confirm arrows, dots, keyboard navigation, loop, autoplay, and pause-on-hover follow preset/settings behavior.
+7. Confirm Swiper layout/navigation CSS loads without relying on the SKVN theme.
+8. Enable Reduce motion and confirm autoplay is disabled.
 
 ## Editor Checks
 

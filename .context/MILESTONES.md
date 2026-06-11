@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.2.4 — Prepare for custom color and heading**
+Current: **V1 / 1.3.0 — Slider Dynamic Rendering Architecture**
 Status: **IN_PROGRESS**
-Started: **2026-06-09**
+Started: **2026-06-11**
 
 AGENTS.md current milestone phải match file này.
 
@@ -54,51 +54,6 @@ Khi chuyển milestone:
 
 ## Current V1.x Checkpoint
 
-### 1.2.4 Prepare for custom color and heading
-Purpose:
-
-- Prepare for Customize Heading and Color Palette
-
-To do:
-
-- [x] Fix Color drift `theme.json` and  `style.css`
-- [x] Setup baseline to implement customize
-- [x] Check `theme.json`
-- [ ] Setup typography-settings in block
-
-### 1.2.9 — Slider & Motion Onsite QA
-
-Status: **IN_PROGRESS**
-Started: **2026-06-09**
-
-Purpose:
-
-- Consolidate onsite QA deferred from 1.2.0 and 1.2.1.
-- Verify Slider image editing, preset insertion, frontend Swiper behavior, Accordion interaction, Card motion, accessibility, responsive behavior, and fallbacks.
-- Verify Feature Showcase interaction, gradient presets, B2B pattern composition,
-  and Gutenberg normal/wide/full alignment behavior carried from 1.2.3.
-- Keep implementation milestones moving without falsely marking unrun onsite tests as passed.
-
-Testing:
-
-- `docs/testing/onsite-slider-motion-1.2.9.md`
-- `docs/testing/onsite-feature-showcase-1.2.3.md`
-
-Acceptance draft:
-
-- [ ] Human verifies all three Slider presets insert useful sample content
-- [x] Human verifies Slider image choose/replace/remove and editor persistence
-- [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts
-- [x] Human verifies Slider keyboard, autoplay, reduced-motion, navigation, and responsive behavior
-- [ ] Human verifies Accordion interaction and accessibility
-- [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
-- [x] Human verifies Feature Showcase desktop hover/focus, mobile tap, gradients, and images
-- [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
-- [x] Human verifies Full Width Canvas preserves normal, wide, and full Gutenberg alignment semantics
-- [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
-- [ ] Any source defects are fixed and re-tested
-- [ ] Human approves closing consolidated Slider/Motion QA
-
 ### 1.1.2 — Product Quote Flow & Map Block Testing
 
 Status: **PENDING**
@@ -135,7 +90,8 @@ Acceptance draft:
 
 ### 1.3.0 — Slider Dynamic Rendering Architecture
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
+Started: **2026-06-11**
 
 Purpose:
 
@@ -183,6 +139,37 @@ Acceptance draft:
 - [ ] New PHP runtime files are included in deploy artifact and plugin zip audits
 - [ ] Plugin build, PHP syntax checks, and onsite migration QA pass
 - [ ] Human approves milestone completion
+
+### 1.3.1 — Slider Dynamic Rendering Onsite QA
+
+Status: **PENDING**
+
+Purpose:
+
+- Run the Slider, Accordion, Card motion, and B2B Feature Showcase checks that
+  were not completed before starting the 1.3.0 dynamic rendering migration.
+- Test Slider frontend behavior against the 1.3.0 server-rendered contract,
+  instead of approving the superseded static frontend architecture.
+- Keep previously passed image editing, Slider controls, Feature Showcase
+  interaction, and Full Width Canvas evidence recorded without rerunning them
+  unless the 1.3.0 migration changes those surfaces.
+
+Testing:
+
+- `docs/testing/onsite-slider-motion-1.3.1.md`
+- `docs/testing/onsite-feature-showcase-1.2.3.md`
+
+Acceptance draft:
+
+- [ ] Human verifies all three Slider presets insert useful sample content
+- [ ] Human verifies existing Slider content opens without invalid-block recovery
+- [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts through the dynamic render path
+- [ ] Human verifies Accordion interaction and accessibility
+- [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
+- [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
+- [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
+- [ ] Any source defects are fixed and re-tested
+- [ ] Human approves closing Slider Dynamic Rendering onsite QA
 
 ### 1.4.0 — SKVN Theme Init Setup UI
 

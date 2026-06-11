@@ -159,8 +159,8 @@ Implemented V1 / 1.2.0:
 - Fade presets support On scroll or Always; Hover lift uses On hover automatically.
 - Desktop, Tablet, and Mobile are independent toggles.
 - `src/motion.css` and the motion frontend entry are plugin-owned and do not depend on the SKVN theme.
-- Onsite verification contract deferred to V1 / 1.2.9:
-  `docs/testing/onsite-slider-motion-1.2.9.md`.
+- Remaining onsite verification contract deferred to V1 / 1.3.1:
+  `docs/testing/onsite-slider-motion-1.3.1.md`.
 
 ## [manual] Footer Settings Module And Future Gutenberg Supercharger Boundary
 
@@ -298,6 +298,33 @@ Slider editor UX decision for V1 / 1.2.0:
 - Background image uses the WordPress Media Library with choose, replace, and remove actions.
 - Overlay opacity is governed from 0–80%; raw CSS is not exposed.
 
+Future carousel/showcase editor UX decision approved on 2026-06-11:
+
+- Decision doc: `docs/decisions/slider-carousel-showcase-ux.md`.
+- Planning file:
+  `.context/planning/019_FUTURE_CANDIDATE_SLIDER_CAROUSEL_SHOWCASE_UX_PLANNING.md`.
+- This supersedes stacked preview for carousel/showcase presets only. Hero may
+  retain a vertically readable editor surface.
+- Carousel/showcase editor preview is a non-moving grid with a maximum 5 columns
+  by 2 rows and a hard maximum of 10 Slides.
+- Keep Gutenberg InnerBlocks and native List View; add visible card management
+  without creating a proprietary slide manager.
+- Carousel/showcase Slides use one content image and do not expose the Hero
+  background-image control.
+- General card content is Image, Heading, optional Subheading, Body, Meta, and
+  Button. Image and Heading remain visible.
+- Desktop card layout is Side by side or Stacked; mobile is always Stacked.
+- Approved motion modes are Custom Carousel, Product Showcase Marquee, and
+  Centered Carousel, all using the existing Swiper runtime.
+- Preset-controlled settings stay visible but are semantically disabled, gray,
+  and explained.
+- Each Slide uses native Gutenberg LinkControl; the Slider owns the shared
+  open-in-new-tab setting.
+- Visual styles and backgrounds use governed presets with previews.
+- Responsive spacing uses tokens and linked sides, not raw pixels, negative
+  margins, or arbitrary CSS.
+- Frontend markup work must align with V1 / 1.3.0 dynamic Slider rendering.
+
 V1 / 1.2.1 Slider preset and inserter decision:
 
 - Register one `SKVN Marine` Block Inserter category for all SKVN-owned blocks.
@@ -306,7 +333,8 @@ V1 / 1.2.1 Slider preset and inserter decision:
 - Use Gutenberg variations/templates rather than separate duplicated Slider blocks.
 - Do not build a custom slide manager, selected-slide canvas, or setup modal.
 - Keep native Gutenberg List View and block actions for navigation, reorder, duplicate, and remove.
-- Onsite QA for 1.2.0 and 1.2.1 is consolidated in V1 / 1.2.9.
+- Remaining onsite QA for 1.2.0 and 1.2.1 is consolidated in V1 / 1.3.1
+  after the 1.3.0 dynamic rendering migration.
 
 Implemented V1 / 1.2.1:
 
