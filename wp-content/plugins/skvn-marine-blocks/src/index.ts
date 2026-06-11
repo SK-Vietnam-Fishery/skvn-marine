@@ -9,6 +9,7 @@ import { Edit as SlideEdit } from './slide/edit';
 import { save as slideSave } from './slide/save';
 
 import sliderMetadata from './slider/block.json';
+import sliderDeprecated from './slider/deprecated';
 import { Edit as SliderEdit } from './slider/edit';
 import { save as sliderSave } from './slider/save';
 import { registerSliderVariations } from './slider/variations';
@@ -41,6 +42,7 @@ registerBlockType( slideMetadata.name, {
 
 registerBlockType( sliderMetadata.name, {
 	...sliderMetadata,
+	deprecated: sliderDeprecated,
 	edit: SliderEdit,
 	save: sliderSave,
 } );

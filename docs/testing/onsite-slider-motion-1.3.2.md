@@ -15,6 +15,8 @@ repeated because the dynamic rendering migration changed those surfaces.
 ## Target
 
 - Onsite WordPress editor and frontend.
+- Target draft/private page URL: record the editor URL and frontend preview URL
+  in the evidence report before testing.
 - A draft test page containing at least two SKVN Accordion blocks and one SKVN Card Grid with four SKVN Card blocks.
 - All three 1.2.1 Slider presets: Hero Slider, Product Showcase, and Card Carousel.
 
@@ -51,6 +53,19 @@ repeated because the dynamic rendering migration changed those surfaces.
 7. Use native Gutenberg List View/actions to reorder, duplicate, and remove a Slide.
 8. Save and reload the editor.
 9. Confirm preset structures and order persist without invalid-block or recovery warnings.
+10. Confirm the old `Dots` control is replaced by `Show pagination`, pagination
+    style, and pagination position.
+11. Confirm Autoplay duration offers only `5`, `7`, `9`, and `12` seconds for
+    new choices.
+12. Open a Slider saved with an arbitrary legacy delay such as `3500ms`.
+    Confirm the editor labels it as preserved, does not change it on load, and
+    keeps it after an unrelated content edit/save.
+13. Select a governed duration for that legacy Slider, save, and confirm the
+    selected governed value replaces the legacy value.
+14. Confirm Pill is disabled while Side center is selected, and Side center is
+    disabled while Pill is selected.
+15. Confirm the editor shows a static preview of the selected arrow and
+    pagination styles without running Swiper, autoplay, or live timer progress.
 
 ## Slider Frontend Checks
 
@@ -76,15 +91,22 @@ repeated because the dynamic rendering migration changed those surfaces.
 18. Confirm current/total numbering excludes loop clones.
 19. Confirm mobile timed-fraction and timed-segments fallbacks follow the decision contract.
 20. Confirm Swiper layout/navigation CSS loads without relying on the SKVN theme.
-21. While an autoplay Slider is moving, switch to another browser tab long
+21. Confirm clicking the already-current pagination item does not restart its
+    progress.
+22. With loop disabled, confirm autoplay/progress stops on the final Slide.
+    Navigate to an earlier Slide and confirm autoplay can resume under the
+    normal pause policy.
+23. While an autoplay Slider is moving, switch to another browser tab long
    enough to exceed its configured delay. Confirm the hidden Slider does not
    advance continuously in the background.
-22. Return to the Slider tab and confirm autoplay resumes only when the Slider
+24. Return to the Slider tab and confirm autoplay resumes only when the Slider
    is not hovered and keyboard focus is not inside it.
-23. Repeat the tab switch while the pointer remains over the Slider, then once
+25. Repeat the tab switch while the pointer remains over the Slider, then once
     while keyboard focus is on an arrow or pagination control. Confirm returning
     to the tab does not resume autoplay until hover/focus leaves the Slider.
-24. Enable Reduce motion and confirm autoplay is disabled and does not resume
+26. During a drag/swipe, confirm timer progress pauses and resumes only after
+    interaction ends and no hover/focus/visibility reason remains.
+27. Enable Reduce motion and confirm autoplay is disabled and does not resume
     after a tab visibility change.
 
 ## Memory Stability Check
@@ -165,12 +187,17 @@ repeated because the dynamic rendering migration changed those surfaces.
 - No frontend console error references `skvn-marine-blocks`, motion runtime, or Accordion.
 - Arrow and pagination controls match
   `docs/decisions/slider-navigation-and-pagination-controls.md`.
+- Legacy `dots`, `arrows`, and arbitrary delay content migrates without
+  invalid-block recovery or silent timing changes.
 
 ## Fail Evidence To Report
 
 - Target page URL.
+- Editor URL and frontend preview URL.
 - Browser/device and viewport width.
 - Screenshot or short screen recording.
+- Screenshot of the Slider sidebar for one clustered configuration, one
+  independent configuration, and one preserved legacy delay.
 - Exact block preset, trigger, and device-toggle combination.
 - Whether the failure occurred before hiding the tab, while hidden, or after
   returning, and whether pointer hover or keyboard focus remained inside.

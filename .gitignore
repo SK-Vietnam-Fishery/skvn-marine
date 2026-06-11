@@ -193,3 +193,6 @@ vite.config.ts.timestamp-*
 .buffer
 ideations
 artifacts
+!docs/artifacts/
+docs/artifacts/*
+!docs/artifacts/init-prompt-v1-1.3.1-slider-controls.md

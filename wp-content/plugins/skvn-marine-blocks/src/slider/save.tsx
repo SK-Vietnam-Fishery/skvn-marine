@@ -2,10 +2,14 @@ import { InnerBlocks, useBlockProps } from '@wordpress/block-editor';
 
 type SliderAttributes = {
 	autoplay: boolean;
-	delay: number;
+	autoplayDelay: number;
 	loop: boolean;
-	arrows: boolean;
-	dots: boolean;
+	showArrows: boolean;
+	arrowStyle: string;
+	arrowPosition: string;
+	showPagination: boolean;
+	paginationStyle: string;
+	paginationPosition: string;
 	effect: string;
 	slidesPerView: number;
 	preset: string;
@@ -24,10 +28,14 @@ export function save({ attributes }: SliderSaveProps) {
 		className: `skvn-slider swiper${ presetClass }`,
 		'data-skvn-slider': JSON.stringify({
 			autoplay: attributes.autoplay,
-			delay: attributes.delay,
+			autoplayDelay: attributes.autoplayDelay,
 			loop: attributes.loop,
-			arrows: attributes.arrows,
-			dots: attributes.dots,
+			showArrows: attributes.showArrows,
+			arrowStyle: attributes.arrowStyle,
+			arrowPosition: attributes.arrowPosition,
+			showPagination: attributes.showPagination,
+			paginationStyle: attributes.paginationStyle,
+			paginationPosition: attributes.paginationPosition,
 			effect: attributes.effect,
 			slidesPerView: attributes.slidesPerView,
 			...(attributes.responsiveSlides === '3-2-1'
@@ -41,13 +49,17 @@ export function save({ attributes }: SliderSaveProps) {
 			<div className="skvn-slider__wrapper swiper-wrapper">
 				<InnerBlocks.Content />
 			</div>
-			{attributes.arrows && (
-				<>
+			{(attributes.showArrows || attributes.showPagination) && (
+				<div className="skvn-slider__controls">
+					{attributes.showArrows && (
+						<div className="skvn-slider__arrows">
 					<button className="skvn-slider__arrow skvn-slider__arrow--prev swiper-button-prev" type="button" />
 					<button className="skvn-slider__arrow skvn-slider__arrow--next swiper-button-next" type="button" />
-				</>
+						</div>
+					)}
+					{attributes.showPagination && <div className="skvn-slider__pagination swiper-pagination" />}
+				</div>
 			)}
-			{attributes.dots && <div className="skvn-slider__pagination swiper-pagination" />}
 		</div>
 	);
 }

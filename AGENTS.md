@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.0 — Slider Dynamic Rendering Architecture**
+Current milestone: **V1 / 1.3.1 — Slider Navigation & Pagination Controls UX**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 

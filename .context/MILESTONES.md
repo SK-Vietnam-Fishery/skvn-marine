@@ -8,7 +8,7 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.0 — Slider Dynamic Rendering Architecture**
+Current: **V1 / 1.3.1 — Slider Navigation & Pagination Controls UX**
 Status: **IN_PROGRESS**
 Started: **2026-06-11**
 
@@ -88,95 +88,10 @@ Acceptance draft:
 - [ ] No n8n webhook is exposed or required
 - [ ] Human approves closing 1.1.2 testing
 
-### 1.3.0 — Slider Dynamic Rendering Architecture
+### 1.3.1 — Slider Navigation & Pagination Controls UX
 
 Status: **IN_PROGRESS**
 Started: **2026-06-11**
-
-Current onsite result:
-
-- **FAIL reported by human on 2026-06-11.**
-- At least one Hero Slide renders its selected image, while another does not
-  visibly render the selected image and appears as the fallback
-  background/gradient.
-- The Slider is constrained to a narrow content-width box instead of the
-  intended full-width SKVN page/canvas surface.
-- Pagination is laid out below/outside the visible Slide frame.
-- Human reported excessive RAM usage while the Slider/editor was otherwise
-  idle. The responsible render, subscription, observer, or Swiper lifecycle is
-  not yet proven.
-- These are observed symptoms, not confirmed root causes. V1 / 1.3.0 remains
-  open until the media contract, geometry, pagination ownership, and memory
-  behavior are diagnosed and corrected.
-
-Purpose:
-
-- Convert `skvn-marine/slider` and `skvn-marine/slide` from static Gutenberg
-  saved frontend markup to a server-rendered PHP architecture while the block
-  family is still early enough to migrate deliberately.
-- Establish one stable media/overlay/content render contract shared by Hero
-  Slider, Product Showcase, Card Carousel, and future Slider presets.
-- Prevent compound deprecation debt from accumulating each time Slider frontend
-  markup evolves.
-- Preserve Gutenberg InnerBlocks editing, existing block namespace/attributes,
-  Swiper runtime behavior, and existing published content through an explicit
-  migration/compatibility plan.
-
-Planning:
-
-- `docs/decisions/slider-completion-spec-1.3.0.md`
-- `docs/workflows/start-v1-1.3.0-slider-repair.md`
-- Historical evidence is linked from that document through each folder's
-  `/archives/` directory.
-
-Constraints:
-
-- Do not silently convert the blocks during a 1.2.1 bug patch.
-- Do not rename `skvn-marine/slider` or `skvn-marine/slide`.
-- Do not replace InnerBlocks with a `slides` array or custom slide manager.
-- Do not duplicate Swiper or introduce another Slider controller.
-- Define plugin PHP module ownership, render callbacks, escaping, and deploy
-  artifact requirements before implementation.
-- Existing Slider content must remain editable and render without invalid-block
-  recovery.
-- Expanded carousel/showcase UX such as the 5x2 editor grid, ten-card limit,
-  marquee, centered mode, card links, visual presets, and responsive spacing is
-  not part of 1.3.0.
-
-Acceptance draft:
-
-- [x] Static versus dynamic rendering decision and migration boundary are finalized
-- [x] Current saved Slider/Slide markup variants are inventoried
-- [x] PHP render contract defines Slider shell and Slide media/content layers
-- [x] Slider/Slide block metadata registers approved server render paths
-- [x] Existing InnerBlocks content renders through the dynamic path
-- [ ] Existing saved Slider content remains editable without invalid-block recovery
-- [x] Compatibility fixtures parse and render initial, image-enabled, Hero, Product Showcase, and Card Carousel saved markup
-- [x] Compatibility fixtures confirm InnerBlocks render exactly once through the PHP frontend renderer
-- [x] Hero Slider source uses a stable media/overlay/content frame
-- [ ] Product Showcase and Card Carousel retain their distinct flow layouts
-- [ ] Swiper fade, autoplay, arrows, dots, keyboard, loop, and reduced-motion behavior remain functional
-- [ ] Every Hero Slide renders its selected image through the same media layer
-- [ ] Overlay/background layering does not conceal a valid selected image
-- [ ] Slider uses the intended SKVN full-width canvas ownership
-- [ ] Pagination remains inside the Slider frame
-- [ ] Editor/frontend idle memory use remains stable without duplicate render, observer, subscription, or Swiper initialization loops
-- [x] Slider runtime uses shared reduced-motion detection and conservative hover/focus/document-visibility pause/resume
-- [x] Existing arbitrary Slider delay values remain valid and are not restricted to `3/5/7/9s`
-- [x] PHP input/output handling follows WordPress sanitize/escape rules
-- [x] Product Showcase and Card Carousel suppress legacy Hero background media in PHP fixture output
-- [x] Card Carousel config remains `3/2/1` in PHP fixture output
-- [x] Plugin build passes
-- [x] Plugin bootstrap and Slider render module pass PHP syntax checks
-- [x] Layout audit finds no Slider viewport-width or overflow-masking rule
-- [x] New PHP runtime files are included in the deploy artifact and plugin zip
-- [x] V1 / 1.3.2 onsite handoff includes document-visibility autoplay checks
-- [ ] Human targeted smoke check confirms the reported image, width, pagination, and idle-memory failures are corrected
-- [ ] Human approves milestone completion
-
-### 1.3.1 — Slider Navigation & Pagination Controls UX
-
-Status: **PENDING**
 
 Purpose:
 
@@ -194,7 +109,8 @@ Decision:
 
 Dependencies:
 
-- V1 / 1.3.0 failures must be corrected before live timed pagination is added.
+- V1 / 1.3.0 dynamic rendering and repair foundation completed with human
+  onsite approval on 2026-06-11.
 - Existing `dots` and arbitrary delay values need explicit Gutenberg
   compatibility behavior.
 

@@ -728,3 +728,56 @@ Reason:
 Next milestone:
 
 - V1 / 1.3.0 — Slider Dynamic Rendering Architecture.
+
+---
+
+## V1 / 1.3.0 — Slider Dynamic Rendering Architecture
+
+Status: **DONE**
+Started: **2026-06-11**
+Completed: **2026-06-11**
+Approved by human: **2026-06-11**
+
+Purpose:
+
+- Move Slider and Slide frontend output to dynamic PHP rendering.
+- Preserve Gutenberg InnerBlocks, block identities, existing content, and one
+  Swiper runtime.
+- Establish stable Hero media, overlay, content, full-width, pagination, and
+  runtime lifecycle ownership.
+
+Completed:
+
+- [x] Slider and Slide render through plugin-owned PHP callbacks.
+- [x] Existing InnerBlocks render exactly once without a bulk resave.
+- [x] Attachment ID is the preferred Hero media identity with legacy URL
+      fallback.
+- [x] Hero media, overlay, fallback gradient, and content use explicit layers.
+- [x] Product Showcase and Card Carousel retain flow layouts and suppress Hero
+      background media.
+- [x] Slider joins the existing SKVN full-width canvas through `alignfull`
+      without viewport-width hacks.
+- [x] Pagination remains inside the Slider frame.
+- [x] Slider structural CSS is emitted and registered from the actual
+      `style-view.ts.css` frontend asset and is also available in the editor.
+- [x] One Swiper instance initializes per Slider root.
+- [x] Pointer, focus, and document-visibility listeners have explicit cleanup.
+- [x] Destroyed Swiper instances can return to fallback state and reinitialize.
+- [x] Reduced motion disables autoplay.
+- [x] Existing arbitrary delay values remain compatible.
+- [x] Compatibility fixture, plugin build, PHP lint, layout audit, deploy
+      artifact build, and plugin zip audit passed.
+- [x] Human onsite smoke test confirmed Hero media, full-width geometry,
+      controls/pagination placement, editor compatibility, and stable idle RAM.
+- [x] Human approved transition to V1 / 1.3.1.
+
+Repair evidence:
+
+- Initial onsite failure and State Delta diagnosis:
+  `docs/artifacts/start-v1-1.3.0-slider-repair.md`
+- Active architecture decision:
+  `docs/decisions/slider-completion-spec-1.3.0.md`
+
+Next milestone:
+
+- V1 / 1.3.1 — Slider Navigation & Pagination Controls UX.

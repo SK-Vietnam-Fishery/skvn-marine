@@ -7,7 +7,7 @@ import {
 	Navigation,
 	Pagination,
 } from 'swiper/modules';
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { prefersReducedMotion } from '../shared/motion';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -15,26 +15,50 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './style.css';
 
+type ArrowStyle = 'minimal' | 'circle' | 'pill';
+type ArrowPosition =
+	| 'side-center'
+	| 'bottom-left'
+	| 'bottom-center'
+	| 'bottom-right';
+type PaginationStyle =
+	| 'dots'
+	| 'fraction'
+	| 'timed-fraction'
+	| 'timed-segments';
+type BottomPosition = 'bottom-left' | 'bottom-center' | 'bottom-right';
+type PauseReason = 'focus' | 'hidden' | 'interaction' | 'pointer';
+
 type SliderConfig = {
 	autoplay?: boolean;
-	delay?: number;
+	autoplayDelay?: number;
 	loop?: boolean;
-	arrows?: boolean;
-	dots?: boolean;
+	showArrows?: boolean;
+	arrowStyle?: string;
+	arrowPosition?: string;
+	showPagination?: boolean;
+	paginationStyle?: string;
+	paginationPosition?: string;
 	effect?: string;
 	slidesPerView?: number;
 	responsiveSlides?: string;
+	slideCount?: number;
 };
 
 type NormalizedSliderConfig = {
 	autoplay: boolean;
-	delay: number;
+	autoplayDelay: number;
 	loop: boolean;
-	arrows: boolean;
-	dots: boolean;
+	showArrows: boolean;
+	arrowStyle: ArrowStyle;
+	arrowPosition: ArrowPosition;
+	showPagination: boolean;
+	paginationStyle: PaginationStyle;
+	paginationPosition: BottomPosition;
 	effect: 'fade' | 'slide';
 	slidesPerView: number;
 	responsiveSlides: '3-2-1' | 'uniform';
+	slideCount: number;
 };
 
 type SliderElement = HTMLElement & {
@@ -53,11 +77,20 @@ function clampInteger(
 		: fallback;
 }
 
-function normalizeSliderDelay( value: unknown ) {
-	return clampInteger( value, 5000, 1000, 12000 );
+function normalizeChoice< T extends string >(
+	value: unknown,
+	allowed: readonly T[],
+	fallback: T
+) {
+	return typeof value === 'string' && allowed.includes( value as T )
+		? ( value as T )
+		: fallback;
 }
 
-function parseSliderConfig( rawConfig: string ): NormalizedSliderConfig {
+function parseSliderConfig(
+	rawConfig: string,
+	fallbackSlideCount: number
+): NormalizedSliderConfig {
 	let parsed: SliderConfig = {};
 
 	try {
@@ -68,18 +101,142 @@ function parseSliderConfig( rawConfig: string ): NormalizedSliderConfig {
 		parsed = {};
 	}
 
+	const slideCount = clampInteger(
+		parsed.slideCount,
+		fallbackSlideCount,
+		0,
+		100
+	);
+	const hasMultipleSlides = slideCount > 1;
+	const arrowStyle = normalizeChoice(
+		parsed.arrowStyle,
+		[ 'minimal', 'circle', 'pill' ] as const,
+		'circle'
+	);
+	let arrowPosition = normalizeChoice(
+		parsed.arrowPosition,
+		[
+			'side-center',
+			'bottom-left',
+			'bottom-center',
+			'bottom-right',
+		] as const,
+		'side-center'
+	);
+
+	if ( arrowStyle === 'pill' && arrowPosition === 'side-center' ) {
+		arrowPosition = 'bottom-left';
+	}
+
 	return {
 		autoplay:
-			typeof parsed.autoplay === 'boolean' ? parsed.autoplay : true,
-		delay: normalizeSliderDelay( parsed.delay ),
-		loop: typeof parsed.loop === 'boolean' ? parsed.loop : true,
-		arrows: typeof parsed.arrows === 'boolean' ? parsed.arrows : true,
-		dots: typeof parsed.dots === 'boolean' ? parsed.dots : true,
+			hasMultipleSlides &&
+			( typeof parsed.autoplay === 'boolean' ? parsed.autoplay : true ),
+		autoplayDelay: clampInteger(
+			parsed.autoplayDelay,
+			7000,
+			1000,
+			12000
+		),
+		loop:
+			hasMultipleSlides &&
+			( typeof parsed.loop === 'boolean' ? parsed.loop : true ),
+		showArrows:
+			hasMultipleSlides &&
+			( typeof parsed.showArrows === 'boolean'
+				? parsed.showArrows
+				: true ),
+		arrowStyle,
+		arrowPosition,
+		showPagination:
+			hasMultipleSlides &&
+			( typeof parsed.showPagination === 'boolean'
+				? parsed.showPagination
+				: true ),
+		paginationStyle: normalizeChoice(
+			parsed.paginationStyle,
+			[
+				'dots',
+				'fraction',
+				'timed-fraction',
+				'timed-segments',
+			] as const,
+			'dots'
+		),
+		paginationPosition: normalizeChoice(
+			parsed.paginationPosition,
+			[ 'bottom-left', 'bottom-center', 'bottom-right' ] as const,
+			'bottom-center'
+		),
 		effect: parsed.effect === 'fade' ? 'fade' : 'slide',
 		slidesPerView: clampInteger( parsed.slidesPerView, 1, 1, 4 ),
 		responsiveSlides:
 			parsed.responsiveSlides === '3-2-1' ? '3-2-1' : 'uniform',
+		slideCount,
 	};
+}
+
+function formatSlideNumber( value: number ) {
+	return String( value ).padStart( 2, '0' );
+}
+
+function renderFraction(
+	swiper: Swiper,
+	total: number,
+	timed: boolean
+) {
+	const current = Math.min( total, swiper.realIndex + 1 );
+	const timer = timed
+		? '<span aria-hidden="true" class="skvn-slider__timer"><span class="skvn-slider__timer-fill"></span></span>'
+		: '<span aria-hidden="true" class="skvn-slider__fraction-separator">/</span>';
+
+	return [
+		`<span class="skvn-slider__fraction-current">${ formatSlideNumber(
+			current
+		) }</span>`,
+		timer,
+		`<span class="skvn-slider__fraction-total">${ formatSlideNumber(
+			total
+		) }</span>`,
+	].join( '' );
+}
+
+function renderSegments( total: number ) {
+	return Array.from(
+		{ length: total },
+		( _, index ) =>
+			`<button class="swiper-pagination-bullet" data-skvn-slide-index="${ index }" type="button"></button>`
+	).join( '' );
+}
+
+function setPaginationA11y(
+	slider: SliderElement,
+	swiper: Swiper,
+	total: number
+) {
+	slider
+		.querySelectorAll< HTMLButtonElement >(
+			'.skvn-slider__pagination .swiper-pagination-bullet'
+		)
+		.forEach( ( bullet, index ) => {
+			bullet.setAttribute(
+				'aria-label',
+				sprintf(
+					__( 'Go to slide %d', 'skvn-marine-blocks' ),
+					index + 1
+				)
+			);
+			bullet.classList.toggle(
+				'swiper-pagination-bullet-active',
+				index === swiper.realIndex % total
+			);
+
+			if ( index === swiper.realIndex % total ) {
+				bullet.setAttribute( 'aria-current', 'true' );
+			} else {
+				bullet.removeAttribute( 'aria-current' );
+			}
+		} );
 }
 
 document
@@ -97,15 +254,56 @@ document
 			return;
 		}
 
+		const wrapper = slider.querySelector( '.swiper-wrapper' );
+		const realSlideCount =
+			wrapper?.querySelectorAll( ':scope > .swiper-slide' ).length ?? 0;
 		const rawConfig = slider.getAttribute( 'data-skvn-slider' ) || '{}';
-		const config = parseSliderConfig( rawConfig );
+		const config = parseSliderConfig( rawConfig, realSlideCount );
 		const usesCardBreakpoints = config.responsiveSlides === '3-2-1';
 		const reducedMotion = prefersReducedMotion();
+		const paginationElement =
+			slider.querySelector< HTMLElement >( '.swiper-pagination' );
+		const timedPagination =
+			config.paginationStyle === 'timed-fraction' ||
+			config.paginationStyle === 'timed-segments';
+
+		if ( config.slideCount <= 1 ) {
+			slider.classList.add( 'skvn-slider--static' );
+			return;
+		}
 
 		slider.dataset.skvnSliderInitialized = 'true';
 		slider.classList.add( 'skvn-slider--initialized' );
+		slider.classList.toggle(
+			'skvn-slider--reduced-motion',
+			reducedMotion
+		);
 
 		try {
+			const pagination =
+				config.showPagination && paginationElement
+					? config.paginationStyle === 'timed-segments'
+						? false
+						: config.paginationStyle === 'fraction' ||
+					  config.paginationStyle === 'timed-fraction'
+						? {
+								el: paginationElement,
+								renderCustom: ( swiper: Swiper ) =>
+									renderFraction(
+										swiper,
+										config.slideCount,
+										config.paginationStyle ===
+											'timed-fraction'
+									),
+								type: 'custom' as const,
+						  }
+						: {
+								bulletElement: 'button',
+								clickable: true,
+								el: paginationElement,
+								type: 'bullets' as const,
+						  }
+					: false;
 			const swiper = new Swiper( slider, {
 				modules: [
 					A11y,
@@ -117,7 +315,7 @@ document
 				],
 				a11y: {
 					containerRoleDescriptionMessage: __(
-						'Carousel',
+						'Content slider',
 						'skvn-marine-blocks'
 					),
 					nextSlideMessage: __(
@@ -136,8 +334,10 @@ document
 				autoplay:
 					config.autoplay && ! reducedMotion
 						? {
-								delay: config.delay,
+								delay: config.autoplayDelay,
+								disableOnInteraction: false,
 								pauseOnMouseEnter: false,
+								stopOnLastSlide: ! config.loop,
 						  }
 						: false,
 				effect: config.effect,
@@ -146,7 +346,7 @@ document
 				},
 				keyboard: { enabled: true },
 				loop: config.loop,
-				navigation: config.arrows
+				navigation: config.showArrows
 					? {
 							nextEl: slider.querySelector< HTMLElement >(
 								'.swiper-button-next'
@@ -156,14 +356,7 @@ document
 							),
 					  }
 					: false,
-				pagination: config.dots
-					? {
-							clickable: true,
-							el: slider.querySelector< HTMLElement >(
-								'.swiper-pagination'
-							),
-					  }
-					: false,
+				pagination,
 				breakpoints: usesCardBreakpoints
 					? {
 							600: { slidesPerView: 2 },
@@ -175,62 +368,179 @@ document
 					: config.slidesPerView,
 			} );
 
-			let pointerInside = false;
-			let focusInside = slider.contains( document.activeElement );
+			const pauseReasons = new Set< PauseReason >();
 			let focusTimeout: number | undefined;
 			let cleaned = false;
 
-			const pauseAutoplay = () => {
-				swiper.autoplay?.pause();
+			if ( document.hidden ) {
+				pauseReasons.add( 'hidden' );
+			}
+
+			if ( slider.contains( document.activeElement ) ) {
+				pauseReasons.add( 'focus' );
+			}
+
+			const resetProgress = () => {
+				slider.style.setProperty( '--skvn-slider-progress', '0' );
 			};
-			const resumeAutoplay = () => {
+			const syncAutoplay = () => {
 				if (
-					config.autoplay &&
-					! prefersReducedMotion() &&
-					! document.hidden &&
-					! pointerInside &&
-					! focusInside
+					! config.autoplay ||
+					reducedMotion ||
+					pauseReasons.size > 0
 				) {
+					swiper.autoplay?.pause();
+					return;
+				}
+
+				if ( ! config.loop && swiper.isEnd ) {
+					swiper.autoplay?.stop();
+					return;
+				}
+
+				if ( swiper.autoplay && ! swiper.autoplay.running ) {
+					swiper.autoplay.start();
+				} else {
 					swiper.autoplay?.resume();
-					return;
 				}
-
-				pauseAutoplay();
 			};
-
-			const handlePointerEnter = ( event: PointerEvent ) => {
-				if ( event.pointerType !== 'mouse' ) {
-					return;
+			const setPauseReason = (
+				reason: PauseReason,
+				active: boolean
+			) => {
+				if ( active ) {
+					pauseReasons.add( reason );
+				} else {
+					pauseReasons.delete( reason );
 				}
 
-				pointerInside = true;
-				pauseAutoplay();
+				syncAutoplay();
+			};
+			const updatePaginationA11y = () => {
+				setPaginationA11y(
+					slider,
+					swiper,
+					config.slideCount
+				);
+			};
+			const handleRealIndexChange = () => {
+				resetProgress();
+
+				if (
+					config.paginationStyle === 'fraction' ||
+					config.paginationStyle === 'timed-fraction'
+				) {
+					if ( paginationElement ) {
+						paginationElement.innerHTML = renderFraction(
+							swiper,
+							config.slideCount,
+							config.paginationStyle === 'timed-fraction'
+						);
+					}
+				} else if (
+					config.paginationStyle === 'timed-segments' &&
+					paginationElement &&
+					! paginationElement.hasChildNodes()
+				) {
+					paginationElement.innerHTML = renderSegments(
+						config.slideCount
+					);
+				}
+
+				updatePaginationA11y();
+			};
+			const handlePointerEnter = ( event: PointerEvent ) => {
+				if ( event.pointerType === 'mouse' ) {
+					setPauseReason( 'pointer', true );
+				}
 			};
 			const handlePointerLeave = ( event: PointerEvent ) => {
-				if ( event.pointerType !== 'mouse' ) {
-					return;
+				if ( event.pointerType === 'mouse' ) {
+					setPauseReason( 'pointer', false );
 				}
-
-				pointerInside = false;
-				resumeAutoplay();
 			};
 			const handleFocusIn = () => {
-				focusInside = true;
-				pauseAutoplay();
+				setPauseReason( 'focus', true );
 			};
 			const handleFocusOut = () => {
 				focusTimeout = window.setTimeout( () => {
-					focusInside = slider.contains( document.activeElement );
-					resumeAutoplay();
+					setPauseReason(
+						'focus',
+						slider.contains( document.activeElement )
+					);
 				}, 0 );
 			};
 			const handleVisibilityChange = () => {
-				if ( document.hidden ) {
-					pauseAutoplay();
+				setPauseReason( 'hidden', document.hidden );
+			};
+			const handlePaginationClick = ( event: MouseEvent ) => {
+				const target = event.target;
+				const paginationButton =
+					target instanceof HTMLElement
+						? target.closest< HTMLButtonElement >(
+								'.swiper-pagination-bullet'
+						  )
+						: null;
+
+				if (
+					paginationButton?.getAttribute( 'aria-current' ) ===
+					'true'
+				) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
 					return;
 				}
 
-				resumeAutoplay();
+				if (
+					config.paginationStyle === 'timed-segments' &&
+					paginationButton
+				) {
+					const index = Number(
+						paginationButton.dataset.skvnSlideIndex
+					);
+
+					if ( Number.isInteger( index ) ) {
+						event.preventDefault();
+						event.stopImmediatePropagation();
+						handleInteractionStart();
+
+						if ( config.loop ) {
+							swiper.slideToLoop( index );
+						} else {
+							swiper.slideTo( index );
+						}
+
+						handleManualNavigation();
+					}
+				}
+			};
+			const handleInteractionStart = () => {
+				setPauseReason( 'interaction', true );
+			};
+			const handleInteractionEnd = () => {
+				setPauseReason( 'interaction', false );
+				resetProgress();
+			};
+			const handleManualNavigation = () => {
+				pauseReasons.delete( 'interaction' );
+				resetProgress();
+				syncAutoplay();
+			};
+			const handleAutoplayTimeLeft = (
+				_instance: Swiper,
+				_timeLeft: number,
+				percentage: number
+			) => {
+				if ( ! timedPagination || reducedMotion ) {
+					return;
+				}
+
+				slider.style.setProperty(
+					'--skvn-slider-progress',
+					String(
+						Math.min( 1, Math.max( 0, 1 - percentage ) )
+					)
+				);
 			};
 			const cleanup = () => {
 				if ( cleaned ) {
@@ -248,10 +558,22 @@ document
 				);
 				slider.removeEventListener( 'focusin', handleFocusIn );
 				slider.removeEventListener( 'focusout', handleFocusOut );
+				paginationElement?.removeEventListener(
+					'click',
+					handlePaginationClick,
+					true
+				);
 				document.removeEventListener(
 					'visibilitychange',
 					handleVisibilityChange
 				);
+				swiper.off( 'autoplayTimeLeft', handleAutoplayTimeLeft );
+				swiper.off( 'navigationNext', handleManualNavigation );
+				swiper.off( 'navigationPrev', handleManualNavigation );
+				swiper.off( 'paginationUpdate', updatePaginationA11y );
+				swiper.off( 'realIndexChange', handleRealIndexChange );
+				swiper.off( 'sliderFirstMove', handleInteractionStart );
+				swiper.off( 'touchEnd', handleInteractionEnd );
 
 				if ( focusTimeout !== undefined ) {
 					window.clearTimeout( focusTimeout );
@@ -260,6 +582,7 @@ document
 				delete slider.skvnSliderCleanup;
 				delete slider.dataset.skvnSliderInitialized;
 				slider.classList.remove( 'skvn-slider--initialized' );
+				slider.style.removeProperty( '--skvn-slider-progress' );
 
 				if ( slider.swiper?.destroyed ) {
 					delete slider.swiper;
@@ -270,13 +593,27 @@ document
 			slider.addEventListener( 'pointerleave', handlePointerLeave );
 			slider.addEventListener( 'focusin', handleFocusIn );
 			slider.addEventListener( 'focusout', handleFocusOut );
+			paginationElement?.addEventListener(
+				'click',
+				handlePaginationClick,
+				true
+			);
 			document.addEventListener(
 				'visibilitychange',
 				handleVisibilityChange
 			);
+			swiper.on( 'autoplayTimeLeft', handleAutoplayTimeLeft );
+			swiper.on( 'navigationNext', handleManualNavigation );
+			swiper.on( 'navigationPrev', handleManualNavigation );
+			swiper.on( 'paginationUpdate', updatePaginationA11y );
+			swiper.on( 'realIndexChange', handleRealIndexChange );
+			swiper.on( 'sliderFirstMove', handleInteractionStart );
+			swiper.on( 'touchEnd', handleInteractionEnd );
 			slider.skvnSliderCleanup = cleanup;
 			swiper.on( 'destroy', cleanup );
-			resumeAutoplay();
+			resetProgress();
+			handleRealIndexChange();
+			syncAutoplay();
 		} catch {
 			slider.skvnSliderCleanup?.();
 			delete slider.dataset.skvnSliderInitialized;

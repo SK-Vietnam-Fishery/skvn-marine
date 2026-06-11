@@ -49,6 +49,96 @@ function skvn_marine_blocks_normalize_slider_integer( $value, $default, $minimum
 }
 
 /**
+ * Return an approved string attribute value.
+ *
+ * @param mixed  $value   Raw value.
+ * @param array  $allowed Allowed values.
+ * @param string $default Default value.
+ * @return string
+ */
+function skvn_marine_blocks_normalize_slider_choice( $value, $allowed, $default ) {
+	$value = is_string( $value ) ? $value : '';
+
+	return in_array( $value, $allowed, true ) ? $value : $default;
+}
+
+/**
+ * Read current or legacy Slider attributes without changing saved content.
+ *
+ * @param array    $attributes Prepared block attributes.
+ * @param WP_Block $block      Block instance.
+ * @return array
+ */
+function skvn_marine_blocks_get_slider_attributes( $attributes, $block ) {
+	$raw_attributes = $block instanceof WP_Block && isset( $block->parsed_block['attrs'] )
+		? $block->parsed_block['attrs']
+		: array();
+	$legacy_markup  = $block instanceof WP_Block &&
+		isset( $block->parsed_block['innerHTML'] ) &&
+		false === strpos( $block->parsed_block['innerHTML'], 'skvn-slider__controls' );
+
+	$attributes = array_merge( $raw_attributes, $attributes );
+
+	if ( ! array_key_exists( 'showArrows', $raw_attributes ) && array_key_exists( 'arrows', $raw_attributes ) ) {
+		$attributes['showArrows'] = (bool) $raw_attributes['arrows'];
+	}
+
+	if ( ! array_key_exists( 'showPagination', $raw_attributes ) && array_key_exists( 'dots', $raw_attributes ) ) {
+		$attributes['showPagination'] = (bool) $raw_attributes['dots'];
+	}
+
+	if ( ! array_key_exists( 'autoplayDelay', $raw_attributes ) ) {
+		if ( array_key_exists( 'delay', $raw_attributes ) ) {
+			$attributes['autoplayDelay'] = $raw_attributes['delay'];
+		} elseif ( $legacy_markup ) {
+			$attributes['autoplayDelay'] = 5000;
+		}
+	}
+
+	return $attributes;
+}
+
+/**
+ * Render one arrow control family.
+ *
+ * @param string $style    Arrow style.
+ * @param string $position Arrow position.
+ * @return string
+ */
+function skvn_marine_blocks_render_slider_arrows( $style, $position ) {
+	$class_name  = 'skvn-slider__arrows';
+	$class_name .= ' skvn-slider__arrows--' . $style;
+	$class_name .= ' skvn-slider__arrows--' . $position;
+	$output      = '<div class="' . esc_attr( $class_name ) . '">';
+	$output     .= sprintf(
+		'<button class="skvn-slider__arrow skvn-slider__arrow--prev swiper-button-prev" type="button" aria-label="%s"></button>',
+		esc_attr__( 'Previous slide', 'skvn-marine-blocks' )
+	);
+	$output     .= sprintf(
+		'<button class="skvn-slider__arrow skvn-slider__arrow--next swiper-button-next" type="button" aria-label="%s"></button>',
+		esc_attr__( 'Next slide', 'skvn-marine-blocks' )
+	);
+	$output     .= '</div>';
+
+	return $output;
+}
+
+/**
+ * Render the pagination mount point.
+ *
+ * @param string $style    Pagination style.
+ * @param string $position Pagination position.
+ * @return string
+ */
+function skvn_marine_blocks_render_slider_pagination( $style, $position ) {
+	$class_name  = 'skvn-slider__pagination swiper-pagination';
+	$class_name .= ' skvn-slider__pagination--' . $style;
+	$class_name .= ' skvn-slider__pagination--' . $position;
+
+	return '<div class="' . esc_attr( $class_name ) . '"></div>';
+}
+
+/**
  * Render a block's parsed InnerBlocks exactly once.
  *
  * @param WP_Block $block Block instance.
@@ -79,6 +169,7 @@ function skvn_marine_blocks_render_slider_inner_blocks( $block ) {
 function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 	unset( $content );
 
+	$attributes        = skvn_marine_blocks_get_slider_attributes( $attributes, $block );
 	$preset            = skvn_marine_blocks_normalize_slider_preset( $attributes['preset'] ?? '' );
 	$effect            = isset( $attributes['effect'] ) && 'fade' === $attributes['effect'] ? 'fade' : 'slide';
 	$responsive_slides = isset( $attributes['responsiveSlides'] ) && '3-2-1' === $attributes['responsiveSlides']
@@ -102,19 +193,71 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		$responsive_slides = '3-2-1';
 	}
 
+	$slide_count         = $block instanceof WP_Block ? count( $block->inner_blocks ) : 0;
+	$has_multiple_slides = $slide_count > 1;
+	$show_arrows         = isset( $attributes['showArrows'] )
+		? (bool) $attributes['showArrows']
+		: ( isset( $attributes['arrows'] ) ? (bool) $attributes['arrows'] : true );
+	$show_pagination     = isset( $attributes['showPagination'] )
+		? (bool) $attributes['showPagination']
+		: ( isset( $attributes['dots'] ) ? (bool) $attributes['dots'] : true );
+	$arrow_style         = skvn_marine_blocks_normalize_slider_choice(
+		$attributes['arrowStyle'] ?? 'circle',
+		array( 'minimal', 'circle', 'pill' ),
+		'circle'
+	);
+	$arrow_position      = skvn_marine_blocks_normalize_slider_choice(
+		$attributes['arrowPosition'] ?? 'side-center',
+		array( 'side-center', 'bottom-left', 'bottom-center', 'bottom-right' ),
+		'side-center'
+	);
+	$pagination_style    = skvn_marine_blocks_normalize_slider_choice(
+		$attributes['paginationStyle'] ?? 'dots',
+		array( 'dots', 'fraction', 'timed-fraction', 'timed-segments' ),
+		'dots'
+	);
+	$pagination_position = skvn_marine_blocks_normalize_slider_choice(
+		$attributes['paginationPosition'] ?? 'bottom-center',
+		array( 'bottom-left', 'bottom-center', 'bottom-right' ),
+		'bottom-center'
+	);
+
+	if ( 'pill' === $arrow_style && 'side-center' === $arrow_position ) {
+		$arrow_position = 'bottom-left';
+	}
+
+	$show_arrows     = $show_arrows && $has_multiple_slides;
+	$show_pagination = $show_pagination && $has_multiple_slides;
+	$autoplay_delay  = $attributes['autoplayDelay'] ?? ( $attributes['delay'] ?? 7000 );
+	$autoplay        = isset( $attributes['autoplay'] ) ? (bool) $attributes['autoplay'] : true;
+	$loop            = isset( $attributes['loop'] ) ? (bool) $attributes['loop'] : true;
+	$autoplay        = $autoplay && $has_multiple_slides;
+	$loop            = $loop && $has_multiple_slides;
+	$cluster_position = $show_arrows &&
+		$show_pagination &&
+		'side-center' !== $arrow_position &&
+		$arrow_position === $pagination_position
+			? $arrow_position
+			: '';
+
 	$config = array(
-		'autoplay'      => isset( $attributes['autoplay'] ) ? (bool) $attributes['autoplay'] : true,
-		'delay'         => skvn_marine_blocks_normalize_slider_integer(
-			$attributes['delay'] ?? 5000,
-			5000,
+		'autoplay'          => $autoplay,
+		'autoplayDelay'     => skvn_marine_blocks_normalize_slider_integer(
+			$autoplay_delay,
+			7000,
 			1000,
 			12000
 		),
-		'loop'          => isset( $attributes['loop'] ) ? (bool) $attributes['loop'] : true,
-		'arrows'        => isset( $attributes['arrows'] ) ? (bool) $attributes['arrows'] : true,
-		'dots'          => isset( $attributes['dots'] ) ? (bool) $attributes['dots'] : true,
-		'effect'        => $effect,
-		'slidesPerView' => $slides_per_view,
+		'loop'              => $loop,
+		'showArrows'        => $show_arrows,
+		'arrowStyle'        => $arrow_style,
+		'arrowPosition'     => $arrow_position,
+		'showPagination'    => $show_pagination,
+		'paginationStyle'   => $pagination_style,
+		'paginationPosition' => $pagination_position,
+		'effect'            => $effect,
+		'slidesPerView'     => $slides_per_view,
+		'slideCount'        => $slide_count,
 	);
 
 	if ( '3-2-1' === $responsive_slides ) {
@@ -127,37 +270,52 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		$class_name .= ' skvn-slider--' . $preset;
 	}
 
-	if ( $config['arrows'] ) {
+	if ( $show_arrows ) {
 		$class_name .= ' skvn-slider--has-arrows';
+		$class_name .= ' skvn-slider--arrows-' . $arrow_position;
+		$class_name .= ' skvn-slider--arrows-' . $arrow_style;
 	}
 
-	if ( $config['dots'] ) {
+	if ( $show_pagination ) {
 		$class_name .= ' skvn-slider--has-pagination';
+		$class_name .= ' skvn-slider--pagination-' . $pagination_position;
+		$class_name .= ' skvn-slider--pagination-' . $pagination_style;
 	}
 
 	$wrapper_attributes = get_block_wrapper_attributes(
 		array(
 			'class'            => $class_name,
 			'data-skvn-slider' => wp_json_encode( $config ),
+			'aria-label'       => esc_attr__( 'SKVN content slider', 'skvn-marine-blocks' ),
 		)
 	);
 	$slides             = skvn_marine_blocks_render_slider_inner_blocks( $block );
 	$output             = '<div ' . $wrapper_attributes . '>';
 	$output            .= '<div class="skvn-slider__wrapper swiper-wrapper">' . $slides . '</div>';
 
-	if ( $config['arrows'] ) {
-		$output .= sprintf(
-			'<button class="skvn-slider__arrow skvn-slider__arrow--prev swiper-button-prev" type="button" aria-label="%s"></button>',
-			esc_attr__( 'Previous slide', 'skvn-marine-blocks' )
-		);
-		$output .= sprintf(
-			'<button class="skvn-slider__arrow skvn-slider__arrow--next swiper-button-next" type="button" aria-label="%s"></button>',
-			esc_attr__( 'Next slide', 'skvn-marine-blocks' )
-		);
-	}
+	if ( $show_arrows || $show_pagination ) {
+		$controls_class = 'skvn-slider__controls';
 
-	if ( $config['dots'] ) {
-		$output .= '<div class="skvn-slider__pagination swiper-pagination"></div>';
+		if ( $cluster_position ) {
+			$controls_class .= ' skvn-slider__controls--cluster';
+			$controls_class .= ' skvn-slider__controls--' . $cluster_position;
+		}
+
+		$output .= '<div class="' . esc_attr( $controls_class ) . '">';
+
+		if ( $show_arrows ) {
+			$output .= skvn_marine_blocks_render_slider_arrows( $arrow_style, $arrow_position );
+		}
+
+		if ( $cluster_position ) {
+			$output .= '<span aria-hidden="true" class="skvn-slider__controls-separator"></span>';
+		}
+
+		if ( $show_pagination ) {
+			$output .= skvn_marine_blocks_render_slider_pagination( $pagination_style, $pagination_position );
+		}
+
+		$output .= '</div>';
 	}
 
 	$output .= '</div>';
