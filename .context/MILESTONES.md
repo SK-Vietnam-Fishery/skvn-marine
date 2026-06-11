@@ -93,6 +93,22 @@ Acceptance draft:
 Status: **IN_PROGRESS**
 Started: **2026-06-11**
 
+Current onsite result:
+
+- **FAIL reported by human on 2026-06-11.**
+- At least one Hero Slide renders its selected image, while another does not
+  visibly render the selected image and appears as the fallback
+  background/gradient.
+- The Slider is constrained to a narrow content-width box instead of the
+  intended full-width SKVN page/canvas surface.
+- Pagination is laid out below/outside the visible Slide frame.
+- Human reported excessive RAM usage while the Slider/editor was otherwise
+  idle. The responsible render, subscription, observer, or Swiper lifecycle is
+  not yet proven.
+- These are observed symptoms, not confirmed root causes. V1 / 1.3.0 remains
+  open until the media contract, geometry, pagination ownership, and memory
+  behavior are diagnosed and corrected.
+
 Purpose:
 
 - Convert `skvn-marine/slider` and `skvn-marine/slide` from static Gutenberg
@@ -139,6 +155,11 @@ Acceptance draft:
 - [x] Hero Slider source uses a stable media/overlay/content frame
 - [ ] Product Showcase and Card Carousel retain their distinct flow layouts
 - [ ] Swiper fade, autoplay, arrows, dots, keyboard, loop, and reduced-motion behavior remain functional
+- [ ] Every Hero Slide renders its selected image through the same media layer
+- [ ] Overlay/background layering does not conceal a valid selected image
+- [ ] Slider uses the intended SKVN full-width canvas ownership
+- [ ] Pagination remains inside the Slider frame
+- [ ] Editor/frontend idle memory use remains stable without duplicate render, observer, subscription, or Swiper initialization loops
 - [x] Slider runtime uses shared reduced-motion detection and conservative hover/focus/document-visibility pause/resume
 - [x] Existing arbitrary Slider delay values remain valid and are not restricted to `3/5/7/9s`
 - [x] PHP input/output handling follows WordPress sanitize/escape rules
@@ -148,11 +169,52 @@ Acceptance draft:
 - [x] Plugin bootstrap and Slider render module pass PHP syntax checks
 - [x] Layout audit finds no Slider viewport-width or overflow-masking rule
 - [x] New PHP runtime files are included in the deploy artifact and plugin zip
-- [x] V1 / 1.3.1 onsite handoff includes document-visibility autoplay checks
-- [ ] Onsite migration QA passes under V1 / 1.3.1
+- [x] V1 / 1.3.2 onsite handoff includes document-visibility autoplay checks
+- [ ] Human targeted smoke check confirms the reported image, width, pagination, and idle-memory failures are corrected
 - [ ] Human approves milestone completion
 
-### 1.3.1 — Slider Dynamic Rendering Onsite QA
+### 1.3.1 — Slider Navigation & Pagination Controls UX
+
+Status: **PENDING**
+
+Purpose:
+
+- Replace the dots-specific editor concept with a complete pagination contract.
+- Add independent arrow and pagination visibility, style, and position controls.
+- Add Swiper-owned timed fraction and timed segments without a second autoplay
+  or timer controller.
+- Keep one Slider-level governed duration and no per-Slide duration.
+- Build on the corrected V1 / 1.3.0 media, geometry, pagination, and memory
+  foundation.
+
+Decision:
+
+- `docs/decisions/slider-navigation-and-pagination-controls.md`
+
+Dependencies:
+
+- V1 / 1.3.0 failures must be corrected before live timed pagination is added.
+- Existing `dots` and arbitrary delay values need explicit Gutenberg
+  compatibility behavior.
+
+Acceptance draft:
+
+- [ ] `dots` migrates to the approved pagination contract without invalidating existing content
+- [ ] Arrow visibility, three styles, and four positions follow the decision contract
+- [ ] Pill is disabled when Side center is selected
+- [ ] Pagination visibility, four styles, and three positions follow the decision contract
+- [ ] Matching bottom positions cluster as `arrows | pagination`
+- [ ] Different arrow and pagination positions remain independent
+- [ ] Zero/one real Slide hides both control families and disables autoplay
+- [ ] Timed pagination follows Swiper autoplay without a second timer/controller
+- [ ] Current/total numbering uses real Slides and excludes loop clones
+- [ ] Slider duration uses governed `5/7/9/12s` choices with a documented legacy-value policy
+- [ ] Hover, focus, document visibility, and interaction pause reasons compose correctly
+- [ ] Mobile and reduced-motion fallbacks work
+- [ ] Editor preview remains static and does not run autoplay/timer progress
+- [ ] Human approves 1.3.1 controls UX implementation
+
+### 1.3.2 — Slider Dynamic Rendering & Controls Onsite QA
 
 Status: **PENDING**
 
@@ -162,13 +224,16 @@ Purpose:
   were not completed before starting the 1.3.0 dynamic rendering migration.
 - Test Slider frontend behavior against the 1.3.0 server-rendered contract,
   instead of approving the superseded static frontend architecture.
-- Keep previously passed image editing, Slider controls, Feature Showcase
-  interaction, and Full Width Canvas evidence recorded without rerunning them
-  unless the 1.3.0 migration changes those surfaces.
+- Verify the V1 / 1.3.1 navigation, pagination, timed-progress, responsive, and
+  accessibility controls on the corrected rendering foundation.
+- Repeat image editing, Slider controls, and Full Width Canvas checks because
+  the 1.3.0 renderer and 1.3.1 controls UX changed those surfaces.
+- Keep unrelated previously passed evidence only where the implementation did
+  not change the tested surface.
 
 Testing:
 
-- `docs/testing/onsite-slider-motion-1.3.1.md`
+- `docs/testing/onsite-slider-motion-1.3.2.md`
 - `docs/testing/onsite-feature-showcase-1.2.3.md`
 
 Acceptance draft:
@@ -176,6 +241,9 @@ Acceptance draft:
 - [ ] Human verifies all three Slider presets insert useful sample content
 - [ ] Human verifies existing Slider content opens without invalid-block recovery
 - [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts through the dynamic render path
+- [ ] Human verifies V1 / 1.3.1 arrow and pagination controls across desktop and mobile
+- [ ] Human verifies timed pagination, pause/resume, reduced-motion fallback, and real-Slide numbering
+- [ ] Human verifies idle and repeated-interaction memory use settles without continuous growth
 - [ ] Human verifies Accordion interaction and accessibility
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
 - [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
@@ -205,7 +273,7 @@ Planning:
 Dependencies:
 
 - V1 / 1.3.0 dynamic Slider rendering must be complete.
-- V1 / 1.3.1 onsite QA must confirm Slider autoplay, hover/focus pause,
+- V1 / 1.3.2 onsite QA must confirm Slider autoplay, hover/focus pause,
   accessibility, reduced motion, compatibility, and no-JavaScript behavior are
   stable.
 
@@ -220,7 +288,7 @@ Constraints:
 
 Acceptance draft:
 
-- [ ] V1 / 1.3.0 and V1 / 1.3.1 stability gates are complete
+- [ ] V1 / 1.3.0, V1 / 1.3.1, and V1 / 1.3.2 stability gates are complete
 - [ ] Hover and Autoplay modes work without an all-closed state
 - [ ] Delay control snaps only to `3s`, `5s`, `7s`, and `9s`
 - [ ] Hover, keyboard focus, document visibility, and reduced motion pause or disable autoplay correctly

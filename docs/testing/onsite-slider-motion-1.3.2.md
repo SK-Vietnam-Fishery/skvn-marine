@@ -1,13 +1,16 @@
-# Onsite Slider Dynamic Rendering & Motion 1.3.1 Test
+# Onsite Slider Dynamic Rendering, Controls & Motion 1.3.2 Test
 
 Status: **DEFERRED**
 Deferred on: **2026-06-11**
-Target milestone: **V1 / 1.3.1 — Slider Dynamic Rendering Onsite QA**
+Target milestone: **V1 / 1.3.2 — Slider Dynamic Rendering & Controls Onsite QA**
 
-This checklist carries only the checks that were not completed before V1 /
-1.3.0. Previously passed Slider image editing, Slider controls, Feature
-Showcase interaction, and Full Width Canvas checks do not need to be repeated
-unless the dynamic rendering migration changes those surfaces.
+The V1 / 1.3.0 development build failed onsite review on 2026-06-11. This
+checklist includes repair evidence for inconsistent Hero images, narrow Slider
+geometry, pagination outside the Slide frame, and reported idle RAM growth. It
+also covers the V1 / 1.3.1 navigation/pagination controls UX.
+
+Previously passed Slider image editing and Full Width Canvas checks must be
+repeated because the dynamic rendering migration changed those surfaces.
 
 ## Target
 
@@ -17,7 +20,8 @@ unless the dynamic rendering migration changes those surfaces.
 
 ## Preconditions
 
-- Deploy the completed `1.3.0` dynamic-rendering development build.
+- Deploy the completed `1.3.1` development build containing the corrected
+  dynamic renderer and navigation/pagination controls.
 - Clear page/cache layers that can retain old plugin JavaScript or CSS.
 - Keep the browser console open during frontend checks.
 - Use a draft or private test page instead of changing production content directly.
@@ -50,23 +54,51 @@ unless the dynamic rendering migration changes those surfaces.
 
 ## Slider Frontend Checks
 
-1. Confirm Hero Slider and Product Showcase show one slide at a time.
-2. Confirm Card Carousel shows 3 cards on desktop, 2 on tablet, and 1 on mobile.
-3. Confirm Hero background images cover their slides without stretching.
-4. Confirm Product Showcase and Card Carousel render only their Image block media, including Slides that previously stored an unused background image.
-5. Confirm Hero heading, lead, and CTA remain readable above the overlay.
-6. Confirm arrows, dots, keyboard navigation, loop, autoplay, and pause-on-hover follow preset/settings behavior.
-7. Confirm Swiper layout/navigation CSS loads without relying on the SKVN theme.
-8. While an autoplay Slider is moving, switch to another browser tab long
+1. Confirm every Hero Slide renders its own selected image.
+2. Confirm image, overlay, and content use the intended media/content layers
+   and a valid image is not concealed by the fallback background.
+3. Confirm the Slider occupies the intended SKVN full-width canvas instead of a
+   narrow content-width box.
+4. Confirm pagination remains inside the visible Slider frame.
+5. Confirm Hero Slider and Product Showcase show one slide at a time.
+6. Confirm Card Carousel shows 3 cards on desktop, 2 on tablet, and 1 on mobile.
+7. Confirm Hero background images cover their slides without stretching.
+8. Confirm Product Showcase and Card Carousel render only their Image block media, including Slides that previously stored an unused background image.
+9. Confirm Hero heading, lead, and CTA remain readable above the overlay.
+10. Confirm arrows, pagination, keyboard navigation, loop, autoplay, and pause-on-hover follow settings behavior.
+11. Confirm all approved arrow styles and positions work without overlap.
+12. Confirm Pill is unavailable while Side center is selected.
+13. Confirm all approved pagination styles and positions work without overlap.
+14. Confirm matching bottom positions cluster as `arrows | pagination`.
+15. Confirm different arrow and pagination positions remain independent.
+16. Confirm zero/one real Slide hides arrows and pagination and disables autoplay.
+17. Confirm timed fraction and timed segments follow Swiper autoplay without a second timer/controller.
+18. Confirm current/total numbering excludes loop clones.
+19. Confirm mobile timed-fraction and timed-segments fallbacks follow the decision contract.
+20. Confirm Swiper layout/navigation CSS loads without relying on the SKVN theme.
+21. While an autoplay Slider is moving, switch to another browser tab long
    enough to exceed its configured delay. Confirm the hidden Slider does not
    advance continuously in the background.
-9. Return to the Slider tab and confirm autoplay resumes only when the Slider
+22. Return to the Slider tab and confirm autoplay resumes only when the Slider
    is not hovered and keyboard focus is not inside it.
-10. Repeat the tab switch while the pointer remains over the Slider, then once
+23. Repeat the tab switch while the pointer remains over the Slider, then once
     while keyboard focus is on an arrow or pagination control. Confirm returning
     to the tab does not resume autoplay until hover/focus leaves the Slider.
-11. Enable Reduce motion and confirm autoplay is disabled and does not resume
+24. Enable Reduce motion and confirm autoplay is disabled and does not resume
     after a tab visibility change.
+
+## Memory Stability Check
+
+1. Open browser task manager or an equivalent per-tab memory view.
+2. Record memory after the page becomes idle.
+3. Leave the page idle for five minutes without editor interaction.
+4. Navigate repeatedly through every Slide using arrows, pagination, keyboard,
+   and swipe where available.
+5. In the editor, select different Slides and sidebar controls without saving
+   runtime progress into block attributes.
+6. Confirm memory settles instead of increasing continuously.
+7. Confirm console evidence does not show duplicate Swiper initialization,
+   repeated subscriptions, repeated observers, or render/update loops.
 
 ## Editor Checks
 
@@ -116,6 +148,9 @@ unless the dynamic rendering migration changes those surfaces.
 
 - No invalid-block warning appears.
 - Slider images can be chosen, replaced, removed, saved, and rendered.
+- Every Hero Slide renders its selected image.
+- Slider width and pagination geometry match the approved frame ownership.
+- Idle and repeated-interaction memory use settles without continuous growth.
 - All three Slider presets are discoverable under `SKVN Marine` and insert useful content immediately.
 - Card Carousel responds 3/2/1 across desktop/tablet/mobile.
 - Slider editor remains stacked and editable; frontend initializes as Swiper.
@@ -128,6 +163,8 @@ unless the dynamic rendering migration changes those surfaces.
 - Motion runs only for the matching preset, trigger, and device combination.
 - Reduced-motion and no-JavaScript fallbacks leave all content visible.
 - No frontend console error references `skvn-marine-blocks`, motion runtime, or Accordion.
+- Arrow and pagination controls match
+  `docs/decisions/slider-navigation-and-pagination-controls.md`.
 
 ## Fail Evidence To Report
 
@@ -140,3 +177,5 @@ unless the dynamic rendering migration changes those surfaces.
 - Whether Reduce motion or JavaScript-disable mode was active.
 - Console error text and stack trace, if present.
 - Whether the issue occurs in editor, frontend, or both.
+- Memory reading at initial idle, after five minutes, and after repeated
+  navigation/editor interaction.

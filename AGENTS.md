@@ -495,7 +495,8 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.2.3 | SKVN Feature Showcase |
 | 1.2.9 | Slider & Motion Onsite QA |
 | 1.3.0 | Slider Dynamic Rendering Architecture |
-| 1.3.1 | Slider Dynamic Rendering Onsite QA |
+| 1.3.1 | Slider Navigation & Pagination Controls UX |
+| 1.3.2 | Slider Dynamic Rendering & Controls Onsite QA |
 | 1.3.3 | Feature Showcase Autoplay And Panel Links |
 | 1.3.9 | SKVN Team Credits Easter Egg |
 | 1.4.0 | SKVN Theme Init Setup UI |

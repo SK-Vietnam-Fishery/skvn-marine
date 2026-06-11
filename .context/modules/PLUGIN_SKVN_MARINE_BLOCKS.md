@@ -159,8 +159,8 @@ Implemented V1 / 1.2.0:
 - Fade presets support On scroll or Always; Hover lift uses On hover automatically.
 - Desktop, Tablet, and Mobile are independent toggles.
 - `src/motion.css` and the motion frontend entry are plugin-owned and do not depend on the SKVN theme.
-- Remaining onsite verification contract deferred to V1 / 1.3.1:
-  `docs/testing/onsite-slider-motion-1.3.1.md`.
+- Remaining onsite verification contract deferred to V1 / 1.3.2:
+  `docs/testing/onsite-slider-motion-1.3.2.md`.
 
 ## [manual] Footer Settings Module And Future Gutenberg Supercharger Boundary
 
@@ -307,11 +307,12 @@ milestone:
 - Historical decision and planning files are linked from the active Slider
   source of truth through their `/archives/` paths.
 - Slider navigation and pagination controls are specified in
-  `docs/decisions/slider-navigation-and-pagination-controls.md` as a Future
-  Candidate after V1 / 1.3.0 and V1 / 1.3.1. The approved direction uses
-  independent arrow/pagination attributes, conditional same-position
-  clustering, Swiper-owned timed pagination, one Slider-level governed delay,
-  and no per-Slide duration.
+  `docs/decisions/slider-navigation-and-pagination-controls.md` for V1 / 1.3.1.
+  The approved direction uses independent arrow/pagination attributes,
+  conditional same-position clustering, Swiper-owned timed pagination, one
+  Slider-level governed delay, and no per-Slide duration. It must be built only
+  after the failed 1.3.0 media, width, pagination geometry, and memory behavior
+  is corrected.
 - Carousel/showcase presets may later use a non-moving editor grid. Hero may
   retain a vertically readable editor surface.
 - Carousel/showcase editor preview is a non-moving grid with a maximum 5 columns
@@ -344,7 +345,7 @@ V1 / 1.2.1 Slider preset and inserter decision:
 - Use Gutenberg variations/templates rather than separate duplicated Slider blocks.
 - Do not build a custom slide manager, selected-slide canvas, or setup modal.
 - Keep native Gutenberg List View and block actions for navigation, reorder, duplicate, and remove.
-- Remaining onsite QA for 1.2.0 and 1.2.1 is consolidated in V1 / 1.3.1
+- Remaining onsite QA for 1.2.0, 1.2.1, 1.3.0, and 1.3.1 is consolidated in V1 / 1.3.2
   after the 1.3.0 dynamic rendering migration.
 
 Implemented V1 / 1.2.1:
@@ -385,7 +386,7 @@ Planned V1 / 1.3.3 Feature Showcase autoplay and panel links:
 - Planning file:
   `.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`.
 - Do not begin implementation until V1 / 1.3.0 dynamic rendering and V1 /
-  1.3.1 onsite Slider QA confirm stable autoplay, hover/focus pause, reduced
+  1.3.2 onsite Slider QA confirm stable autoplay, hover/focus pause, reduced
   motion, compatibility, and no-JavaScript behavior.
 - Feature Showcase adds governed `hover` and `autoplay` interaction modes.
 - Autoplay delay uses a snapping WordPress RangeControl with only `3`, `5`,

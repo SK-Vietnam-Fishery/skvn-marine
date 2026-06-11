@@ -1,7 +1,7 @@
 # Slider Navigation And Pagination Controls
 
 Status: APPROVED UX DIRECTION
-Target: Future Candidate after V1 / 1.3.0 architecture and V1 / 1.3.1 onsite QA
+Target: V1 / 1.3.1 — Slider Navigation & Pagination Controls UX
 Decision date: 2026-06-11
 
 ## 1. Goal
@@ -12,7 +12,9 @@ movement or timer controller beside Swiper.
 
 This decision extends the dynamic Slider foundation from
 `docs/decisions/slider-completion-spec-1.3.0.md`. It is not part of the active
-V1 / 1.3.0 implementation scope.
+V1 / 1.3.0 implementation scope. The failed 1.3.0 media, width, pagination
+geometry, and memory behavior must be corrected before adding live timed
+pagination.
 
 ## 2. Attribute Direction
 
@@ -247,10 +249,12 @@ desktop scrollbar, tablet, and mobile tests.
 Do not implement this decision until:
 
 - V1 / 1.3.0 dynamic rendering is stable enough to provide one Slider shell.
-- V1 / 1.3.1 verifies media layering, full-width geometry, existing arrows,
-  existing pagination, autoplay, loop, and pause/resume behavior onsite.
+- Media layering, full-width geometry, existing pagination placement, and
+  reported idle RAM growth are corrected or bounded.
 - The `dots` to `showPagination` migration/deprecation path is documented.
 - Existing arbitrary delay values have an explicit editor compatibility rule.
+
+Final onsite acceptance belongs to V1 / 1.3.2.
 
 Implementation acceptance must include:
 
@@ -267,4 +271,3 @@ Implementation acceptance must include:
 - Multiple Sliders initialize and clean up independently without increasing
   memory use over repeated navigation or editor updates.
 - Existing Slider content remains editable without invalid-block recovery.
-

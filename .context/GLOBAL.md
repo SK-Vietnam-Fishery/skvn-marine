@@ -65,7 +65,7 @@ Current planning file:
 - `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md` — active `1.2.3` Feature Showcase plan. Source is activated under `src/feature-showcase/` as `skvn-marine/feature-showcase`.
 - `.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md` — approved future `1.3.3` plan for governed Feature Showcase hover/autoplay modes, snapping `3/5/7/9s` delay, per-panel Gutenberg LinkControl CTA, and shared autoplay invariants with Slider after `1.3.1` stability verification.
 - `docs/decisions/slider-completion-spec-1.3.0.md` — active Slider source of truth. V1 / 1.3.0 completes dynamic rendering, compatibility, accessibility, and geometry; expanded carousel/showcase UX remains a later human-approved milestone.
-- `docs/decisions/slider-navigation-and-pagination-controls.md` — approved Future Candidate direction for independent arrow/pagination style and position controls, conditional bottom clustering, Swiper-owned timed pagination, governed `5/7/9/12s` duration, and responsive/accessibility fallbacks after 1.3.0/1.3.1 stability.
+- `docs/decisions/slider-navigation-and-pagination-controls.md` — approved V1 / 1.3.1 direction for independent arrow/pagination style and position controls, conditional bottom clustering, Swiper-owned timed pagination, governed `5/7/9/12s` duration, and responsive/accessibility fallbacks after the failed 1.3.0 media, width, pagination, and memory behavior is corrected.
 - `.context/planning/013_VERSION_2_0_0_TO_3_0_0_STANDALONE_BLOCK_THEME_PLANNING.md` — medium/long-term plan: 2.0.0 starts migration away from GeneratePress; 3.0.0 completes standalone SKVN theme direction. Gutenberg remains the WP content/editor model; custom blocks become additive governed site enhancements.
 - `.context/planning/014_VERSION_1_X_SKVN_ELEMENT_CPT_PLANNING.md` — 1.x foundation plan for SEO-safe reusable site elements (`skvn_element`) before 2.0.0 migration. Header/footer reusable content should move away from normal Pages toward non-public CPT elements.
 
@@ -111,7 +111,7 @@ Current active docs:
 - `docs/testing/header-actions-search-0.12.0.md`
 - `docs/testing/onsite-0.11-0.12-completion-checklist.md`
 - `docs/testing/onsite-editor-controls-0.8.0.md`
-- `docs/testing/onsite-slider-motion-1.3.1.md`
+- `docs/testing/onsite-slider-motion-1.3.2.md`
 - `docs/testing/testing-checklist.md`
 - `docs/workflows/context-map-workflow.md`
 - `docs/workflows/ideation-chom-revslider-theme-tra-phi-to-gutenberg.md`

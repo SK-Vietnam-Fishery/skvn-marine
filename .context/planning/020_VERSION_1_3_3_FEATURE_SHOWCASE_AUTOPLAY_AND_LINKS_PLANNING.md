@@ -23,7 +23,8 @@ contract and must not turn Feature Showcase into another Swiper carousel.
 Do not begin V1 / 1.3.3 implementation until:
 
 - V1 / 1.3.0 dynamic Slider rendering is complete
-- V1 / 1.3.1 onsite QA confirms Slider autoplay, hover/focus pause, keyboard
+- V1 / 1.3.1 controls UX is complete and V1 / 1.3.2 onsite QA confirms Slider
+  autoplay, hover/focus pause, keyboard
   behavior, reduced motion, no-JavaScript fallback, and compatibility are stable
 - any Slider runtime defects found during QA are fixed and re-tested
 

@@ -5,6 +5,30 @@ Approved: 2026-06-11
 Milestone: V1 / 1.3.0 — Slider Dynamic Rendering Architecture
 Source of truth: this document
 
+## Current Onsite Failure Note
+
+The V1 / 1.3.0 development build is not currently approved.
+
+Human-reported evidence from 2026-06-11:
+
+- One Hero Slide visibly renders its selected image while another appears to
+  show only the fallback background/gradient.
+- The Slider renders inside a narrow content-width box instead of the intended
+  full-width SKVN page/canvas surface.
+- Pagination appears below/outside the visible Slide frame.
+- RAM usage was reported to increase while the Slider/editor was otherwise
+  idle.
+
+These are observations, not proven root causes. Do not assume that the missing
+image is only an overlay issue or that memory growth comes from a specific
+React, subscription, observer, or Swiper loop until runtime evidence identifies
+the state delta.
+
+V1 / 1.3.0 remains open until the render contract and memory behavior are
+corrected and a targeted human smoke check no longer reproduces the four
+reported failures. Expanded navigation and pagination UX belongs to V1 /
+1.3.1, with combined regression QA under V1 / 1.3.2.
+
 ## 1. Goal
 
 Complete the current `skvn-marine/slider` and `skvn-marine/slide` foundation
@@ -205,12 +229,15 @@ There must be one active frontend render engine: PHP.
 - Verify compatibility fixtures.
 - Build the deploy artifact and plugin zip.
 - Confirm the Slider render module exists in the zip.
-- Complete onsite QA under V1 / 1.3.1.
+- Complete a targeted human smoke check for the reported image, width,
+  pagination, and idle-memory failures.
+- Complete combined regression QA later under V1 / 1.3.2.
 
 ## 11. V1 / 1.3.3 Shared Autoplay Follow-Up Boundary
 
 V1 / 1.3.3 adds Feature Showcase autoplay and panel links after V1 / 1.3.0
-implementation and V1 / 1.3.1 onsite QA confirm Slider stability.
+implementation, V1 / 1.3.1 controls UX, and V1 / 1.3.2 onsite QA confirm Slider
+stability.
 
 Planning:
 
@@ -240,7 +267,7 @@ During V1 / 1.3.0:
 - Do not restrict the Slider editor to `3/5/7/9s` during this milestone.
 - Do not add Feature Showcase autoplay or LinkControl to the V1 / 1.3.0 scope.
 
-After V1 / 1.3.1 stability verification, V1 / 1.3.3 may extract shared code only
+After V1 / 1.3.2 stability verification, V1 / 1.3.3 may extract shared code only
 where there are two real consumers or a project invariant:
 
 - `prefersReducedMotion()` from `src/shared/motion.ts`
@@ -304,7 +331,7 @@ Archived files are historical evidence, not active instructions.
 
 Active related documents:
 
-- `docs/testing/onsite-slider-motion-1.3.1.md`
+- `docs/testing/onsite-slider-motion-1.3.2.md`
 - `.context/planning/020_VERSION_1_3_3_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
 - `docs/decisions/fullscreen-step-slider-1.5.0.md`
 - `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`
