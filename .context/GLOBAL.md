@@ -99,6 +99,7 @@ Current active docs:
 - `docs/decisions/slider-block.md`
 - `docs/decisions/slider-presets-and-inserter-1.2.1.md`
 - `docs/decisions/feature-showcase-1.2.3.md`
+- `docs/decisions/typography-and-gp-exit-report.md` — typography settings 1.5.0: token architecture, Settings API pattern, GP coupling audit, WooCommerce layer, 2.0.0 exit plan.
 - `docs/standards/ai-rules.md`
 - `docs/standards/security-guidelines.md`
 - `docs/testing/frontpage-testing.md`

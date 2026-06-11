@@ -708,8 +708,12 @@ body.skvn-has-footer-page .site {
 	padding-block: 3rem 1.25rem;
 }
 
-.skvn-site-footer.alignfull {
+.skvn-footer-page > .wp-block-group.skvn-site-footer.alignfull {
+	box-sizing: border-box;
+	margin-left: 0;
+	margin-right: 0;
 	max-width: none;
+	width: 100%;
 }
 
 .skvn-site-footer,
@@ -939,7 +943,8 @@ body.skvn-has-footer-page .site {
 	max-width: var(--skvn-wide-width);
 }
 
-.skvn-full-width-canvas .entry-content > .alignfull {
+/* GeneratePress compatibility: neutralize its descendant alignfull margins. */
+.skvn-full-width-canvas .entry-content .alignfull {
 	box-sizing: border-box;
 	margin-left: 0;
 	margin-right: 0;
@@ -985,11 +990,13 @@ body.skvn-has-footer-page .site {
 	max-width: var(--skvn-wide-width);
 }
 
-.skvn-full-width-content > .alignfull {
-	margin-left: calc(50% - 50vw);
-	margin-right: calc(50% - 50vw);
-	max-width: 100vw;
-	width: 100vw;
+/* Legacy template variant of the GeneratePress alignfull compatibility reset. */
+.skvn-full-width-template .skvn-full-width-content .alignfull {
+	box-sizing: border-box;
+	margin-left: 0;
+	margin-right: 0;
+	max-width: none;
+	width: 100%;
 }
 
 .skvn-full-width-content > .alignfull + .alignfull {

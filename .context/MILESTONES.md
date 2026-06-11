@@ -64,6 +64,7 @@ To do:
 - [x] Fix Color drift `theme.json` and  `style.css`
 - [x] Setup baseline to implement customize
 - [x] Check `theme.json`
+- [ ] Setup typography-settings in block
 
 ### 1.2.9 — Slider & Motion Onsite QA
 

@@ -73,9 +73,27 @@ Top-level .alignfull             -> full page canvas
 
 Implementation rules:
 
+- Mandatory agent standard:
+  `docs/standards/css-layout-safety-contract.md`.
+- Approved GeneratePress compatibility and standalone migration decision:
+  `docs/decisions/canvas-alignment-and-generatepress-exit.md`.
+- Layout width must have one owner. Do not let Gutenberg, GeneratePress, an
+  SKVN page template, and a component class independently calculate the same
+  full width.
 - `.skvn-full-width-canvas` may remove GeneratePress shell width, margin,
   padding, and sidebar constraints.
 - Do not apply `max-width: none` to every `.entry-content > *`.
+- When the owning SKVN canvas is already full width, direct `.alignfull`
+  children use `width: 100%`, not scrollbar-inclusive `100vw` plus negative
+  viewport margins.
+- While GeneratePress remains active, the SKVN canvas adapter must also
+  neutralize negative viewport margins on nested legacy `.alignfull` blocks,
+  because GeneratePress applies its rule to all descendants.
+- New SKVN patterns should still prefer one alignment owner per layout level;
+  nested compatibility is not a recommendation to generate nested
+  `.alignfull`.
+- `overflow-x: hidden` or `overflow-x: clip` may intentionally clip decoration,
+  but must not hide incorrect layout geometry.
 - A full-width marketing pattern should use an outer `alignfull` Group with
   `layout: default`.
 - The outer Group owns surface background and section padding.
@@ -97,6 +115,12 @@ Agent debugging checklist:
    `contentSize`, and `wideSize` before changing component CSS.
 6. Fix the owning layout layer instead of forcing width inside the custom
    block.
+7. For any viewport-unit or overflow rule, run the geometry check from
+   `docs/standards/css-layout-safety-contract.md` with a visible vertical
+   scrollbar.
+8. If the source is a GeneratePress selector, fix it in the scoped SKVN
+   compatibility adapter. Do not copy the GeneratePress negative-margin
+   algorithm into future standalone theme CSS.
 
 ## [manual] Page Display Controls
 

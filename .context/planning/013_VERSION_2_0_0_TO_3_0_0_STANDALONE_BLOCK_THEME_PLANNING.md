@@ -77,6 +77,9 @@ Goal:
 Theme actions:
 
 - Audit all GeneratePress-specific hooks, filters, wrappers, and assumptions.
+- Isolate GeneratePress alignment overrides as an explicit compatibility
+  adapter following
+  `docs/decisions/canvas-alignment-and-generatepress-exit.md`.
 - Create SKVN-owned page display controls for layout/chrome currently split across GeneratePress panels.
 - Start moving reusable header/footer assumptions into SKVN-owned render contracts.
 - Treat GeneratePress adapters as temporary compatibility shims.
@@ -106,6 +109,10 @@ Goal:
 Actions:
 
 - Keep GeneratePress compatibility only behind explicit adapter functions/classes.
+- Keep the negative-margin `.alignfull` reset in the GeneratePress
+  compatibility layer; do not treat it as the standalone alignment engine.
+- Build standalone normal/wide/full fixtures from SKVN templates and
+  `theme.json`, then verify them with the compatibility layer disabled.
 - Avoid adding new GeneratePress-specific implementation unless it is a temporary migration bridge.
 - Convert commonly used page surfaces into SKVN patterns/templates.
 - Expand `theme.json` gradually for typography, palette, spacing, layout widths, and block style defaults.
@@ -132,6 +139,8 @@ Theme actions:
 
 - Own the complete theme shell: header, footer, template hierarchy, page chrome, content wrappers.
 - Replace `generate_*` hooks and GeneratePress filters with SKVN-owned render/template APIs.
+- Remove the GeneratePress canvas/alignment adapter and confirm no SKVN core
+  layout uses `100vw` plus negative viewport margins.
 - Keep Gutenberg as the content editing model.
 - Use `theme.json`, patterns, template parts, and block styles as the primary WP-aligned visual system.
 - Keep classic PHP template fallback only where needed for WooCommerce or compatibility.
@@ -149,6 +158,11 @@ Acceptance:
 
 - [ ] GeneratePress is no longer required for SKVN theme activation.
 - [ ] No code path depends on GeneratePress parent files, hooks, filters, or layout meta.
+- [ ] No active layout CSS depends on GeneratePress `.no-sidebar`,
+  `.inside-article`, `.grid-container`, or negative-margin `.alignfull`
+  behavior.
+- [ ] Standalone normal, wide, full, and nested legacy alignment fixtures pass
+  with `scrollWidth <= clientWidth`.
 - [ ] Header/footer/page templates are SKVN-owned.
 - [ ] Gutenberg editor remains the primary content editor.
 - [ ] `theme.json` and SKVN patterns define the baseline visual system.
@@ -184,4 +198,3 @@ Mitigation:
 - `.context/planning/005_VERSION_2_0_0_FOOTER_BUILDER_PLANNING.md`
 - `.context/planning/012_VERSION_3_0_0_PAGE_DISPLAY_DECOUPLING_PLANNING.md`
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md`
-
