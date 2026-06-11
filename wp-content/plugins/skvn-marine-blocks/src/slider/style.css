@@ -60,7 +60,7 @@
 }
 
 .skvn-slide__content,
-.skvn-slide--has-background > :not(.skvn-slide__background-image, .skvn-slide__overlay) {
+.skvn-slide--has-background > :not(.skvn-slide__media, .skvn-slide__background-image, .skvn-slide__overlay) {
 	position: relative;
 	z-index: 2;
 }
@@ -90,10 +90,6 @@
 
 .skvn-slider__pagination {
 	z-index: 3;
-}
-
-.skvn-slider--has-pagination {
-	padding-block-end: 2.5rem;
 }
 
 .skvn-slider--hero .skvn-slide {
@@ -222,10 +218,6 @@
 
 .skvn-slider--card-carousel:not(.skvn-slider--editor) {
 	padding-inline: 3.5rem;
-}
-
-.skvn-slider--card-carousel.skvn-slider--has-pagination:not(.skvn-slider--editor) {
-	padding-block-end: 2.5rem;
 }
 
 @media (max-width: 599px) {

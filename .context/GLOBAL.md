@@ -123,6 +123,7 @@ Current active docs:
 - `docs/explain/explain-for-5-years-old.md`
 - `docs/artifacts/init-prompt-v1-1.0.0-launch-ready.md`
 - `docs/artifacts/init-prompt-v1-1.3.0-slider-dynamic-rendering.md`
+- `docs/workflows/start-v1-1.3.0-slider-repair.md` — reusable repair prompt for the failed 1.3.0 build, including State Delta diagnostics, target code architecture, geometry/RAM gates, and the targeted human smoke-test boundary before 1.3.1.
 - `docs/artifacts/brand-palette-options.html`
 
 ---

@@ -39,6 +39,7 @@ type NormalizedSliderConfig = {
 
 type SliderElement = HTMLElement & {
 	swiper?: Swiper;
+	skvnSliderCleanup?: () => void;
 };
 
 function clampInteger(
@@ -131,7 +132,7 @@ document
 					config.autoplay && ! reducedMotion
 						? {
 								delay: config.delay,
-								pauseOnMouseEnter: true,
+								pauseOnMouseEnter: false,
 						  }
 						: false,
 				effect: config.effect,
@@ -171,6 +172,7 @@ document
 
 			let pointerInside = false;
 			let focusInside = slider.contains( document.activeElement );
+			let focusTimeout: number | undefined;
 
 			const pauseAutoplay = () => {
 				swiper.autoplay?.pause();
@@ -190,42 +192,77 @@ document
 				pauseAutoplay();
 			};
 
-			slider.addEventListener( 'pointerenter', ( event ) => {
+			const handlePointerEnter = ( event: PointerEvent ) => {
 				if ( event.pointerType !== 'mouse' ) {
 					return;
 				}
 
 				pointerInside = true;
 				pauseAutoplay();
-			} );
-			slider.addEventListener( 'pointerleave', ( event ) => {
+			};
+			const handlePointerLeave = ( event: PointerEvent ) => {
 				if ( event.pointerType !== 'mouse' ) {
 					return;
 				}
 
 				pointerInside = false;
 				resumeAutoplay();
-			} );
-			slider.addEventListener( 'focusin', () => {
+			};
+			const handleFocusIn = () => {
 				focusInside = true;
 				pauseAutoplay();
-			} );
-			slider.addEventListener( 'focusout', () => {
-				window.setTimeout( () => {
+			};
+			const handleFocusOut = () => {
+				focusTimeout = window.setTimeout( () => {
 					focusInside = slider.contains( document.activeElement );
 					resumeAutoplay();
 				}, 0 );
-			} );
-			document.addEventListener( 'visibilitychange', () => {
+			};
+			const handleVisibilityChange = () => {
 				if ( document.hidden ) {
 					pauseAutoplay();
 					return;
 				}
 
 				resumeAutoplay();
-			} );
+			};
+			const cleanup = () => {
+				slider.removeEventListener(
+					'pointerenter',
+					handlePointerEnter
+				);
+				slider.removeEventListener(
+					'pointerleave',
+					handlePointerLeave
+				);
+				slider.removeEventListener( 'focusin', handleFocusIn );
+				slider.removeEventListener( 'focusout', handleFocusOut );
+				document.removeEventListener(
+					'visibilitychange',
+					handleVisibilityChange
+				);
+
+				if ( focusTimeout !== undefined ) {
+					window.clearTimeout( focusTimeout );
+				}
+
+				delete slider.skvnSliderCleanup;
+				delete slider.dataset.skvnSliderInitialized;
+			};
+
+			slider.addEventListener( 'pointerenter', handlePointerEnter );
+			slider.addEventListener( 'pointerleave', handlePointerLeave );
+			slider.addEventListener( 'focusin', handleFocusIn );
+			slider.addEventListener( 'focusout', handleFocusOut );
+			document.addEventListener(
+				'visibilitychange',
+				handleVisibilityChange
+			);
+			slider.skvnSliderCleanup = cleanup;
+			swiper.on( 'destroy', cleanup );
 			resumeAutoplay();
 		} catch {
+			slider.skvnSliderCleanup?.();
 			delete slider.dataset.skvnSliderInitialized;
 			slider.classList.remove( 'skvn-slider--initialized' );
 		}

@@ -17,7 +17,10 @@ const sliderEdit = read('src/slider/edit.tsx');
 const sliderSave = read('src/slider/save.tsx');
 const sliderView = read('src/slider/view.ts');
 const slideSave = read('src/slide/save.tsx');
-const sliderDecision = readFileSync(resolve(root, 'docs/decisions/slider-block.md'), 'utf8');
+const sliderDecision = readFileSync(
+	resolve(root, 'docs/decisions/slider-completion-spec-1.3.0.md'),
+	'utf8',
+);
 
 assert.equal(sliderBlock.name, 'skvn-marine/slider');
 assert.equal(slideBlock.name, 'skvn-marine/slide');
@@ -28,8 +31,8 @@ for (const attribute of ['autoplay', 'delay', 'loop', 'arrows', 'dots', 'effect'
 	assert.ok(sliderBlock.attributes?.[attribute], `slider block missing attribute: ${attribute}`);
 }
 
-assert.match(indexTs, /registerBlockType\(sliderMetadata\.name/);
-assert.match(indexTs, /registerBlockType\(slideMetadata\.name/);
+assert.match(indexTs, /registerBlockType\(\s*sliderMetadata\.name/);
+assert.match(indexTs, /registerBlockType\(\s*slideMetadata\.name/);
 
 assert.match(sliderEdit, /skvn-slider--editor/);
 assert.match(sliderEdit, /skvn-slider__editor-stack/);
@@ -40,16 +43,18 @@ assert.match(sliderSave, /JSON\.stringify/);
 assert.match(sliderSave, /swiper-wrapper/);
 assert.match(slideSave, /swiper-slide/);
 
-assert.match(sliderView, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
-assert.match(sliderView, /pauseOnMouseEnter:\s*true/);
+assert.match(sliderView, /prefersReducedMotion\(\)/);
+assert.match(sliderView, /pauseOnMouseEnter:\s*false/);
 assert.match(sliderView, /keyboard:\s*\{\s*enabled:\s*true\s*\}/);
-assert.match(sliderView, /querySelectorAll<HTMLElement>\('\[data-skvn-slider\]'\)/);
+assert.match(sliderView, /querySelectorAll<\s*SliderElement\s*>\(\s*'\[data-skvn-slider\]'\s*\)/);
 assert.match(sliderView, /try\s*\{[\s\S]*JSON\.parse/, 'frontend config parsing must be guarded');
+assert.match(sliderView, /removeEventListener\(\s*'visibilitychange'/);
+assert.match(sliderView, /swiper\.on\(\s*'destroy',\s*cleanup\s*\)/);
 
 assert.ok(packageJson.dependencies?.swiper, 'Swiper dependency must be declared');
-assert.match(sliderDecision, /Use `swiper`/);
-assert.match(sliderDecision, /Swiper must load only through the slider block frontend view script/);
-assert.match(sliderDecision, /Editor uses stacked\/simplified preview/);
+assert.match(sliderDecision, /Keep one Swiper runtime/);
+assert.match(sliderDecision, /Dynamic PHP rendering/);
+assert.match(sliderDecision, /Do not run Swiper or autoplay in Gutenberg/);
 assert.match(packageJson.scripts?.build ?? '', /src\/index\.ts/);
 assert.match(packageJson.scripts?.build ?? '', /src\/slider\/view\.ts/);
 

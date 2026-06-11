@@ -121,7 +121,7 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		$config['responsiveSlides'] = $responsive_slides;
 	}
 
-	$class_name = 'skvn-slider swiper';
+	$class_name = 'skvn-slider swiper alignfull';
 
 	if ( $preset ) {
 		$class_name .= ' skvn-slider--' . $preset;
@@ -179,12 +179,19 @@ function skvn_marine_blocks_render_slide( $attributes, $content, $block ) {
 	$preset          = skvn_marine_blocks_normalize_slider_preset(
 		$block instanceof WP_Block ? ( $block->context['skvn-marine/sliderPreset'] ?? '' ) : ''
 	);
-	$image_url       = isset( $attributes['backgroundImageUrl'] ) && is_string( $attributes['backgroundImageUrl'] )
+	$image_id        = isset( $attributes['backgroundImageId'] ) ? absint( $attributes['backgroundImageId'] ) : 0;
+	$legacy_image_url = isset( $attributes['backgroundImageUrl'] ) && is_string( $attributes['backgroundImageUrl'] )
 		? esc_url_raw( $attributes['backgroundImageUrl'] )
 		: '';
+	$image_url       = $image_id ? wp_get_attachment_image_url( $image_id, 'full' ) : '';
+	$image_url       = is_string( $image_url ) && '' !== $image_url ? $image_url : $legacy_image_url;
 	$image_alt       = isset( $attributes['backgroundImageAlt'] ) && is_string( $attributes['backgroundImageAlt'] )
 		? sanitize_text_field( $attributes['backgroundImageAlt'] )
 		: '';
+
+	if ( '' === $image_alt && $image_id ) {
+		$image_alt = sanitize_text_field( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) );
+	}
 	$overlay_opacity = skvn_marine_blocks_normalize_slider_integer(
 		$attributes['overlayOpacity'] ?? 35,
 		35,

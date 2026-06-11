@@ -125,6 +125,7 @@ Purpose:
 Planning:
 
 - `docs/decisions/slider-completion-spec-1.3.0.md`
+- `docs/workflows/start-v1-1.3.0-slider-repair.md`
 - Historical evidence is linked from that document through each folder's
   `/archives/` directory.
 
