@@ -236,6 +236,56 @@ Acceptance draft:
 
 - [ ] Upload custom icon
 
+### 1.3.9 — SKVN Team Credits Easter Egg
+
+Status: **PENDING**
+
+Purpose:
+
+- Close the Slider milestone sequence with a private wp-admin tribute to SKVN
+  employees who contributed to the project.
+- Keep the tribute discoverable as an Easter egg without adding public
+  frontend output or changing normal admin navigation.
+
+Decision:
+
+- `docs/decisions/skvn-team-credits-easter-egg-1.3.9.md`
+
+Dependencies:
+
+- Complete the planned Slider sequence before starting 1.3.9.
+- Human must approve the final tribute copy and any employee names or
+  nicknames.
+
+Scope:
+
+- Add `Built with care by the SKVN team.` to the plugin header comment.
+- Add `/* To the people who built SKVN, thank you. */` to the authored and
+  production admin Easter egg asset.
+- Trigger an accessible credits dialog/panel after five clicks on the existing
+  top-level `SKVN Marine` wp-admin menu.
+- Preserve normal menu navigation and count clicks across reloads with
+  `sessionStorage`.
+
+Constraints:
+
+- Admin only; no frontend asset, HTML, or console message.
+- No database write, tracking, AJAX, or external request.
+- Do not change the menu slug, capability, plugin slug, or text domain.
+- Do not publish employee names without explicit human confirmation.
+
+Acceptance draft:
+
+- [ ] Plugin header and admin asset contain the approved credit messages
+- [ ] Normal menu clicks continue to navigate normally
+- [ ] Five clicks within the governed interval open the credits experience
+- [ ] Counter survives navigation in the same admin session and resets safely
+- [ ] Credits UI is accessible and dismissible
+- [ ] No frontend output, database write, tracking, or network request is added
+- [ ] Human approves final tribute copy and any names
+- [ ] PHP lint, plugin build, and wp-admin smoke test pass
+- [ ] Human approves milestone completion
+
 ### 1.4.0 — SKVN Theme Init Setup UI
 
 Status: **PENDING**

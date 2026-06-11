@@ -15,6 +15,7 @@ Cho phép marketing user thay đổi **brand palette** và **heading scale** (si
 - Font family: **defer** — chưa làm ở milestone này
 - Custom palette builder UI: **defer** — sang 2.0.0 khi có Site Editor
 
+![[.assets/typography_color_data_flow.svg]]
 ---
 
 ## 2. Kiến trúc token — Semantic layer
