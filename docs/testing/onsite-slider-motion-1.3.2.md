@@ -118,7 +118,7 @@ repeated because the dynamic rendering migration changed those surfaces.
     interaction ends and no hover/focus/visibility reason remains.
 27. Enable Reduce motion and confirm autoplay is disabled and does not resume
     after a tab visibility change.
-28. Confirm Slider text uses Inder when the font request succeeds, falls back
+28. Confirm Slider text uses Inter when the font request succeeds, falls back
     readably when it does not, and the Hero heading is visibly smaller/lighter
     than the previous oversized treatment.
 29. Select `Viewport below header` and confirm the Slider fills the visible
@@ -217,7 +217,7 @@ repeated because the dynamic rendering migration changed those surfaces.
 - Legacy `dots`, `arrows`, and arbitrary delay content migrates without
   invalid-block recovery or silent timing changes.
 - Legacy `effect: fade` remains Fade until the editor explicitly changes it.
-- Inder remains scoped to Slider output and has a readable system fallback.
+- Inter remains scoped to Slider output and has a readable system fallback.
 - `Viewport below header` accounts for the site header and logged-in admin bar.
 - Directional wipe, Fade, and Zoom out respect the governed duration and
   reduced-motion fallback.

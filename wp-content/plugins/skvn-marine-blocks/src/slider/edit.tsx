@@ -75,7 +75,8 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 		'product-showcase',
 		'card-carousel',
 	].includes( attributes.preset );
-	const hasGovernedTransition = attributes.preset === 'card-carousel';
+	const hasMultiViewTransition = attributes.preset === 'card-carousel' ||
+		( ! hasGovernedSlidesPerView && attributes.slidesPerView > 1 );
 	const reachedSlideLimit = hasFiveSlideLimit && slideCount >= 5;
 	const effectiveTransitionStyle =
 		attributes.transitionStyle ||
@@ -290,10 +291,10 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 					initialOpen={false}
 					title={__('Layout', 'skvn-marine-blocks')}
 				>
-					{hasGovernedTransition ? (
+					{hasMultiViewTransition ? (
 						<Notice isDismissible={false} status="info">
 							{__(
-								'Card Carousel uses its governed directional movement for the responsive 3/2/1 layout.',
+								'Multi-view Sliders use standard directional movement. Directional wipe, Fade, and Zoom out are available when one Slide is shown at a time.',
 								'skvn-marine-blocks'
 							)}
 						</Notice>

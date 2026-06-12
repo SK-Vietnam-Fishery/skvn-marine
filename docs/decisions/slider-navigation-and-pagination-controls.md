@@ -256,6 +256,22 @@ Do not implement this decision until:
 
 Final onsite acceptance belongs to V1 / 1.3.2.
 
+## 13. Transition Compatibility Addendum
+
+The approved V1 / 1.3.1 editor and transition expansion uses this compatibility
+path:
+
+- Legacy `effect: fade` maps to `transitionStyle: fade`.
+- Legacy `effect: slide` maps to `directional-wipe` only when the Slider shows
+  one real Slide per view.
+- Card Carousel and unclassified legacy Sliders configured above one Slide per
+  view retain Swiper's standard `slide` movement at runtime.
+- Directional Wipe, Fade, and Zoom Out are not exposed while an unclassified
+  Slider uses a multi-view configuration.
+- Ignored transition attributes remain stored and become available again if
+  the Slider returns to one Slide per view.
+- Dynamic PHP rendering applies this mapping without requiring a bulk resave.
+
 Implementation acceptance must include:
 
 - Zero/one Slide hides both control families and disables autoplay.

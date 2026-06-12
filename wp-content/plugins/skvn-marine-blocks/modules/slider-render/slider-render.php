@@ -211,9 +211,12 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 	}
 
 	if ( 'card-carousel' === $preset ) {
-		$transition_style  = 'directional-wipe';
 		$slides_per_view   = 3;
 		$responsive_slides = '3-2-1';
+	}
+
+	if ( '3-2-1' === $responsive_slides || $slides_per_view > 1 ) {
+		$transition_style = 'slide';
 	}
 
 	$slide_count         = $block instanceof WP_Block ? count( $block->inner_blocks ) : 0;

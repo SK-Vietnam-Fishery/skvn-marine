@@ -498,6 +498,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.1 | Slider Navigation & Pagination Controls UX |
 | 1.3.2 | Slider Dynamic Rendering & Controls Onsite QA |
 | 1.3.3 | Feature Showcase Autoplay And Panel Links |
+| 1.3.4 | Core Control Foundation & Core Button Hover |
 | 1.3.9 | SKVN Team Credits Easter Egg |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.4.1 | Layout Blocks Validation & Quote Evaluation |

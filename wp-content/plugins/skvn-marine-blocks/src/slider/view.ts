@@ -28,7 +28,7 @@ type PaginationStyle =
 	| 'timed-segments';
 type BottomPosition = 'bottom-left' | 'bottom-center' | 'bottom-right';
 type PauseReason = 'focus' | 'hidden' | 'interaction' | 'pointer';
-type TransitionStyle = 'directional-wipe' | 'fade' | 'zoom-out';
+type TransitionStyle = 'directional-wipe' | 'fade' | 'slide' | 'zoom-out';
 
 type SliderConfig = {
 	autoplay?: boolean;
@@ -186,7 +186,7 @@ function parseSliderConfig(
 		),
 		transitionStyle: normalizeChoice(
 			parsed.transitionStyle,
-			[ 'directional-wipe', 'fade', 'zoom-out' ] as const,
+			[ 'directional-wipe', 'fade', 'slide', 'zoom-out' ] as const,
 			parsed.effect === 'fade' ? 'fade' : 'directional-wipe'
 		),
 		transitionDuration: normalizeNumberChoice(
