@@ -109,13 +109,26 @@ function skvn_marine_blocks_register_blocks() {
 		);
 	}
 
+	$slider_core_style = __DIR__ . '/build/view.ts.css';
+
+	if ( file_exists( $slider_core_style ) ) {
+		wp_register_style(
+			'skvn-marine-slider-core',
+			plugins_url( 'build/view.ts.css', __FILE__ ),
+			array(),
+			filemtime( $slider_core_style )
+		);
+	}
+
 	$slider_style = __DIR__ . '/build/style-view.ts.css';
 
 	if ( file_exists( $slider_style ) ) {
 		wp_register_style(
 			'skvn-marine-slider-view',
 			plugins_url( 'build/style-view.ts.css', __FILE__ ),
-			array(),
+			wp_style_is( 'skvn-marine-slider-core', 'registered' )
+				? array( 'skvn-marine-slider-core' )
+				: array(),
 			filemtime( $slider_style )
 		);
 	}

@@ -128,7 +128,17 @@ assert.match(pluginPhp, /build\/view\.ts\.js/, 'PHP must register actual slider 
 assert.match(
 	pluginPhp,
 	/build\/style-view\.ts\.css/,
-	'PHP must register the CSS filename emitted for the Slider view entry',
+	'PHP must register the SKVN CSS filename emitted for the Slider view entry',
+);
+assert.match(
+	pluginPhp,
+	/build\/view\.ts\.css/,
+	'PHP must register the Swiper core CSS filename emitted for the Slider view entry',
+);
+assert.match(
+	pluginPhp,
+	/array\(\s*'skvn-marine-slider-core'\s*\)/,
+	'SKVN Slider CSS must load after its Swiper core CSS dependency',
 );
 assert.match(pluginPhp, /__DIR__\s*\.\s*'\/build\/'\s*\.\s*\$block/, 'PHP must register deployable build block metadata');
 assert.match(pluginPhp, /'slider' === \$block[\s\S]*'view_script'[\s\S]*'skvn-marine-slider-view'/);
