@@ -477,6 +477,18 @@
 	padding-inline: 3.5rem;
 }
 
+.skvn-slider--height-content .skvn-slide {
+	min-height: 0;
+}
+
+.skvn-slider--height-medium .skvn-slide {
+	min-height: 36rem;
+}
+
+.skvn-slider--height-tall .skvn-slide {
+	min-height: 48rem;
+}
+
 .skvn-slider--height-viewport-below-header:not(.skvn-slider--editor) .skvn-slide {
 	min-height: calc(100vh - var(--skvn-slider-viewport-offset, 5rem));
 	min-height: calc(100dvh - var(--skvn-slider-viewport-offset, 5rem));

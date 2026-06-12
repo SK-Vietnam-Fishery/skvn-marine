@@ -61,7 +61,12 @@ type NormalizedSliderConfig = {
 	paginationPosition: BottomPosition;
 	transitionStyle: TransitionStyle;
 	transitionDuration: number;
-	heightPreset: 'default' | 'viewport-below-header';
+	heightPreset:
+		| 'default'
+		| 'content'
+		| 'medium'
+		| 'tall'
+		| 'viewport-below-header';
 	slidesPerView: number;
 	responsiveSlides: '3-2-1' | 'uniform';
 	slideCount: number;
@@ -194,10 +199,17 @@ function parseSliderConfig(
 			[ 600, 700, 800, 900, 1000 ] as const,
 			800
 		),
-		heightPreset:
-			parsed.heightPreset === 'viewport-below-header'
-				? 'viewport-below-header'
-				: 'default',
+		heightPreset: normalizeChoice(
+			parsed.heightPreset,
+			[
+				'default',
+				'content',
+				'medium',
+				'tall',
+				'viewport-below-header',
+			] as const,
+			'default'
+		),
 		slidesPerView: clampInteger( parsed.slidesPerView, 1, 1, 4 ),
 		responsiveSlides:
 			parsed.responsiveSlides === '3-2-1' ? '3-2-1' : 'uniform',
@@ -402,7 +414,11 @@ document
 								stopOnLastSlide: ! config.loop,
 						  }
 						: false,
-				effect: transitionStyle === 'fade' ? 'fade' : 'slide',
+				effect:
+					transitionStyle === 'fade' ||
+					transitionStyle === 'zoom-out'
+						? 'fade'
+						: 'slide',
 				fadeEffect: {
 					crossFade: true,
 				},

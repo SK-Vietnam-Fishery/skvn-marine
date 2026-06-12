@@ -192,7 +192,7 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		: 800;
 	$height_preset     = skvn_marine_blocks_normalize_slider_choice(
 		$attributes['heightPreset'] ?? 'default',
-		array( 'default', 'viewport-below-header' ),
+		array( 'default', 'content', 'medium', 'tall', 'viewport-below-header' ),
 		'default'
 	);
 	$responsive_slides = isset( $attributes['responsiveSlides'] ) && '3-2-1' === $attributes['responsiveSlides']

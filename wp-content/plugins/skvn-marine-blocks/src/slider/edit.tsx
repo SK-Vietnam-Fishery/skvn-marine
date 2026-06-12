@@ -37,7 +37,12 @@ type SliderAttributes = {
 	effect: string;
 	transitionStyle: '' | 'directional-wipe' | 'fade' | 'zoom-out';
 	transitionDuration: number;
-	heightPreset: 'default' | 'viewport-below-header';
+	heightPreset:
+		| 'default'
+		| 'content'
+		| 'medium'
+		| 'tall'
+		| 'viewport-below-header';
 	slidesPerView: number;
 	preset: string;
 	responsiveSlides: string;
@@ -289,8 +294,14 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 				</PanelBody>
 				<PanelBody
 					initialOpen={false}
-					title={__('Layout', 'skvn-marine-blocks')}
+					title={__('Presentation', 'skvn-marine-blocks')}
 				>
+					<p>
+						{__(
+							'How the slider presents itself.',
+							'skvn-marine-blocks'
+						)}
+					</p>
 					{hasMultiViewTransition ? (
 						<Notice isDismissible={false} status="info">
 							{__(
@@ -347,6 +358,11 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 										'Fills the visible viewport below the site header.',
 										'skvn-marine-blocks'
 								  )
+								: attributes.heightPreset === 'content'
+								? __(
+										'Uses the slide content and padding to determine height.',
+										'skvn-marine-blocks'
+								  )
 								: undefined
 						}
 						onChange={(heightPreset) =>
@@ -357,6 +373,9 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 						}
 						options={[
 							{ label: __('Default', 'skvn-marine-blocks'), value: 'default' },
+							{ label: __('Content height', 'skvn-marine-blocks'), value: 'content' },
+							{ label: __('Medium', 'skvn-marine-blocks'), value: 'medium' },
+							{ label: __('Tall', 'skvn-marine-blocks'), value: 'tall' },
 							{
 								label: __('Viewport below header', 'skvn-marine-blocks'),
 								value: 'viewport-below-header',
