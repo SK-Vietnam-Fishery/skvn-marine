@@ -52,6 +52,12 @@
         "180"
       ]
     },
+    "outerRadius": {
+      "type": "number",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 50
+    },
     "interactionMode": {
       "type": "string",
       "default": "hover",

@@ -10,11 +10,13 @@ import {
 	Button,
 	PanelBody,
 	Popover,
+	RangeControl,
 	SelectControl,
 	TextControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
+import type { CSSProperties } from 'react';
 import { GovernedTimeControl } from '../shared/governed-time-control';
 import { FEATURE_SHOWCASE_AUTOPLAY_TIME } from './time';
 import type { FeatureItem, FeatureShowcaseAttributes } from './types';
@@ -69,6 +71,12 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 	);
 	const blockProps = useBlockProps( {
 		className: getClassName( attributes ),
+		style:
+			attributes.outerRadius > 0
+				? ( {
+						'--skvn-feature-outer-radius': `${ attributes.outerRadius }px`,
+				  } as CSSProperties )
+				: undefined,
 	} );
 	const items = attributes.items || [];
 	const setItem = ( index: number, itemPatch: Partial< FeatureItem > ) => {
@@ -261,6 +269,26 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 							},
 						] }
 						value={ attributes.labelRotation }
+					/>
+					<RangeControl
+						help={ __(
+							'Rounds the outside corners of the complete showcase.',
+							'skvn-marine-blocks'
+						) }
+						label={ __( 'Outer corner radius', 'skvn-marine-blocks' ) }
+						max={ 50 }
+						min={ 0 }
+						onChange={ ( outerRadius = 0 ) =>
+							setAttributes( {
+								outerRadius: Math.min(
+									50,
+									Math.max( 0, outerRadius )
+								),
+							} )
+						}
+						step={ 1 }
+						value={ attributes.outerRadius || 0 }
+						withInputField
 					/>
 				</PanelBody>
 			</InspectorControls>

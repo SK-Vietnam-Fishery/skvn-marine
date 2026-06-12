@@ -4,6 +4,7 @@
 	--skvn-feature-index: #72b7f4;
 	--skvn-feature-label: rgba(248, 251, 255, 0.9);
 	--skvn-feature-panel-bg: #0d3a56;
+	--skvn-feature-outer-radius: 0px;
 	--skvn-feature-rail-size: 3.25rem;
 	--skvn-feature-rail-bg: rgba(8, 52, 78, 0.82);
 	--skvn-feature-shade-end: rgba(5, 14, 23, 0.08);
@@ -56,6 +57,7 @@
 
 .skvn-feature-showcase__items {
 	background: var(--skvn-feature-surface-bg);
+	border-radius: var(--skvn-feature-outer-radius);
 	display: flex;
 	height: min(36rem, 70vh);
 	min-height: 30rem;

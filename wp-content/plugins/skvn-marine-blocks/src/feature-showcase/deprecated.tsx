@@ -14,7 +14,7 @@ type LegacyAttributes = {
 
 type PanelOnlyAttributes = Omit<
 	FeatureShowcaseAttributes,
-	'interactionMode' | 'autoplayDelay'
+	'interactionMode' | 'autoplayDelay' | 'outerRadius'
 >;
 
 const legacyItems: FeatureItem[] = [
@@ -310,6 +310,7 @@ const deprecated = [
 				...attributes,
 				autoplayDelay: 5000,
 				interactionMode: 'hover',
+				outerRadius: 0,
 				items: ( attributes.items || [] ).map( ( item ) => ( {
 					...item,
 					linkTarget: item.linkTarget || '_self',
@@ -331,6 +332,7 @@ const deprecated = [
 				labelRotation: 'default',
 				autoplayDelay: 5000,
 				interactionMode: 'hover',
+				outerRadius: 0,
 				items: attributes.items || [],
 			};
 		},

@@ -1,5 +1,6 @@
 import { RichText, useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import type { CSSProperties } from 'react';
 import type { FeatureShowcaseAttributes } from './types';
 
 type FeatureShowcaseSaveProps = {
@@ -38,6 +39,12 @@ export function save( { attributes }: FeatureShowcaseSaveProps ) {
 		className: getClassName( attributes ),
 		'data-skvn-autoplay-delay': attributes.autoplayDelay || 5000,
 		'data-skvn-interaction': attributes.interactionMode || 'hover',
+		style:
+			attributes.outerRadius > 0
+				? ( {
+						'--skvn-feature-outer-radius': `${ attributes.outerRadius }px`,
+				  } as CSSProperties )
+				: undefined,
 	} );
 
 	return (
