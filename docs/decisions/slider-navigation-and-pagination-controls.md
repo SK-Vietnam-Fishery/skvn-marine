@@ -130,16 +130,29 @@ Approved editor choices:
 
 - Default: `7s`.
 - `5s` is the minimum governed duration.
-- Use a segmented control or a snapping range mapped by index.
+- Use the shared magnetic time control with equal-spaced indexes mapped to the
+  Slider-owned `5s`, `7s`, `9s`, and `12s` values.
+- Hide arbitrary numeric input and expose only human-readable duration marks.
 - Do not expose arbitrary duration input.
-- Existing saved Slider delay values require an explicit compatibility policy
-  before the editor is restricted to these choices.
+- Slider owns its allowed values and `7s` default. Missing, malformed, or
+  disallowed values normalize to `7s` in both the editor and frontend.
+- Legacy Slider duration preservation is not part of this control contract.
 
 The sidebar duration selector and the frontend progress timer are different
 controls:
 
 - Sidebar: chooses Slider duration.
 - Frontend timer: displays progress through the active Slide duration.
+
+The shared magnetic control accepts an ordered TypeScript configuration object
+whose entries contain a numeric millisecond value and a human-readable label,
+plus one default value that must exist in the entries. The shared layer owns
+rendering, index/value mapping, keyboard stepping, accessible value text, and
+normalization. Slider owns the configuration itself.
+
+Other SKVN blocks may reuse the same control without inheriting Slider's
+allowed values. Dropdowns remain appropriate for semantic choices; ordered
+governed durations use the magnetic time control.
 
 ## 7. Swiper And Timer Ownership
 
@@ -252,7 +265,8 @@ Do not implement this decision until:
 - Media layering, full-width geometry, existing pagination placement, and
   reported idle RAM growth are corrected or bounded.
 - The `dots` to `showPagination` migration/deprecation path is documented.
-- Existing arbitrary delay values have an explicit editor compatibility rule.
+- The shared magnetic-time configuration and default normalization rule are
+  implemented.
 
 Final onsite acceptance belongs to V1 / 1.3.2.
 

@@ -307,6 +307,26 @@ Theme responsibilities remain visual:
 
 Do not require raw class input, raw color values, arbitrary inline spacing, custom CSS, or custom JavaScript for normal marketing-editor use.
 
+Governed time control contract:
+
+- All governed time choices in SKVN block inspectors use one shared magnetic
+  time control instead of dropdowns or arbitrary numeric inputs.
+- The shared control owns rendering, equal-spaced index mapping, keyboard
+  stepping, accessible value text, and normalization.
+- Each consuming block owns an ordered configuration containing its allowed
+  numeric values, human-readable labels, and one default value.
+- Store the real numeric value in milliseconds. Do not expose milliseconds as
+  an editable input when the editor-facing labels use seconds.
+- The default value must exist in the block-owned allowed values.
+- Missing, malformed, or disallowed values normalize to the block-owned
+  default in both the editor and frontend.
+- Blocks may share the control and normalization utility, but must not share
+  one allowed-time constant unless their accepted values are intentionally
+  identical.
+- Use the magnetic time control for ordered duration choices. Keep dropdowns
+  for semantic choices that are not an ordered time scale.
+- Legacy governed-time values are not preserved by this control contract.
+
 V1.x / 1.6.0 planned SKVN surface presets:
 
 - Planning file: `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md`.
@@ -413,8 +433,9 @@ Active V1 / 1.3.2 Feature Showcase autoplay and panel links:
   V1 / 1.3.1 Slider controls milestone. Broader regression QA remains under
   V1 / 1.3.9.
 - Feature Showcase adds governed `hover` and `autoplay` interaction modes.
-- Autoplay delay uses a snapping WordPress RangeControl with only `3`, `5`,
-  `7`, and `9` second values; no arbitrary timing input.
+- Autoplay delay uses the shared magnetic time control with the Feature
+  Showcase-owned `3`, `5`, `7`, and `9` second configuration and a `5` second
+  default; no arbitrary timing input.
 - Each panel may use Gutenberg LinkControl for an optional CTA destination.
   The CTA belongs inside panel content; do not turn `details`, `summary`, or the
   whole interactive panel into a navigation link.

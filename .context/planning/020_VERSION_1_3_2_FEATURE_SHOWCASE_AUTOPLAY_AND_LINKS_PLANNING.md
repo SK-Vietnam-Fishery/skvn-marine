@@ -69,15 +69,36 @@ not run a timer beside Swiper for the Slider block.
 
 ## 4. Governed Delay Control
 
-Use the WordPress `RangeControl` in the Feature Showcase sidebar.
+Use the shared magnetic time control in the Feature Showcase sidebar.
 
 The UI should:
 
 - expose marks at `3s`, `5s`, `7s`, and `9s`
 - snap to those values only
+- map equal-spaced control indexes to the block-owned millisecond values
+- hide the arbitrary numeric input and display human-readable time labels
 - appear only when `interactionMode` is `autoplay`
 - store milliseconds in block attributes and frontend configuration
 - normalize missing or malformed values to `5000`
+
+The shared control accepts an ordered TypeScript configuration object:
+
+```text
+options:
+  - value: 3000
+    label: 3s
+  - value: 5000
+    label: 5s
+  - value: 7000
+    label: 7s
+  - value: 9000
+    label: 9s
+defaultValue: 5000
+```
+
+The shared layer owns control rendering, index/value mapping, keyboard
+stepping, accessible value text, and normalization. Feature Showcase owns the
+configuration above. The default must be present in `options`.
 
 Feature Showcase and Slider intentionally keep separate governed delay lists:
 
@@ -87,8 +108,8 @@ Slider:           5000 | 7000 | 9000 | 12000
 ```
 
 Do not create one shared delay constant that implies both blocks accept the
-same values. A small generic normalization function may be shared only when the
-allowed values and fallback are passed in by the owning block.
+same values. Share the magnetic control and normalization utility while each
+block passes its own options and default.
 
 Do not expose arbitrary millisecond input.
 
@@ -243,7 +264,7 @@ Slider remains responsible for:
 - slide navigation, loop, arrows, dots, and breakpoints
 - Swiper autoplay pause/resume calls
 - Slider delay choices `5/7/9/12s`
-- legacy Slider delay compatibility
+- Slider delay default and disallowed-value normalization
 - drag/swipe interaction pause state
 
 Feature Showcase remains responsible for:
@@ -297,11 +318,12 @@ policy without changing its established behavior:
   coordinator
 - keep Slider's `interaction` pause reason and Swiper-specific synchronization
   local
-- keep existing Slider frontend config compatible with saved values
+- normalize Slider delay through its block-owned magnetic-time configuration
 
-Do not change Slider's approved `5/7/9/12s` editor choices. Existing legacy
-Slider delay values must continue to display and persist through the current
-compatibility path.
+Do not change Slider's approved `5/7/9/12s` editor choices. Legacy Slider
+duration preservation is explicitly removed from the governed-time control
+scope; missing, malformed, or disallowed values normalize to Slider's `7s`
+default.
 
 ## 10. Expected Files
 
@@ -357,7 +379,8 @@ Slider regression:
 
 - Re-run autoplay, hover/focus pause, reduced motion, keyboard, and
   no-JavaScript checks after adopting shared helpers.
-- Confirm existing Slider delay/config values remain compatible.
+- Confirm missing, malformed, and disallowed Slider delay values normalize to
+  the `7s` default.
 
 ## 12. Acceptance Draft
 
