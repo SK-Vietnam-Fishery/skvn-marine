@@ -8,6 +8,10 @@ import {
 	Pagination,
 } from 'swiper/modules';
 import { __, sprintf } from '@wordpress/i18n';
+import {
+	createAutoplayPauseCoordinator,
+	type AutoplayPauseCoordinator,
+} from '../shared/autoplay';
 import { prefersReducedMotion } from '../shared/motion';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -27,7 +31,6 @@ type PaginationStyle =
 	| 'timed-fraction'
 	| 'timed-segments';
 type BottomPosition = 'bottom-left' | 'bottom-center' | 'bottom-right';
-type PauseReason = 'focus' | 'hidden' | 'interaction' | 'pointer';
 type TransitionStyle = 'directional-wipe' | 'fade' | 'slide' | 'zoom-out';
 
 type SliderConfig = {
@@ -447,18 +450,9 @@ document
 					: config.slidesPerView,
 			} );
 
-			const pauseReasons = new Set< PauseReason >();
-			let focusTimeout: number | undefined;
+			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;
 			let previousRealIndex = 0;
-
-			if ( document.hidden ) {
-				pauseReasons.add( 'hidden' );
-			}
-
-			if ( slider.contains( document.activeElement ) ) {
-				pauseReasons.add( 'focus' );
-			}
 
 			const resetProgress = () => {
 				slider.style.setProperty( '--skvn-slider-progress', '0' );
@@ -467,7 +461,7 @@ document
 				if (
 					! config.autoplay ||
 					reducedMotion ||
-					pauseReasons.size > 0
+					pauseCoordinator?.isPaused()
 				) {
 					swiper.autoplay?.pause();
 					return;
@@ -483,18 +477,6 @@ document
 				} else {
 					swiper.autoplay?.resume();
 				}
-			};
-			const setPauseReason = (
-				reason: PauseReason,
-				active: boolean
-			) => {
-				if ( active ) {
-					pauseReasons.add( reason );
-				} else {
-					pauseReasons.delete( reason );
-				}
-
-				syncAutoplay();
 			};
 			const updatePaginationA11y = () => {
 				setPaginationA11y(
@@ -546,30 +528,6 @@ document
 			const handleTransitionEnd = () => {
 				slider.classList.remove( 'skvn-slider--transitioning' );
 			};
-			const handlePointerEnter = ( event: PointerEvent ) => {
-				if ( event.pointerType === 'mouse' ) {
-					setPauseReason( 'pointer', true );
-				}
-			};
-			const handlePointerLeave = ( event: PointerEvent ) => {
-				if ( event.pointerType === 'mouse' ) {
-					setPauseReason( 'pointer', false );
-				}
-			};
-			const handleFocusIn = () => {
-				setPauseReason( 'focus', true );
-			};
-			const handleFocusOut = () => {
-				focusTimeout = window.setTimeout( () => {
-					setPauseReason(
-						'focus',
-						slider.contains( document.activeElement )
-					);
-				}, 0 );
-			};
-			const handleVisibilityChange = () => {
-				setPauseReason( 'hidden', document.hidden );
-			};
 			const handlePaginationClick = ( event: MouseEvent ) => {
 				const target = event.target;
 				const paginationButton =
@@ -612,14 +570,14 @@ document
 				}
 			};
 			const handleInteractionStart = () => {
-				setPauseReason( 'interaction', true );
+				pauseCoordinator?.setPauseReason( 'interaction', true );
 			};
 			const handleInteractionEnd = () => {
-				setPauseReason( 'interaction', false );
+				pauseCoordinator?.setPauseReason( 'interaction', false );
 				resetProgress();
 			};
 			const handleManualNavigation = () => {
-				pauseReasons.delete( 'interaction' );
+				pauseCoordinator?.setPauseReason( 'interaction', false );
 				resetProgress();
 				syncAutoplay();
 			};
@@ -645,24 +603,11 @@ document
 				}
 
 				cleaned = true;
-				slider.removeEventListener(
-					'pointerenter',
-					handlePointerEnter
-				);
-				slider.removeEventListener(
-					'pointerleave',
-					handlePointerLeave
-				);
-				slider.removeEventListener( 'focusin', handleFocusIn );
-				slider.removeEventListener( 'focusout', handleFocusOut );
+				pauseCoordinator?.cleanup();
 				paginationElement?.removeEventListener(
 					'click',
 					handlePaginationClick,
 					true
-				);
-				document.removeEventListener(
-					'visibilitychange',
-					handleVisibilityChange
 				);
 				window.removeEventListener( 'resize', syncViewportHeight );
 				swiper.off( 'autoplayTimeLeft', handleAutoplayTimeLeft );
@@ -674,10 +619,6 @@ document
 				swiper.off( 'transitionEnd', handleTransitionEnd );
 				swiper.off( 'sliderFirstMove', handleInteractionStart );
 				swiper.off( 'touchEnd', handleInteractionEnd );
-
-				if ( focusTimeout !== undefined ) {
-					window.clearTimeout( focusTimeout );
-				}
 
 				delete slider.skvnSliderCleanup;
 				delete slider.dataset.skvnSliderInitialized;
@@ -699,18 +640,14 @@ document
 				}
 			};
 
-			slider.addEventListener( 'pointerenter', handlePointerEnter );
-			slider.addEventListener( 'pointerleave', handlePointerLeave );
-			slider.addEventListener( 'focusin', handleFocusIn );
-			slider.addEventListener( 'focusout', handleFocusOut );
+			pauseCoordinator = createAutoplayPauseCoordinator( slider, {
+				onPause: syncAutoplay,
+				onResume: syncAutoplay,
+			} );
 			paginationElement?.addEventListener(
 				'click',
 				handlePaginationClick,
 				true
-			);
-			document.addEventListener(
-				'visibilitychange',
-				handleVisibilityChange
 			);
 			swiper.on( 'autoplayTimeLeft', handleAutoplayTimeLeft );
 			swiper.on( 'navigationNext', handleManualNavigation );

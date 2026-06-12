@@ -1,13 +1,27 @@
+import {
+	createAutoplayPauseCoordinator,
+	normalizeGovernedDelay,
+	type AutoplayPauseCoordinator,
+} from '../shared/autoplay';
+import { prefersReducedMotion } from '../shared/motion';
+
 const showcaseSelector = '.skvn-feature-showcase';
 const itemSelector = '.skvn-feature-showcase__item';
 const summarySelector = '.skvn-feature-showcase__summary';
 const desktopHoverQuery = window.matchMedia(
 	'(hover: hover) and (pointer: fine)'
 );
+const governedDelays = [ 3000, 5000, 7000, 9000 ] as const;
+
+type ShowcaseElement = HTMLElement & {
+	skvnFeatureShowcaseCleanup?: () => void;
+};
 
 document
-	.querySelectorAll< HTMLElement >( showcaseSelector )
+	.querySelectorAll< ShowcaseElement >( showcaseSelector )
 	.forEach( ( showcase ) => {
+		showcase.skvnFeatureShowcaseCleanup?.();
+
 		const items = Array.from(
 			showcase.querySelectorAll< HTMLDetailsElement >( itemSelector )
 		);
@@ -18,6 +32,23 @@ document
 
 		let activeItem =
 			items.find( ( item ) => item.open ) || items[ items.length - 1 ];
+		const interactionMode =
+			showcase.dataset.skvnInteraction === 'autoplay'
+				? 'autoplay'
+				: 'hover';
+		const autoplayDelay = normalizeGovernedDelay(
+			Number( showcase.dataset.skvnAutoplayDelay ),
+			governedDelays,
+			5000
+		);
+		const autoplayEnabled =
+			interactionMode === 'autoplay' &&
+			items.length > 1 &&
+			desktopHoverQuery.matches &&
+			! prefersReducedMotion();
+		const cleanupCallbacks: Array< () => void > = [];
+		let autoplayTimer: number | undefined;
+		let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 		let isSynchronizing = false;
 
 		const activate = ( nextItem: HTMLDetailsElement ) => {
@@ -32,6 +63,33 @@ document
 			activeItem = nextItem;
 			isSynchronizing = false;
 		};
+		const clearAutoplayTimer = () => {
+			if ( autoplayTimer === undefined ) {
+				return;
+			}
+
+			window.clearTimeout( autoplayTimer );
+			autoplayTimer = undefined;
+		};
+		const scheduleNextPanel = () => {
+			clearAutoplayTimer();
+
+			if (
+				! autoplayEnabled ||
+				pauseCoordinator?.isPaused()
+			) {
+				return;
+			}
+
+			autoplayTimer = window.setTimeout( () => {
+				const activeIndex = items.indexOf( activeItem );
+				const nextItem =
+					items[ ( activeIndex + 1 ) % items.length ];
+
+				activate( nextItem );
+				scheduleNextPanel();
+			}, autoplayDelay );
+		};
 
 		activate( activeItem );
 		showcase.classList.add( 'skvn-feature-showcase--enhanced' );
@@ -39,16 +97,44 @@ document
 		items.forEach( ( item ) => {
 			const summary =
 				item.querySelector< HTMLElement >( summarySelector );
-
-			summary?.addEventListener( 'click', ( event ) => {
+			const handleSummaryClick = ( event: MouseEvent ) => {
 				event.preventDefault();
 				activate( item );
-			} );
-
-			item.addEventListener( 'pointerenter', () => {
-				if ( desktopHoverQuery.matches ) {
+				scheduleNextPanel();
+			};
+			const handlePointerEnter = () => {
+				if (
+					interactionMode === 'hover' &&
+					desktopHoverQuery.matches
+				) {
 					activate( item );
 				}
+			};
+
+			summary?.addEventListener( 'click', handleSummaryClick );
+			item.addEventListener( 'pointerenter', handlePointerEnter );
+			cleanupCallbacks.push( () => {
+				summary?.removeEventListener( 'click', handleSummaryClick );
+				item.removeEventListener(
+					'pointerenter',
+					handlePointerEnter
+				);
 			} );
 		} );
+
+		pauseCoordinator = createAutoplayPauseCoordinator( showcase, {
+			onPause: clearAutoplayTimer,
+			onResume: scheduleNextPanel,
+		} );
+		scheduleNextPanel();
+
+		showcase.skvnFeatureShowcaseCleanup = () => {
+			clearAutoplayTimer();
+			pauseCoordinator?.cleanup();
+			cleanupCallbacks.forEach( ( cleanup ) => cleanup() );
+			showcase.classList.remove(
+				'skvn-feature-showcase--enhanced'
+			);
+			delete showcase.skvnFeatureShowcaseCleanup;
+		};
 	} );

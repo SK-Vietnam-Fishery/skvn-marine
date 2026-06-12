@@ -186,6 +186,41 @@ Acceptance draft:
 
 ### 1.3.3 — Products Slider có hook vào product
 
+Status: **PENDING**
+
+Architecture carry-in from V1 / 1.3.2:
+
+- Product Slider should build on the existing Slider/Swiper foundation rather
+  than introduce another carousel engine.
+- It inherits the shared pointer/focus/document-visibility pause policy through
+  the Slider adapter.
+- It owns its WooCommerce query, product-card markup, responsive behavior, and
+  any milestone-approved delay list.
+- It must not use the Feature Showcase timer or share a mutable Swiper instance
+  with another Slider.
+
+```mermaid
+flowchart TB
+    Policy["Shared Pause Policy<br/>hover | focus | hidden"]
+
+    Slider["Slider Foundation"]
+    Product["Product Slider"]
+    Feature["Feature Showcase"]
+
+    Policy --> Slider
+    Policy --> Product
+    Policy --> Feature
+
+    Slider --> SwiperA["Per-instance Swiper"]
+    Product --> SwiperB["Per-instance Swiper"]
+    Feature --> Timer["Block-local timer"]
+
+    Product --> Woo["WooCommerce product query"]
+```
+
+This diagram records the intended reuse boundary only. Product Slider source
+implementation remains outside V1 / 1.3.2.
+
 ### 1.3.4 — Core Control Foundation & Core Button Hover
 
 Status: **PENDING**

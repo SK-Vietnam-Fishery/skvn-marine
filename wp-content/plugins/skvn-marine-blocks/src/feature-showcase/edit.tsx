@@ -1,5 +1,6 @@
 import {
 	InspectorControls,
+	__experimentalLinkControl as LinkControl,
 	MediaUpload,
 	MediaUploadCheck,
 	RichText,
@@ -8,9 +9,12 @@ import {
 import {
 	Button,
 	PanelBody,
+	Popover,
+	RangeControl,
 	SelectControl,
 	TextControl,
 } from '@wordpress/components';
+import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import type { FeatureItem, FeatureShowcaseAttributes } from './types';
 
@@ -35,6 +39,9 @@ function createItem( index: number ): FeatureItem {
 		imageId: 0,
 		imageUrl: '',
 		imageAlt: '',
+		linkUrl: '',
+		linkText: '',
+		linkTarget: '_self',
 	};
 }
 
@@ -56,6 +63,9 @@ function getClassName( attributes: FeatureShowcaseAttributes ) {
 }
 
 export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) {
+	const [ linkPanelIndex, setLinkPanelIndex ] = useState< number | null >(
+		null
+	);
 	const blockProps = useBlockProps( {
 		className: getClassName( attributes ),
 	} );
@@ -150,6 +160,59 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 						] }
 						value={ attributes.defaultOpen }
 					/>
+				</PanelBody>
+				<PanelBody
+					initialOpen={ false }
+					title={ __( 'Interaction', 'skvn-marine-blocks' ) }
+				>
+					<SelectControl
+						label={ __( 'Interaction mode', 'skvn-marine-blocks' ) }
+						onChange={ ( interactionMode ) =>
+							setAttributes( {
+								interactionMode:
+									interactionMode as FeatureShowcaseAttributes[ 'interactionMode' ],
+							} )
+						}
+						options={ [
+							{
+								label: __( 'Hover', 'skvn-marine-blocks' ),
+								value: 'hover',
+							},
+							{
+								label: __( 'Autoplay', 'skvn-marine-blocks' ),
+								value: 'autoplay',
+							},
+						] }
+						value={ attributes.interactionMode }
+					/>
+					{ attributes.interactionMode === 'autoplay' && (
+						<RangeControl
+							help={ __(
+								'Autoplay runs only on the frontend and pauses for pointer, keyboard focus, hidden tabs, and reduced motion.',
+								'skvn-marine-blocks'
+							) }
+							label={ __(
+								'Panel duration',
+								'skvn-marine-blocks'
+							) }
+							marks={ [
+								{ label: '3s', value: 3000 },
+								{ label: '5s', value: 5000 },
+								{ label: '7s', value: 7000 },
+								{ label: '9s', value: 9000 },
+							] }
+							max={ 9000 }
+							min={ 3000 }
+							onChange={ ( autoplayDelay ) =>
+								setAttributes( {
+									autoplayDelay: ( autoplayDelay ||
+										5000 ) as FeatureShowcaseAttributes[ 'autoplayDelay' ],
+								} )
+							}
+							step={ 2000 }
+							value={ attributes.autoplayDelay }
+						/>
+					) }
 				</PanelBody>
 				<PanelBody title={ __( 'Style', 'skvn-marine-blocks' ) }>
 					<SelectControl
@@ -250,6 +313,102 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 									tagName="p"
 									value={ item.copy }
 								/>
+								<TextControl
+									label={ __(
+										'Link text',
+										'skvn-marine-blocks'
+									) }
+									onChange={ ( linkText ) =>
+										setItem( index, { linkText } )
+									}
+									value={ item.linkText || '' }
+								/>
+								<div className="skvn-feature-showcase__link-control">
+									<Button
+										onClick={ () =>
+											setLinkPanelIndex(
+												linkPanelIndex === index
+													? null
+													: index
+											)
+										}
+										variant="secondary"
+									>
+										{ item.linkUrl
+											? __(
+													'Edit destination',
+													'skvn-marine-blocks'
+											  )
+											: __(
+													'Choose destination',
+													'skvn-marine-blocks'
+											  ) }
+									</Button>
+									{ linkPanelIndex === index && (
+										<Popover
+											onClose={ () =>
+												setLinkPanelIndex( null )
+											}
+											placement="bottom-start"
+										>
+											<LinkControl
+												onChange={ ( value: {
+													opensInNewTab?: boolean;
+													url?: string;
+												} ) =>
+													setItem( index, {
+														linkTarget:
+															value.opensInNewTab
+																? '_blank'
+																: '_self',
+														linkText:
+															item.linkText ||
+															( value.url
+																? __(
+																		'Learn more',
+																		'skvn-marine-blocks'
+																  )
+																: '' ),
+														linkUrl:
+															value.url || '',
+													} )
+												}
+												settings={ [
+													{
+														id: 'opensInNewTab',
+														title: __(
+															'Open in new tab',
+															'skvn-marine-blocks'
+														),
+													},
+												] }
+												value={ {
+													opensInNewTab:
+														item.linkTarget ===
+														'_blank',
+													url: item.linkUrl || '',
+												} }
+											/>
+										</Popover>
+									) }
+									{ item.linkUrl && (
+										<Button
+											isDestructive
+											onClick={ () =>
+												setItem( index, {
+													linkTarget: '_self',
+													linkUrl: '',
+												} )
+											}
+											variant="link"
+										>
+											{ __(
+												'Remove destination',
+												'skvn-marine-blocks'
+											) }
+										</Button>
+									) }
+								</div>
 								<MediaUploadCheck>
 									<MediaUpload
 										allowedTypes={ [ 'image' ] }

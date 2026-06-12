@@ -12,6 +12,11 @@ type LegacyAttributes = {
 	items: FeatureItem[];
 };
 
+type PanelOnlyAttributes = Omit<
+	FeatureShowcaseAttributes,
+	'interactionMode' | 'autoplayDelay'
+>;
+
 const legacyItems: FeatureItem[] = [
 	{
 		kicker: '01 . OCEAN GROUPER',
@@ -85,6 +90,125 @@ const legacyAttributes = {
 
 function stripMarkup( value: string ) {
 	return value.replace( /<[^>]*>/g, '' ).trim();
+}
+
+const panelOnlyAttributes = {
+	desktopLayout: {
+		type: 'string',
+		default: 'horizontal',
+	},
+	mobileBehavior: {
+		type: 'string',
+		default: 'accordion',
+	},
+	defaultOpen: {
+		type: 'string',
+		default: 'last',
+	},
+	gradientPreset: {
+		type: 'string',
+		default: '',
+	},
+	labelRotation: {
+		type: 'string',
+		default: 'default',
+	},
+	items: {
+		type: 'array',
+		default: legacyItems,
+	},
+};
+
+function getPanelOnlyClassName( attributes: PanelOnlyAttributes ) {
+	return [
+		'skvn-feature-showcase',
+		`skvn-feature-showcase--${ attributes.desktopLayout }`,
+		`skvn-feature-showcase--mobile-${ attributes.mobileBehavior }`,
+		attributes.gradientPreset
+			? `skvn-feature-showcase--gradient-${ attributes.gradientPreset }`
+			: '',
+		attributes.labelRotation === '180'
+			? 'skvn-feature-showcase--label-rotate-180'
+			: '',
+	]
+		.filter( Boolean )
+		.join( ' ' );
+}
+
+function isPanelInitiallyOpen(
+	index: number,
+	itemCount: number,
+	defaultOpen: PanelOnlyAttributes[ 'defaultOpen' ]
+) {
+	return (
+		( defaultOpen === 'first' && index === 0 ) ||
+		( defaultOpen === 'last' && index === itemCount - 1 )
+	);
+}
+
+function savePanelOnly( {
+	attributes,
+}: {
+	attributes: PanelOnlyAttributes;
+} ) {
+	const items = attributes.items || [];
+	const blockProps = useBlockProps.save( {
+		className: getPanelOnlyClassName( attributes ),
+	} );
+
+	return (
+		<section { ...blockProps }>
+			<div className="skvn-feature-showcase__items">
+				{ items.map( ( item, index ) => (
+					<details
+						className="skvn-feature-showcase__item"
+						key={ index }
+						open={ isPanelInitiallyOpen(
+							index,
+							items.length,
+							attributes.defaultOpen
+						) }
+					>
+						<summary className="skvn-feature-showcase__summary">
+							<span className="skvn-feature-showcase__index">
+								{ String( index + 1 ).padStart( 2, '0' ) }
+							</span>
+							<RichText.Content
+								className="skvn-feature-showcase__label"
+								tagName="span"
+								value={ item.kicker }
+							/>
+						</summary>
+						<div className="skvn-feature-showcase__body">
+							{ item.imageUrl && (
+								<img
+									alt={ item.imageAlt }
+									className="skvn-feature-showcase__image"
+									src={ item.imageUrl }
+								/>
+							) }
+							<span
+								aria-hidden="true"
+								className="skvn-feature-showcase__shade"
+							/>
+							<div className="skvn-feature-showcase__content">
+								<RichText.Content
+									className="skvn-feature-showcase__title"
+									tagName="h3"
+									value={ item.heading }
+								/>
+								<RichText.Content
+									className="skvn-feature-showcase__copy"
+									tagName="p"
+									value={ item.copy }
+								/>
+							</div>
+						</div>
+					</details>
+				) ) }
+			</div>
+		</section>
+	);
 }
 
 function saveLegacy( { attributes }: { attributes: LegacyAttributes } ) {
@@ -180,6 +304,23 @@ function saveLegacy( { attributes }: { attributes: LegacyAttributes } ) {
 
 const deprecated = [
 	{
+		attributes: panelOnlyAttributes,
+		migrate( attributes: PanelOnlyAttributes ): FeatureShowcaseAttributes {
+			return {
+				...attributes,
+				autoplayDelay: 5000,
+				interactionMode: 'hover',
+				items: ( attributes.items || [] ).map( ( item ) => ( {
+					...item,
+					linkTarget: item.linkTarget || '_self',
+					linkText: item.linkText || '',
+					linkUrl: item.linkUrl || '',
+				} ) ),
+			};
+		},
+		save: savePanelOnly,
+	},
+	{
 		attributes: legacyAttributes,
 		migrate( attributes: LegacyAttributes ): FeatureShowcaseAttributes {
 			return {
@@ -188,6 +329,8 @@ const deprecated = [
 				defaultOpen: 'last',
 				gradientPreset: '',
 				labelRotation: 'default',
+				autoplayDelay: 5000,
+				interactionMode: 'hover',
 				items: attributes.items || [],
 			};
 		},

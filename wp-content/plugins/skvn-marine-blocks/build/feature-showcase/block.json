@@ -52,6 +52,24 @@
         "180"
       ]
     },
+    "interactionMode": {
+      "type": "string",
+      "default": "hover",
+      "enum": [
+        "hover",
+        "autoplay"
+      ]
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "default": 5000,
+      "enum": [
+        3000,
+        5000,
+        7000,
+        9000
+      ]
+    },
     "items": {
       "type": "array",
       "default": [
@@ -61,7 +79,10 @@
           "copy": "Wild-caught grouper prepared for premium restaurant and export programs.",
           "imageId": 0,
           "imageUrl": "",
-          "imageAlt": ""
+          "imageAlt": "",
+          "linkUrl": "",
+          "linkText": "",
+          "linkTarget": "_self"
         },
         {
           "kicker": "02 . IQF TUNNEL FREEZING",
@@ -69,7 +90,10 @@
           "copy": "Fast freezing preserves texture, freshness, and product consistency.",
           "imageId": 0,
           "imageUrl": "",
-          "imageAlt": ""
+          "imageAlt": "",
+          "linkUrl": "",
+          "linkText": "",
+          "linkTarget": "_self"
         },
         {
           "kicker": "03 . BARRAMUNDI",
@@ -77,7 +101,10 @@
           "copy": "Sustainably prepared seafood for retail and foodservice buyers.",
           "imageId": 0,
           "imageUrl": "",
-          "imageAlt": ""
+          "imageAlt": "",
+          "linkUrl": "",
+          "linkText": "",
+          "linkTarget": "_self"
         },
         {
           "kicker": "04 . EXPORT PROCESSING PLANT",
@@ -85,7 +112,10 @@
           "copy": "Controlled processing environments support demanding export requirements.",
           "imageId": 0,
           "imageUrl": "",
-          "imageAlt": ""
+          "imageAlt": "",
+          "linkUrl": "",
+          "linkText": "",
+          "linkTarget": "_self"
         }
       ]
     }

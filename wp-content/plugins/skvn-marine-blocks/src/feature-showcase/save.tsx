@@ -1,4 +1,5 @@
 import { RichText, useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 import type { FeatureShowcaseAttributes } from './types';
 
 type FeatureShowcaseSaveProps = {
@@ -35,6 +36,8 @@ export function save( { attributes }: FeatureShowcaseSaveProps ) {
 	const items = attributes.items || [];
 	const blockProps = useBlockProps.save( {
 		className: getClassName( attributes ),
+		'data-skvn-autoplay-delay': attributes.autoplayDelay || 5000,
+		'data-skvn-interaction': attributes.interactionMode || 'hover',
 	} );
 
 	return (
@@ -83,6 +86,32 @@ export function save( { attributes }: FeatureShowcaseSaveProps ) {
 									tagName="p"
 									value={ item.copy }
 								/>
+								{ item.linkUrl && item.linkText && (
+									<a
+										className="skvn-feature-showcase__cta"
+										href={ item.linkUrl }
+										rel={
+											item.linkTarget === '_blank'
+												? 'noopener noreferrer'
+												: undefined
+										}
+										target={
+											item.linkTarget === '_blank'
+												? '_blank'
+												: undefined
+										}
+									>
+										{ item.linkText }
+										{ item.linkTarget === '_blank' && (
+											<span className="screen-reader-text">
+												{ __(
+													' (opens in a new tab)',
+													'skvn-marine-blocks'
+												) }
+											</span>
+										) }
+									</a>
+								) }
 							</div>
 						</div>
 					</details>

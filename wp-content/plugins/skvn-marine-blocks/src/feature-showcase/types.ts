@@ -5,6 +5,9 @@ export type FeatureItem = {
 	imageId: number;
 	imageUrl: string;
 	imageAlt: string;
+	linkUrl?: string;
+	linkText?: string;
+	linkTarget?: '_self' | '_blank';
 };
 
 export type FeatureShowcaseAttributes = {
@@ -13,5 +16,7 @@ export type FeatureShowcaseAttributes = {
 	defaultOpen: 'first' | 'last' | 'none';
 	gradientPreset: '' | 'deep-navy' | 'marine-teal' | 'fresh-sky';
 	labelRotation: 'default' | '180';
+	interactionMode: 'hover' | 'autoplay';
+	autoplayDelay: 3000 | 5000 | 7000 | 9000;
 	items: FeatureItem[];
 };

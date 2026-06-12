@@ -79,8 +79,16 @@ The UI should:
 - store milliseconds in block attributes and frontend configuration
 - normalize missing or malformed values to `5000`
 
-The control may use a shared editor constant/helper with Slider after Slider QA
-confirms that adopting the same delay presets does not regress existing content.
+Feature Showcase and Slider intentionally keep separate governed delay lists:
+
+```text
+Feature Showcase: 3000 | 5000 | 7000 | 9000
+Slider:           5000 | 7000 | 9000 | 12000
+```
+
+Do not create one shared delay constant that implies both blocks accept the
+same values. A small generic normalization function may be shared only when the
+allowed values and fallback are passed in by the owning block.
 
 Do not expose arbitrary millisecond input.
 
@@ -120,20 +128,123 @@ Opening in a new tab must be explicit. Frontend output must add the appropriate
 After Slider is verified stable, audit and share only behavior with at least two
 real consumers or a project invariant.
 
-Approved shared candidates:
+### 6.1 Shared action and lifecycle policy
+
+V1 / 1.3.2 should introduce one small shared autoplay pause coordinator for the
+common action policy:
+
+- track pause reasons in a per-instance `Set`
+- bind pointer enter/leave for mouse hover
+- bind focus in/out for focus-within behavior
+- bind document visibility changes
+- resume only when no pause reason remains
+- expose block-owned pause and resume callbacks
+- return cleanup that removes every listener and pending focus timeout
+- preserve independent state when multiple Slider or Feature Showcase
+  instances exist on one page
+
+The shared helper owns event binding and pause-policy coordination only. It
+must not know about Swiper, panels, timers, pagination, progress, loop, or
+movement order.
+
+Consumers:
+
+```text
+Slider
+  pause callback  -> Swiper autoplay pause
+  resume callback -> Slider-local Swiper start/resume policy
+
+Feature Showcase
+  pause callback  -> clear/pause the block-local panel timer
+  resume callback -> schedule the next block-local panel activation
+```
+
+Both consumers may add block-local pause reasons through the coordinator when
+needed. Slider keeps its additional drag/swipe `interaction` reason; Feature
+Showcase does not inherit that Swiper-specific behavior.
+
+Architecture:
+
+```mermaid
+flowchart TB
+    Shared["Shared Autoplay Policy<br/>src/shared/autoplay.ts"]
+
+    Shared --> Reasons["Pause Reasons Set<br/>pointer | focus | hidden"]
+    Shared --> Events["Event Binding<br/>pointer | focus | visibility"]
+    Shared --> Cleanup["Cleanup listeners<br/>and focus timeout"]
+    Shared --> Callbacks["Callbacks<br/>onPause | onResume"]
+
+    Slider["SKVN Slider"]
+    Showcase["Feature Showcase"]
+
+    Slider --> SliderDelay["Slider-owned delay<br/>5s | 7s | 9s | 12s"]
+    Slider --> SliderInteraction["Slider-owned pause<br/>drag/swipe interaction"]
+    Slider --> Swiper["Swiper Engine<br/>autoplay | navigation | progress"]
+
+    Showcase --> ShowcaseDelay["Showcase-owned delay<br/>3s | 5s | 7s | 9s"]
+    Showcase --> Timer["Showcase-owned timer<br/>setTimeout"]
+    Showcase --> Panels["Panel Controller<br/>details/summary activation"]
+
+    Slider --> Shared
+    Showcase --> Shared
+
+    Callbacks --> SliderAdapter["Slider Adapter"]
+    SliderAdapter --> Swiper
+
+    Callbacks --> ShowcaseAdapter["Showcase Adapter"]
+    ShowcaseAdapter --> Timer
+    Timer --> Panels
+```
+
+Pause and resume sequence:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Policy as Shared Pause Policy
+    participant Slider as Slider Adapter
+    participant Swiper
+    participant Showcase as Showcase Adapter
+    participant Timer
+
+    User->>Policy: Pointer enters component
+    Policy->>Policy: Add pointer reason
+    Policy->>Slider: onPause()
+    Slider->>Swiper: autoplay.pause()
+    Policy->>Showcase: onPause()
+    Showcase->>Timer: clearTimeout()
+
+    User->>Policy: Keyboard focus enters
+    Policy->>Policy: Add focus reason
+
+    User->>Policy: Pointer leaves
+    Policy->>Policy: Remove pointer reason
+    Note over Policy: Focus remains, so do not resume
+
+    User->>Policy: Keyboard focus leaves
+    Policy->>Policy: Remove focus reason
+    Policy->>Slider: onResume()
+    Slider->>Swiper: autoplay.resume()
+    Policy->>Showcase: onResume()
+    Showcase->>Timer: Schedule next panel
+```
+
+### 6.2 Other approved shared invariants
 
 - `prefersReducedMotion()` from `src/shared/motion.ts`
-- autoplay delay constants: `3000`, `5000`, `7000`, `9000`
-- delay normalization
-- editor marks/options for the governed delay control
-- pointer-hover and keyboard-focus pause/resume binding
-- document visibility pause/resume policy
+- a generic governed-delay normalization helper that accepts a block-owned
+  allowed list and fallback
+
+### 6.3 Explicitly separate ownership
 
 Slider remains responsible for:
 
 - Swiper lifecycle
 - slide navigation, loop, arrows, dots, and breakpoints
 - Swiper autoplay pause/resume calls
+- Slider delay choices `5/7/9/12s`
+- legacy Slider delay compatibility
+- drag/swipe interaction pause state
 
 Feature Showcase remains responsible for:
 
@@ -141,6 +252,8 @@ Feature Showcase remains responsible for:
 - panel activation order
 - its block-local autoplay timer
 - preserving the native disclosure fallback
+- Feature Showcase delay choices `3/5/7/9s`
+- mobile/coarse-pointer autoplay policy
 
 Do not create a generic carousel controller or make Feature Showcase depend on
 Swiper.
@@ -176,18 +289,19 @@ Before implementation:
 
 ## 9. Slider Follow-Up
 
-V1 / 1.3.2 should update Slider only where sharing is justified:
+V1 / 1.3.2 should update Slider only enough to adopt the approved shared action
+policy without changing its established behavior:
 
 - replace duplicate reduced-motion detection with the shared helper
-- normalize Slider delay against the approved delay presets if compatibility
-  review permits
-- use the shared pause/focus/visibility policy while keeping Swiper as the
-  Slider controller
+- replace duplicate pointer/focus/visibility bindings with the shared pause
+  coordinator
+- keep Slider's `interaction` pause reason and Swiper-specific synchronization
+  local
 - keep existing Slider frontend config compatible with saved values
 
-If existing Slider delay values outside `3/5/7/9s` exist, do not silently change
-their frontend timing. Define a compatibility path before restricting the
-editor control.
+Do not change Slider's approved `5/7/9/12s` editor choices. Existing legacy
+Slider delay values must continue to display and persist through the current
+compatibility path.
 
 ## 10. Expected Files
 
@@ -195,7 +309,6 @@ Likely implementation surface:
 
 ```text
 wp-content/plugins/skvn-marine-blocks/src/shared/autoplay.ts
-wp-content/plugins/skvn-marine-blocks/src/slider/edit.tsx
 wp-content/plugins/skvn-marine-blocks/src/slider/view.ts
 wp-content/plugins/skvn-marine-blocks/src/feature-showcase/block.json
 wp-content/plugins/skvn-marine-blocks/src/feature-showcase/types.ts
@@ -207,6 +320,16 @@ wp-content/plugins/skvn-marine-blocks/src/feature-showcase/style.css
 
 This list is a planning inventory, not permission to modify all files in one
 unreviewed task. Split implementation into focused changes if needed.
+
+Recommended implementation order:
+
+1. Add shared pause coordinator and its cleanup contract.
+2. Migrate Slider's pointer/focus/visibility actions to the coordinator without
+   changing Slider delay or Swiper behavior.
+3. Add Feature Showcase attributes, editor controls, CTA fields, and
+   compatibility definition.
+4. Add the Feature Showcase block-local timer using the shared coordinator.
+5. Run Slider regression checks and Feature Showcase editor/frontend QA.
 
 ## 11. Testing
 
@@ -247,7 +370,12 @@ Slider regression:
 - [ ] Each panel supports an optional Gutenberg LinkControl destination
 - [ ] Panel CTA does not conflict with `summary` disclosure
 - [ ] Existing Feature Showcase content remains valid and editable
-- [ ] Slider and Feature Showcase share only approved autoplay invariants
+- [ ] Slider and Feature Showcase use the same pointer/focus/visibility pause
+      coordinator
+- [ ] Shared autoplay code contains no Swiper, timer, panel, pagination, loop,
+      or movement-controller logic
+- [ ] Slider keeps `5/7/9/12s`; Feature Showcase keeps `3/5/7/9s`
+- [ ] Slider's drag/swipe interaction pause remains Slider-local
 - [ ] Slider retains Swiper as its only movement controller
 - [ ] No-JavaScript output remains readable and operable
 - [ ] Plugin build and relevant TypeScript checks pass
