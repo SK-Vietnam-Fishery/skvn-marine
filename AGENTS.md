@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.2 — Feature Showcase Autoplay And Panel Links**
+Current milestone: **V1 / 1.3.3 — Dynamic Product And Post Collections**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 

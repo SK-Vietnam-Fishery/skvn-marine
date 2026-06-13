@@ -63,8 +63,8 @@ Current planning file:
 - `.context/planning/010_VERSION_1_7_0_FRONT_PAGE_TRANG_CHUYEN_DOI_SO_PLANNING.md` — future front-page planning for the external `ChuyenDoiSo.html` benchmark: document/resource list, taxonomy/category counts from real data, whole-site search styling/hook boundary, and layout patterns discovered during the 1.1.0 brainstorm trigger.
 - Historical Slider planning from 1.2.0, 1.2.1, and the superseded 1.3.0 draft now lives under `.context/planning/archives/`.
 - `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md` — active `1.2.3` Feature Showcase plan. Source is activated under `src/feature-showcase/` as `skvn-marine/feature-showcase`.
-- `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md` — active `1.3.2` plan for governed Feature Showcase hover/autoplay modes, snapping `3/5/7/9s` delay, per-panel Gutenberg LinkControl CTA, and shared autoplay invariants with Slider after `1.3.1` approval.
-- `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md` — future `1.3.3` plan for dynamic Product/Post Collection blocks: Product Grid, Product Carousel, Post Grid, Post Carousel, native WP/Woo query adapters, governed cards/actions, shuffle-balanced ordering, and onsite QA.
+- `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md` — completed `1.3.2` plan for governed Feature Showcase hover/autoplay modes, snapping `3/5/7/9s` delay, per-panel Gutenberg LinkControl CTA, and shared autoplay invariants with Slider after `1.3.1` approval.
+- `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md` — active `1.3.3` plan for dynamic Product/Post Collection blocks: Product Grid, Product Carousel, Post Grid, Post Carousel, native WP/Woo query adapters, governed cards/actions, shuffle-balanced ordering, and onsite QA.
 - `.context/planning/021_VERSION_1_3_1_SLIDER_EDITOR_AND_CORE_TRANSITIONS_PLANNING.md` — approved expansion of the current `1.3.1` scope: centered editor Add Slide action, governed/hidden Slides Per View controls, Directional Wipe/Fade/Zoom Out, `600–1000ms` transition duration, and reduced-motion fallback.
 - `.context/planning/022_FUTURE_CANDIDATE_SLIDER_EXTENSION_API_PLANNING.md` — Future Candidate for the `2.x.x` phase: WordPress-native Transition/Pagination Extension API, namespaced registries, fallback/governance, and Portal Zoom plus Timed Tabs as reference integrations outside the lightweight core.
 - `docs/decisions/slider-completion-spec-1.3.0.md` — active Slider source of truth. V1 / 1.3.0 completes dynamic rendering, compatibility, accessibility, and geometry; expanded carousel/showcase UX remains a later human-approved milestone.
@@ -130,6 +130,7 @@ Current active docs:
 - `docs/artifacts/init-prompt-v1-1.0.0-launch-ready.md`
 - `docs/artifacts/init-prompt-v1-1.3.0-slider-dynamic-rendering.md`
 - `docs/artifacts/init-prompt-v1-1.3.1-slider-controls.md`
+- `docs/artifacts/init-prompt-v1-1.3.3-dynamic-collections.md`
 - `docs/artifacts/init-prompt-v1-1.3.4-core-control.md`
 - `docs/workflows/start-v1-1.3.0-slider-repair.md` — reusable repair prompt for the failed 1.3.0 build, including State Delta diagnostics, target code architecture, geometry/RAM gates, and the targeted human smoke-test boundary before 1.3.1.
 - `docs/artifacts/brand-palette-options.html`

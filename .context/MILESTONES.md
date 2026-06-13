@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.2 — Feature Showcase Autoplay And Panel Links**
+Current: **V1 / 1.3.3 — Dynamic Product And Post Collections**
 Status: **IN_PROGRESS**
-Started: **2026-06-12**
+Started: **2026-06-13**
 
 AGENTS.md current milestone phải match file này.
 
@@ -135,58 +135,10 @@ Acceptance draft:
 
 
 
-### 1.3.2 — Feature Showcase Autoplay And Panel Links
-
-Status: **IN_PROGRESS**
-Started: **2026-06-12**
-
-Purpose:
-
-- Add governed Hover and Autoplay interaction modes to
-  `skvn-marine/feature-showcase`.
-- Add a magnetic/snapping delay control limited to `3`, `5`, `7`, and `9`
-  seconds.
-- Add one optional Gutenberg LinkControl destination per panel, rendered as a
-  CTA inside panel content rather than turning `summary` into a link.
-- Share reduced-motion, governed delay, pause/resume, and document visibility
-  invariants with Slider after Slider stability is verified.
-
-Planning:
-
-- `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
-
-Dependencies:
-
-- V1 / 1.3.0 dynamic Slider rendering must be complete.
-- V1 / 1.3.1 Slider controls UX is complete and approved by the human.
-- Broader Slider and motion regression QA remains scheduled under V1 / 1.3.9.
-
-Constraints:
-
-- Keep Feature Showcase on native `details`/`summary`; do not initialize Swiper.
-- Keep Swiper as the Slider's only movement controller.
-- Do not run autoplay in Gutenberg.
-- Do not expose arbitrary delay values.
-- Do not wrap the panel or `summary` in a navigation link.
-- Existing Feature Showcase and Slider content must remain valid and editable.
-
-Acceptance draft:
-
-- [x] V1 / 1.3.0 and V1 / 1.3.1 stability gates are complete
-- [ ] Hover and Autoplay modes work without an all-closed state
-- [ ] Delay control snaps only to `3s`, `5s`, `7s`, and `9s`
-- [ ] Hover, keyboard focus, document visibility, and reduced motion pause or disable autoplay correctly
-- [ ] Each panel supports an optional Gutenberg LinkControl CTA
-- [ ] CTA interaction does not conflict with disclosure activation
-- [ ] Existing Feature Showcase content opens without invalid-block recovery
-- [ ] Shared autoplay helpers do not regress Slider runtime behavior
-- [ ] No-JavaScript disclosure and links remain usable
-- [ ] Plugin build and onsite QA pass
-- [ ] Human approves milestone completion
-
 ### 1.3.3 — Dynamic Product And Post Collections
 
-Status: **PENDING**
+Status: **IN_PROGRESS**
+Started: **2026-06-13**
 
 Purpose:
 

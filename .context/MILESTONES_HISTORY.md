@@ -806,3 +806,46 @@ Completed:
 Next milestone:
 
 - V1 / 1.3.2 — Feature Showcase Autoplay And Panel Links.
+
+---
+
+## V1 / 1.3.2 — Feature Showcase Autoplay And Panel Links
+
+Status: **DONE_WITH_FOLLOW_UP_FIXES**
+Started: **2026-06-12**
+Completed: **2026-06-13**
+Approved by human: **2026-06-13**
+
+Purpose:
+
+- Add governed Hover and Autoplay interaction modes to
+  `skvn-marine/feature-showcase`.
+- Add a magnetic/snapping delay control limited to `3`, `5`, `7`, and `9`
+  seconds.
+- Add one optional Gutenberg LinkControl destination per panel, rendered as a
+  CTA inside panel content rather than turning `summary` into a link.
+- Share reduced-motion, governed delay, pause/resume, and document visibility
+  invariants with Slider after Slider stability is verified.
+
+Completed:
+
+- [x] V1 / 1.3.0 and V1 / 1.3.1 stability gates are complete.
+- [x] Hover and Autoplay modes work without an all-closed state.
+- [x] Delay control snaps only to `3s`, `5s`, `7s`, and `9s`.
+- [x] Hover, keyboard focus, document visibility, and reduced motion pause or disable autoplay correctly.
+- [x] Each panel supports an optional Gutenberg LinkControl CTA.
+- [x] CTA interaction does not conflict with disclosure activation.
+- [x] Existing Feature Showcase content opens without invalid-block recovery.
+- [x] Shared autoplay helpers do not regress Slider runtime behavior.
+- [x] No-JavaScript disclosure and links remain usable.
+- [x] Plugin build and onsite QA pass by human confirmation.
+- [x] Human approves milestone completion and transition.
+
+Follow-up:
+
+- Any newly discovered defects from this milestone will be fixed later instead
+  of blocking transition to V1 / 1.3.3.
+
+Next milestone:
+
+- V1 / 1.3.3 — Dynamic Product And Post Collections.

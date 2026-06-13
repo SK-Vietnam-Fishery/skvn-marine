@@ -451,13 +451,13 @@ Implemented V1 / 1.2.3 Feature Showcase:
   colors or gradients.
 - The first activated static markup is preserved through a Gutenberg deprecation and legacy CSS until old content is resaved.
 
-Active V1 / 1.3.2 Feature Showcase autoplay and panel links:
+Completed V1 / 1.3.2 Feature Showcase autoplay and panel links:
 
 - Planning file:
   `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`.
-- Implementation begins after V1 / 1.3.0 dynamic rendering and the human-approved
-  V1 / 1.3.1 Slider controls milestone. Broader regression QA remains under
-  V1 / 1.3.9.
+- Implemented after V1 / 1.3.0 dynamic rendering and the human-approved
+  V1 / 1.3.1 Slider controls milestone. Human approved transition on
+  2026-06-13; any newly discovered defects are follow-up fixes.
 - Feature Showcase adds governed `hover` and `autoplay` interaction modes.
 - Autoplay delay uses the shared magnetic time control with the Feature
   Showcase-owned `3`, `5`, `7`, and `9` second configuration and a `5` second

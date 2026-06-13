@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/modules/footer-settings/footer-settings.php';
 require_once __DIR__ . '/modules/header-settings/header-settings.php';
+require_once __DIR__ . '/modules/collection-render/collection-render.php';
 require_once __DIR__ . '/modules/slider-render/slider-render.php';
 require_once __DIR__ . '/modules/typography-settings/typography-settings.php';
 
@@ -172,6 +173,8 @@ function skvn_marine_blocks_register_blocks() {
 		'card-grid',
 		'card',
 		'feature-showcase',
+		'post-collection',
+		'product-collection',
 	);
 
 	foreach ( $blocks as $block ) {
@@ -224,6 +227,22 @@ function skvn_marine_blocks_register_blocks() {
 				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
 			) {
 				$args['style_handles'] = array( 'skvn-marine-blocks-editor' );
+			}
+
+			if (
+				in_array( $block, array( 'post-collection', 'product-collection' ), true ) &&
+				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
+			) {
+				$args['editor_style_handles'] = array( 'skvn-marine-blocks-editor' );
+				$args['style_handles']        = array( 'skvn-marine-blocks-editor' );
+			}
+
+			if ( 'post-collection' === $block ) {
+				$args['render_callback'] = 'skvn_marine_blocks_render_post_collection';
+			}
+
+			if ( 'product-collection' === $block ) {
+				$args['render_callback'] = 'skvn_marine_blocks_render_product_collection';
 			}
 
 			if (

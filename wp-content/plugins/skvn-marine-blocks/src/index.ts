@@ -29,6 +29,17 @@ import featureShowcaseDeprecated from './feature-showcase/deprecated';
 import { Edit as FeatureShowcaseEdit } from './feature-showcase/edit';
 import { save as featureShowcaseSave } from './feature-showcase/save';
 import './feature-showcase/style.css';
+import './collection/style.css';
+
+import postCollectionMetadata from './post-collection/block.json';
+import { Edit as PostCollectionEdit } from './post-collection/edit';
+import { save as postCollectionSave } from './post-collection/save';
+import { registerPostCollectionVariations } from './post-collection/variations';
+
+import productCollectionMetadata from './product-collection/block.json';
+import { Edit as ProductCollectionEdit } from './product-collection/edit';
+import { save as productCollectionSave } from './product-collection/save';
+import { registerProductCollectionVariations } from './product-collection/variations';
 
 registerBlockType( accordionMetadata.name, {
 	...accordionMetadata,
@@ -68,3 +79,17 @@ registerBlockType( featureShowcaseMetadata.name, {
 	edit: FeatureShowcaseEdit,
 	save: featureShowcaseSave,
 } );
+
+registerBlockType( postCollectionMetadata.name, {
+	...postCollectionMetadata,
+	edit: PostCollectionEdit,
+	save: postCollectionSave,
+} );
+registerPostCollectionVariations();
+
+registerBlockType( productCollectionMetadata.name, {
+	...productCollectionMetadata,
+	edit: ProductCollectionEdit,
+	save: productCollectionSave,
+} );
+registerProductCollectionVariations();
