@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "skvn-marine/post-collection",
+  "version": "1.3.3",
+  "title": "SKVN Post Collection",
+  "category": "skvn-marine",
+  "icon": "welcome-write-blog",
+  "description": "Dynamic SKVN post grid or carousel collection.",
+  "textdomain": "skvn-marine-blocks",
+  "attributes": {
+    "layout": {
+      "type": "string",
+      "default": "grid"
+    },
+    "heading": {
+      "type": "string",
+      "default": "Latest articles"
+    },
+    "intro": {
+      "type": "string",
+      "default": ""
+    },
+    "accessibleLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "orderMode": {
+      "type": "string",
+      "default": "newest"
+    },
+    "itemsToShow": {
+      "type": "number",
+      "default": 3
+    },
+    "responsivePreset": {
+      "type": "string",
+      "default": "3-2-1"
+    }
+  },
+  "supports": {
+    "html": false
+  }
+}

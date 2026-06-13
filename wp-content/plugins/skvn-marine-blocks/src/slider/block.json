@@ -2,9 +2,9 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "skvn-marine/slider",
-  "version": "0.1.0",
+  "version": "1.3.2",
   "title": "SKVN Slider",
-  "category": "design",
+  "category": "skvn-marine",
   "icon": "images-alt2",
   "description": "Swiper-powered slider skeleton with stacked editor preview.",
   "textdomain": "skvn-marine-blocks",
@@ -13,34 +13,73 @@
       "type": "boolean",
       "default": true
     },
-    "delay": {
+    "autoplayDelay": {
       "type": "number",
-      "default": 5000
+      "default": 7000
     },
     "loop": {
       "type": "boolean",
       "default": true
     },
-    "arrows": {
+    "showArrows": {
       "type": "boolean",
       "default": true
     },
-    "dots": {
+    "arrowStyle": {
+      "type": "string",
+      "default": "circle"
+    },
+    "arrowPosition": {
+      "type": "string",
+      "default": "side-center"
+    },
+    "showPagination": {
       "type": "boolean",
       "default": true
+    },
+    "paginationStyle": {
+      "type": "string",
+      "default": "dots"
+    },
+    "paginationPosition": {
+      "type": "string",
+      "default": "bottom-center"
     },
     "effect": {
       "type": "string",
       "default": "slide"
     },
+    "transitionStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "transitionDuration": {
+      "type": "number",
+      "default": 800
+    },
+    "heightPreset": {
+      "type": "string",
+      "default": "default"
+    },
     "slidesPerView": {
       "type": "number",
       "default": 1
+    },
+    "preset": {
+      "type": "string",
+      "default": ""
+    },
+    "responsiveSlides": {
+      "type": "string",
+      "default": "uniform"
     }
   },
   "allowedBlocks": [
     "skvn-marine/slide"
   ],
+  "providesContext": {
+    "skvn-marine/sliderPreset": "preset"
+  },
   "supports": {
     "html": false
   }

@@ -238,7 +238,7 @@ File:
 wp-content/plugins/skvn-marine-blocks/src/slider/
 wp-content/plugins/skvn-marine-blocks/src/slide/
 wp-content/plugins/skvn-marine-blocks/skvn-marine-blocks.php
-docs/decisions/slider-block.md
+docs/decisions/slider-completion-spec-1.3.0.md
 tests/slider-block.test.mjs
 ```
 

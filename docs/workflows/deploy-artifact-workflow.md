@@ -8,6 +8,14 @@ Server does not need Node/npm for this artifact.
 
 ## Build Command
 
+Before building a milestone release artifact, sync release metadata if the human approved a target version:
+
+```bash
+node tools/bump-project-version.mjs 0.9.0
+```
+
+See `docs/workflows/versioning-release-workflow.md`.
+
 Run from Windows using WSL Debian:
 
 ```bash
@@ -119,7 +127,35 @@ Plugin artifact:
 ```text
 skvn-marine-blocks.php
 build/
+modules/
 ```
+
+## Runtime File Audit
+
+Run this audit whenever a milestone adds or changes PHP `require`, `require_once`,
+`include`, or `include_once` paths in the theme or plugin.
+
+Rules:
+
+```text
+[ ] Every runtime PHP file loaded by the plugin/theme exists in the artifact.
+[ ] Every runtime folder loaded from the plugin/theme is copied by tools/build-deploy-artifact.mjs.
+[ ] The final zip contains the same runtime files as the build artifact.
+[ ] npm run build is treated only as a JS/block asset build, not a PHP packaging step.
+```
+
+For the current plugin artifact, verify:
+
+```bash
+test -f build/wp-content/plugins/skvn-marine-blocks/skvn-marine-blocks.php
+test -d build/wp-content/plugins/skvn-marine-blocks/build
+test -d build/wp-content/plugins/skvn-marine-blocks/modules
+unzip -l build/skvn-marine-blocks.zip | grep 'skvn-marine-blocks/modules/'
+```
+
+If a future milestone adds another runtime folder such as `includes/`, update
+`tools/build-deploy-artifact.mjs` and this artifact contents list in the same
+task before packaging or uploading.
 
 The plugin artifact intentionally does not include:
 

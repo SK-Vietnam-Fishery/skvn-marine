@@ -5,8 +5,8 @@
  * Categories: skvn-marine
  */
 ?>
-<!-- wp:group {"className":"skvn-translated-page","layout":{"type":"default"}} -->
-<div class="wp-block-group skvn-translated-page">
+<!-- wp:group {"align":"full","className":"skvn-translated-page","layout":{"type":"default"}} -->
+<div class="wp-block-group alignfull skvn-translated-page">
 	<!-- wp:group {"align":"full","className":"skvn-translated-hero","layout":{"type":"constrained"}} -->
 	<div class="wp-block-group alignfull skvn-translated-hero">
 		<!-- wp:columns {"verticalAlignment":"center","className":"skvn-translated-hero__grid"} -->

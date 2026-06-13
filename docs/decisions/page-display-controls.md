@@ -18,6 +18,16 @@ SKVN Landing Canvas
 - Let full-width sections reach the viewport edge
 ```
 
+V1 / 0.6.0 adds a quote-specific preset that uses the same safe page setup:
+
+```text
+SKVN Request Quote Page
+- Hide page title
+- Enable SKVN full-width canvas
+- Force no-sidebar behavior through the SKVN canvas contract
+- Let marketing editors prepare the quote page without entering raw CSS classes
+```
+
 ## Ownership
 
 The theme owns page display controls because the behavior is page chrome/layout, not block logic.
@@ -34,6 +44,7 @@ The preset is stored as page meta:
 
 ```text
 _skvn_page_display_preset = skvn_landing_canvas
+_skvn_page_display_preset = skvn_request_quote_page
 ```
 
 Direct toggles remain page meta as well:
@@ -59,6 +70,7 @@ Editors should start with the preset:
 
 ```text
 SKVN Page Display -> Page preset -> SKVN Landing Canvas
+SKVN Page Display -> Page preset -> SKVN Request Quote Page
 ```
 
 Individual toggles stay visible for override/debugging. If the combination no longer matches a known preset, the sidebar should report `Custom settings`.

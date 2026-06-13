@@ -4,6 +4,7 @@
 	var Fragment = wp.element.Fragment;
 	var registerPlugin = wp.plugins.registerPlugin;
 	var PluginDocumentSettingPanel = wp.editPost.PluginDocumentSettingPanel;
+	var Notice = wp.components.Notice;
 	var SelectControl = wp.components.SelectControl;
 	var ToggleControl = wp.components.ToggleControl;
 	var useSelect = wp.data.useSelect;
@@ -44,6 +45,10 @@
 			value: 'skvn_landing_canvas',
 		},
 		{
+			label: __( 'SKVN Request Quote Page', 'skvn-marine' ),
+			value: 'skvn_request_quote_page',
+		},
+		{
 			label: __( 'Custom settings', 'skvn-marine' ),
 			value: 'custom',
 		},
@@ -76,7 +81,7 @@
 			} );
 		}
 
-		if ( preset === 'skvn_landing_canvas' ) {
+		if ( preset === 'skvn_landing_canvas' || preset === 'skvn_request_quote_page' ) {
 			nextMeta._skvn_hide_header = false;
 			nextMeta._skvn_hide_footer = false;
 			nextMeta._skvn_hide_title = true;
@@ -115,13 +120,23 @@
 				createElement( SelectControl, {
 					className: 'skvn-page-display-preset',
 					label: __( 'Page preset', 'skvn-marine' ),
-					help: __( 'Apply the standard page setup in one step. SKVN Landing Canvas hides the page title and enables the full-width, no-sidebar canvas.', 'skvn-marine' ),
+					help: __( 'Apply the page setup in one step. SKVN Request Quote Page prepares the quote surface without requiring raw CSS classes.', 'skvn-marine' ),
 					value: preset,
 					options: PRESET_OPTIONS,
 					onChange: function ( value ) {
 						editPost( { meta: applyPreset( meta, value ) } );
 					},
 				} ),
+				!! meta._skvn_hide_title &&
+					createElement(
+						Notice,
+						{
+							className: 'skvn-page-display-title-note',
+							isDismissible: false,
+							status: 'info',
+						},
+						__( 'Page title remains editable here and is hidden on the frontend.', 'skvn-marine' )
+					),
 				CONTROLS.map( function ( control ) {
 					return createElement( ToggleControl, {
 						key: control.key,

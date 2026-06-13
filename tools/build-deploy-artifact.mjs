@@ -29,6 +29,12 @@ function run(command, args, options = {}) {
 	}
 }
 
+function assertExists(path, label) {
+	if (!existsSync(path)) {
+		throw new Error(`Deploy artifact missing ${label}: ${path}`);
+	}
+}
+
 assertInsideRoot(artifactRoot);
 assertInsideRoot(themeTarget);
 assertInsideRoot(pluginTarget);
@@ -50,8 +56,17 @@ cpSync(themeSource, themeTarget, {
 mkdirSync(pluginTarget, { recursive: true });
 cpSync(resolve(pluginSource, 'skvn-marine-blocks.php'), resolve(pluginTarget, 'skvn-marine-blocks.php'));
 cpSync(resolve(pluginSource, 'build'), resolve(pluginTarget, 'build'), { recursive: true });
+if (existsSync(resolve(pluginSource, 'modules'))) {
+	cpSync(resolve(pluginSource, 'modules'), resolve(pluginTarget, 'modules'), { recursive: true });
+}
 if (existsSync(resolve(pluginSource, 'assets'))) {
 	cpSync(resolve(pluginSource, 'assets'), resolve(pluginTarget, 'assets'), { recursive: true });
+}
+
+assertExists(resolve(pluginTarget, 'skvn-marine-blocks.php'), 'plugin bootstrap');
+assertExists(resolve(pluginTarget, 'build'), 'plugin build directory');
+if (existsSync(resolve(pluginSource, 'modules'))) {
+	assertExists(resolve(pluginTarget, 'modules'), 'plugin runtime modules directory');
 }
 
 console.log(`Deploy artifact ready: ${artifactRoot}`);

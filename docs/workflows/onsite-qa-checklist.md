@@ -59,7 +59,15 @@ The zip root must contain the plugin/theme folder itself:
 skvn-marine/style.css
 skvn-marine/functions.php
 skvn-marine-blocks/skvn-marine-blocks.php
+skvn-marine-blocks/build/
+skvn-marine-blocks/modules/
 ```
+
+Before upload:
+
+- [ ] If the plugin bootstrap loads `modules/`, `includes/`, or another runtime folder, confirm that folder exists inside `skvn-marine-blocks.zip`.
+- [ ] Confirm `skvn-marine-blocks.zip` contains runtime PHP files required by the current milestone.
+- [ ] If activation reports `failed opening required`, stop and compare the required path against the zip contents before re-uploading.
 
 ## 3. Upload Artifact
 
@@ -112,13 +120,13 @@ If `.inside-article` padding still affects the full-width template, record scree
 - [ ] Publish.
 - [ ] View Product.
 - [ ] Confirm single product layout does not break.
-- [ ] Confirm Add to Cart button is visible.
+- [ ] Confirm Request a Quote button is visible.
+- [ ] Confirm Request a Quote button links to `/request-a-quote/?product_id=...`.
 - [ ] Open Shop page.
 - [ ] Confirm product grid is readable and has no strange spacing.
-- [ ] Add product to cart.
-- [ ] Proceed to checkout.
-- [ ] Place a test order using an offline method such as Cash on Delivery if available.
-- [ ] Orders > confirm the order exists.
+- [ ] Confirm product grid CTA is visible on mobile.
+- [ ] Confirm product grid CTA links to `/request-a-quote/?product_id=...`.
+- [ ] Do not test cart/checkout/order flow for the quote-first V1 / 0.6.0 smoke.
 
 ## 7. Error Log Capture
 

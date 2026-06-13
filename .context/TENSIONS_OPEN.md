@@ -19,17 +19,26 @@ Status:     OPEN
 Resolved:
 Decision:   Lean toward: chỉ prepare, KHÔNG activate Polylang V1.
 
----
-
-## [2025-01-01 00:00] | slider
-Tension:    Slider editor UX: stacked / selected-slide-preview / lightweight carousel?
-Context:    Planning phase — slider block chưa implement
-Proposal:   Stacked (slides xếp chồng trong editor, Swiper chỉ chạy frontend)
-Constraint: "Not fully decided yet. V1 editor view should likely render slides stacked or in a simplified preview."
+## [2026-06-12 11:23] | slider
+Tension:    Slider cần dùng Inter trong 1.3.1 nhưng typography base và font delivery toàn site thuộc theme governance, với preset/delivery UI dự kiến ở 1.6.0.
+Context:    Làm typography Slider nhỏ gọn theo ảnh tham chiếu mà không đổi font toàn website.
+Proposal:   Scope Inter vào asset của Slider với system fallback; không đổi theme typography tokens hoặc thêm font settings UI.
+Constraint: Site branding guideline: "Typography base" do theme `style.css` và `theme.json` sở hữu; milestone 1.6.0 dự kiến governance font delivery toàn site.
 Severity:   low
-Tags:       blocks, slider
-Milestone:  V1 / 0.3.0
+Tags:       slider, theme
+Milestone:  V1 / 1.3.1
 Status:     OPEN
 Resolved:
-Decision:   Lean toward: stacked preview.
+Decision:   Conservative implementation: Slider-only Inter; human review whether to retain, self-host, or promote it into the 1.6.0 typography system.
 
+## [2026-06-12 15:30] | editor-governance
+Tension:    Tiện ích copy/paste block là editor-governance dùng chung, trong khi milestone hiện tại tập trung vào Feature Showcase autoplay và panel links.
+Context:    Human yêu cầu hai nút copy block và paste block để giữ nguyên Gutenberg block markup khi chuyển nội dung giữa các trang.
+Proposal:   Thêm một editor utility độc lập dùng public Gutenberg APIs; không override clipboard handler, parser, UI DOM, hoặc WordPress core.
+Constraint: Current milestone: "V1 / 1.3.2 — Feature Showcase Autoplay And Panel Links".
+Severity:   low
+Tags:       editor-governance, blocks, milestone
+Milestone:  V1 / 1.3.2
+Status:     OPEN
+Resolved:
+Decision:   Conservative implementation: one isolated editor entry with removable public-API SlotFill actions; no settings, persistence, core patch, or custom clipboard format.

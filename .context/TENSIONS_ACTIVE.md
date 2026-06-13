@@ -5,5 +5,3 @@
 > Move sang `TENSIONS_HISTORY.md` chỉ khi human approve milestone transition.
 
 ---
-
-No active resolved tensions for the current milestone yet.

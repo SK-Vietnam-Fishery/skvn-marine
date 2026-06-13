@@ -61,3 +61,43 @@ Từ câu mô tả *"bật rồi tắt mới hết"* — đó chính là clue ch
 ### Tại sao nó hiệu quả
 
 Vì nó **loại trừ** thay vì **liệt kê**. Mỗi lần xác định được một delta, bạn loại bỏ toàn bộ một nhóm nguyên nhân không thể là culprit. Đến cuối quá trình, không gian nguyên nhân còn lại rất nhỏ — và thường chỉ có một cái.
+
+## Ý tưởng - Sử dụng cách tư duy của đạo hàm
+
+### Đạo hàm và State Delta
+
+Trong toán, đạo hàm là:
+
+```
+f'(x) = lim  f(x + Δx) - f(x)
+        Δx→0 ─────────────────
+                    Δx
+```
+
+Ý nghĩa: **tại điểm x, nếu thay đổi input một chút thì output thay đổi bao nhiêu?**
+
+State Delta trong debug cũng hỏi y chang:
+
+```
+Δbehavior = f(state_sai) - f(state_đúng)
+```
+
+**Tại điểm nào đó, input thay đổi một chút — behavior thay đổi hoàn toàn.**
+
+---
+
+### Điểm tương đồng sâu hơn
+
+Đạo hàm tìm **điểm thay đổi** của hàm số. State Delta tìm **điểm thay đổi** của hệ thống. Cả hai đều không quan tâm đến toàn bộ hàm — chỉ quan tâm đến **vùng lân cận của sự thay đổi**.
+
+Trong calculus, khi hàm số nhảy đột ngột tại một điểm — đó là nơi thú vị nhất để nghiên cứu. Bug cũng vậy — nó luôn nằm tại **điểm nhảy** giữa đúng và sai.
+
+---
+
+### Một điểm khác biệt
+
+Đạo hàm cho phép Δx tiến về 0 — càng nhỏ càng chính xác.
+
+Trong debug, bạn cũng làm y vậy khi **isolate**: thu hẹp điều kiện tái hiện bug đến mức nhỏ nhất có thể. Càng isolate được sát, delta càng rõ, nguyên nhân càng hiển nhiên.
+
+> Isolate chính là quá trình cho Δx tiến về 0 trong debug.

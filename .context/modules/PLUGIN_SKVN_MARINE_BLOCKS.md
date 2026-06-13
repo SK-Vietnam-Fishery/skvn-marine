@@ -86,13 +86,53 @@ src/
 - `skvn-marine/slider`
 - `skvn-marine/slide`
 - `skvn-marine/accordion`
+- `skvn-marine/product-collection` — planned V1 / 1.3.3 dynamic product grid/carousel foundation
+- `skvn-marine/post-collection` — planned V1 / 1.3.3 dynamic post grid/carousel foundation
 
-## [manual] Deferred Blocks
+## [manual] Product And Post Collections
 
-- V1 KHÔNG build custom `skvn-marine/product-grid`.
-- V1 KHÔNG build custom `skvn-marine/product-list`.
-- V1 dùng WooCommerce native blocks/patterns cho product grid/list.
-- V2 mới thêm Product Grid/List custom hoặc style blocks liên quan nếu cần.
+Earlier V1 product surfaces used WooCommerce native blocks/patterns first. That
+0.4.0 deferral is superseded for the human-approved future milestone
+V1 / 1.3.3.
+
+V1 / 1.3.3 planned direction:
+
+- Decision: `docs/decisions/skvn-dynamic-collections-1.3.3.md`.
+- Planning: `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`.
+- Testing: `docs/testing/onsite-dynamic-collections-1.3.3.md`.
+- Build two custom dynamic SKVN blocks:
+  `skvn-marine/product-collection` and `skvn-marine/post-collection`.
+- Expose four inserter choices: Product Grid, Product Carousel, Post Grid, and
+  Post Carousel.
+- Store query/layout/action attributes only; do not store product/post card
+  snapshots in saved content.
+- Product collection uses WooCommerce/native APIs under the hood. Post
+  collection uses WordPress native APIs.
+- Do not use direct custom SQL.
+- Do not depend on WooCommerce experimental Product Collection extension APIs as
+  the SKVN source of truth in V1.
+- Grid and Carousel are layout modes. Product/Post remain the query owners.
+- Grid must not load carousel runtime. Carousel may reuse the Slider/Swiper
+  adapter, pause policy, document visibility behavior, and reduced-motion guard.
+- Product/Post cards must not be forced into `skvn-marine/slide` InnerBlocks.
+- Product Taxonomy Collections admin, attribute/tag thumbnails, grouped taxonomy
+  navigation, product attribute query, faceted filters, archive builder, and
+  universal CPT collection remain deferred to 2.x.x or later unless human
+  explicitly changes scope.
+
+## [manual] Future Layout Blocks
+
+V1.x / 1.1.0 planned layout blocks:
+
+- Planning file: `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md`.
+- Source proposal: `.context/proposals/proposal-layout-blocks.md`.
+- Candidate blocks: `skvn-marine/card-grid`, `skvn-marine/card`, and later `skvn-marine/quote` / `skvn-marine/hashtag-list`.
+- Purpose: repeated artifact sections where core blocks plus raw class names are too fragile for editors.
+- `card-grid` and `card` are the first implementation candidates; `quote` and `hashtag-list` are evaluation-only until card-grid/card are validated, unless repeated real artifacts prove earlier editor pain.
+- `hashtag-list` must include style controls if implemented: preset-based style, tone, prefix, gap, and wrap. Do not expose raw classes, raw CSS, arbitrary colors, or require manual `#` typing from editors.
+- Theme owns visual CSS, decorative presentation, editor/frontend parity, and `skvn-*` classes.
+- Plugin owns block registration, attributes, editor UI, saved markup, and any real interaction runtime.
+- Not current 0.8.0 scope unless human explicitly changes milestone priority.
 
 ## [manual] Future Admin Tooling
 
@@ -114,11 +154,326 @@ Theme `skvn-marine` still owns the visual output contract:
 - Design tokens.
 - Patterns.
 - Editor/frontend CSS parity.
-- Shared animation runtime.
+- Shared theme-level animation runtime for core blocks, page sections, and theme decoration.
 
 Do not implement the HTML-2-Gutenberg admin tool in the theme.
 
 Do not make this plugin own the primary SKVN visual system.
+
+## [manual] Core Control
+
+- Decision source: `docs/decisions/core-control-core-button-hover.md`.
+- `Core Control` is a submenu under the existing `SKVN Marine` admin menu and
+  is the shared registry/settings surface for optional WordPress core-block
+  enhancements.
+- The first planned enhancement is `Core Button Hover Colors`; it defaults to
+  disabled to avoid conflicts with plugins that provide similar behavior.
+- V1 / 1.3.4 also adopts the existing editor-only `Block Copy/Paste` utility as
+  a second registry feature. It defaults to disabled and adds no saved
+  attributes, frontend assets, PHP render adapter, or custom clipboard format.
+- Block Copy/Paste uses public Gutenberg serialization, parsing, insertion,
+  plugin/SlotFill, and notice APIs only. It must not override native clipboard
+  events or depend on private editor DOM/UI.
+- The toggle controls editor UI and frontend styling, but compatibility data
+  must remain registered so disabling the feature cannot invalidate blocks or
+  discard saved hover values.
+- Extend `core/button` through namespaced plugin attributes and scoped CSS.
+  Do not modify WordPress core, GeneratePress, or Gutenberg private panel UI.
+- This is a decided future direction only. Do not implement until human assigns
+  it to a milestone.
+- Planning:
+  `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
+
+## [manual] Portable Plugin Animation Boundary
+
+Decision doc: `docs/decisions/block-animation-strategy.md`.
+
+This boundary is active for V1 / 1.2.0.
+
+Future scope may rename or migrate this plugin toward `Gutenberg Supercharger`, so plugin-owned block behavior must remain portable.
+
+Mandatory rule:
+
+- If any animation behavior is exposed by a `skvn-marine-blocks` custom block, the plugin must ship the required behavior without depending on the `skvn-marine` theme.
+- Required behavior includes attributes, editor controls, frontend JS, CSS classes, keyframes, transitions, reduced-motion fallback, device targeting, and no-JS visible fallback.
+- Theme CSS/JS may skin or override plugin motion, but must not be required for plugin block animation to work.
+- Theme animation remains acceptable for core blocks, page sections, and theme decoration that are not plugin-owned block behavior.
+- Tailwind/WindPress is prototype-only and must not become the production animation contract.
+
+Implemented V1 / 1.2.0:
+
+- `src/shared/motion.ts` owns reduced-motion, device-targeting, and one-shot viewport observer invariants.
+- `src/accordion/view.ts` progressively enhances saved Accordion markup with an accessible trigger, ARIA state, real-height animation, and keyboard navigation.
+- `src/card/view.ts` is the first governed block motion surface.
+- Card presets are limited to Fade up, Fade in, and Hover lift.
+- Fade presets support On scroll or Always; Hover lift uses On hover automatically.
+- Desktop, Tablet, and Mobile are independent toggles.
+- `src/motion.css` and the motion frontend entry are plugin-owned and do not depend on the SKVN theme.
+- Remaining onsite verification contract deferred to V1 / 1.3.2:
+  `docs/testing/onsite-slider-motion-1.3.2.md`.
+
+## [manual] Footer Settings Module And Future Gutenberg Supercharger Boundary
+
+0.9.0 footer page settings must be implemented as a migration-ready module inside the current `skvn-marine-blocks` plugin.
+
+Allowed current structure:
+
+```text
+wp-content/plugins/skvn-marine-blocks/
+  modules/
+    footer-settings/
+```
+
+or:
+
+```text
+wp-content/plugins/skvn-marine-blocks/
+  includes/
+    modules/
+      footer-settings/
+```
+
+Current 0.9.0 rules:
+
+- Keep plugin slug `skvn-marine-blocks`.
+- Keep plugin text domain `skvn-marine-blocks`.
+- Keep option key `skvn_footer_page_id`.
+- Keep bootstrap and build paths compatible with the current plugin.
+- Do not create a `gutenberg-supercharger` or `gutenberg-turbo` plugin in V1.
+- Do not rename namespaces, option keys, plugin headers, or activation path.
+- Do not add a custom CPT or display-rules system for footer settings.
+
+Implemented 0.9.0 source:
+
+- Module path: `wp-content/plugins/skvn-marine-blocks/modules/footer-settings/footer-settings.php`.
+- Bootstrap path: `wp-content/plugins/skvn-marine-blocks/skvn-marine-blocks.php`.
+- Admin surface: `Settings → SKVN Footer`.
+- The selector only stores a published WordPress page ID or `0`.
+- Human chose online/onsite smoke testing instead of local runtime testing for 0.9.0.
+- Runtime PHP modules under `modules/` are production files, not dev-only source.
+- Deploy artifacts and plugin zips must include any plugin folder loaded by `require`, `require_once`, `include`, or `include_once`.
+- When a future milestone adds a runtime folder such as `modules/`, `includes/`, or runtime `assets/`, update `tools/build-deploy-artifact.mjs` and `docs/workflows/deploy-artifact-workflow.md` in the same task.
+- After packaging, verify the zip contains the required runtime module paths before onsite upload.
+
+Planned 0.11.0 admin menu refinement:
+
+- Move SKVN Footer out of `Settings`.
+- Create a top-level `SKVN Marine` admin menu in the current `skvn-marine-blocks` plugin.
+- Put footer settings under the `SKVN Marine` admin menu as a tab/page.
+- Keep option key `skvn_footer_page_id` and existing render behavior unchanged.
+- Add footer background preset option `skvn_footer_background_preset`.
+- Sanitize footer background to approved presets only: `default`, `deep-navy`, `trust-blue`, `white`, `fresh-sky`.
+- Do not expose raw hex/rgb/hsl color input for the footer background in 0.11.0.
+- The background preset only applies when `skvn_footer_page_id` points to a valid published page.
+- Do not hardcode advanced menu ordering in SKVN code; onsite menu repositioning belongs to the external ASE plugin.
+
+0.11.0 decision contract:
+
+- `docs/decisions/footer-appearance-settings-0.11.0.md`
+
+Planned 0.12.0 header actions and B2B search:
+
+- Decision contract: `docs/decisions/header-actions-search-0.12.0.md`.
+- Add a future `SKVN Marine → Header` admin surface.
+- Store and sanitize header action settings for product search, post/site search, contact CTA, and optional Request Quote CTA.
+- Product search and post/site search may ship together but must keep explicit search targets: products, articles, or all site.
+- Phase 1 search should use native WordPress/WooCommerce queries with taxonomy/title-first matching.
+- Do not add Elastic/OpenSearch in phase 1.
+- Do not add custom search query cache, custom SQL cache table, or transient registry in phase 1; rely on native queries and available object cache.
+
+Implemented 0.12.0 source:
+
+- Module path: `wp-content/plugins/skvn-marine-blocks/modules/header-settings/header-settings.php`.
+- Bootstrap path: `wp-content/plugins/skvn-marine-blocks/skvn-marine-blocks.php`.
+- Admin surface: `SKVN Marine -> Header`.
+- Option key: `skvn_header_actions`.
+- Stored settings are sanitized to booleans, approved search targets (`products`, `articles`, `all`), approved layouts (`compact`, `full`), text labels, and URLs.
+- Header actions are disabled by default for safe deploy; human enables them onsite for testing.
+
+Planned V1.x SKVN Element CPT foundation:
+
+- Planning file: `.context/planning/014_VERSION_1_X_SKVN_ELEMENT_CPT_PLANNING.md`.
+- Register plugin-owned CPT `skvn_element` for reusable site elements such as `site_header` and `site_footer`.
+- The CPT must be admin/editable but not public: no public single URL, no archive, excluded from search, hidden from nav menus, and excluded from sitemap exposure.
+- This is the SEO-safe successor to using normal WordPress Pages for reusable header/footer content.
+- Theme owns rendering selected elements into header/footer surfaces and any GeneratePress adapter during the 2.0.0 migration window.
+- Keep existing `skvn_footer_page_id` bridge working until an explicit migration step is approved.
+
+Future direction:
+
+- `Gutenberg Supercharger` is a possible V4 / 4.0.0 umbrella-plugin direction and standard/core product name.
+- `Gutenberg Supercharger Stage 2` is the pro/commercial stage name.
+- `Gutenberg Remap` is retained only as an alternate/redirect candidate.
+- Tagline: `Remap Gutenberg. Turbocharge your site.`
+- Community tagline: `Make your site feel more "Á đù VTEC".`
+- Planning file: `.context/planning/008_FUTURE_CANDIDATE_GUTENBERG_TURBO_PLANNING.md`.
+- When future migration is approved, modules such as `footer-settings/`, `article-templates/`, and `layout-controls/` may move under `gutenberg-supercharger/modules/`.
+- Until that future milestone is explicitly approved, only use the migration-ready module shape inside the current plugin.
+
+## [manual] SKVN Editor Controls
+
+0.8.0 editor-control contract:
+
+- Contract doc: `docs/decisions/skvn-editor-controls-0.8.0.md`
+- Onsite test checklist: `docs/testing/onsite-editor-controls-0.8.0.md`
+
+Plugin responsibilities:
+
+- Sidebar UI for supported SKVN-owned blocks/surfaces.
+- Block attributes.
+- Saved markup.
+- Interactive behavior.
+
+Theme responsibilities remain visual:
+
+- Tokens.
+- `skvn-*` classes.
+- Width, spacing, radius, shadow, and tone presets.
+- Editor/frontend CSS parity.
+
+Do not require raw class input, raw color values, arbitrary inline spacing, custom CSS, or custom JavaScript for normal marketing-editor use.
+
+Governed time control contract:
+
+- All governed time choices in SKVN block inspectors use one shared magnetic
+  time control instead of dropdowns or arbitrary numeric inputs.
+- The shared control owns rendering, equal-spaced index mapping, keyboard
+  stepping, accessible value text, and normalization.
+- Each consuming block owns an ordered configuration containing its allowed
+  numeric values, human-readable labels, and one default value.
+- Store the real numeric value in milliseconds. Do not expose milliseconds as
+  an editable input when the editor-facing labels use seconds.
+- The default value must exist in the block-owned allowed values.
+- Missing, malformed, or disallowed values normalize to the block-owned
+  default in both the editor and frontend.
+- Blocks may share the control and normalization utility, but must not share
+  one allowed-time constant unless their accepted values are intentionally
+  identical.
+- Use the magnetic time control for ordered duration choices. Keep dropdowns
+  for semantic choices that are not an ordered time scale.
+- Legacy governed-time values are not preserved by this control contract.
+
+V1.x / 1.6.0 planned SKVN surface presets:
+
+- Planning file: `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md`.
+- Plugin/editor controls may expose a safe `surfaceStyle` attribute after the theme owns the visual classes.
+- Allowed values should stay preset-based: `flat`, `soft`, `glass`, `elevated`, `outlined`.
+- Do not save Tailwind/WindPress utility classes as the production contract.
+- Do not expose arbitrary blur, shadow, color, or raw CSS inputs for normal editors.
+
+Slider editor UX decision for V1 / 1.2.0:
+
+- Active Slider source of truth:
+  `docs/decisions/slider-completion-spec-1.3.0.md`.
+- V1 / 1.3.0 completes dynamic rendering, compatibility, accessibility, and
+  baseline geometry before expanded carousel/showcase UX.
+- Do not run Swiper/autoplay inside Gutenberg.
+- Hero uses the Slide background-image control; Product Showcase and Card
+  Carousel do not expose or render that background treatment.
+
+Future carousel/showcase direction retained for a later human-approved
+milestone:
+
+- Historical decision and planning files are linked from the active Slider
+  source of truth through their `/archives/` paths.
+- Slider navigation and pagination controls are specified in
+  `docs/decisions/slider-navigation-and-pagination-controls.md` for V1 / 1.3.1.
+  The approved direction uses independent arrow/pagination attributes,
+  conditional same-position clustering, Swiper-owned timed pagination, one
+  Slider-level governed delay, and no per-Slide duration. It must be built only
+  after the failed 1.3.0 media, width, pagination geometry, and memory behavior
+  is corrected.
+- Carousel/showcase presets may later use a non-moving editor grid. Hero may
+  retain a vertically readable editor surface.
+- Carousel/showcase editor preview is a non-moving grid with a maximum 5 columns
+  by 2 rows and a hard maximum of 10 Slides.
+- Keep Gutenberg InnerBlocks and native List View; add visible card management
+  without creating a proprietary slide manager.
+- Carousel/showcase Slides use one content image and do not expose the Hero
+  background-image control.
+- General card content is Image, Heading, optional Subheading, Body, Meta, and
+  Button. Image and Heading remain visible.
+- Desktop card layout is Side by side or Stacked; mobile is always Stacked.
+- Approved motion modes are Custom Carousel, Product Showcase Marquee, and
+  Centered Carousel, all using the existing Swiper runtime.
+- Preset-controlled settings stay visible but are semantically disabled, gray,
+  and explained.
+- Each Slide uses native Gutenberg LinkControl; the Slider owns the shared
+  open-in-new-tab setting.
+- Visual styles and backgrounds use governed presets with previews.
+- Responsive spacing uses tokens and linked sides, not raw pixels, negative
+  margins, or arbitrary CSS.
+- Do not implement this expanded UX during 1.3.0.
+- Future frontend markup must use the V1 / 1.3.0 dynamic Slider rendering
+  foundation.
+
+V1 / 1.2.1 Slider preset and inserter decision:
+
+- Register one `SKVN Marine` Block Inserter category for all SKVN-owned blocks.
+- Expose Hero Slider, Product Showcase, and Card Carousel as add-and-see presets.
+- Reuse the existing Slider/Slide block slugs and one Swiper runtime.
+- Use Gutenberg variations/templates rather than separate duplicated Slider blocks.
+- Do not build a custom slide manager, selected-slide canvas, or setup modal.
+- Keep native Gutenberg List View and block actions for navigation, reorder, duplicate, and remove.
+- Remaining onsite QA for 1.2.0, 1.2.1, 1.3.0, and 1.3.1 is consolidated in V1 / 1.3.2
+  after the 1.3.0 dynamic rendering migration.
+
+Implemented V1 / 1.2.1:
+
+- `block_categories_all` registers one plugin-owned `SKVN Marine` category.
+- Slider, Slide, Accordion, Card Grid, and Card metadata use category slug `skvn-marine`.
+- `src/slider/variations.ts` registers Hero Slider, Product Showcase, and Card Carousel with inserter scope and editable InnerBlocks templates.
+- Hero is the default Slider variation so the inserter does not add a fourth generic Slider choice.
+- Product Showcase uses flow-based Columns/Image/content blocks.
+- Card Carousel saves one responsive preset flag and maps it to Swiper 3/2/1 breakpoints without changing the runtime dependency.
+- Existing Slider serialization remains unchanged when the new preset attributes are absent/default.
+
+Implemented V1 / 1.2.3 Feature Showcase:
+
+- Planning file: `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`.
+- Decision doc: `docs/decisions/feature-showcase-1.2.3.md`.
+- Human-approved name: `SKVN Feature Showcase`.
+- Block slug: `skvn-marine/feature-showcase`.
+- Source is active under `wp-content/plugins/skvn-marine-blocks/src/feature-showcase/`.
+- Metadata is `block.json` and the block is registered from `src/index.ts`.
+- Build output includes `build/feature-showcase/block.json`.
+- Do not overload the existing `SKVN Accordion`; Feature Showcase is a separate editorial image-panel block.
+- The block owns only the image-panel group. The B2B intro/copy/meta text stack belongs to a separate Gutenberg pattern.
+- Editors can add, remove, reorder, and edit panels; choose horizontal or vertical desktop layout; choose the initially open panel; and hide or use disclosure on mobile.
+- Saved markup uses native `details`/`summary` so mobile tap and keyboard interaction remain available without JavaScript.
+- `src/feature-showcase/view.ts` progressively enhances that markup to keep exactly one panel active, close siblings when another panel opens, and prevent the active/only panel from collapsing into an empty surface.
+- On fine-pointer devices, panel hover activates the corresponding `details`; on touch/coarse-pointer devices, summary tap remains the activation path.
+- Enhanced summary clicks prevent the native details toggle before activating the target, avoiding a transient all-closed flash.
+- Feature Showcase gradient choices are governed contrast packages: Ocean,
+  Deep navy, Marine teal, and Fresh sky. A package controls the panel, rail,
+  overlay, text, label, index, and border colors together.
+- Fresh sky uses dark text and a light image overlay; editors do not enter raw
+  colors or gradients.
+- The first activated static markup is preserved through a Gutenberg deprecation and legacy CSS until old content is resaved.
+
+Completed V1 / 1.3.2 Feature Showcase autoplay and panel links:
+
+- Planning file:
+  `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`.
+- Implemented after V1 / 1.3.0 dynamic rendering and the human-approved
+  V1 / 1.3.1 Slider controls milestone. Human approved transition on
+  2026-06-13; any newly discovered defects are follow-up fixes.
+- Feature Showcase adds governed `hover` and `autoplay` interaction modes.
+- Autoplay delay uses the shared magnetic time control with the Feature
+  Showcase-owned `3`, `5`, `7`, and `9` second configuration and a `5` second
+  default; no arbitrary timing input.
+- Each panel may use Gutenberg LinkControl for an optional CTA destination.
+  The CTA belongs inside panel content; do not turn `details`, `summary`, or the
+  whole interactive panel into a navigation link.
+- Feature Showcase keeps native `details`/`summary` and a block-local timer; it
+  must not initialize Swiper.
+- After Slider stability is verified, Slider and Feature Showcase may share
+  reduced-motion, delay normalization/marks, pointer/focus pause-resume, and
+  document visibility policy.
+- Slider keeps Swiper as its only movement controller. Feature Showcase keeps
+  ownership of sibling-details synchronization and panel activation.
+- Existing Slider and Feature Showcase saved content must remain compatible
+  before editor controls are restricted to shared presets.
 
 0.5.1 brand-mapping contract:
 

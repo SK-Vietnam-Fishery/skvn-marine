@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKVN Marine Blocks
  * Description: Custom Gutenberg blocks for SKVN Marine.
- * Version: 0.1.0
+ * Version: 1.3.2
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Text Domain: skvn-marine-blocks
@@ -13,7 +13,39 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/modules/footer-settings/footer-settings.php';
+require_once __DIR__ . '/modules/header-settings/header-settings.php';
+require_once __DIR__ . '/modules/collection-render/collection-render.php';
+require_once __DIR__ . '/modules/slider-render/slider-render.php';
+require_once __DIR__ . '/modules/typography-settings/typography-settings.php';
+
 add_action( 'init', 'skvn_marine_blocks_register_blocks' );
+add_filter( 'block_categories_all', 'skvn_marine_blocks_register_category' );
+
+/**
+ * Register the shared SKVN Marine block inserter category.
+ *
+ * @param array $categories Existing block categories.
+ * @return array
+ */
+function skvn_marine_blocks_register_category( $categories ) {
+	foreach ( $categories as $category ) {
+		if ( isset( $category['slug'] ) && 'skvn-marine' === $category['slug'] ) {
+			return $categories;
+		}
+	}
+
+	array_unshift(
+		$categories,
+		array(
+			'slug'  => 'skvn-marine',
+			'title' => __( 'SKVN Marine', 'skvn-marine-blocks' ),
+			'icon'  => 'admin-site-alt3',
+		)
+	);
+
+	return $categories;
+}
 
 /**
  * Register SKVN Marine custom blocks.
@@ -46,6 +78,17 @@ function skvn_marine_blocks_register_blocks() {
 		);
 	}
 
+	$editor_style = __DIR__ . '/build/style-index.ts.css';
+
+	if ( file_exists( $editor_style ) ) {
+		wp_register_style(
+			'skvn-marine-blocks-editor',
+			plugins_url( 'build/style-index.ts.css', __FILE__ ),
+			array(),
+			filemtime( $editor_style )
+		);
+	}
+
 	$view_script = __DIR__ . '/build/view.ts.js';
 	$view_asset  = __DIR__ . '/build/view.ts.asset.php';
 	$view_deps   = array();
@@ -67,10 +110,71 @@ function skvn_marine_blocks_register_blocks() {
 		);
 	}
 
+	$slider_core_style = __DIR__ . '/build/view.ts.css';
+
+	if ( file_exists( $slider_core_style ) ) {
+		wp_register_style(
+			'skvn-marine-slider-core',
+			plugins_url( 'build/view.ts.css', __FILE__ ),
+			array(),
+			filemtime( $slider_core_style )
+		);
+	}
+
+	$slider_style = __DIR__ . '/build/style-view.ts.css';
+
+	if ( file_exists( $slider_style ) ) {
+		wp_register_style(
+			'skvn-marine-slider-view',
+			plugins_url( 'build/style-view.ts.css', __FILE__ ),
+			wp_style_is( 'skvn-marine-slider-core', 'registered' )
+				? array( 'skvn-marine-slider-core' )
+				: array(),
+			filemtime( $slider_style )
+		);
+	}
+
+	$motion_script = __DIR__ . '/build/motion-view.ts.js';
+	$motion_asset  = __DIR__ . '/build/motion-view.ts.asset.php';
+	$motion_deps   = array();
+	$motion_ver    = file_exists( $motion_script ) ? filemtime( $motion_script ) : '1.2.0';
+
+	if ( file_exists( $motion_asset ) ) {
+		$asset       = require $motion_asset;
+		$motion_deps = isset( $asset['dependencies'] ) ? $asset['dependencies'] : array();
+		$motion_ver  = isset( $asset['version'] ) ? $asset['version'] : $motion_ver;
+	}
+
+	if ( file_exists( $motion_script ) ) {
+		wp_register_script(
+			'skvn-marine-blocks-motion-view',
+			plugins_url( 'build/motion-view.ts.js', __FILE__ ),
+			$motion_deps,
+			$motion_ver,
+			true
+		);
+	}
+
+	$motion_style = __DIR__ . '/build/motion-view.ts.css';
+
+	if ( file_exists( $motion_style ) ) {
+		wp_register_style(
+			'skvn-marine-blocks-motion',
+			plugins_url( 'build/motion-view.ts.css', __FILE__ ),
+			array(),
+			filemtime( $motion_style )
+		);
+	}
+
 	$blocks = array(
 		'slider',
 		'slide',
 		'accordion',
+		'card-grid',
+		'card',
+		'feature-showcase',
+		'post-collection',
+		'product-collection',
 	);
 
 	foreach ( $blocks as $block ) {
@@ -83,8 +187,76 @@ function skvn_marine_blocks_register_blocks() {
 				$args['editor_script'] = 'skvn-marine-blocks-editor';
 			}
 
+			if (
+				in_array( $block, array( 'slider', 'slide', 'feature-showcase' ), true ) &&
+				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
+			) {
+				$args['editor_style_handles'] = array( 'skvn-marine-blocks-editor' );
+			}
+
+			if (
+				in_array( $block, array( 'slider', 'slide' ), true ) &&
+				wp_style_is( 'skvn-marine-slider-view', 'registered' )
+			) {
+				$args['editor_style_handles'][] = 'skvn-marine-slider-view';
+			}
+
 			if ( 'slider' === $block && wp_script_is( 'skvn-marine-slider-view', 'registered' ) ) {
 				$args['view_script'] = 'skvn-marine-slider-view';
+			}
+
+			if ( 'slider' === $block ) {
+				$args['render_callback']  = 'skvn_marine_blocks_render_slider';
+				$args['skip_inner_blocks'] = true;
+			}
+
+			if ( 'slide' === $block ) {
+				$args['render_callback']  = 'skvn_marine_blocks_render_slide';
+				$args['skip_inner_blocks'] = true;
+			}
+
+			if (
+				in_array( $block, array( 'slider', 'slide' ), true ) &&
+				wp_style_is( 'skvn-marine-slider-view', 'registered' )
+			) {
+				$args['style_handles'] = array( 'skvn-marine-slider-view' );
+			}
+
+			if (
+				'feature-showcase' === $block &&
+				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
+			) {
+				$args['style_handles'] = array( 'skvn-marine-blocks-editor' );
+			}
+
+			if (
+				in_array( $block, array( 'post-collection', 'product-collection' ), true ) &&
+				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
+			) {
+				$args['editor_style_handles'] = array( 'skvn-marine-blocks-editor' );
+				$args['style_handles']        = array( 'skvn-marine-blocks-editor' );
+			}
+
+			if ( 'post-collection' === $block ) {
+				$args['render_callback'] = 'skvn_marine_blocks_render_post_collection';
+			}
+
+			if ( 'product-collection' === $block ) {
+				$args['render_callback'] = 'skvn_marine_blocks_render_product_collection';
+			}
+
+			if (
+				in_array( $block, array( 'accordion', 'card', 'feature-showcase' ), true ) &&
+				wp_script_is( 'skvn-marine-blocks-motion-view', 'registered' )
+			) {
+				$args['view_script_handles'] = array( 'skvn-marine-blocks-motion-view' );
+			}
+
+			if (
+				in_array( $block, array( 'accordion', 'card' ), true ) &&
+				wp_style_is( 'skvn-marine-blocks-motion', 'registered' )
+			) {
+				$args['style_handles'] = array( 'skvn-marine-blocks-motion' );
 			}
 
 			register_block_type( $block_path, $args );

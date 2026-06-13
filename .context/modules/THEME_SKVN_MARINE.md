@@ -50,6 +50,78 @@ Current token intent:
 - Do not fix this by editing GeneratePress parent files.
 - Do not create a custom block for this layout in V1.
 
+## [manual] Grid Layout Ownership
+
+- Gutenberg-native dynamic grids should treat the editor Columns setting as source of truth when the block exposes a clear column count in saved markup.
+- If a Gutenberg-native grid is set to 3 columns, item 4 and item 5 should wrap to the next row rather than being auto-fit into more columns on wide screens.
+- Fixed theme presets such as stat grids, semantic hero/split grids, footer grids, or process layouts are theme-controlled. Their column-count controls should be hidden, disabled, or replaced with a label such as `Theme layout controls this grid`.
+- `SKVN Adaptive Grid` is the planned SKVN-owned auto-responsive grid contract. It should use SKVN presets such as min item width/density instead of exposing a raw column count.
+- `SKVN Adaptive Grid` contract documentation belongs to milestone `0.7.1`; custom block/editor control implementation remains deferred to `0.8.0` unless human explicitly changes scope.
+
+## [manual] Gutenberg Width And Canvas Contract
+
+`SKVN Full Width Canvas` opens the GeneratePress page shell; it must not make
+every top-level Gutenberg block full width.
+
+Required frontend width semantics:
+
+```text
+Top-level block without alignment -> --skvn-content-width
+Top-level .alignwide             -> --skvn-wide-width
+Top-level .alignfull             -> full page canvas
+```
+
+Implementation rules:
+
+- Mandatory agent standard:
+  `docs/standards/css-layout-safety-contract.md`.
+- Approved GeneratePress compatibility and standalone migration decision:
+  `docs/decisions/canvas-alignment-and-generatepress-exit.md`.
+- Layout width must have one owner. Do not let Gutenberg, GeneratePress, an
+  SKVN page template, and a component class independently calculate the same
+  full width.
+- `.skvn-full-width-canvas` may remove GeneratePress shell width, margin,
+  padding, and sidebar constraints.
+- Do not apply `max-width: none` to every `.entry-content > *`.
+- When the owning SKVN canvas is already full width, direct `.alignfull`
+  children use `width: 100%`, not scrollbar-inclusive `100vw` plus negative
+  viewport margins.
+- While GeneratePress remains active, the SKVN canvas adapter must also
+  neutralize negative viewport margins on nested legacy `.alignfull` blocks,
+  because GeneratePress applies its rule to all descendants.
+- New SKVN patterns should still prefer one alignment owner per layout level;
+  nested compatibility is not a recommendation to generate nested
+  `.alignfull`.
+- `overflow-x: hidden` or `overflow-x: clip` may intentionally clip decoration,
+  but must not hide incorrect layout geometry.
+- A full-width marketing pattern should use an outer `alignfull` Group with
+  `layout: default`.
+- The outer Group owns surface background and section padding.
+- A named inner grid owns `max-width: var(--skvn-wide-width)`, `width: 100%`,
+  and `margin-inline: auto`.
+- Do not increase global `theme.json` `contentSize` to repair one pattern.
+- Do not depend on generated `wp-container-*` classes.
+- Do not use `!important` to defeat Gutenberg constrained layout.
+
+Agent debugging checklist:
+
+1. Inspect the saved Gutenberg comment markup and the rendered frontend HTML.
+2. Record the block's `align` and `layout.type`.
+3. Inspect ancestor classes: `body`, `.site`, `.site-content`,
+   `.entry-content`, and direct block wrapper.
+4. Compare computed `width`, `max-width`, and horizontal margins at each
+   ancestor.
+5. Search theme CSS for `.entry-content > *`, `.alignwide`, `.alignfull`,
+   `contentSize`, and `wideSize` before changing component CSS.
+6. Fix the owning layout layer instead of forcing width inside the custom
+   block.
+7. For any viewport-unit or overflow rule, run the geometry check from
+   `docs/standards/css-layout-safety-contract.md` with a visible vertical
+   scrollbar.
+8. If the source is a GeneratePress selector, fix it in the scoped SKVN
+   compatibility adapter. Do not copy the GeneratePress negative-margin
+   algorithm into future standalone theme CSS.
+
 ## [manual] Page Display Controls
 
 - 0.5.1 introduces page-level controls for marketing-owned pages that need alternate chrome.
@@ -59,6 +131,7 @@ Current token intent:
 - Prefer editor/admin UI controls over raw class names.
 - Do not add a header/footer builder plugin by default.
 - Page preset `SKVN Landing Canvas` groups the standard marketing-page setup into one editor action: hide page title and enable the full-width/no-sidebar SKVN canvas.
+- Page preset `SKVN Request Quote Page` groups the 0.6 quote-page setup into one editor action: hide page title and enable the full-width/no-sidebar SKVN canvas.
 - The preset is stored in `_skvn_page_display_preset`; direct toggles remain available for overrides and debugging.
 - Do not blindly write GeneratePress layout metabox meta. Use SKVN meta/classes and safe GeneratePress filters where audited.
 - Design debt for V1 / 0.8.0: frontend title visibility must be separated from editor title identity. A hidden frontend title should not make the Gutenberg title field/identity surface disappear while editing.
@@ -132,6 +205,20 @@ Brand customization is allowed, but brand variables and assets must be managed t
 
 Before coding any branding, visual token, theme screenshot, pattern identity, or editor visual parity change, update or verify `docs/standards/site-branding-guideline.md` first. Do not implement scattered branding changes until the docs state which file owns the variable, class, or asset.
 
+V1 / 0.7.0 brand profile source of truth:
+
+- `docs/decisions/brand-profile-theme-tokens.md`
+
+This document defines semantic profile aliases, current token mapping, `theme.json` / `style.css` sync pairs, editor/frontend contract, HTML-2-Gutenberg brand report mapping, and external implementation references. Runtime token changes must follow it.
+
+V1.x / 1.6.0 planned SKVN surface presets:
+
+- Planning file: `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md`.
+- Theme owns `skvn-surface--flat`, `skvn-surface--soft`, `skvn-surface--glass`, `skvn-surface--elevated`, and `skvn-surface--outlined` if implemented.
+- Surface preset CSS must use SKVN tokens/classes and must not depend on WindPress/Tailwind utilities in production output.
+- Glass must have a readable non-blur fallback and must not be used for long article body content by default.
+- Plugin/editor controls may select presets later, but the visual implementation stays theme-owned for SKVN-local hardening.
+
 Theme-owned brand sources:
 
 - CSS tokens and component styles: `wp-content/themes/skvn-marine/style.css`.
@@ -141,6 +228,54 @@ Theme-owned brand sources:
 - Theme screenshot: `wp-content/themes/skvn-marine/screenshot.png`.
 
 Do not move the primary brand system into the plugin. Plugin assets may follow the brand, but do not define it.
+
+## [manual] Footer Page Rendering
+
+0.9.0 source:
+
+- Theme render module: `wp-content/themes/skvn-marine/inc/footer.php`.
+- Theme bootstrap: `wp-content/themes/skvn-marine/functions.php`.
+- Option key read by the theme: `skvn_footer_page_id`.
+- The theme replaces GeneratePress footer callbacks only when the option points to a published WordPress page.
+- Fallback remains the default GeneratePress footer when no valid footer page is selected.
+- Do not edit GeneratePress parent theme.
+- Do not add a custom CPT or display-rules system for footer rendering in 0.9.0.
+
+0.11.0 planned footer appearance setting:
+
+- Decision contract: `docs/decisions/footer-appearance-settings-0.11.0.md`.
+- Plugin stores `skvn_footer_background_preset`; theme maps approved presets to CSS variables/tokens.
+- The selected footer background must apply to `.skvn-footer-page`.
+- The selected footer background must also apply to the outermost Gutenberg block `.skvn-site-footer` when the footer page content starts with:
+
+```html
+<!-- wp:group {"className":"skvn-site-footer","layout":{"type":"default"}} -->
+<div class="wp-block-group skvn-site-footer">
+```
+
+- Viewport space below the custom footer should use the same footer background, while `.site` keeps the normal page background.
+- Do not require marketing editors to type raw classes, raw CSS, or raw color values for this setting in 0.11.0.
+
+## [manual] Header Actions And B2B Search
+
+0.12.0 planned direction:
+
+- Decision contract: `docs/decisions/header-actions-search-0.12.0.md`.
+- Use Header Actions, not a full Header Builder, for the first phase.
+- GeneratePress header remains the shell; do not replace it with a Gutenberg header template in phase 1.
+- Theme owns GeneratePress hook integration, header action visual layout, responsive CSS, and `skvn-*` classes.
+- Header actions may include product search, post/site search, contact CTA, and optional Request Quote CTA.
+- Search results should be visually governed for B2B and separate Products from Related articles.
+- Search visual output belongs to theme CSS; search query/settings ownership stays outside theme.
+
+0.12.0 implemented source:
+
+- Header action render module: `wp-content/themes/skvn-marine/inc/header-actions.php`.
+- Theme bootstrap: `wp-content/themes/skvn-marine/functions.php`.
+- Search results template: `wp-content/themes/skvn-marine/search.php`.
+- Theme reads option `skvn_header_actions`, sanitizes defensively, and renders actions through `generate_after_header_content`.
+- Search results use governed sections for Products and Related articles, with taxonomy-first and title-first native `WP_Query` passes before content fallback.
+- Header action CSS and search result CSS live in `wp-content/themes/skvn-marine/style.css`.
 
 HTML-2-Gutenberg brand-mapping contract for 0.5.1:
 

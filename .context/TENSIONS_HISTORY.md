@@ -22,7 +22,7 @@ Decision:   V1 dùng WooCommerce native blocks/patterns cho product grid/list. C
 
 ## [2026-05-26] | quote-flow
 Tension:    CF7 ↔ n8n integration method: CF7 webhook trực tiếp hay CF7 send email → n8n catch email?
-Context:    Human changed scope again: 0.5.1 now focuses on page display/sidebar controls; quote UI moves to 0.6.0; CF7 moves after 0.6.0; n8n moves after version 1.0.0.
+Context:    Human changed scope again: 0.5.1 focused on page display/sidebar controls; quote UI moved to 0.6.0; CF7 moved after 0.6.0; n8n moved after version 1.0.0.
 Proposal:   Do not implement CF7, CFDB7 workflow, or n8n automation in 0.5.1.
 Constraint: n8n webhook must remain protected and must not be exposed; no custom-code quote form handler.
 Severity:   high
@@ -30,7 +30,7 @@ Tags:       quote-flow, php, milestone
 Milestone:  V1 / 0.5.1
 Status:     ARCHIVED
 Resolved:   2026-05-26
-Decision:   Current 0.5.1 scope is page display/sidebar controls. Move Quote UI/editor controls to 0.6.0. Defer CF7/CFDB7 until after 0.6.0; defer n8n automation until after version 1.0.0.
+Decision:   0.5.1 scope was page display/sidebar controls. Quote UI/editor controls moved to 0.6.0. CF7/CFDB7 deferred until after 0.6.0; n8n automation deferred until after version 1.0.0.
 
 ---
 
@@ -45,3 +45,45 @@ Milestone:  V1 / 0.5.1
 Status:     ARCHIVED
 Resolved:   2026-05-26
 Decision:   Delay CF7 spam-layer decision until CF7 returns to scope. No Turnstile dependency in 0.5.1.
+
+---
+
+## [2026-06-02] | quote-flow
+Tension:    n8n automation timing during basic CF7/CFDB7 quote form work.
+Context:    Human approved moving from tested 0.6.0 to 0.7.0.
+Proposal:   Implement only the basic same-site CF7/CFDB7 quote form in 0.7.0.
+Constraint: n8n webhook must remain protected and must not be exposed; no custom-code quote form handler.
+Severity:   high
+Tags:       quote-flow, php, milestone
+Milestone:  V1 / 0.7.0
+Status:     ARCHIVED
+Resolved:   2026-06-02
+Decision:   0.7.0 scope is basic CF7/CFDB7 quote form. n8n automation remains deferred until after version 1.0.0.
+
+---
+
+## [2025-01-01 00:00] | slider
+Tension:    Slider editor UX: stacked / selected-slide-preview / lightweight carousel?
+Context:    Planning phase — slider block chưa implement
+Proposal:   Stacked (slides xếp chồng trong editor, Swiper chỉ chạy frontend)
+Constraint: "Not fully decided yet. V1 editor view should likely render slides stacked or in a simplified preview."
+Severity:   low
+Tags:       blocks, slider
+Milestone:  V1 / 0.8.0
+Status:     ARCHIVED
+Resolved:   2026-06-03
+Decision:   Use stacked/simplified slider preview in the editor. Do not run Swiper autoplay in the editor. Slider sidebar behavior controls may persist as saved attributes, but frontend Swiper runtime remains frontend-only and must respect prefers-reduced-motion.
+
+---
+
+## [2026-06-08 12:15] | blocks
+Tension:    Add Feature Showcase block during 1.2.1 even though milestone scope names exactly three Slider presets.
+Context:    Human approved naming artifact-inspired expanding accordion/gallery as "Feature Showcase" and wants the mobile split state used intentionally.
+Proposal:   Implement a conservative `skvn-marine/feature-showcase` block that reuses plugin-owned CSS, no Tailwind CDN, no new dependency, and leaves existing Accordion unchanged.
+Constraint: 1.2.1 planning says "Implement exactly three inserter-facing presets in 1.2.1" and non-scope excludes extra slider experiences.
+Severity:   low
+Tags:       blocks, slider, editor-governance
+Milestone:  V1 / 1.2.1
+Status:     ARCHIVED
+Resolved:   2026-06-08
+Decision:   Park Feature Showcase source for V1 / 1.2.3. During 1.2.1, keep the source unregistered, keep it out of the inserter, and document the future milestone before activation.

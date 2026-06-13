@@ -160,6 +160,10 @@ window.dispatchEvent(new Event('scroll'))
 window.dispatchEvent(new Event('resize'))
 ```
 
+## References Theo Case
+
+- WordPress/Gutenberg footer đã render nhưng layout vẫn sai, `alignfull` tràn ngang, wrapper `site-footer` lệch âm, hoặc có khoảng trắng dưới footer: đọc `references/footer-full-width-overflow.md`.
+
 ---
 
 ## Anti-patterns Cần Tránh

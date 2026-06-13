@@ -22,9 +22,9 @@ echo wp_kses_post($content);
 
 Do not implement a custom quote form handler.
 
-Current 0.5.1 scope is page display/sidebar controls only. Quote UI moves to 0.6.0.
+Current 0.7.0 scope is basic CF7/CFDB7 quote form.
 
-Future form milestones use:
+Use:
 
 - Contact Form 7 for form handling
 - CFDB7 for database table/submission storage

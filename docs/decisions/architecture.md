@@ -12,7 +12,7 @@ V3 may evolve into a reusable base theme for multiple websites.
 - Theme type: GeneratePress child theme, hybrid approach
 - Plugin: `skvn-marine-blocks`
 - Block namespace: `skvn-marine`
-- Tailwind layer: WindPress
+- Tailwind/WindPress layer: optional prototyping aid, not the production visual-system source of truth
 - Product model: WooCommerce products, categories, and attributes
 - Quote form: Contact Form 7
 - Lead storage: CFDB7
@@ -53,7 +53,7 @@ Rationale:
 ### Out of Scope — Proposal for Later
 
 - Do not replace GeneratePress with a pure block theme in V1.
-- Do not add a Tailwind/PostCSS build pipeline until there is a confirmed need beyond WindPress/current CSS.
+- Do not add a Tailwind/PostCSS build pipeline until there is a confirmed need beyond current SKVN theme CSS. Future standalone plugin features should not require WindPress.
 - Do not move all patterns into a new registration architecture unless the current `patterns/*.php` approach becomes insufficient.
 - Do not add Composer or PHP package management in V1.
 - Do not build GitHub Actions release zip automation in V1.
@@ -116,7 +116,7 @@ Target layout:
 ### Recommended runtime plugins
 
 - WooCommerce
-- WindPress
+- WindPress (optional; prototyping aid, not required for production visual contracts)
 - Rank Math SEO
 - Contact Form 7
 - Contact Form CFDB7

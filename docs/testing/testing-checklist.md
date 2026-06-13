@@ -2,28 +2,28 @@
 
 ## 0.2.0 Carried Test Debt
 
-- [ ] WordPress runtime responds at `http://localhost:8080/wp-login.php`.
-- [ ] `skvn-marine` child theme is active in runtime.
-- [ ] `SKVN Homepage Test Layout` pattern can be inserted into a page.
-- [ ] Test page uses full-width/no-sidebar setup where available.
-- [ ] Default page title is hidden when testing a custom hero.
-- [ ] Desktop screenshot reviewed.
-- [ ] Mobile screenshot reviewed.
-- [ ] Result recorded as PASS / FAIL / NEEDS REVISION.
+- [x] WordPress runtime responds at `http://localhost:8080/wp-login.php`.
+- [x] `skvn-marine` child theme is active in runtime.
+- [x] `SKVN Homepage Test Layout` pattern can be inserted into a page.
+- [x] Test page uses full-width/no-sidebar setup where available.
+- [x] Default page title is hidden when testing a custom hero.
+- [x] Desktop screenshot reviewed.
+- [x] Mobile screenshot reviewed.
+- [x] Result recorded as PASS / FAIL / NEEDS REVISION.
 
 ## Theme
 
-- [ ] GeneratePress parent installed.
-- [ ] `skvn-marine` child theme active.
-- [ ] Theme `screenshot.png` exists for admin preview.
-- [ ] Frontend loads.
-- [ ] Admin loads.
-- [ ] Block editor opens.
-- [ ] Product page renders.
-- [ ] Blog post renders.
-- [ ] Homepage renders.
-- [ ] No PHP fatal error.
-- [ ] Console has no serious JS errors.
+- [x] GeneratePress parent installed.
+- [x] `skvn-marine` child theme active.
+- [x] Theme `screenshot.png` exists for admin preview.
+- [x] Frontend loads.
+- [x] Admin loads.
+- [x] Block editor opens.
+- [x] Product page renders.
+- [x] Blog post renders.
+- [x] Homepage renders.
+- [x] No PHP fatal error.
+- [x] Console has no serious JS errors.
 
 ## Header/Footer Baseline
 
@@ -37,8 +37,8 @@
 
 ## Homepage Test Pattern
 
-- [ ] Hero content and media do not overlap.
-- [ ] Trust strip displays 4 items on desktop.
+- [x] Hero content and media do not overlap.
+- [x] Trust strip displays 4 items on desktop.
 - [ ] Trust strip stacks cleanly on mobile.
 - [ ] Why choose cards use soft mint support accent appropriately.
 - [ ] Factory/process sections keep blue-first visual direction.
@@ -233,12 +233,13 @@ Deferred proposals:
 ## Quote Flow
 
 - [ ] Product CTA links to `/request-a-quote/?product_id=...`.
-- [ ] CF7 form renders.
-- [ ] CFDB7 stores submission.
-- [ ] n8n receives lead.
-- [ ] Thank-you page is reached.
-- [ ] Admin email works.
-- [ ] Customer confirmation works if enabled.
+- [ ] Single product CTA links to `/request-a-quote/?product_id=...`.
+- [ ] Request Quote page visual surface loads.
+- [ ] Request Quote page accepts missing or invalid `product_id` without fatal error.
+- [ ] CTA remains visible on mobile.
+- [ ] No custom quote form handler exists in theme/plugin code.
+- [ ] CF7/CFDB7/n8n behavior is not tested in 0.6.0.
+- [ ] See `docs/testing/quote-flow-onsite-test.md` for onsite execution.
 
 ## Woo/Product Grid
 

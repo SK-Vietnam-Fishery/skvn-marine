@@ -17,14 +17,21 @@ const SKVN_MARINE_PAGE_DISPLAY_PRESET_META = '_skvn_page_display_preset';
 const SKVN_MARINE_PAGE_DISPLAY_PRESETS     = array(
 	'default',
 	'skvn_landing_canvas',
+	'skvn_request_quote_page',
 	'custom',
 );
 
 add_action( 'init', 'skvn_marine_register_page_display_meta' );
 add_action( 'enqueue_block_editor_assets', 'skvn_marine_enqueue_page_display_controls' );
 add_filter( 'body_class', 'skvn_marine_page_display_body_classes' );
-add_filter( 'generate_sidebar_layout', 'skvn_marine_page_display_sidebar_layout' );
+add_filter( 'skvn_marine_sidebar_layout', 'skvn_marine_page_display_sidebar_layout' );
 
+// Bridge GP → SKVN filter
+if (defined('GENERATE_VERSION')){
+	add_filter('generate_sidebar_layout', function($layout){
+		return apply_filters('skvn_marine_sidebar_layout', $layout);
+	});
+}
 /**
  * Register page display meta for editor sidebar controls.
  *
@@ -215,7 +222,7 @@ function skvn_marine_page_uses_display_feature( $post_id, $meta_key ) {
  * @return array<string,bool>
  */
 function skvn_marine_get_page_display_preset_features( $preset ) {
-	if ( 'skvn_landing_canvas' !== $preset ) {
+	if ( ! in_array( $preset, array( 'skvn_landing_canvas', 'skvn_request_quote_page' ), true ) ) {
 		return array();
 	}
 
