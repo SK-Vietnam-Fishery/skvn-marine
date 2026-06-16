@@ -25,6 +25,24 @@
       "type": "string",
       "default": ""
     },
+    "categories": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
+    },
+    "relation": {
+      "type": "string",
+      "default": "OR"
+    },
     "orderMode": {
       "type": "string",
       "default": "newest"
@@ -36,6 +54,66 @@
     "responsivePreset": {
       "type": "string",
       "default": "3-2-1"
+    },
+    "showImage": {
+      "type": "boolean",
+      "default": true
+    },
+    "imageRatio": {
+      "type": "string",
+      "default": "4:3"
+    },
+    "equalHeight": {
+      "type": "boolean",
+      "default": true
+    },
+    "badgeBehavior": {
+      "type": "string",
+      "default": "display"
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showAuthor": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPostCategories": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPostTags": {
+      "type": "boolean",
+      "default": false
+    },
+    "showExcerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "postActionMode": {
+      "type": "string",
+      "default": "read"
+    },
+    "customActionUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "showArrows": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPagination": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "autoplayDelay": {
+      "type": "number",
+      "default": 5000
     }
   },
   "supports": {

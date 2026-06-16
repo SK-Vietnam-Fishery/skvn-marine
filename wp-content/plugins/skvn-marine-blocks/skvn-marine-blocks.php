@@ -166,6 +166,38 @@ function skvn_marine_blocks_register_blocks() {
 		);
 	}
 
+	$collection_view_script = __DIR__ . '/build/collection-view.ts.js';
+	$collection_view_asset  = __DIR__ . '/build/collection-view.ts.asset.php';
+	$collection_view_deps   = array();
+	$collection_view_ver    = file_exists( $collection_view_script ) ? filemtime( $collection_view_script ) : '1.3.3';
+
+	if ( file_exists( $collection_view_asset ) ) {
+		$asset                = require $collection_view_asset;
+		$collection_view_deps = isset( $asset['dependencies'] ) ? $asset['dependencies'] : array();
+		$collection_view_ver  = isset( $asset['version'] ) ? $asset['version'] : $collection_view_ver;
+	}
+
+	if ( file_exists( $collection_view_script ) ) {
+		wp_register_script(
+			'skvn-marine-blocks-collection-view',
+			plugins_url( 'build/collection-view.ts.js', __FILE__ ),
+			$collection_view_deps,
+			$collection_view_ver,
+			true
+		);
+	}
+
+	$collection_view_style = __DIR__ . '/build/collection-view.ts.css';
+
+	if ( file_exists( $collection_view_style ) ) {
+		wp_register_style(
+			'skvn-marine-blocks-collection-view',
+			plugins_url( 'build/collection-view.ts.css', __FILE__ ),
+			array(),
+			filemtime( $collection_view_style )
+		);
+	}
+
 	$blocks = array(
 		'slider',
 		'slide',
@@ -261,5 +293,21 @@ function skvn_marine_blocks_register_blocks() {
 
 			register_block_type( $block_path, $args );
 		}
+	}
+}
+
+/**
+ * Enqueue the collection carousel view script and style when a carousel block renders.
+ * Called from the post-collection and product-collection render callbacks.
+ *
+ * @return void
+ */
+function skvn_marine_blocks_maybe_enqueue_collection_view() {
+	if ( wp_script_is( 'skvn-marine-blocks-collection-view', 'registered' ) ) {
+		wp_enqueue_script( 'skvn-marine-blocks-collection-view' );
+	}
+
+	if ( wp_style_is( 'skvn-marine-blocks-collection-view', 'registered' ) ) {
+		wp_enqueue_style( 'skvn-marine-blocks-collection-view' );
 	}
 }

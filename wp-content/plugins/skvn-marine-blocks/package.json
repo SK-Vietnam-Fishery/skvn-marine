@@ -4,8 +4,8 @@
   "private": true,
   "description": "Custom Gutenberg blocks for SKVN Marine.",
   "scripts": {
-    "build": "wp-scripts build src/index.ts src/slider/view.ts src/motion-view.ts --output-path=build --webpack-copy-php",
-    "start": "wp-scripts start src/index.ts src/slider/view.ts src/motion-view.ts --output-path=build --webpack-copy-php"
+    "build": "wp-scripts build src/index.ts src/slider/view.ts src/motion-view.ts src/collection-view.ts --output-path=build --webpack-copy-php",
+    "start": "wp-scripts start src/index.ts src/slider/view.ts src/motion-view.ts src/collection-view.ts --output-path=build --webpack-copy-php"
   },
   "dependencies": {
     "swiper": "^11.1.15"
