@@ -209,12 +209,12 @@ Implementation order:
 
 Acceptance draft:
 
-- [ ] `docs/decisions/skvn-dynamic-collections-1.3.3.md` is reviewed before source implementation
-- [ ] `skvn-marine/product-collection` and `skvn-marine/post-collection` are registered as dynamic blocks
-- [ ] Four inserter choices exist: Product Grid, Product Carousel, Post Grid, Post Carousel
-- [ ] Saved markup stores attributes only and does not snapshot product/post cards
+- [x] `docs/decisions/skvn-dynamic-collections-1.3.3.md` is reviewed before source implementation
+- [x] `skvn-marine/product-collection` and `skvn-marine/post-collection` are registered as dynamic blocks
+- [x] Four inserter choices exist: Product Grid, Product Carousel, Post Grid, Post Carousel
+- [x] Saved markup stores attributes only and does not snapshot product/post cards
 - [ ] Product collections query through WooCommerce/native APIs without direct custom SQL
-- [ ] Post collections query through WordPress native APIs
+- [x] Post collections query through WordPress native APIs
 - [ ] Query controls support category/tag multi-select, `AND`/`OR`, item limit, and approved order modes
 - [ ] `Shuffle balanced pool` avoids SQL random ordering and uses the documented pool strategy
 - [ ] Grid respects max 5 columns and max 3 rows
@@ -228,8 +228,8 @@ Acceptance draft:
 - [ ] Post image fallback uses featured image, then SKVN fallback
 - [ ] Carousel reuses shared pause/reduced-motion policy without making grid load carousel runtime
 - [ ] Autoplay off/default, pause, document visibility, focus, and reduced-motion behavior pass
-- [ ] WooCommerce inactive state does not fatal product collection blocks
-- [ ] Plugin baseline CSS keeps blocks readable without relying on theme patterns
+- [x] WooCommerce inactive state does not fatal product collection blocks
+- [x] Plugin baseline CSS keeps blocks readable without relying on theme patterns
 - [ ] Theme pattern follow-up is deferred until plugin implementation and onsite QA pass
 - [ ] Plugin build, PHP syntax checks, deploy artifact audit if runtime PHP paths change, and onsite QA pass
 - [ ] Human approves milestone completion

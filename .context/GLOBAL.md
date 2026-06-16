@@ -108,6 +108,7 @@ Current active docs:
 - `docs/decisions/typography-and-gp-exit-report.md` — typography settings 1.5.0: token architecture, Settings API pattern, GP coupling audit, WooCommerce layer, 2.0.0 exit plan.
 - `docs/standards/ai-rules.md`
 - `docs/standards/security-guidelines.md`
+- `docs/standards/memory-leak-prevention-rules.md` — quy tắc phòng chống memory leak cho Gutenberg plugin (event listener cleanup, observer teardown, block edit lifecycle).
 - `docs/testing/frontpage-testing.md`
 - `docs/testing/onsite-test-debt-checklist.md`
 - `docs/testing/onsite-map-block-1.1.2.md`
@@ -134,6 +135,7 @@ Current active docs:
 - `docs/artifacts/init-prompt-v1-1.3.4-core-control.md`
 - `docs/workflows/start-v1-1.3.0-slider-repair.md` — reusable repair prompt for the failed 1.3.0 build, including State Delta diagnostics, target code architecture, geometry/RAM gates, and the targeted human smoke-test boundary before 1.3.1.
 - `docs/artifacts/brand-palette-options.html`
+- `docs/debug-casebook/gutenberg-plugin-memory-leak-guide.md` — hướng dẫn debug và reproduce memory leak trong Gutenberg plugin blocks.
 
 ---
 

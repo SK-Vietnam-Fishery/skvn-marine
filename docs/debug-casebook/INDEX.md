@@ -8,6 +8,12 @@ Registry chính của các án lệ kỹ thuật trong SKVN Marine.
 |---|---|---|---|---|
 | `CASE-001` | Slider | [Swiper JS Without Core CSS](slider/001_SWIPER_JS_WITHOUT_CORE_CSS.md) | `PROVEN · FIXED · REGRESSION_GUARDED` | Một runtime UI cần được verify như một asset graph, không chỉ như một file JavaScript |
 
+## Guides
+
+| Guide | Mô tả |
+|---|---|
+| [gutenberg-plugin-memory-leak-guide.md](gutenberg-plugin-memory-leak-guide.md) | Hướng dẫn debug và reproduce memory leak trong Gutenberg plugin blocks |
+
 ## Tìm Case
 
 Tra cứu theo thứ tự:
