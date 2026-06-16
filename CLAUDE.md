@@ -1,6 +1,7 @@
 # CLAUDE.md — SKVN Marine
 
-> Full rules: `docs/standards/ai-rules.md`
+⚠️ Do NOT read `docs/standards/ai-rules.md` automatically.
+Only read it if I explicitly say "check full rules".
 
 ## Project Names
 
@@ -10,6 +11,11 @@
 - Theme PHP prefix: `skvn_marine_`
 - Plugin PHP prefix: `skvn_marine_blocks_`
 - CSS prefix: `skvn-`
+
+## Rules
+- Only read files I explicitly mention
+- Do NOT explore project structure unless asked
+- Keep responses concise, no explanation unless asked
 
 ## Non-Negotiable Rules
 
