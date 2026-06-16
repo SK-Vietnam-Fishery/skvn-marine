@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.3 — Dynamic Product And Post Collections**
+Current milestone: **V1 / 1.3.4 — Core Control Foundation & Core Button Hover**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 

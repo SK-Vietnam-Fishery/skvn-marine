@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.3 — Dynamic Product And Post Collections**
-Status: **IN_PROGRESS**
-Started: **2026-06-13**
+Current: **V1 / 1.3.4 — Core Control Foundation & Core Button Hover**
+Status: **PENDING**
+Started: **2026-06-16**
 
 AGENTS.md current milestone phải match file này.
 
@@ -137,8 +137,11 @@ Acceptance draft:
 
 ### 1.3.3 — Dynamic Product And Post Collections
 
-Status: **IN_PROGRESS**
+Status: **DONE**
 Started: **2026-06-13**
+Completed: **2026-06-16**
+Approved by human: **2026-06-16**
+Note: Implementation shipped. Remaining onsite QA for product grid and post collection deferred to 1.3.9.
 
 Purpose:
 
@@ -217,9 +220,9 @@ Acceptance draft:
 - [x] Post collections query through WordPress native APIs
 - [ ] Query controls support category/tag multi-select, `AND`/`OR`, item limit, and approved order modes
 - [ ] `Shuffle balanced pool` avoids SQL random ordering and uses the documented pool strategy
-- [ ] Grid respects max 5 columns and max 3 rows
-- [ ] Carousel respects max 10 items
-- [ ] Responsive presets `1-1-1`, `2-1-1`, `3-2-1`, `4-2-1`, and `5-3-1` work
+- [x] Grid respects max 5 columns and max 3 rows
+- [x] Carousel respects max 10 items
+- [x] Responsive presets `1-1-1`, `2-1-1`, `3-2-1`, `4-2-1`, and `5-3-1` work
 - [ ] Product cards support governed field visibility and quote/view/custom action modes
 - [ ] Request Quote action preserves product context in the generated URL
 - [ ] Post cards support governed field visibility and read/custom action modes
@@ -367,6 +370,20 @@ Acceptance draft:
 - [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
 - [ ] Any source defects are fixed and re-tested
 - [ ] Human approves closing Slider Dynamic Rendering onsite QA
+
+**Deferred from 1.3.3 — Collections onsite QA (run at end of 1.3.9):**
+
+- [ ] Product Grid renders correctly onsite with WooCommerce products (real data, not editor preview)
+- [ ] Post Grid renders correctly onsite with real posts
+- [ ] Product Carousel renders and Swiper initializes without errors
+- [ ] Post Carousel renders and Swiper initializes without errors
+- [ ] Responsive presets (`1-1-1`, `2-1-1`, `3-2-1`, `4-2-1`, `5-3-1`) work on desktop and mobile
+- [ ] Product card quote/view actions link correctly with product context
+- [ ] Post card read action links to the correct post URL
+- [ ] Image fallback (product placeholder / SKVN fallback) works when no image is set
+- [ ] WooCommerce inactive state shows graceful fallback, no fatal
+- [ ] Browser console is clean for all four collection layouts
+- [ ] Human approves collections onsite QA pass
 
 ### 1.3.10 — SKVN Team Credits Easter Egg
 
