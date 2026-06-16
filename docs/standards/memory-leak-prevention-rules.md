@@ -26,7 +26,7 @@ If you write any of the **left** column, you MUST also write the **right** colum
 | `new Swiper(...)` | `.destroy(true, true)` |
 | `wp.data.subscribe(...)` | call the returned unsubscribe fn |
 | `addEventListener(...)` | `removeEventListener(...)` (same ref) |
-| `new IntersectionObserver(...)` / `MutationObserver` / `ResizeObserver` | `.disconnect()` |
+| `new IntersectionObserver(...)` / `MutationObserver` / `ResizeObserver` | `.disconnect()` — **exception**: a module-level observer whose lifetime IS the page/iframe lifecycle (e.g., a view script watching `document.body`) does not require `.disconnect()`. Document this intent with a comment at the declaration. |
 | `setInterval(...)` / `setTimeout(...)` | `clearInterval` / `clearTimeout` |
 | `requestAnimationFrame(...)` | `cancelAnimationFrame(...)` |
 | `useEffect(setup)` with side effects | `return () => cleanup` |
@@ -217,6 +217,31 @@ FUNCTION MyComponent():
 addFilter('blocks.registerBlockType', 'my/ns', fn)
 FUNCTION MyComponent():
     RETURN <div/>
+```
+
+`[MUST]` View scripts registered via `view_script` / `view_script_handles` for `apiVersion 3` blocks run **once** when the editor iframe loads and are **not** re-triggered on block re-renders. Gutenberg replaces the block's DOM element on every attribute change — the old Swiper instance becomes an orphan holding detached nodes; the new element is never initialised.
+
+Any resource init in a view script MUST use a `MutationObserver` to detect DOM replacement and trigger cleanup + re-init:
+
+```
+// REQUIRED pattern for view scripts in apiVersion 3 blocks
+function initBlock(el) { /* init Swiper, store cleanup on el */ }
+
+document.querySelectorAll('[data-my-block]').forEach(initBlock);
+
+// Observer lives for the page/iframe lifecycle — no disconnect needed (see Rule 0 exception).
+new MutationObserver((mutations) => {
+    for (const m of mutations) {
+        Array.from(m.removedNodes).forEach(node => {
+            if (node instanceof HTMLElement)
+                node.querySelector('[data-my-block]')?.myCleanup?.();
+        });
+        Array.from(m.addedNodes).forEach(node => {
+            if (node instanceof HTMLElement)
+                node.querySelectorAll('[data-my-block]').forEach(initBlock);
+        });
+    }
+}).observe(document.body, { childList: true, subtree: true });
 ```
 
 `[SHOULD]` SlotFill providers (custom sidebar panels) should store any subscription/listener at component level and clean it in `useEffect` return.
