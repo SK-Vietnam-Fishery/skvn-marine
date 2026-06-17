@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.4 — Core Control Foundation & Core Button Hover**
-Status: **PENDING**
-Started: **2026-06-16**
+Current: **V1 / 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix**
+Status: **IN PROGRESS**
+Started: **2026-06-17**
 
 AGENTS.md current milestone phải match file này.
 
@@ -297,6 +297,51 @@ Acceptance draft:
 - [ ] `prefers-reduced-motion` áp dụng cho mọi animation
 - [ ] Desktop + Mobile QA pass cho cả 3 page types
 - [ ] Human approves milestone completion
+
+### 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix
+
+Status: **IN PROGRESS**
+Started: **2026-06-17**
+
+Purpose:
+
+- Nâng cấp Inspector panel UX cho tất cả SKVN blocks (Content/Style/Layout/Advanced).
+- Thêm Slider Parallax effect dùng Swiper built-in Parallax Module.
+- Fix single post hero width, heading font, và thumbnail aspect-ratio (1.3.5 visual debt).
+- ThumbPress-compatible: dùng CSS `aspect-ratio` + `object-fit: cover`, không `add_image_size()`.
+
+Planning:
+
+- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md`
+
+Acceptance draft:
+
+**Trục C — Single Post Fix:**
+- [ ] Hero `.skvn-post-hero` render full-width trong GP content area
+- [ ] Heading trong hero dùng `font-family: var(--skvn-font-heading)`
+- [ ] Thumbnail hero dùng `aspect-ratio: 16/9` + `object-fit: cover`
+- [ ] Card thumbnail (archive, related) dùng `aspect-ratio: 3/2` + `object-fit: cover`
+- [ ] Không có `add_image_size()` mới — ThumbPress-compatible
+
+**Trục A — Editor UX:**
+- [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
+- [ ] Slider và Accordion có empty state placeholder với action button
+- [ ] Collection skeleton grid match responsive preset khi editor đang load
+- [ ] Block icons và descriptions không còn blank trong inserter
+- [ ] Inspector panel refactor không invalidate content hiện có
+
+**Trục B — Slider Parallax:**
+- [ ] `enableParallax` attribute tồn tại trong Slider block.json
+- [ ] Parallax chạy đúng trên desktop với intensity preset (subtle/medium/strong)
+- [ ] `prefers-reduced-motion` tắt parallax hoàn toàn
+- [ ] Parallax tắt khi `slidesPerView > 1`
+- [ ] Editor không chạy parallax — chỉ hiện badge "Parallax ON"
+
+**Chung:**
+- [ ] Plugin build pass, PHP lint pass
+- [ ] Human approves milestone completion
+
+---
 
 ### 1.3.4 — Core Control Foundation & Core Button Hover
 

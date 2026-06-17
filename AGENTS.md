@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.4 — Core Control Foundation & Core Button Hover**
+Current milestone: **V1 / 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
