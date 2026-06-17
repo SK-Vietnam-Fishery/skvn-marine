@@ -40,7 +40,6 @@ import productCollectionMetadata from './product-collection/block.json';
 import { Edit as ProductCollectionEdit } from './product-collection/edit';
 import { save as productCollectionSave } from './product-collection/save';
 import { registerProductCollectionVariations } from './product-collection/variations';
-import { registerSkvnMarineBlockPatterns } from './patterns';
 
 registerBlockType( accordionMetadata.name, {
 	...accordionMetadata,
@@ -94,4 +93,3 @@ registerBlockType( productCollectionMetadata.name, {
 	save: productCollectionSave,
 } );
 registerProductCollectionVariations();
-registerSkvnMarineBlockPatterns();
