@@ -233,9 +233,11 @@ function skvn_marine_enqueue_font_preset(): void {
 	$css      = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
 	$css     .= $selector . '{font-family:var(--skvn-font-heading);}';
 
-	if ( wp_style_is( 'skvn-marine-style', 'enqueued' ) ) {
-		wp_add_inline_style( 'skvn-marine-style', $css );
-	}
+	// Virtual handle — no src URL, depends on skvn-marine-style so it outputs after.
+	// Avoids wp_style_is() timing issues with the 'enqueued' check.
+	wp_register_style( 'skvn-font-preset', false, array( 'skvn-marine-style' ), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
+	wp_enqueue_style( 'skvn-font-preset' );
+	wp_add_inline_style( 'skvn-font-preset', $css );
 }
 
 // ---------------------------------------------------------------------------
