@@ -29,19 +29,19 @@ function skvn_marine_font_presets(): array {
 			'label'   => 'Instrument Serif (mặc định)',
 			'heading' => "'Instrument Serif', Georgia, serif",
 			'body'    => 'system-ui, sans-serif',
-			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap',
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Instrument+Serif&subset=vietnamese&display=swap',
 		),
 		'lora-inter' => array(
 			'label'   => 'Lora + Inter',
 			'heading' => "'Lora', Georgia, serif",
 			'body'    => "'Inter', system-ui, sans-serif",
-			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500&display=swap',
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500&subset=vietnamese&display=swap',
 		),
 		'barlow'     => array(
 			'label'   => 'Barlow (sans-serif)',
 			'heading' => "'Barlow', system-ui, sans-serif",
 			'body'    => "'Barlow', system-ui, sans-serif",
-			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap',
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&subset=vietnamese&display=swap',
 		),
 		'system'     => array(
 			'label'   => 'System (không cần Google Fonts)',
@@ -49,6 +49,19 @@ function skvn_marine_font_presets(): array {
 			'body'    => 'system-ui, -apple-system, sans-serif',
 			'gfonts'  => null,
 		),
+	);
+}
+
+/**
+ * Valid heading scope values.
+ *
+ * @return array<string, string>
+ */
+function skvn_marine_heading_scope_choices(): array {
+	return array(
+		'h1'    => 'H1 only',
+		'h1-h3' => 'H1 – H3',
+		'all'   => 'H1 – H6',
 	);
 }
 
@@ -62,6 +75,16 @@ function skvn_marine_get_font_preset(): string {
 	$presets = skvn_marine_font_presets();
 
 	return array_key_exists( $saved, $presets ) ? $saved : 'instrument';
+}
+
+/**
+ * Get the active heading scope, falling back to 'h1-h3'.
+ *
+ * @return string
+ */
+function skvn_marine_get_heading_scope(): string {
+	$saved = get_theme_mod( 'skvn_font_heading_scope', 'h1-h3' );
+	return array_key_exists( $saved, skvn_marine_heading_scope_choices() ) ? $saved : 'h1-h3';
 }
 
 // ---------------------------------------------------------------------------
@@ -80,11 +103,12 @@ function skvn_marine_register_font_customizer( WP_Customize_Manager $wp_customiz
 	$wp_customize->add_section(
 		'skvn_typography',
 		array(
-			'title'    => 'Typography (SKVN)',
+			'title'    => 'Typography (SKVN Marine)',
 			'priority' => 30,
 		)
 	);
 
+	// --- Font preset ---
 	$wp_customize->add_setting(
 		'skvn_font_preset',
 		array(
@@ -108,6 +132,27 @@ function skvn_marine_register_font_customizer( WP_Customize_Manager $wp_customiz
 			'choices' => $choices,
 		)
 	);
+
+	// --- Heading scope ---
+	$wp_customize->add_setting(
+		'skvn_font_heading_scope',
+		array(
+			'default'           => 'h1-h3',
+			'sanitize_callback' => 'skvn_marine_sanitize_heading_scope',
+			'transport'         => 'refresh',
+		)
+	);
+
+	$wp_customize->add_control(
+		'skvn_font_heading_scope',
+		array(
+			'label'       => 'Áp dụng heading font cho',
+			'description' => 'Giới hạn font chữ heading — serif thường xấu ở size nhỏ.',
+			'section'     => 'skvn_typography',
+			'type'        => 'radio',
+			'choices'     => skvn_marine_heading_scope_choices(),
+		)
+	);
 }
 
 /**
@@ -118,6 +163,37 @@ function skvn_marine_register_font_customizer( WP_Customize_Manager $wp_customiz
  */
 function skvn_marine_sanitize_font_preset( string $value ): string {
 	return array_key_exists( $value, skvn_marine_font_presets() ) ? $value : 'instrument';
+}
+
+/**
+ * Sanitize the heading scope choice.
+ *
+ * @param string $value Incoming value.
+ * @return string Sanitized value or 'h1-h3' fallback.
+ */
+function skvn_marine_sanitize_heading_scope( string $value ): string {
+	return array_key_exists( $value, skvn_marine_heading_scope_choices() ) ? $value : 'h1-h3';
+}
+
+// ---------------------------------------------------------------------------
+// CSS helper — build heading selector from scope setting
+// ---------------------------------------------------------------------------
+
+/**
+ * Return the CSS selector string for the active heading scope.
+ *
+ * @param string $scope One of 'h1', 'h1-h3', 'all'.
+ * @return string CSS selector.
+ */
+function skvn_marine_heading_selector( string $scope ): string {
+	switch ( $scope ) {
+		case 'h1':
+			return 'h1';
+		case 'all':
+			return 'h1,h2,h3,h4,h5,h6';
+		default: // 'h1-h3'
+			return 'h1,h2,h3';
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -149,10 +225,13 @@ function skvn_marine_enqueue_font_preset(): void {
 		);
 	}
 
-	// Inject --skvn-font-heading / --skvn-font-body as :root overrides.
+	// Inject CSS custom properties + scoped heading font-family rule.
 	// Values come from our own controlled preset array — no user input, no escaping needed.
 	// esc_attr() would corrupt single-quoted font names into HTML entities (invalid CSS).
-	$css = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
+	$scope    = skvn_marine_get_heading_scope();
+	$selector = skvn_marine_heading_selector( $scope );
+	$css      = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
+	$css     .= $selector . '{font-family:var(--skvn-font-heading);}';
 
 	if ( wp_style_is( 'skvn-marine-style', 'enqueued' ) ) {
 		wp_add_inline_style( 'skvn-marine-style', $css );
@@ -175,7 +254,10 @@ function skvn_marine_enqueue_font_preset_editor(): void {
 	$presets = skvn_marine_font_presets();
 	$preset  = $presets[ $key ];
 
-	$css = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
+	$scope    = skvn_marine_get_heading_scope();
+	$selector = skvn_marine_heading_selector( $scope );
+	$css      = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
+	$css     .= $selector . '{font-family:var(--skvn-font-heading);}';
 
 	wp_register_style( 'skvn-marine-font-editor', false, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
 	wp_enqueue_style( 'skvn-marine-font-editor' );
