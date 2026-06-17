@@ -1,6 +1,6 @@
 import { registerBlockType } from '@wordpress/blocks';
 
-import './editor/block-clipboard';
+import './core-controls';
 
 import accordionMetadata from './accordion/block.json';
 import { Edit as AccordionEdit } from './accordion/edit';

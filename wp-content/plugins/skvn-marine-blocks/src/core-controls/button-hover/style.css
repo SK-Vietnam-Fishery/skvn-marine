@@ -1,0 +1,13 @@
+/* Editor-only hover preview via CSS custom properties injected inline on the block wrapper. */
+.wp-block-button .wp-block-button__link:hover,
+.wp-block-button .wp-block-button__link:focus-visible {
+	color: var( --skvn-btn-hover-text, inherit );
+	background-color: var( --skvn-btn-hover-bg, inherit );
+	transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.wp-block-button .wp-block-button__link {
+		transition: none;
+	}
+}

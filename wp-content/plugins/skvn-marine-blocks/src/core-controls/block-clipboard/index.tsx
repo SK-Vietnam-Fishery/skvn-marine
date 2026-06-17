@@ -6,6 +6,8 @@ import { __ } from '@wordpress/i18n';
 import { store as noticesStore } from '@wordpress/notices';
 import { registerPlugin } from '@wordpress/plugins';
 
+import { isCoreControlEnabled } from '../config';
+
 const BLOCK_DELIMITER = '<!-- wp:';
 
 function BlockClipboardMenuItems() {
@@ -142,6 +144,8 @@ function BlockClipboardMenuItems() {
 	);
 }
 
-registerPlugin( 'skvn-marine-block-clipboard', {
-	render: BlockClipboardMenuItems,
-} );
+if ( isCoreControlEnabled( 'block_clipboard' ) ) {
+	registerPlugin( 'skvn-marine-block-clipboard', {
+		render: BlockClipboardMenuItems,
+	} );
+}
