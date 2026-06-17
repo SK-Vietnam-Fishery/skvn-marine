@@ -13,12 +13,14 @@ Only read it if I explicitly say "check full rules".
 - CSS prefix: `skvn-`
 
 ## Rules
+
 - Only read files I explicitly mention
 - Do NOT explore project structure unless asked
 - Keep responses concise, no explanation unless asked
 
 ## Non-Negotiable Rules
 
+- Read `AGENTS.md` for additional context
 - Do not edit `wp-content/themes/generatepress/`.
 - Do not create custom Gutenberg blocks inside the theme.
 - Put custom blocks in `skvn-marine-blocks`.

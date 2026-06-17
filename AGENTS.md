@@ -514,6 +514,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.2 | Feature Showcase Autoplay And Panel Links |
 | 1.3.3 | Dynamic Product And Post Collections |
 | 1.3.4 | Core Control Foundation & Core Button Hover |
+| 1.3.5 | Post, Product & Archive Page Improvements |
 | 1.3.9 | Slider Dynamic Rendering & Controls Onsite QA |
 | 1.3.10 | SKVN Team Credits Easter Egg |
 | 1.4.0 | SKVN Theme Init Setup UI |

@@ -248,6 +248,56 @@ Deferred to 2.x.x or later:
 - Technical product/specification card
 - Universal CPT collection block
 
+### 1.3.5 — Post, Product & Archive Page Improvements
+
+Status: **PLANNING**
+Started: **2026-06-17**
+
+Purpose:
+
+- Cải thiện giao diện và UX cho trang Post, Product, và Archive theo Style C Hybrid.
+- Thiết lập font token system configurable qua WP Customizer.
+- Fix CSS token bridge giữa `--skvn-*` và `--wp--preset--*`.
+- Ẩn comment section và Reviews tab không phù hợp B2B.
+- Phục vụ context xuất nhập khẩu thủy sản cao cấp (grouper, mahi-mahi) — positioning gần luxury food brand.
+
+Planning:
+
+- `.context/planning/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md`
+
+Design artifacts:
+
+- `docs/artifacts/post-archive-style-C-hybrid.html`
+- `docs/artifacts/single-post-style-C.html`
+- `docs/artifacts/single-product-style-C.html`
+- `docs/artifacts/font-compare-b2b.html`
+
+Implementation order:
+
+1. Font Customizer control (default: Instrument Serif)
+2. CSS token bridge fix (`--skvn-color-*` → `--wp--preset--color--*`)
+3. Archive page — Style C Hybrid
+4. Single Product page — conversion priority
+5. Single Post page — content marketing
+
+Acceptance draft:
+
+- [ ] Font Customizer control hoạt động, 4 preset chuyển đổi được
+- [ ] Instrument Serif là default, load từ Google Fonts
+- [ ] CSS token bridge: `--skvn-color-*` reference đúng chiều từ WP preset vars
+- [ ] Archive page dùng layout Style C Hybrid (featured post + card grid)
+- [ ] Sidebar archive: open = 2fr + 1fr, closed = full-width 3-col grid
+- [ ] Single Product: gallery trái + details phải, Quote CTA primary nổi bật
+- [ ] Single Product: Reviews tab đã bị ẩn
+- [ ] Single Product: placeholder navy branded "Hình sắp cập nhật"
+- [ ] Single Product: trust signals (VSATTP, HACCP, Cold Chain, Bảo hành)
+- [ ] Single Post: hero image + content + sidebar phải
+- [ ] Single Post: comment section đã bị ẩn
+- [ ] Layout sizing dùng `fr`/`%` — không hardcode px/em
+- [ ] `prefers-reduced-motion` áp dụng cho mọi animation
+- [ ] Desktop + Mobile QA pass cho cả 3 page types
+- [ ] Human approves milestone completion
+
 ### 1.3.4 — Core Control Foundation & Core Button Hover
 
 Status: **PENDING**

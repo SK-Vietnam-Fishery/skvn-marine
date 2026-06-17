@@ -166,6 +166,13 @@ Page-level controls such as Hide site header and Hide site footer belong to the 
 **A12. Footer Page Settings**
 0.9.0 adds a plugin settings page for `skvn_footer_page_id`. The theme renders the selected footer page through GeneratePress' `generate_footer` surface, with GeneratePress default footer as fallback. No custom CPT, no display rules system, and no GeneratePress replacement. Implement footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin; do not create or rename to `gutenberg-supercharger` or `gutenberg-turbo` in V1.
 
+**A13. Plugin CSS independence — token cascade**
+Plugin `skvn-marine-blocks` phải có khả năng hoạt động độc lập, không phụ thuộc hoàn toàn vào theme.
+Sự phụ thuộc hiện tại (plugin dùng `--skvn-*` tokens từ theme) là **technical debt được chấp nhận có chủ ý** để phát triển nhanh.
+CSS token cascade đúng: Plugin CSS (define defaults/fallback) → Theme style.css (override `--skvn-*`) → GP Customizer (future).
+Invariant: KHÔNG tạo thêm dependency ngầm từ plugin → theme mà không ghi nhận. Nếu buộc dùng theme token, ghi chú technical debt rõ ràng tại chỗ.
+Roadmap: Dần move tokens cần thiết vào plugin block CSS với fallback values, để sau này tách hoàn toàn.
+
 **A5. Animation runtime dùng chung**
 `assets/js/animations.js` là single runtime. KHÔNG tạo animation logic riêng per block trừ khi bắt buộc.
 Invariant: tất cả animation phải respect `prefers-reduced-motion`.
