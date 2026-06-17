@@ -150,10 +150,9 @@ function skvn_marine_enqueue_font_preset(): void {
 	}
 
 	// Inject --skvn-font-heading / --skvn-font-body as :root overrides.
-	$heading_stack = esc_attr( $preset['heading'] );
-	$body_stack    = esc_attr( $preset['body'] );
-
-	$css = ":root{--skvn-font-heading:{$heading_stack};--skvn-font-body:{$body_stack};}";
+	// Values come from our own controlled preset array — no user input, no escaping needed.
+	// esc_attr() would corrupt single-quoted font names into HTML entities (invalid CSS).
+	$css = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
 
 	if ( wp_style_is( 'skvn-marine-style', 'enqueued' ) ) {
 		wp_add_inline_style( 'skvn-marine-style', $css );
@@ -176,10 +175,7 @@ function skvn_marine_enqueue_font_preset_editor(): void {
 	$presets = skvn_marine_font_presets();
 	$preset  = $presets[ $key ];
 
-	$heading_stack = esc_attr( $preset['heading'] );
-	$body_stack    = esc_attr( $preset['body'] );
-
-	$css = ":root{--skvn-font-heading:{$heading_stack};--skvn-font-body:{$body_stack};}";
+	$css = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
 
 	wp_register_style( 'skvn-marine-font-editor', false, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
 	wp_enqueue_style( 'skvn-marine-font-editor' );
