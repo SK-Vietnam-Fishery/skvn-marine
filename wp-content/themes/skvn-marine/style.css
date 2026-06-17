@@ -2,7 +2,7 @@
 Theme Name: SKVN Marine
 Template: generatepress
 Text Domain: skvn-marine
-Version: 1.3.2
+Version: 1.3.5
 Requires at least: 6.5
 Requires PHP: 7.4
 Update URI: false
@@ -11,43 +11,65 @@ Author: SKVN
 */
 
 :root {
-	--skvn-color-blue-950: #082f49;
-	--skvn-color-blue-900: #0c4a6e;
-	--skvn-color-blue-700: #0369a1;
+	/* -----------------------------------------------------------------------
+	 * Color palette — WP preset is source of truth; hex fallback for contexts
+	 * where theme.json global styles have not yet loaded (e.g. plain PHP page).
+	 * Cascade: theme.json preset → these bridge vars → plugin plugin-css fallback.
+	 * ----------------------------------------------------------------------- */
+	--skvn-color-blue-950:  var(--wp--preset--color--skvn-blue-950,  #082f49);
+	--skvn-color-blue-900:  var(--wp--preset--color--skvn-blue-900,  #0c4a6e);
+	--skvn-color-blue-700:  var(--wp--preset--color--skvn-blue-700,  #0369a1);
+	--skvn-color-mint-100:  var(--wp--preset--color--skvn-mint-100,  #ddfaf4);
+	--skvn-color-gold-300:  var(--wp--preset--color--skvn-gold-300,  #e9c766);
+	--skvn-color-teal-600:  var(--wp--preset--color--skvn-teal-600,  #0d9488);
+	--skvn-color-sky-50:    var(--wp--preset--color--skvn-sky-50,    #f0f9ff);
+	--skvn-color-slate-700: var(--wp--preset--color--skvn-slate-700, #334155);
+	--skvn-color-slate-900: var(--wp--preset--color--skvn-slate-900, #0f172a);
+	--skvn-color-white:     var(--wp--preset--color--skvn-white,     #ffffff);
+	/* No WP preset equivalent — keep as hardcoded fallback */
 	--skvn-color-trust-blue: #0f5c8c;
-	--skvn-color-mint-100: #ddfaf4;
-	--skvn-color-gold-300: #e9c766;
-	--skvn-color-teal-600: #0d9488;
-	--skvn-color-fresh-sky: #eaf7ff;
-	--skvn-color-sky-50: #f0f9ff;
-	--skvn-color-slate-700: #334155;
-	--skvn-color-slate-900: #0f172a;
-	--skvn-color-white: #ffffff;
+	--skvn-color-fresh-sky:  #eaf7ff;
+
+	/* Semantic role aliases — consumed by plugin CSS and component styles */
+	--skvn-color-primary: var(--skvn-color-blue-700);
+	--skvn-color-navy:    var(--skvn-color-blue-950);
+	--skvn-color-accent:  var(--skvn-color-teal-600);
+	--skvn-color-text:    var(--skvn-color-slate-700);
+	--skvn-color-surface: var(--skvn-color-sky-50);
+
 	--skvn-accent-support: var(--skvn-color-mint-100);
 	--skvn-accent-premium: var(--skvn-color-gold-300);
+
 	/* Heading semantic tokens */
-	--skvn-heading-color: var(--wp--preset--color--skvn-blue-950);
+	--skvn-heading-color:          var(--skvn-color-blue-950);
 	--skvn-heading-weight-display: 800;
 	--skvn-heading-weight-primary: 700;
 	--skvn-heading-weight-secondary: 600;
-	--skvn-footer-bg: var(--skvn-color-blue-950);
-	--skvn-footer-border: rgba(255, 255, 255, 0.14);
-	--skvn-footer-chip-bg: var(--skvn-color-white);
+
+	/* Footer tokens */
+	--skvn-footer-bg:          var(--skvn-color-blue-950);
+	--skvn-footer-border:      rgba(255, 255, 255, 0.14);
+	--skvn-footer-chip-bg:     var(--skvn-color-white);
 	--skvn-footer-chip-bg-hover: rgba(255, 255, 255, 0.2);
-	--skvn-footer-chip-text: var(--skvn-footer-bg);
-	--skvn-footer-heading: var(--skvn-color-white);
-	--skvn-footer-link: rgba(255, 255, 255, 0.82);
-	--skvn-footer-link-hover: var(--skvn-color-white);
-	--skvn-footer-muted: rgba(219, 234, 254, 0.78);
-	--skvn-footer-social-bg: rgba(255, 255, 255, 0.12);
-	--skvn-footer-text: rgba(255, 255, 255, 0.78);
-	--skvn-font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-	--skvn-font-heading: var(--skvn-font-body);
-	--skvn-font-ui: var(--skvn-font-body);
-	--skvn-radius-card: 8px;
-	--skvn-shadow-card: 0 10px 30px rgba(8, 47, 73, 0.1);
-	--skvn-content-width: 760px;
-	--skvn-wide-width: 1200px;
+	--skvn-footer-chip-text:   var(--skvn-footer-bg);
+	--skvn-footer-heading:     var(--skvn-color-white);
+	--skvn-footer-link:        rgba(255, 255, 255, 0.82);
+	--skvn-footer-link-hover:  var(--skvn-color-white);
+	--skvn-footer-muted:       rgba(219, 234, 254, 0.78);
+	--skvn-footer-social-bg:   rgba(255, 255, 255, 0.12);
+	--skvn-footer-text:        rgba(255, 255, 255, 0.78);
+
+	/* Font tokens — baseline defaults. inc/customizer.php overrides these
+	 * via wp_add_inline_style (priority 15) with the Customizer-chosen preset. */
+	--skvn-font-heading: 'Instrument Serif', Georgia, serif;
+	--skvn-font-body:    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--skvn-font-ui:      var(--skvn-font-body);
+
+	/* Component tokens */
+	--skvn-radius-card:    8px;
+	--skvn-shadow-card:    0 10px 30px rgba(8, 47, 73, 0.1);
+	--skvn-content-width:  760px;
+	--skvn-wide-width:     1200px;
 }
 
 body,
@@ -2836,5 +2858,1390 @@ body.skvn-has-footer-page .site {
 
 	.skvn-b2b-editorial__heading {
 		font-size: clamp(2.75rem, 15vw, 4.25rem);
+	}
+}
+
+/* ==========================================================================
+   Archive — Style C Hybrid (1.3.5)
+   Layout owner: .skvn-archive-layout (grid). Width flows from GP page canvas.
+   No 100vw, no margin-50vw, no overflow-x hide.
+   ========================================================================== */
+
+.skvn-archive-wrap {
+	max-width: var(--skvn-wide-width);
+	margin-inline: auto;
+	padding-inline: 1rem;
+	padding-block: 2.5rem 4rem;
+}
+
+/* Archive banner */
+.skvn-archive-banner {
+	background: linear-gradient(to right, var(--skvn-color-blue-950), var(--skvn-color-trust-blue));
+	color: var(--skvn-color-white);
+	padding-block: 3rem;
+}
+
+.skvn-archive-banner__inner {
+	max-width: var(--skvn-wide-width);
+	margin-inline: auto;
+	padding-inline: 1rem;
+}
+
+.skvn-archive-banner__eyebrow {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--skvn-color-mint-100);
+	margin-bottom: 0.625rem;
+}
+
+.skvn-archive-banner__title {
+	font-size: clamp(1.5rem, 4vw, 2.25rem);
+	font-weight: 800;
+	letter-spacing: -0.03em;
+	color: var(--skvn-color-white);
+	margin-bottom: 0.5rem;
+}
+
+.skvn-archive-banner__desc {
+	color: rgba(255, 255, 255, 0.65);
+	font-size: 0.875rem;
+	font-weight: 300;
+}
+
+/* Featured post — 2-col: image | content */
+.skvn-archive-featured {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	overflow: hidden;
+	margin-bottom: 2rem;
+}
+
+.skvn-archive-featured__thumb {
+	min-height: 16rem;
+	background: var(--skvn-color-blue-900);
+	overflow: hidden;
+}
+
+.skvn-archive-featured__thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.skvn-archive-featured__placeholder {
+	width: 100%;
+	height: 100%;
+	min-height: 16rem;
+	background: linear-gradient(135deg, var(--skvn-color-blue-950), var(--skvn-color-blue-900));
+}
+
+.skvn-archive-featured__body {
+	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.skvn-archive-featured__label {
+	display: inline-block;
+	font-size: 0.5625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--skvn-color-gold-300);
+	background: var(--skvn-color-blue-950);
+	padding: 0.2rem 0.625rem;
+	border-radius: 2px;
+	margin-bottom: 0.875rem;
+}
+
+.skvn-archive-featured__cat {
+	font-size: 0.5938rem;
+	text-transform: uppercase;
+	letter-spacing: 0.12em;
+	color: var(--skvn-color-teal-600);
+	margin-bottom: 0.625rem;
+}
+
+.skvn-archive-featured__title {
+	font-size: clamp(1rem, 2.5vw, 1.375rem);
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: -0.02em;
+	color: var(--skvn-color-slate-900);
+	margin-bottom: 0.75rem;
+}
+
+.skvn-archive-featured__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.skvn-archive-featured__title a:hover {
+	color: var(--skvn-color-blue-700);
+}
+
+.skvn-archive-featured__excerpt {
+	font-size: 0.84375rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.65;
+	font-weight: 300;
+	margin-bottom: 1.25rem;
+}
+
+.skvn-archive-featured__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	background: var(--skvn-color-blue-950);
+	color: var(--skvn-color-white);
+	font-size: 0.6875rem;
+	font-weight: 600;
+	padding: 0.5625rem 1.125rem;
+	border-radius: 5px;
+	text-decoration: none;
+	align-self: flex-start;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-archive-featured__btn {
+		transition: background 0.2s;
+	}
+}
+
+.skvn-archive-featured__btn:hover {
+	background: var(--skvn-color-blue-900);
+	color: var(--skvn-color-white);
+}
+
+/* Archive layout: main + sidebar */
+.skvn-archive-layout {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: 2.5rem;
+	align-items: start;
+}
+
+/* Post card grid */
+.skvn-archive-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1.25rem;
+}
+
+.skvn-post-card {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-post-card {
+		transition: box-shadow 0.2s;
+	}
+}
+
+.skvn-post-card:hover {
+	box-shadow: 0 8px 24px rgba(8, 47, 73, 0.1);
+}
+
+.skvn-post-card__thumb {
+	aspect-ratio: 16 / 9;
+	background: var(--skvn-color-blue-900);
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.skvn-post-card__thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.skvn-post-card__placeholder {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, var(--skvn-color-blue-950), var(--skvn-color-blue-900));
+}
+
+.skvn-post-card__body {
+	padding: 1.125rem;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.skvn-post-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.625rem;
+}
+
+.skvn-post-card__cat a {
+	font-size: 0.59375rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-teal-600);
+	text-decoration: none;
+}
+
+.skvn-post-card__cat a:hover {
+	color: var(--skvn-color-blue-700);
+}
+
+.skvn-post-card__dot {
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background: rgba(51, 65, 85, 0.25);
+	flex-shrink: 0;
+}
+
+.skvn-post-card__date {
+	font-size: 0.59375rem;
+	color: var(--skvn-color-slate-700);
+}
+
+.skvn-post-card__title {
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.4;
+	letter-spacing: -0.01em;
+	color: var(--skvn-color-slate-900);
+	margin-bottom: 0.5rem;
+}
+
+.skvn-post-card__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.skvn-post-card__title a:hover {
+	color: var(--skvn-color-blue-700);
+}
+
+.skvn-post-card__excerpt {
+	font-size: 0.78125rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.6;
+	font-weight: 300;
+	flex: 1;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.skvn-post-card__foot {
+	margin-top: 0.875rem;
+	padding-top: 0.75rem;
+	border-top: 1px solid rgba(51, 65, 85, 0.1);
+}
+
+.skvn-post-card__link {
+	font-size: 0.59375rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-blue-700);
+	text-decoration: none;
+}
+
+.skvn-post-card__link:hover {
+	color: var(--skvn-color-blue-950);
+}
+
+.skvn-archive-empty {
+	color: var(--skvn-color-slate-700);
+	padding-block: 2rem;
+}
+
+/* Pagination */
+.skvn-archive-pagination {
+	margin-top: 2.5rem;
+	display: flex;
+	justify-content: center;
+}
+
+.skvn-archive-pagination .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 2.25rem;
+	height: 2.25rem;
+	padding-inline: 0.5rem;
+	border: 1px solid rgba(51, 65, 85, 0.2);
+	border-radius: 6px;
+	font-size: 0.75rem;
+	color: var(--skvn-color-slate-700);
+	text-decoration: none;
+	background: var(--skvn-color-white);
+	margin-inline: 0.1875rem;
+}
+
+.skvn-archive-pagination .page-numbers.current,
+.skvn-archive-pagination .page-numbers:hover {
+	background: var(--skvn-color-blue-950);
+	color: var(--skvn-color-white);
+	border-color: var(--skvn-color-blue-950);
+}
+
+/* Archive sidebar */
+.skvn-archive-sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	position: sticky;
+	top: 2rem;
+}
+
+/* Island (sidebar box) — shared for archive + product + post sidebars */
+.skvn-island {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	padding: 1rem;
+}
+
+.skvn-island--navy {
+	background: var(--skvn-color-blue-950);
+	border-color: transparent;
+	color: var(--skvn-color-white);
+}
+
+.skvn-island__eyebrow {
+	font-size: 0.5625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--skvn-color-mint-100);
+	margin-bottom: 0.5rem;
+}
+
+.skvn-island__label {
+	font-size: 0.59375rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: var(--skvn-color-slate-700);
+	margin-bottom: 0.75rem;
+}
+
+.skvn-island--navy .skvn-island__label {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.skvn-island__heading {
+	font-size: 0.875rem;
+	font-weight: 600;
+	line-height: 1.4;
+	color: var(--skvn-color-white);
+	margin-bottom: 0.875rem;
+}
+
+.skvn-island__cta {
+	display: block;
+	text-align: center;
+	background: var(--skvn-color-gold-300);
+	color: var(--skvn-color-blue-950);
+	font-weight: 700;
+	font-size: 0.75rem;
+	padding: 0.625rem;
+	border-radius: 6px;
+	text-decoration: none;
+}
+
+.skvn-island__cta:hover {
+	background: #f0d060;
+	color: var(--skvn-color-blue-950);
+}
+
+.skvn-island__note {
+	display: block;
+	text-align: center;
+	font-size: 0.5625rem;
+	color: rgba(255, 255, 255, 0.35);
+	margin-top: 0.5rem;
+}
+
+.skvn-island__cat-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.skvn-island__cat-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-block: 0.3125rem;
+	border-bottom: 1px solid rgba(51, 65, 85, 0.08);
+}
+
+.skvn-island__cat-row:last-child {
+	border-bottom: none;
+}
+
+.skvn-island__cat-row a {
+	font-size: 0.78125rem;
+	color: var(--skvn-color-slate-700);
+	text-decoration: none;
+}
+
+.skvn-island__cat-row a:hover {
+	color: var(--skvn-color-blue-700);
+}
+
+.skvn-island__cat-count {
+	font-size: 0.625rem;
+	color: var(--skvn-color-slate-700);
+}
+
+.skvn-island__cert-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.skvn-island__cert-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding-block: 0.3125rem;
+}
+
+.skvn-island__cert-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+	background: var(--skvn-color-teal-600);
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	font-size: 0.625rem;
+	color: var(--skvn-color-white);
+}
+
+.skvn-island__cert-row span:last-child {
+	font-size: 0.75rem;
+	color: var(--skvn-color-slate-700);
+}
+
+/* Archive — responsive */
+@media (max-width: 900px) {
+	.skvn-archive-featured {
+		grid-template-columns: 1fr;
+	}
+
+	.skvn-archive-featured__thumb {
+		min-height: 12rem;
+	}
+
+	.skvn-archive-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.skvn-archive-sidebar {
+		position: static;
+	}
+
+	.skvn-archive-grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.skvn-archive-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ==========================================================================
+   Single Product — Style C (1.3.5)
+   WooCommerce visual layer. Cascade sits above WC default styles.
+   No hardcoded px/em for layout sizing — fr/% only.
+   ========================================================================== */
+
+/* Product page outer layout: content area + sidebar */
+.woocommerce div.product,
+.skvn-product-layout {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	gap: 2.5rem;
+	align-items: start;
+	max-width: var(--skvn-wide-width);
+	margin-inline: auto;
+	padding-inline: 1rem;
+	padding-block: 2.5rem;
+}
+
+/* WooCommerce default product gallery — clear floats, let grid own the layout */
+.woocommerce div.product div.images {
+	float: none;
+	width: 100%;
+}
+
+.woocommerce div.product div.summary {
+	float: none;
+	width: 100%;
+	clear: none;
+}
+
+/* GP/WC compat: wrap images and summary into a 2-col inner grid */
+.woocommerce .product-images-summary-wrap {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 3rem;
+	margin-bottom: 3rem;
+}
+
+/* Product placeholder (WC placeholder override) */
+.skvn-product-placeholder {
+	aspect-ratio: 1 / 1;
+	background: linear-gradient(135deg, var(--skvn-color-blue-950) 0%, var(--skvn-color-trust-blue) 100%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--skvn-radius-card);
+}
+
+.skvn-product-placeholder span {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	color: rgba(255, 255, 255, 0.25);
+}
+
+/* WooCommerce gallery thumbnails */
+.woocommerce div.product div.images .flex-control-thumbs {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.5rem;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.woocommerce div.product div.images .flex-control-thumbs li {
+	margin: 0;
+}
+
+.woocommerce div.product div.images .flex-control-thumbs li img {
+	border-radius: 6px;
+	border: 2px solid transparent;
+	cursor: pointer;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+}
+
+.woocommerce div.product div.images .flex-control-thumbs li img.flex-active {
+	border-color: var(--skvn-color-blue-700);
+}
+
+/* Product category tags */
+.woocommerce div.product .posted_in a,
+.skvn-product-cat-tag {
+	display: inline-block;
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-teal-600);
+	background: var(--skvn-color-mint-100);
+	border: 1px solid rgba(13, 148, 136, 0.2);
+	padding: 0.1875rem 0.625rem;
+	border-radius: 3px;
+	text-decoration: none;
+	margin-inline-end: 0.25rem;
+}
+
+/* Product meta (SKU + stock) */
+.woocommerce div.product .product_meta {
+	font-size: 0.6875rem;
+	color: var(--skvn-color-slate-700);
+}
+
+.woocommerce div.product .product_meta .sku_wrapper,
+.woocommerce div.product .product_meta .posted_in {
+	display: block;
+}
+
+/* Product short description */
+.woocommerce div.product .woocommerce-product-details__short-description {
+	font-size: 0.90625rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.65;
+	margin-bottom: 1.5rem;
+}
+
+.woocommerce div.product .woocommerce-product-details__short-description ul {
+	padding-left: 1.25rem;
+}
+
+.woocommerce div.product .woocommerce-product-details__short-description li {
+	margin-bottom: 0.375rem;
+}
+
+/* Quote CTA zone — full-width primary */
+.skvn-product-cta-zone {
+	margin-bottom: 1rem;
+}
+
+.skvn-product-cta-primary {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	width: 100%;
+	background: var(--skvn-color-blue-950);
+	color: var(--skvn-color-white);
+	font-size: 0.9375rem;
+	font-weight: 700;
+	padding: 1rem 1.5rem;
+	border-radius: 8px;
+	text-decoration: none;
+	letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-product-cta-primary {
+		transition: background 0.15s;
+	}
+}
+
+.skvn-product-cta-primary:hover {
+	background: var(--skvn-color-blue-900);
+	color: var(--skvn-color-white);
+}
+
+.skvn-product-cta-secondary {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	width: 100%;
+	background: transparent;
+	color: var(--skvn-color-blue-950);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	padding: 0.625rem 1.5rem;
+	border-radius: 8px;
+	border: 1.5px solid var(--skvn-color-blue-950);
+	text-decoration: none;
+	margin-top: 0.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-product-cta-secondary {
+		transition: background 0.15s;
+	}
+}
+
+.skvn-product-cta-secondary:hover {
+	background: var(--skvn-color-sky-50);
+	color: var(--skvn-color-blue-950);
+}
+
+.skvn-product-cta-note {
+	font-size: 0.625rem;
+	color: var(--skvn-color-slate-700);
+	text-align: center;
+	margin-top: 0.5rem;
+}
+
+/* Trust signals */
+.skvn-product-trust {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 0.5rem;
+	margin-top: 1.25rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid rgba(51, 65, 85, 0.12);
+}
+
+.skvn-product-trust__item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.625rem 0.375rem;
+	background: var(--skvn-color-sky-50);
+	border: 1px solid rgba(3, 105, 161, 0.12);
+	border-radius: 6px;
+	text-align: center;
+}
+
+.skvn-product-trust__icon {
+	font-size: 1.125rem;
+	line-height: 1;
+}
+
+.skvn-product-trust__label {
+	font-size: 0.5625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--skvn-color-blue-700);
+	line-height: 1.3;
+}
+
+/* Product tabs — override WooCommerce default tab styles */
+.woocommerce div.product .woocommerce-tabs {
+	margin-top: 0;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+	display: flex;
+	border-bottom: 1px solid rgba(51, 65, 85, 0.15);
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs::before {
+	display: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li {
+	background: transparent;
+	border: none;
+	border-radius: 0;
+	margin: 0;
+	padding: 0;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li::before,
+.woocommerce div.product .woocommerce-tabs ul.tabs li::after {
+	display: none;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li a {
+	display: block;
+	padding: 0.875rem 1.5rem;
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--skvn-color-slate-700);
+	border-bottom: 2px solid transparent;
+	text-decoration: none;
+	background: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.woocommerce div.product .woocommerce-tabs ul.tabs li a {
+		transition: color 0.15s;
+	}
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li.active a {
+	color: var(--skvn-color-blue-950);
+	border-bottom-color: var(--skvn-color-blue-950);
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li a:hover {
+	color: var(--skvn-color-slate-900);
+}
+
+.woocommerce div.product .woocommerce-tabs .panel {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-top: none;
+	border-radius: 0 0 var(--skvn-radius-card) var(--skvn-radius-card);
+	padding: 2rem 2.5rem;
+	margin: 0;
+}
+
+.woocommerce div.product .woocommerce-tabs .panel h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--skvn-color-slate-900);
+	margin-bottom: 0.75rem;
+}
+
+.woocommerce div.product .woocommerce-tabs .panel p {
+	font-size: 0.90625rem;
+	color: var(--skvn-color-slate-700);
+	margin-bottom: 0.875rem;
+}
+
+.woocommerce div.product .woocommerce-tabs .panel ul {
+	padding-left: 1.25rem;
+	color: var(--skvn-color-slate-700);
+	font-size: 0.90625rem;
+}
+
+.woocommerce div.product .woocommerce-tabs .panel ul li {
+	margin-bottom: 0.375rem;
+}
+
+/* Documents tab */
+.skvn-product-tab-documents h2 {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--skvn-color-slate-900);
+	margin-bottom: 0.75rem;
+}
+
+/* WooCommerce additional information (specs table) */
+.woocommerce div.product .woocommerce-tabs #tab-additional_information h2 {
+	display: none;
+}
+
+.woocommerce table.shop_attributes {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.84375rem;
+}
+
+.woocommerce table.shop_attributes tr {
+	border-bottom: 1px solid rgba(51, 65, 85, 0.1);
+}
+
+.woocommerce table.shop_attributes tr:last-child {
+	border-bottom: none;
+}
+
+.woocommerce table.shop_attributes th {
+	font-weight: 600;
+	color: var(--skvn-color-slate-900);
+	padding: 0.625rem 0.75rem;
+	width: 40%;
+	background: var(--skvn-color-sky-50);
+	text-align: left;
+}
+
+.woocommerce table.shop_attributes td {
+	color: var(--skvn-color-slate-700);
+	padding: 0.625rem 0.75rem;
+}
+
+/* Related products */
+.woocommerce div.product .related.products {
+	margin-top: 3rem;
+}
+
+.woocommerce div.product .related.products > h2 {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--skvn-color-slate-700);
+	font-weight: 400;
+	margin-bottom: 1.25rem;
+}
+
+.woocommerce ul.products {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 1rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.woocommerce ul.products li.product {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.woocommerce ul.products li.product {
+		transition: box-shadow 0.2s;
+	}
+}
+
+.woocommerce ul.products li.product:hover {
+	box-shadow: var(--skvn-shadow-card);
+}
+
+.woocommerce ul.products li.product a img {
+	width: 100%;
+	aspect-ratio: 1 / 1;
+	object-fit: cover;
+	display: block;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--skvn-color-slate-900);
+	padding: 0.875rem 0.875rem 0;
+	line-height: 1.35;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-category__title {
+	font-size: 0.59375rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-teal-600);
+	padding: 0.875rem 0.875rem 0;
+}
+
+.woocommerce ul.products li.product .button {
+	display: block;
+	text-align: center;
+	font-size: 0.6875rem;
+	font-weight: 600;
+	color: var(--skvn-color-blue-950);
+	border: 1px solid var(--skvn-color-blue-950);
+	padding: 0.375rem;
+	border-radius: 5px;
+	text-decoration: none;
+	margin: 0.625rem 0.875rem 0.875rem;
+	background: transparent;
+}
+
+.woocommerce ul.products li.product .button:hover {
+	background: var(--skvn-color-sky-50);
+}
+
+/* Product page — responsive */
+@media (max-width: 900px) {
+	.woocommerce div.product,
+	.skvn-product-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.woocommerce ul.products {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.woocommerce div.product .woocommerce-tabs .panel {
+		padding: 1.25rem;
+	}
+}
+
+@media (max-width: 600px) {
+	.skvn-product-trust {
+		grid-template-columns: 1fr;
+	}
+
+	.woocommerce ul.products {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ==========================================================================
+   Single Post — Style C (1.3.5)
+   Layout owner: .skvn-single-layout (grid). Width flows from GP page canvas.
+   Hero uses position:relative within the content flow — no 100vw breakout.
+   ========================================================================== */
+
+/* Post hero */
+.skvn-post-hero {
+	position: relative;
+	min-height: 24rem;
+	background: var(--skvn-color-blue-900);
+	display: flex;
+	align-items: flex-end;
+	overflow: hidden;
+}
+
+.skvn-post-hero__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.skvn-post-hero__overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to top, rgba(8, 47, 73, 0.92) 0%, rgba(8, 47, 73, 0.4) 60%, transparent 100%);
+}
+
+.skvn-post-hero__placeholder {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(135deg, var(--skvn-color-blue-950) 0%, var(--skvn-color-trust-blue) 100%);
+}
+
+.skvn-post-hero__content {
+	position: relative;
+	z-index: 1;
+	max-width: var(--skvn-wide-width);
+	margin-inline: auto;
+	padding: 0 1rem 2.25rem;
+	width: 100%;
+}
+
+.skvn-post-hero__meta {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	margin-bottom: 0.875rem;
+}
+
+.skvn-post-hero__cat {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.15em;
+	background: var(--skvn-color-teal-600);
+	color: var(--skvn-color-white);
+	padding: 0.1875rem 0.625rem;
+	border-radius: 3px;
+	text-decoration: none;
+}
+
+.skvn-post-hero__date {
+	font-size: 0.625rem;
+	color: rgba(255, 255, 255, 0.55);
+}
+
+.skvn-post-hero__title {
+	font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+	font-weight: 800;
+	color: var(--skvn-color-white);
+	letter-spacing: -0.03em;
+	line-height: 1.2;
+	max-width: 42.5rem;
+}
+
+/* Single post outer wrap + layout */
+.skvn-single-wrap {
+	max-width: var(--skvn-wide-width);
+	margin-inline: auto;
+	padding-inline: 1rem;
+	padding-block: 2.5rem 4rem;
+}
+
+.skvn-single-layout {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: 2.5rem;
+	align-items: start;
+}
+
+/* Post body card */
+.skvn-post-body {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	padding: 2.5rem 3rem;
+	margin: 0;
+}
+
+/* Author row */
+.skvn-post-author {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	padding-bottom: 1.5rem;
+	margin-bottom: 1.75rem;
+	border-bottom: 1px solid rgba(51, 65, 85, 0.1);
+}
+
+.skvn-post-author__avatar {
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 50%;
+	background: var(--skvn-color-blue-900);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--skvn-color-white);
+	font-weight: 700;
+	font-size: 0.875rem;
+	flex-shrink: 0;
+}
+
+.skvn-post-author__info {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+}
+
+.skvn-post-author__name {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--skvn-color-slate-900);
+}
+
+.skvn-post-author__role {
+	font-size: 0.6875rem;
+	color: var(--skvn-color-slate-700);
+}
+
+.skvn-post-author__read-time {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-slate-700);
+	flex-shrink: 0;
+}
+
+/* Post content typography */
+.skvn-post-body__content {
+	font-size: 1rem;
+	line-height: 1.75;
+	color: var(--skvn-color-slate-700);
+}
+
+.skvn-post-body__content h2 {
+	font-size: 1.375rem;
+	font-weight: 700;
+	color: var(--skvn-color-slate-900);
+	letter-spacing: -0.02em;
+	line-height: 1.3;
+	margin-top: 1.75rem;
+	margin-bottom: 0.75rem;
+}
+
+.skvn-post-body__content h3 {
+	font-size: 1.0625rem;
+	font-weight: 600;
+	color: var(--skvn-color-slate-900);
+	margin-top: 1.375rem;
+	margin-bottom: 0.5rem;
+}
+
+.skvn-post-body__content p {
+	margin-bottom: 1rem;
+}
+
+.skvn-post-body__content ul,
+.skvn-post-body__content ol {
+	padding-left: 1.375rem;
+	margin-bottom: 1rem;
+}
+
+.skvn-post-body__content li {
+	margin-bottom: 0.375rem;
+}
+
+.skvn-post-body__content strong {
+	color: var(--skvn-color-slate-900);
+	font-weight: 600;
+}
+
+/* Callout block (blockquote or .wp-block-pullquote used as callout) */
+.skvn-post-body__content blockquote,
+.skvn-post-body__content .wp-block-quote {
+	border-left: 3px solid var(--skvn-color-blue-700);
+	background: var(--skvn-color-sky-50);
+	padding: 0.875rem 1.125rem;
+	border-radius: 0 6px 6px 0;
+	margin: 1.25rem 0;
+}
+
+.skvn-post-body__content blockquote p,
+.skvn-post-body__content .wp-block-quote p {
+	color: var(--skvn-color-blue-950);
+	margin-bottom: 0;
+}
+
+/* Post tags */
+.skvn-post-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.375rem;
+	margin-top: 1.75rem;
+	padding-top: 1.25rem;
+	border-top: 1px solid rgba(51, 65, 85, 0.1);
+}
+
+.skvn-post-tag {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	padding: 0.25rem 0.625rem;
+	border: 1px solid rgba(51, 65, 85, 0.2);
+	border-radius: 3px;
+	color: var(--skvn-color-slate-700);
+	background: var(--skvn-color-sky-50);
+	text-decoration: none;
+}
+
+.skvn-post-tag:hover {
+	border-color: var(--skvn-color-blue-700);
+	color: var(--skvn-color-blue-700);
+}
+
+/* Related posts grid (below main content) */
+.skvn-post-related {
+	margin-top: 2.5rem;
+}
+
+.skvn-post-related__eyebrow {
+	font-size: 0.625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--skvn-color-slate-700);
+	margin-bottom: 1rem;
+}
+
+.skvn-post-related__grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1rem;
+}
+
+.skvn-post-related__card {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	overflow: hidden;
+}
+
+.skvn-post-related__thumb {
+	aspect-ratio: 16 / 9;
+	background: var(--skvn-color-blue-900);
+	overflow: hidden;
+}
+
+.skvn-post-related__thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.skvn-post-related__placeholder {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(135deg, var(--skvn-color-blue-950), var(--skvn-color-blue-900));
+}
+
+.skvn-post-related__body {
+	padding: 0.875rem;
+}
+
+.skvn-post-related__cat {
+	font-size: 0.59375rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-teal-600);
+	margin-bottom: 0.375rem;
+}
+
+.skvn-post-related__title {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--skvn-color-slate-900);
+	line-height: 1.4;
+}
+
+.skvn-post-related__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.skvn-post-related__title a:hover {
+	color: var(--skvn-color-blue-700);
+}
+
+/* Single post sidebar */
+.skvn-single-sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+	position: sticky;
+	top: 2rem;
+}
+
+/* Sidebar related posts list */
+.skvn-island__post-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.skvn-island__post-item {
+	display: flex;
+	gap: 0.625rem;
+	padding-block: 0.5rem;
+	border-bottom: 1px solid rgba(51, 65, 85, 0.08);
+}
+
+.skvn-island__post-item:last-child {
+	border-bottom: none;
+}
+
+.skvn-island__post-thumb {
+	width: 3.25rem;
+	height: 2.5rem;
+	border-radius: 4px;
+	background: var(--skvn-color-blue-900);
+	overflow: hidden;
+	flex-shrink: 0;
+}
+
+.skvn-island__post-thumb img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.skvn-island__post-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.skvn-island__post-cat {
+	font-size: 0.5625rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--skvn-color-teal-600);
+	display: block;
+}
+
+.skvn-island__post-title {
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: var(--skvn-color-slate-900);
+	line-height: 1.35;
+	margin-top: 0.125rem;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.skvn-island__post-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.skvn-island__post-title a:hover {
+	color: var(--skvn-color-blue-700);
+}
+
+/* Single post — responsive */
+@media (max-width: 900px) {
+	.skvn-single-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.skvn-single-sidebar {
+		position: static;
+	}
+
+	.skvn-post-body {
+		padding: 1.75rem 1.5rem;
+	}
+
+	.skvn-post-related__grid {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.skvn-post-hero {
+		min-height: 16rem;
+	}
+
+	.skvn-post-related__grid {
+		grid-template-columns: 1fr;
 	}
 }

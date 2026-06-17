@@ -121,9 +121,18 @@ Chiều đúng: WP preset (source of truth từ theme.json) → skvn tokens (con
 - Tabs: Mô tả / Thông số kỹ thuật / Tài liệu & Chứng nhận
 - Related products: `2fr` khi sidebar open, 4-col khi closed
 
+**Sidebar implementation: Gutenberg Pattern (Option 2)**
+- Đăng ký patterns PHP trong `inc/patterns.php` child theme
+- Pattern category: `skvn-marine/sidebar`
+- 3 patterns: Hotline Island, Chứng nhận sản phẩm, Hỗ trợ mua hàng
+- Hotline number color: `var(--skvn-color-accent)` — không hardcode vàng/gold như trong artifact
+- Client insert vào sidebar widget area trong Gutenberg editor, edit text trực tiếp
+- Không hardcode — hotline/certifications/support info khác nhau theo từng client/site
+
 **Files chạm:**
 - `inc/woocommerce.php` (hoặc `functions.php`) — filter bỏ Reviews tab, placeholder hook
-- `style.css` — product page component styles
+- `inc/patterns.php` — sidebar patterns
+- `style.css` — product page component styles + sidebar pattern styles
 - `woocommerce/single-product/related.php` — nếu cần thay markup card
 
 **PHP hooks cần:**

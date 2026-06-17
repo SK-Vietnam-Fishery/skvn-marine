@@ -6,15 +6,31 @@ Build the deployable SKVN theme and plugin locally, then upload only the require
 
 Server does not need Node/npm for this artifact.
 
+## Release Command
+
+Preferred one-command workflow from the repo root:
+
+```bash
+bash tools/release-artifact.sh 1.3.4
+```
+
+This bumps release metadata, builds the deploy artifact, and creates theme/plugin zip files. See `docs/workflows/versioning-release-workflow.md`.
+
+From Windows using WSL Debian:
+
+```bash
+wsl -d Debian bash -lc "cd /mnt/d/Github/skvn-marine && bash tools/release-artifact.sh 1.3.4"
+```
+
 ## Build Command
+
+Use these only when you need build/package steps without the full release wrapper.
 
 Before building a milestone release artifact, sync release metadata if the human approved a target version:
 
 ```bash
-node tools/bump-project-version.mjs 0.9.0
+node tools/bump-project-version.mjs 1.3.4
 ```
-
-See `docs/workflows/versioning-release-workflow.md`.
 
 Run from Windows using WSL Debian:
 
