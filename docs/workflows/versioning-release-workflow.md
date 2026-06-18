@@ -25,26 +25,61 @@ wp-content/plugins/skvn-marine-blocks/build/*/block.json
 
 Theme and plugin asset cache-busting still uses `filemtime()` where available. The `Version:` headers are for WordPress release identity, update screens, zip metadata, and human audit.
 
-## Bump Command
+## Release Command
 
-From the repo root:
+Preferred one-command workflow from the repo root (WSL Debian):
 
 ```bash
-node tools/bump-project-version.mjs 0.9.0
+bash tools/release-artifact.sh 1.3.4
 ```
+
+This runs in order:
+
+1. `node tools/bump-project-version.mjs <version>`
+2. `node tools/build-deploy-artifact.mjs`
+3. `bash tools/package-theme-zip.sh`
+4. `bash tools/package-plugin-zip.sh`
 
 Use the milestone or release version approved by the human.
 
-After bumping:
+Preview version file changes without writing:
 
 ```bash
-wsl -d Debian -- bash -lc "source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build"
+bash tools/release-artifact.sh 1.3.4 --dry-run
 ```
 
-Then inspect:
+Bump versions only, without build or zip:
+
+```bash
+bash tools/release-artifact.sh 1.3.4 --bump-only
+```
+
+From Windows terminal:
+
+```bash
+wsl -d Debian -- bash -lc "cd /mnt/d/Github/skvn-marine && bash tools/release-artifact.sh 1.3.4"
+```
+
+After release, inspect:
 
 ```bash
 git diff -- wp-content/themes/skvn-marine/style.css wp-content/plugins/skvn-marine-blocks
+```
+
+## Bump-Only Command
+
+If you only need metadata sync without packaging:
+
+```bash
+node tools/bump-project-version.mjs 1.3.4
+```
+
+Equivalent to `bash tools/release-artifact.sh 1.3.4 --bump-only`.
+
+Node-only release chain (same steps as the shell wrapper):
+
+```bash
+node tools/bump-project-version.mjs 1.3.4 --release
 ```
 
 ## When To Bump
@@ -64,13 +99,10 @@ If the bump happens at milestone start, rebuild plugin assets after bumping and 
 
 ```text
 [ ] Human approved target milestone/release version.
-[ ] Run node tools/bump-project-version.mjs <version>.
-[ ] Run plugin build after bump.
+[ ] Run bash tools/release-artifact.sh <version> (or bump/build/zip steps separately if needed).
 [ ] Run PHP syntax checks for touched PHP files.
 [ ] Run git diff --check.
-[ ] Build deploy artifact.
 [ ] Audit deploy artifact contents for runtime PHP include/require paths added in this milestone.
-[ ] Package theme/plugin zip if needed.
 [ ] Confirm plugin zip contains required runtime folders such as build/, modules/, and assets/ before upload.
 [ ] Confirm WordPress admin shows the expected theme/plugin version after upload.
 ```

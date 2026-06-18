@@ -19,7 +19,12 @@ $skvn_marine_includes = array(
 	'inc/woocommerce.php',
 	'inc/windpress.php',
 	'inc/typography.php',
+	'inc/customizer.php',
 );
+
+// B2B context: hide comment section on all single posts.
+add_filter( 'comments_open', '__return_false', 20 );
+add_filter( 'pings_open',    '__return_false', 20 );
 
 foreach ( $skvn_marine_includes as $skvn_marine_include ) {
 	$skvn_marine_path = get_stylesheet_directory() . '/' . $skvn_marine_include;

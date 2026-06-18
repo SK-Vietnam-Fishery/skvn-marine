@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.3 — Dynamic Product And Post Collections**
-Status: **IN_PROGRESS**
-Started: **2026-06-13**
+Current: **V1 / 1.3.4 — Core Control Foundation & Core Button Hover**
+Status: **PENDING**
+Started: **2026-06-16**
 
 AGENTS.md current milestone phải match file này.
 
@@ -137,8 +137,11 @@ Acceptance draft:
 
 ### 1.3.3 — Dynamic Product And Post Collections
 
-Status: **IN_PROGRESS**
+Status: **DONE**
 Started: **2026-06-13**
+Completed: **2026-06-16**
+Approved by human: **2026-06-16**
+Note: Implementation shipped. Remaining onsite QA for product grid and post collection deferred to 1.3.9.
 
 Purpose:
 
@@ -209,17 +212,17 @@ Implementation order:
 
 Acceptance draft:
 
-- [ ] `docs/decisions/skvn-dynamic-collections-1.3.3.md` is reviewed before source implementation
-- [ ] `skvn-marine/product-collection` and `skvn-marine/post-collection` are registered as dynamic blocks
-- [ ] Four inserter choices exist: Product Grid, Product Carousel, Post Grid, Post Carousel
-- [ ] Saved markup stores attributes only and does not snapshot product/post cards
+- [x] `docs/decisions/skvn-dynamic-collections-1.3.3.md` is reviewed before source implementation
+- [x] `skvn-marine/product-collection` and `skvn-marine/post-collection` are registered as dynamic blocks
+- [x] Four inserter choices exist: Product Grid, Product Carousel, Post Grid, Post Carousel
+- [x] Saved markup stores attributes only and does not snapshot product/post cards
 - [ ] Product collections query through WooCommerce/native APIs without direct custom SQL
-- [ ] Post collections query through WordPress native APIs
+- [x] Post collections query through WordPress native APIs
 - [ ] Query controls support category/tag multi-select, `AND`/`OR`, item limit, and approved order modes
 - [ ] `Shuffle balanced pool` avoids SQL random ordering and uses the documented pool strategy
-- [ ] Grid respects max 5 columns and max 3 rows
-- [ ] Carousel respects max 10 items
-- [ ] Responsive presets `1-1-1`, `2-1-1`, `3-2-1`, `4-2-1`, and `5-3-1` work
+- [x] Grid respects max 5 columns and max 3 rows
+- [x] Carousel respects max 10 items
+- [x] Responsive presets `1-1-1`, `2-1-1`, `3-2-1`, `4-2-1`, and `5-3-1` work
 - [ ] Product cards support governed field visibility and quote/view/custom action modes
 - [ ] Request Quote action preserves product context in the generated URL
 - [ ] Post cards support governed field visibility and read/custom action modes
@@ -228,8 +231,8 @@ Acceptance draft:
 - [ ] Post image fallback uses featured image, then SKVN fallback
 - [ ] Carousel reuses shared pause/reduced-motion policy without making grid load carousel runtime
 - [ ] Autoplay off/default, pause, document visibility, focus, and reduced-motion behavior pass
-- [ ] WooCommerce inactive state does not fatal product collection blocks
-- [ ] Plugin baseline CSS keeps blocks readable without relying on theme patterns
+- [x] WooCommerce inactive state does not fatal product collection blocks
+- [x] Plugin baseline CSS keeps blocks readable without relying on theme patterns
 - [ ] Theme pattern follow-up is deferred until plugin implementation and onsite QA pass
 - [ ] Plugin build, PHP syntax checks, deploy artifact audit if runtime PHP paths change, and onsite QA pass
 - [ ] Human approves milestone completion
@@ -244,6 +247,56 @@ Deferred to 2.x.x or later:
 - Archive builder
 - Technical product/specification card
 - Universal CPT collection block
+
+### 1.3.5 — Post, Product & Archive Page Improvements
+
+Status: **PLANNING**
+Started: **2026-06-17**
+
+Purpose:
+
+- Cải thiện giao diện và UX cho trang Post, Product, và Archive theo Style C Hybrid.
+- Thiết lập font token system configurable qua WP Customizer.
+- Fix CSS token bridge giữa `--skvn-*` và `--wp--preset--*`.
+- Ẩn comment section và Reviews tab không phù hợp B2B.
+- Phục vụ context xuất nhập khẩu thủy sản cao cấp (grouper, mahi-mahi) — positioning gần luxury food brand.
+
+Planning:
+
+- `.context/planning/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md`
+
+Design artifacts:
+
+- `docs/artifacts/post-archive-style-C-hybrid.html`
+- `docs/artifacts/single-post-style-C.html`
+- `docs/artifacts/single-product-style-C.html`
+- `docs/artifacts/font-compare-b2b.html`
+
+Implementation order:
+
+1. Font Customizer control (default: Instrument Serif)
+2. CSS token bridge fix (`--skvn-color-*` → `--wp--preset--color--*`)
+3. Archive page — Style C Hybrid
+4. Single Product page — conversion priority
+5. Single Post page — content marketing
+
+Acceptance draft:
+
+- [ ] Font Customizer control hoạt động, 4 preset chuyển đổi được
+- [ ] Instrument Serif là default, load từ Google Fonts
+- [ ] CSS token bridge: `--skvn-color-*` reference đúng chiều từ WP preset vars
+- [ ] Archive page dùng layout Style C Hybrid (featured post + card grid)
+- [ ] Sidebar archive: open = 2fr + 1fr, closed = full-width 3-col grid
+- [ ] Single Product: gallery trái + details phải, Quote CTA primary nổi bật
+- [ ] Single Product: Reviews tab đã bị ẩn
+- [ ] Single Product: placeholder navy branded "Hình sắp cập nhật"
+- [ ] Single Product: trust signals (VSATTP, HACCP, Cold Chain, Bảo hành)
+- [ ] Single Post: hero image + content + sidebar phải
+- [ ] Single Post: comment section đã bị ẩn
+- [ ] Layout sizing dùng `fr`/`%` — không hardcode px/em
+- [ ] `prefers-reduced-motion` áp dụng cho mọi animation
+- [ ] Desktop + Mobile QA pass cho cả 3 page types
+- [ ] Human approves milestone completion
 
 ### 1.3.4 — Core Control Foundation & Core Button Hover
 
@@ -367,6 +420,20 @@ Acceptance draft:
 - [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
 - [ ] Any source defects are fixed and re-tested
 - [ ] Human approves closing Slider Dynamic Rendering onsite QA
+
+**Deferred from 1.3.3 — Collections onsite QA (run at end of 1.3.9):**
+
+- [ ] Product Grid renders correctly onsite with WooCommerce products (real data, not editor preview)
+- [ ] Post Grid renders correctly onsite with real posts
+- [ ] Product Carousel renders and Swiper initializes without errors
+- [ ] Post Carousel renders and Swiper initializes without errors
+- [ ] Responsive presets (`1-1-1`, `2-1-1`, `3-2-1`, `4-2-1`, `5-3-1`) work on desktop and mobile
+- [ ] Product card quote/view actions link correctly with product context
+- [ ] Post card read action links to the correct post URL
+- [ ] Image fallback (product placeholder / SKVN fallback) works when no image is set
+- [ ] WooCommerce inactive state shows graceful fallback, no fatal
+- [ ] Browser console is clean for all four collection layouts
+- [ ] Human approves collections onsite QA pass
 
 ### 1.3.10 — SKVN Team Credits Easter Egg
 

@@ -275,9 +275,7 @@ function setPaginationA11y(
 		} );
 }
 
-document
-	.querySelectorAll< SliderElement >( '[data-skvn-slider]' )
-	.forEach( ( slider ) => {
+function initSlider( slider: SliderElement ): void {
 		if ( slider.swiper?.destroyed ) {
 			slider.skvnSliderCleanup?.();
 			delete slider.swiper;
@@ -612,6 +610,10 @@ document
 				swiper.off( 'sliderFirstMove', handleInteractionStart );
 				swiper.off( 'touchEnd', handleInteractionEnd );
 
+				if ( ! swiper.destroyed ) {
+					swiper.destroy( true, true );
+				}
+
 				delete slider.skvnSliderCleanup;
 				delete slider.dataset.skvnSliderInitialized;
 				slider.classList.remove(
@@ -661,4 +663,46 @@ document
 			delete slider.dataset.skvnSliderInitialized;
 			slider.classList.remove( 'skvn-slider--initialized' );
 		}
-	} );
+}
+
+document
+	.querySelectorAll< SliderElement >( '[data-skvn-slider]' )
+	.forEach( initSlider );
+
+// Gutenberg (apiVersion 3) replaces the slider DOM element on every attribute
+// change without reloading the script. The observer tears down the orphaned
+// Swiper on the removed element and initialises the fresh replacement so
+// instances never accumulate across edit cycles.
+const sliderObserver = new MutationObserver( ( mutations ) => {
+	for ( const mutation of mutations ) {
+		Array.from( mutation.removedNodes ).forEach( ( node ) => {
+			if ( ! ( node instanceof HTMLElement ) ) {
+				return;
+			}
+
+			if ( node.matches( '[data-skvn-slider]' ) ) {
+				( node as SliderElement ).skvnSliderCleanup?.();
+			}
+
+			node
+				.querySelectorAll< SliderElement >( '[data-skvn-slider]' )
+				.forEach( ( s ) => s.skvnSliderCleanup?.() );
+		} );
+
+		Array.from( mutation.addedNodes ).forEach( ( node ) => {
+			if ( ! ( node instanceof HTMLElement ) ) {
+				return;
+			}
+
+			if ( node.matches( '[data-skvn-slider]' ) ) {
+				initSlider( node as SliderElement );
+			}
+
+			node
+				.querySelectorAll< SliderElement >( '[data-skvn-slider]' )
+				.forEach( initSlider );
+		} );
+	}
+} );
+
+sliderObserver.observe( document.body, { childList: true, subtree: true } );

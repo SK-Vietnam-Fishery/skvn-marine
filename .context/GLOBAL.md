@@ -108,6 +108,7 @@ Current active docs:
 - `docs/decisions/typography-and-gp-exit-report.md` — typography settings 1.5.0: token architecture, Settings API pattern, GP coupling audit, WooCommerce layer, 2.0.0 exit plan.
 - `docs/standards/ai-rules.md`
 - `docs/standards/security-guidelines.md`
+- `docs/standards/memory-leak-prevention-rules.md` — quy tắc phòng chống memory leak cho Gutenberg plugin (event listener cleanup, observer teardown, block edit lifecycle).
 - `docs/testing/frontpage-testing.md`
 - `docs/testing/onsite-test-debt-checklist.md`
 - `docs/testing/onsite-map-block-1.1.2.md`
@@ -134,6 +135,7 @@ Current active docs:
 - `docs/artifacts/init-prompt-v1-1.3.4-core-control.md`
 - `docs/workflows/start-v1-1.3.0-slider-repair.md` — reusable repair prompt for the failed 1.3.0 build, including State Delta diagnostics, target code architecture, geometry/RAM gates, and the targeted human smoke-test boundary before 1.3.1.
 - `docs/artifacts/brand-palette-options.html`
+- `docs/debug-casebook/gutenberg-plugin-memory-leak-guide.md` — hướng dẫn debug và reproduce memory leak trong Gutenberg plugin blocks.
 
 ---
 
@@ -163,6 +165,13 @@ Page-level controls such as Hide site header and Hide site footer belong to the 
 
 **A12. Footer Page Settings**
 0.9.0 adds a plugin settings page for `skvn_footer_page_id`. The theme renders the selected footer page through GeneratePress' `generate_footer` surface, with GeneratePress default footer as fallback. No custom CPT, no display rules system, and no GeneratePress replacement. Implement footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin; do not create or rename to `gutenberg-supercharger` or `gutenberg-turbo` in V1.
+
+**A13. Plugin CSS independence — token cascade**
+Plugin `skvn-marine-blocks` phải có khả năng hoạt động độc lập, không phụ thuộc hoàn toàn vào theme.
+Sự phụ thuộc hiện tại (plugin dùng `--skvn-*` tokens từ theme) là **technical debt được chấp nhận có chủ ý** để phát triển nhanh.
+CSS token cascade đúng: Plugin CSS (define defaults/fallback) → Theme style.css (override `--skvn-*`) → GP Customizer (future).
+Invariant: KHÔNG tạo thêm dependency ngầm từ plugin → theme mà không ghi nhận. Nếu buộc dùng theme token, ghi chú technical debt rõ ràng tại chỗ.
+Roadmap: Dần move tokens cần thiết vào plugin block CSS với fallback values, để sau này tách hoàn toàn.
 
 **A5. Animation runtime dùng chung**
 `assets/js/animations.js` là single runtime. KHÔNG tạo animation logic riêng per block trừ khi bắt buộc.
