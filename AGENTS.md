@@ -134,11 +134,11 @@ echo wp_kses_post($content);
 ### Sau khi implement xong
 
 ```bash
-# Theme PHP
+# Theme PHP syntax check
 php -l wp-content/themes/skvn-marine/functions.php
 
-# Plugin JS/TS (nếu có thay đổi block)
-cd wp-content/plugins/skvn-marine-blocks && npm run build 2>&1 | tail -10
+# Plugin build + PHP lint (combined — chạy sau mỗi lượt làm việc có thay đổi plugin)
+source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build && find modules/ -name "*.php" -exec php -l {} \;
 
 # Kiểm tra block nếu thay đổi block registration
 grep -r "registerBlockType" wp-content/plugins/skvn-marine-blocks/src/
@@ -148,6 +148,8 @@ node tools/build-deploy-artifact.mjs
 bash tools/package-plugin-zip.sh
 unzip -l build/skvn-marine-blocks.zip | grep 'skvn-marine-blocks/modules/'
 ```
+
+> Cuối mỗi lượt làm việc có thay đổi plugin, agent phải **output lệnh trên dưới dạng text** để user tự copy và chạy. Agent không được tự chạy lệnh build hoặc lint qua tool.
 
 ### Command responsiveness — Bắt buộc
 
@@ -617,10 +619,10 @@ Kiểm tra server:
 curl -I http://localhost:8080/wp-login.php
 ```
 
-Chạy plugin build bằng Node trong WSL:
+Chạy plugin build + PHP lint (combined) bằng Node trong WSL:
 
 ```bash
-wsl -d Debian -- bash -lc "source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build"
+source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build && find modules/ -name "*.php" -exec php -l {} \;
 ```
 
 Nếu command WSL không trả output, không kết thúc, hoặc timeout: áp dụng

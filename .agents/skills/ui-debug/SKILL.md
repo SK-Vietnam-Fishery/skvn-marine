@@ -140,6 +140,28 @@ Database state ≠ JS runtime state ≠ CSS computed state
 
 ---
 
+## Công cụ: sanitize.sh — Làm sạch HTML trước khi phân tích
+
+Khi user cung cấp HTML thô (copy từ browser source, DevTools, hoặc file lớn), chạy sanitize trước để loại bỏ noise: base64 data URIs, script blocks, inline style dài, aria/non-UI attributes. Output là file `.debug.html` chỉ giữ class, id, CSS, layout structure.
+
+**Khi nào đề xuất:**
+- HTML > ~50 dòng, hoặc
+- Có dấu hiệu base64 (`data:image/`), hoặc
+- Có nhiều `<script>` blocks, hoặc
+- User hỏi "tại sao element này..." mà chưa có file HTML sạch
+
+**Command (output để user copy và chạy trong WSL):**
+```bash
+bash .agents/skills/ui-debug/tools/sanitize.sh ".local/Seafood Carousels.html"
+# Output: .local/Seafood Carousels.debug.html
+```
+
+**Sau khi sanitize:** Đọc file `.debug.html` để phân tích class/CSS — không đọc file gốc vì noise làm tốn context.
+
+**Rule cho agent:** Không tự chạy tool qua Bash. Output lệnh dưới dạng text, user tự copy và chạy.
+
+---
+
 ## Bước 5: DevTools Commands Nhanh
 
 ```javascript

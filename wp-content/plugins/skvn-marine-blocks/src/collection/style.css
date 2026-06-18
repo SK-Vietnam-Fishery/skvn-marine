@@ -3,6 +3,15 @@
 	width: 100%;
 }
 
+.skvn-collection__eyebrow {
+	color: #4b6470;
+	font-size: 0.8rem;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	margin: 0 0 0.35rem;
+	text-transform: uppercase;
+}
+
 .skvn-collection__heading {
 	margin: 0 0 0.5rem;
 }
@@ -10,6 +19,34 @@
 .skvn-collection__intro {
 	margin: 0 0 1.25rem;
 	max-width: 64ch;
+}
+
+.skvn-collection__footer {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	margin-top: 1.5rem;
+}
+
+.skvn-collection__archive-link {
+	color: #25404d;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+.skvn-collection__archive-link:hover {
+	text-decoration: underline;
+}
+
+.skvn-collection__catalog-link {
+	color: #4b6470;
+	font-size: 0.9rem;
+	text-decoration: none;
+}
+
+.skvn-collection__catalog-link:hover {
+	text-decoration: underline;
 }
 
 .skvn-collection__grid {
@@ -137,6 +174,17 @@ a.skvn-collection-card__badge:hover {
 	background: #d0e8f0;
 }
 
+/* Featured card — badge overlay on image */
+.skvn-collection-card--featured .skvn-collection-card__media {
+	position: relative;
+}
+
+.skvn-collection-card--featured .skvn-collection-card__media .skvn-collection-card__badges {
+	bottom: 0.5rem;
+	left: 0.5rem;
+	position: absolute;
+}
+
 /* Actions */
 .skvn-collection-card__actions {
 	display: flex;
@@ -146,6 +194,10 @@ a.skvn-collection-card__badge:hover {
 }
 
 /* Carousel */
+.skvn-collection__carousel-outer {
+	position: relative;
+}
+
 .skvn-collection__carousel {
 	overflow: hidden;
 	position: relative;

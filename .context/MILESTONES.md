@@ -479,6 +479,114 @@ Acceptance draft:
 - [ ] WooCommerce inactive state shows graceful fallback, no fatal
 - [ ] Browser console is clean for all four collection layouts
 - [ ] Human approves collections onsite QA pass
+### 1.3.7 — Collection Block UI & Card Styles
+
+Status: **BRAINSTORM / PLANNING IN PROGRESS**
+
+> ⚠️ Planning chưa hoàn tất. Milestone này cần một session brainstorm riêng trước khi bắt đầu implementation.
+
+Purpose:
+
+- Nâng cấp giao diện và UX của `skvn-marine/product-collection` và `skvn-marine/post-collection`.
+- Fix 2 bugs đã xác nhận từ code review (2026-06-17).
+- Thêm các block attribute mới để kiểm soát heading, spacing, archive CTA.
+- Triển khai card style variants dựa trên design artifact `.local/Seafood Export Carousels Tailwind.html`.
+- **Không bao gồm** các feature yêu cầu data model chưa tồn tại (MOQ, Lead Time, certifications) — đó là scope 1.5.0.
+
+Planning:
+
+- `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md`
+
+Design artifact:
+
+- `.local/Seafood Carousels.html` — UI reference (bundled HTML, mở bằng browser)
+
+Bugs cần fix (đã xác nhận):
+
+- `imageRatio` attribute không tạo class `skvn-collection--ratio-*` → ratio setting vô nghĩa
+- Carousel arrows (`left: -1.25rem` / `right: -1.25rem`) bị clip bởi `overflow: hidden` của Swiper container
+
+Phase 1 scope (data có sẵn — làm được ngay):
+
+- Spacing: `margin-top` / `margin-bottom` cho `.skvn-collection` section, khoảng cách heading → grid/carousel
+- Heading controls: toggle `showHeading` (boolean), `eyebrow` text attribute (vd: "EXPORT CATALOG", "INSIGHTS")
+- Intro text: attribute `intro` đã có, cần đảm bảo render và style đúng
+- Archive CTA: `archiveUrl` + `archiveLabel` attribute cho section footer ("Xem toàn bộ danh mục →", "Đọc tất cả bài viết →")
+- Catalog CTA: `showCatalogCta: boolean` + `catalogCtaUrl: string` + `catalogCtaLabel: string` (default: "Tải catalog") — toggle on/off, URL do user tự điền (PDF trực tiếp hoặc lead gen page). Áp dụng cho cả `product-collection` và `post-collection`.
+- Card styles: ít nhất 1 style variant từ design artifact (product card + post card)
+- Category badge overlay trên ảnh (thay vì bên dưới title như hiện tại)
+- 4-column preset: thêm option `4-2-1` vào SelectControl editor và CSS
+
+Các feature CHƯA planning xong (cần brainstorm tiếp):
+
+- Card style system: bao nhiêu style variant? switch bằng attribute hay CSS class? theme override hay plugin-owned?
+- Prefetch strategy: hover-prefetch cho product card links hay không? Ảnh hưởng performance thế nào?
+- Image ratio per collection type: product default 1:1, post default 16:9 — hardcode theo preset hay user-selectable?
+- `badgeBehavior: 'overlay'` — overlay badge trên ảnh có cần thêm enum value mới không?
+
+Constraints:
+
+- Không implement MOQ, Lead Time, certifications, spec sheet PDF — scope 1.5.0.
+- Card styles phải work với dữ liệu WooCommerce/WP có sẵn, không cần custom meta.
+- Plugin-owned CSS; không phụ thuộc vào theme class.
+
+---
+
+### 1.3.8 — Fullscreen Step Slider
+
+Status: **PENDING**
+
+Purpose:
+
+- Add a dedicated fullscreen process/timeline Slider block for urgent landing
+  page storytelling needs.
+- Build it on top of the V1 / 1.3.0 dynamic Slider rendering foundation instead
+  of creating a second Slider engine.
+- Provide bottom tab navigation with per-step progress, media/content layers,
+  and motion presets suitable for sequential process narratives.
+- Keep Gutenberg-native editing with InnerBlocks and child step blocks; do not
+  switch to a `slides` array or custom slide repeater.
+
+Planning:
+
+- `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`
+- `docs/decisions/fullscreen-step-slider-1.5.0.md`
+- External research input: `fullscreen-step-slider-report.md`
+
+Dependencies:
+
+- V1 / 1.3.0 dynamic Slider render architecture must be complete enough to
+  provide shared render, media/content, Swiper, reduced-motion, and deploy
+  artifact conventions.
+- Reconcile whether V1 / 1.3.1 Slider migration QA runs before or alongside
+  this milestone.
+
+Constraints:
+
+- Implement as separate blocks such as `skvn-marine/step-slider` and
+  `skvn-marine/step-slide`, not as a fourth variation of `skvn-marine/slider`.
+- Reuse Swiper; do not introduce a custom autoplay timer/controller that
+  competes with Swiper.
+- Use governed presets for height, overlay, motion, CTA, and tab styling instead
+  of raw arbitrary color, pixel, timing, or class inputs.
+- Preserve keyboard navigation, touch behavior, reduced-motion fallback, and
+  no-JS readability.
+- Do not include video support unless the milestone explicitly budgets media
+  performance, inactive-slide pause, poster, and mobile autoplay behavior.
+
+Acceptance draft:
+
+- [ ] Architecture contract is approved before source implementation
+- [ ] `skvn-marine/step-slider` and `skvn-marine/step-slide` ownership is documented
+- [ ] Step Slider uses dynamic PHP render and shared Slider foundation
+- [ ] Editor uses Gutenberg-native InnerBlocks/List View operations
+- [ ] Bottom tab navigation reflects slide order and active state
+- [ ] Progress bar synchronizes with Swiper autoplay, click, hover/focus pause, and reduced motion
+- [ ] Wipe/text motion uses governed presets and has reduced-motion fallback
+- [ ] Mobile tab UI remains readable without overflow
+- [ ] No custom slide manager, `slides` array, or second runtime is introduced
+- [ ] Plugin build, PHP syntax checks, deploy artifact audit, and onsite QA pass
+- [ ] Human approves milestone completion
 
 ### 1.3.10 — SKVN Team Credits Easter Egg
 
@@ -595,61 +703,82 @@ Acceptance draft:
 - [ ] Any source defects found during validation are fixed and re-tested
 - [ ] Human approves closing the deferred `1.1.0` validation
 
-### 1.5.0 — Fullscreen Step Slider
 
-Status: **PENDING**
 
-Purpose:
+### 1.5.0 — Woo Catalog Plugin (`woo-catalog`)
 
-- Add a dedicated fullscreen process/timeline Slider block for urgent landing
-  page storytelling needs.
-- Build it on top of the V1 / 1.3.0 dynamic Slider rendering foundation instead
-  of creating a second Slider engine.
-- Provide bottom tab navigation with per-step progress, media/content layers,
-  and motion presets suitable for sequential process narratives.
-- Keep Gutenberg-native editing with InnerBlocks and child step blocks; do not
-  switch to a `slides` array or custom slide repeater.
+Status: **BRAINSTORM / PLANNING IN PROGRESS**
+
+> ⚠️ Planning chưa hoàn tất. Cần session brainstorm riêng về data model trước khi bắt đầu.
+> Milestone này phụ thuộc vào 1.3.7 (Collection UI) đã pass onsite QA.
 
 Planning:
 
-- `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`
-- `docs/decisions/fullscreen-step-slider-1.5.0.md`
-- External research input: `fullscreen-step-slider-report.md`
+- `.context/planning/027_VERSION_1_5_0_WOO_CATALOG_PLUGIN_PLANNING.md`
 
-Dependencies:
+Purpose:
 
-- V1 / 1.3.0 dynamic Slider render architecture must be complete enough to
-  provide shared render, media/content, Swiper, reduced-motion, and deploy
-  artifact conventions.
-- Reconcile whether V1 / 1.3.1 Slider migration QA runs before or alongside
-  this milestone.
+- Tạo plugin riêng `woo-catalog` để sở hữu toàn bộ product data model và visual style cho B2B catalog.
+- Tách data registration ra khỏi `skvn-marine-blocks` — blocks plugin sẽ optional-read từ catalog plugin.
+- Enable các feature card đòi hỏi structured product data mà 1.3.7 không thể implement.
+- Cung cấp catalog type selector (seafood, courses, custom) — mỗi type là 1 profile riêng.
 
-Constraints:
+Decisions đã chốt (2026-06-18):
 
-- Implement as separate blocks such as `skvn-marine/step-slider` and
-  `skvn-marine/step-slide`, not as a fourth variation of `skvn-marine/slider`.
-- Reuse Swiper; do not introduce a custom autoplay timer/controller that
-  competes with Swiper.
-- Use governed presets for height, overlay, motion, CTA, and tab styling instead
-  of raw arbitrary color, pixel, timing, or class inputs.
-- Preserve keyboard navigation, touch behavior, reduced-motion fallback, and
-  no-JS readability.
-- Do not include video support unless the milestone explicitly budgets media
-  performance, inactive-slide pause, poster, and mobile autoplay behavior.
+- **Plugin slug**: `woo-catalog` (generic, reusable ngoài skvn-marine)
+- **PHP prefix**: `woo_catalog_` (không dùng `skvn_marine_` vì plugin này là domain-agnostic)
+- **Catalog type selector**: Settings page → chọn type (seafood / courses / custom-deferred) → activate profile tương ứng
+- **CSS ownership split**:
+  - `skvn-marine-blocks` sở hữu: card layout CSS (flexbox structure, aspect-ratio, spacing, hover shape)
+  - `woo-catalog` sở hữu: semantic color CSS (cert badge colors, tag background, origin badge) — delivered as CSS custom properties
+- **Style controls architecture**:
+  - Global brand settings → plugin settings page → lưu vào `wp_options` → inject CSS variables vào `:root`
+  - Per-block override → catalog plugin inject `InspectorControls` panel vào `skvn-marine/collection` qua WordPress `addFilter` (block plugin không biết về catalog controls)
 
-Acceptance draft:
+Lý do tách plugin riêng (đã quyết định 2026-06-17):
 
-- [ ] Architecture contract is approved before source implementation
-- [ ] `skvn-marine/step-slider` and `skvn-marine/step-slide` ownership is documented
-- [ ] Step Slider uses dynamic PHP render and shared Slider foundation
-- [ ] Editor uses Gutenberg-native InnerBlocks/List View operations
-- [ ] Bottom tab navigation reflects slide order and active state
-- [ ] Progress bar synchronizes with Swiper autoplay, click, hover/focus pause, and reduced motion
-- [ ] Wipe/text motion uses governed presets and has reduced-motion fallback
-- [ ] Mobile tab UI remains readable without overflow
-- [ ] No custom slide manager, `slides` array, or second runtime is introduced
-- [ ] Plugin build, PHP syntax checks, deploy artifact audit, and onsite QA pass
+- MOQ, Lead Time, certifications dùng nhiều hơn 1 chỗ: single product page, collection block, REST API, PDF export tương lai.
+- `skvn-marine-blocks` là rendering layer — không nên sở hữu business data model.
+- Deactivation independence: tắt blocks → data còn; tắt catalog → blocks gracefully degrade.
+- Tránh technical debt khi single product page (1.5.x+) cũng cần hiển thị các field này.
+- Plugin generic (`woo-catalog`) → có thể reuse cho site khác hoặc swap catalog type mà không sửa blocks.
+
+Yêu cầu kỹ thuật cần note kỹ (brainstorm tiếp):
+
+- **Certification display**: colored bullet hay icon? Badge color map per term slug? Ai owns màu — taxonomy term meta hay CSS hardcode?
+- **Prefetch**: khi user hover product card, có prefetch single product page không? Cần đánh giá performance impact trước khi quyết định.
+- **REST API exposure**: `show_in_rest: true` cho tất cả meta? Cần auth hay public? Ảnh hưởng đến headless future?
+- **Data migration**: nếu ai đã nhập product data dạng free-text trước milestone này, migration plan như thế nào?
+- **ACF dependency**: dùng ACF Free để define fields hay `register_meta` thủ công? Ảnh hưởng đến portability.
+- **Spec sheet PDF**: upload attachment WordPress hay external URL? Khi attachment bị xóa thì sao?
+- **MOQ unit**: "5 MT" là 1 text field hay tách `_woo_catalog_moq_value` (number) + `_woo_catalog_moq_unit` (MT/KG/container)? Ảnh hưởng đến sorting/filtering sau này.
+- **Per-block attribute registration**: catalog plugin dùng hook nào để register extra attributes cho `skvn-marine/collection` mà không sửa block.json?
+
+`skvn-marine-blocks` side (sau khi catalog plugin có):
+
+- Optional-read pattern: `if (function_exists('woo_catalog_get_fields'))` — không fatal khi catalog inactive
+- Đọc certifications, MOQ, Lead Time, spec sheet từ `woo_catalog_get_fields($product_id)` 
+- Render conditionally — empty fields không render, không vỡ layout
+
+Dependency chain:
+
+- 1.3.7 (Collection UI) → onsite QA pass → 1.5.0 catalog data model → collection block full card style
+
+Acceptance draft (sơ bộ, cần hoàn thiện):
+
+- [ ] Architecture contract và data model schema được approve trước implementation
+- [ ] `woo-catalog` plugin tồn tại độc lập, active/deactivate không ảnh hưởng blocks
+- [ ] Catalog type selector hoạt động trong plugin settings page
+- [ ] `product_certification` taxonomy registered và có WP admin UI
+- [ ] MOQ, Lead Time, Spec Sheet PDF meta registered với WooCommerce product panel
+- [ ] Global style settings (badge shape, colors) inject CSS variables đúng vào frontend + editor
+- [ ] Catalog plugin inject per-block InspectorControls qua `addFilter` — không sửa block plugin
+- [ ] `skvn-marine-blocks` optional-reads catalog fields — graceful degrade khi catalog inactive
+- [ ] Collection product card hiển thị đủ certifications, MOQ, Lead Time, spec sheet link
+- [ ] Human approves data model schema và field formats trước khi code
 - [ ] Human approves milestone completion
+
+---
 
 ### 1.6.0 — SKVN Surface Presets
 

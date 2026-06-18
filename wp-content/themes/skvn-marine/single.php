@@ -125,7 +125,7 @@ $skvn_related_query = new WP_Query( $skvn_related_args );
 						<div class="skvn-post-related__thumb">
 							<?php if ( has_post_thumbnail() ) : ?>
 								<a href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
-									<?php the_post_thumbnail( 'medium', array( 'alt' => '' ) ); ?>
+									<?php the_post_thumbnail( 'large', array( 'alt' => '' ) ); ?>
 								</a>
 							<?php else : ?>
 								<div class="skvn-post-related__placeholder" aria-hidden="true"></div>
@@ -179,7 +179,7 @@ $skvn_related_query = new WP_Query( $skvn_related_args );
 						<?php if ( has_post_thumbnail() ) : ?>
 							<div class="skvn-island__post-thumb" aria-hidden="true">
 								<a href="<?php the_permalink(); ?>" tabindex="-1">
-									<?php the_post_thumbnail( array( 104, 80 ), array( 'alt' => '' ) ); ?>
+									<?php the_post_thumbnail( 'large', array( 'alt' => '' ) ); ?>
 								</a>
 							</div>
 						<?php endif; ?>

@@ -34,6 +34,15 @@ Only read it if I explicitly say "check full rules".
 - Do not overwrite manually entered image ALT text.
 - Do not auto-generate captions in V1.
 
+## Work Plan Rule (Non-Negotiable)
+
+Before implementing ANY change:
+1. Write a detailed work plan: what will change, in which files, exactly which CSS rules / lines, and why
+2. Wait for explicit user approval
+3. Only then implement
+
+Do NOT start editing files before the plan is approved.
+
 ## Task Format
 
 Every task should include: Context, Goal, Files allowed to change, Files forbidden to change, Acceptance checklist, Tension/conflict section.

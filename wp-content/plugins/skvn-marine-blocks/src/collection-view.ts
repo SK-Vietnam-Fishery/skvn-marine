@@ -40,7 +40,12 @@ function initCollectionCarousel( container: CollectionCarouselElement ): void {
 		return;
 	}
 
-	const slideCount = container.querySelectorAll( '.swiper-slide' ).length;
+	const swiperEl = container.querySelector<HTMLElement>( '.skvn-collection__carousel' );
+	if ( ! swiperEl ) {
+		return;
+	}
+
+	const slideCount = swiperEl.querySelectorAll( '.swiper-slide' ).length;
 	const maxVisible = Math.max( 1, config.slidesPerViewDesktop );
 	const canLoop    = slideCount > maxVisible;
 	const useAutoplay = config.autoplay && canLoop && ! prefersReducedMotion();
@@ -89,7 +94,7 @@ function initCollectionCarousel( container: CollectionCarouselElement ): void {
 		};
 	}
 
-	const swiper = new Swiper( container, swiperOptions );
+	const swiper = new Swiper( swiperEl, swiperOptions );
 
 	// Rule 0: write teardown first
 	// Coordinator manages: pointer hover, focus, tab visibility, explicit user pause

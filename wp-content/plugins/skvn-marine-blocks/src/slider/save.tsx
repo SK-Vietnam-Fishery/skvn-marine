@@ -11,6 +11,7 @@ type SliderAttributes = {
 	paginationStyle: string;
 	paginationPosition: string;
 	effect: string;
+	heightPreset: string;
 	slidesPerView: number;
 	preset: string;
 	responsiveSlides: string;
@@ -24,8 +25,11 @@ export function save({ attributes }: SliderSaveProps) {
 	const presetClass = attributes.preset
 		? ` skvn-slider--${ attributes.preset }`
 		: '';
+	const heightClass = attributes.heightPreset && attributes.heightPreset !== 'default'
+		? ` skvn-slider--height-${ attributes.heightPreset }`
+		: '';
 	const blockProps = useBlockProps.save({
-		className: `skvn-slider swiper${ presetClass }`,
+		className: `skvn-slider swiper${ heightClass }${ presetClass }`,
 		'data-skvn-slider': JSON.stringify({
 			autoplay: attributes.autoplay,
 			autoplayDelay: attributes.autoplayDelay,
@@ -37,6 +41,7 @@ export function save({ attributes }: SliderSaveProps) {
 			paginationStyle: attributes.paginationStyle,
 			paginationPosition: attributes.paginationPosition,
 			effect: attributes.effect,
+			heightPreset: attributes.heightPreset,
 			slidesPerView: attributes.slidesPerView,
 			...(attributes.responsiveSlides === '3-2-1'
 				? { responsiveSlides: attributes.responsiveSlides }

@@ -16,10 +16,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function skvn_marine_blocks_render_post_collection( $attributes ) {
-	$heading  = isset( $attributes['heading'] ) ? sanitize_text_field( $attributes['heading'] ) : '';
-	$intro    = isset( $attributes['intro'] ) ? wp_kses_post( $attributes['intro'] ) : '';
-	$layout   = isset( $attributes['layout'] ) ? sanitize_key( $attributes['layout'] ) : 'grid';
-	$preset   = isset( $attributes['responsivePreset'] ) ? sanitize_text_field( $attributes['responsivePreset'] ) : '3-2-1';
+	$heading      = isset( $attributes['heading'] ) ? sanitize_text_field( $attributes['heading'] ) : '';
+	$eyebrow      = isset( $attributes['eyebrow'] ) ? sanitize_text_field( $attributes['eyebrow'] ) : '';
+	$show_heading = skvn_marine_blocks_collection_bool( $attributes, 'showHeading', true );
+	$intro        = isset( $attributes['intro'] ) ? wp_kses_post( $attributes['intro'] ) : '';
+	$layout       = isset( $attributes['layout'] ) ? sanitize_key( $attributes['layout'] ) : 'grid';
+	$preset       = isset( $attributes['responsivePreset'] ) ? sanitize_text_field( $attributes['responsivePreset'] ) : '3-2-1';
+	$ratio        = isset( $attributes['imageRatio'] ) ? 'skvn-collection--ratio-' . str_replace( ':', '-', $attributes['imageRatio'] ) : '';
+	$archive_url  = isset( $attributes['archiveUrl'] ) ? esc_url_raw( $attributes['archiveUrl'] ) : '';
+	$archive_label = isset( $attributes['archiveLabel'] ) ? sanitize_text_field( $attributes['archiveLabel'] ) : '';
 	$posts    = skvn_marine_blocks_query_collection_posts( $attributes );
 	$classes  = implode(
 		' ',
@@ -29,6 +34,7 @@ function skvn_marine_blocks_render_post_collection( $attributes ) {
 				'skvn-collection--post',
 				'skvn-collection--' . $layout,
 				'skvn-collection--preset-' . $preset,
+				$ratio,
 				skvn_marine_blocks_collection_bool( $attributes, 'equalHeight', true ) ? 'skvn-collection--equal-height' : '',
 			)
 		)
@@ -45,7 +51,10 @@ function skvn_marine_blocks_render_post_collection( $attributes ) {
 	ob_start();
 	?>
 	<section class="<?php echo esc_attr( $classes ); ?>"<?php echo $aria_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-		<?php if ( '' !== $heading ) : ?>
+		<?php if ( '' !== $eyebrow ) : ?>
+			<p class="skvn-collection__eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+		<?php endif; ?>
+		<?php if ( $show_heading && '' !== $heading ) : ?>
 			<h2 class="skvn-collection__heading"><?php echo esc_html( $heading ); ?></h2>
 		<?php endif; ?>
 		<?php if ( '' !== $intro ) : ?>
@@ -62,6 +71,13 @@ function skvn_marine_blocks_render_post_collection( $attributes ) {
 					echo skvn_marine_blocks_render_collection_post_card( $post, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				}
 				?>
+			</div>
+		<?php endif; ?>
+		<?php if ( '' !== $archive_url ) : ?>
+			<div class="skvn-collection__footer">
+				<a class="skvn-collection__archive-link" href="<?php echo esc_url( $archive_url ); ?>">
+					<?php echo esc_html( '' !== $archive_label ? $archive_label : __( 'View all', 'skvn-marine-blocks' ) ); ?>
+				</a>
 			</div>
 		<?php endif; ?>
 	</section>

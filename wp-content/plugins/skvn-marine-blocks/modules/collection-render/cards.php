@@ -16,21 +16,28 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function skvn_marine_blocks_render_collection_post_card( $post, $attributes = array() ) {
-	$title       = get_the_title( $post );
-	$url         = get_permalink( $post );
-	$action_mode = isset( $attributes['postActionMode'] ) ? sanitize_key( $attributes['postActionMode'] ) : 'read';
-	$custom_url  = isset( $attributes['customActionUrl'] ) ? esc_url_raw( $attributes['customActionUrl'] ) : '';
-	$action_url  = 'custom' === $action_mode && '' !== $custom_url ? $custom_url : $url;
+	$title         = get_the_title( $post );
+	$url           = get_permalink( $post );
+	$action_mode   = isset( $attributes['postActionMode'] ) ? sanitize_key( $attributes['postActionMode'] ) : 'read';
+	$custom_url    = isset( $attributes['customActionUrl'] ) ? esc_url_raw( $attributes['customActionUrl'] ) : '';
+	$action_url    = 'custom' === $action_mode && '' !== $custom_url ? $custom_url : $url;
+	$card_style    = isset( $attributes['cardStyle'] ) ? sanitize_key( $attributes['cardStyle'] ) : 'default';
+	$show_image    = skvn_marine_blocks_collection_bool( $attributes, 'showImage', true );
+	$overlay_badges = 'featured' === $card_style && $show_image;
 
 	ob_start();
 	?>
-	<article class="skvn-collection-card">
-		<?php if ( skvn_marine_blocks_collection_bool( $attributes, 'showImage', true ) ) : ?>
+	<article class="skvn-collection-card<?php echo 'featured' === $card_style ? ' skvn-collection-card--featured' : ''; ?>">
+		<?php if ( $show_image ) : ?>
 			<a class="skvn-collection-card__media" href="<?php echo esc_url( $url ); ?>">
 				<?php if ( has_post_thumbnail( $post ) ) : ?>
 					<?php echo get_the_post_thumbnail( $post, 'medium_large', array( 'class' => 'skvn-collection-card__image' ) ); ?>
 				<?php else : ?>
 					<span class="skvn-collection-card__fallback" aria-hidden="true"></span>
+				<?php endif; ?>
+				<?php if ( $overlay_badges ) : ?>
+					<?php echo skvn_marine_blocks_render_collection_term_badges( $post->ID, 'category', $attributes, 'showPostCategories' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo skvn_marine_blocks_render_collection_term_badges( $post->ID, 'post_tag', $attributes, 'showPostTags' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 				<?php endif; ?>
 			</a>
 		<?php endif; ?>
@@ -48,8 +55,10 @@ function skvn_marine_blocks_render_collection_post_card( $post, $attributes = ar
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
-			<?php echo skvn_marine_blocks_render_collection_term_badges( $post->ID, 'category', $attributes, 'showPostCategories' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo skvn_marine_blocks_render_collection_term_badges( $post->ID, 'post_tag', $attributes, 'showPostTags' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php if ( ! $overlay_badges ) : ?>
+				<?php echo skvn_marine_blocks_render_collection_term_badges( $post->ID, 'category', $attributes, 'showPostCategories' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo skvn_marine_blocks_render_collection_term_badges( $post->ID, 'post_tag', $attributes, 'showPostTags' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php endif; ?>
 			<?php if ( skvn_marine_blocks_collection_bool( $attributes, 'showExcerpt', true ) ) : ?>
 				<div class="skvn-collection-card__excerpt">
 					<?php echo esc_html( wp_trim_words( get_the_excerpt( $post ), 22 ) ); ?>
@@ -75,18 +84,25 @@ function skvn_marine_blocks_render_collection_post_card( $post, $attributes = ar
  * @return string
  */
 function skvn_marine_blocks_render_collection_product_card( $product, $attributes = array() ) {
-	$product_id  = $product->get_id();
-	$title       = $product->get_name();
-	$url         = get_permalink( $product_id );
-	$action_mode = isset( $attributes['productActionMode'] ) ? sanitize_key( $attributes['productActionMode'] ) : 'quote';
-	$custom_url  = isset( $attributes['customActionUrl'] ) ? esc_url_raw( $attributes['customActionUrl'] ) : '';
+	$product_id    = $product->get_id();
+	$title         = $product->get_name();
+	$url           = get_permalink( $product_id );
+	$action_mode   = isset( $attributes['productActionMode'] ) ? sanitize_key( $attributes['productActionMode'] ) : 'quote';
+	$custom_url    = isset( $attributes['customActionUrl'] ) ? esc_url_raw( $attributes['customActionUrl'] ) : '';
+	$card_style    = isset( $attributes['cardStyle'] ) ? sanitize_key( $attributes['cardStyle'] ) : 'default';
+	$show_image    = skvn_marine_blocks_collection_bool( $attributes, 'showImage', true );
+	$overlay_badges = 'featured' === $card_style && $show_image;
 
 	ob_start();
 	?>
-	<article class="skvn-collection-card">
-		<?php if ( skvn_marine_blocks_collection_bool( $attributes, 'showImage', true ) ) : ?>
+	<article class="skvn-collection-card<?php echo 'featured' === $card_style ? ' skvn-collection-card--featured' : ''; ?>">
+		<?php if ( $show_image ) : ?>
 			<a class="skvn-collection-card__media" href="<?php echo esc_url( $url ); ?>">
 				<?php echo skvn_marine_blocks_get_product_image_html( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php if ( $overlay_badges ) : ?>
+					<?php echo skvn_marine_blocks_render_collection_term_badges( $product_id, 'product_cat', $attributes, 'showProductCategories' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<?php echo skvn_marine_blocks_render_collection_term_badges( $product_id, 'product_tag', $attributes, 'showProductTags' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php endif; ?>
 			</a>
 		<?php endif; ?>
 		<div class="skvn-collection-card__body">
@@ -96,8 +112,10 @@ function skvn_marine_blocks_render_collection_product_card( $product, $attribute
 			<?php if ( skvn_marine_blocks_collection_bool( $attributes, 'showPrice', true ) ) : ?>
 				<div class="skvn-collection-card__price"><?php echo wp_kses_post( $product->get_price_html() ); ?></div>
 			<?php endif; ?>
-			<?php echo skvn_marine_blocks_render_collection_term_badges( $product_id, 'product_cat', $attributes, 'showProductCategories' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<?php echo skvn_marine_blocks_render_collection_term_badges( $product_id, 'product_tag', $attributes, 'showProductTags' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php if ( ! $overlay_badges ) : ?>
+				<?php echo skvn_marine_blocks_render_collection_term_badges( $product_id, 'product_cat', $attributes, 'showProductCategories' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+				<?php echo skvn_marine_blocks_render_collection_term_badges( $product_id, 'product_tag', $attributes, 'showProductTags' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php endif; ?>
 			<?php if ( skvn_marine_blocks_collection_bool( $attributes, 'showSku', false ) && $product->get_sku() ) : ?>
 				<div class="skvn-collection-card__meta"><?php echo esc_html( sprintf( __( 'SKU: %s', 'skvn-marine-blocks' ), $product->get_sku() ) ); ?></div>
 			<?php endif; ?>
@@ -199,35 +217,37 @@ function skvn_marine_blocks_render_collection_carousel( $items, $attributes, $co
 
 	ob_start();
 	?>
-	<div class="skvn-collection__carousel swiper" data-skvn-collection-carousel="<?php echo esc_attr( (string) wp_json_encode( $config ) ); ?>">
-		<div class="swiper-wrapper">
-			<?php foreach ( $items as $item ) : ?>
-				<div class="swiper-slide">
-					<?php
-					if ( 'post' === $content_type ) {
-						echo skvn_marine_blocks_render_collection_post_card( $item, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					} else {
-						echo skvn_marine_blocks_render_collection_product_card( $item, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					}
-					?>
-				</div>
-			<?php endforeach; ?>
-		</div>
+	<div class="skvn-collection__carousel-outer" data-skvn-collection-carousel="<?php echo esc_attr( (string) wp_json_encode( $config ) ); ?>">
 		<?php if ( $show_arrows ) : ?>
 			<button class="skvn-collection__arrow skvn-collection__arrow--prev" aria-label="<?php esc_attr_e( 'Previous', 'skvn-marine-blocks' ); ?>">&#8249;</button>
 			<button class="skvn-collection__arrow skvn-collection__arrow--next" aria-label="<?php esc_attr_e( 'Next', 'skvn-marine-blocks' ); ?>">&#8250;</button>
 		<?php endif; ?>
-		<?php if ( $show_pagination ) : ?>
-			<div class="skvn-collection__pagination" role="group" aria-label="<?php esc_attr_e( 'Slides', 'skvn-marine-blocks' ); ?>"></div>
-		<?php endif; ?>
-		<?php if ( $autoplay ) : ?>
-			<button
-				class="skvn-collection__pause-btn"
-				aria-label="<?php esc_attr_e( 'Pause slideshow', 'skvn-marine-blocks' ); ?>"
-				aria-pressed="true"
-				aria-live="polite"
-			><?php esc_html_e( 'Pause', 'skvn-marine-blocks' ); ?></button>
-		<?php endif; ?>
+		<div class="skvn-collection__carousel swiper">
+			<div class="swiper-wrapper">
+				<?php foreach ( $items as $item ) : ?>
+					<div class="swiper-slide">
+						<?php
+						if ( 'post' === $content_type ) {
+							echo skvn_marine_blocks_render_collection_post_card( $item, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						} else {
+							echo skvn_marine_blocks_render_collection_product_card( $item, $attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						}
+						?>
+					</div>
+				<?php endforeach; ?>
+			</div>
+			<?php if ( $show_pagination ) : ?>
+				<div class="skvn-collection__pagination" role="group" aria-label="<?php esc_attr_e( 'Slides', 'skvn-marine-blocks' ); ?>"></div>
+			<?php endif; ?>
+			<?php if ( $autoplay ) : ?>
+				<button
+					class="skvn-collection__pause-btn"
+					aria-label="<?php esc_attr_e( 'Pause slideshow', 'skvn-marine-blocks' ); ?>"
+					aria-pressed="true"
+					aria-live="polite"
+				><?php esc_html_e( 'Pause', 'skvn-marine-blocks' ); ?></button>
+			<?php endif; ?>
+		</div>
 	</div>
 	<?php
 

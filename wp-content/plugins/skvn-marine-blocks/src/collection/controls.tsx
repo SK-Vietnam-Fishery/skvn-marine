@@ -16,6 +16,7 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import {
 	BADGE_BEHAVIOR_OPTIONS,
+	CARD_STYLE_OPTIONS,
 	IMAGE_RATIO_OPTIONS,
 	LAYOUT_OPTIONS,
 	ORDER_MODE_OPTIONS,
@@ -26,6 +27,7 @@ import {
 } from './constants';
 import type {
 	BadgeBehavior,
+	CardStyle,
 	CollectionAttributes,
 	CollectionLayout,
 	CollectionOrderMode,
@@ -59,7 +61,7 @@ export function CollectionEdit( {
 			`skvn-collection--${ attributes.layout || 'grid' }`,
 			`skvn-collection--preset-${ attributes.responsivePreset || '3-2-1' }`,
 			`skvn-collection--ratio-${ sanitizeClassPart(
-				attributes.imageRatio || '4:3'
+				attributes.imageRatio || ( contentType === 'product' ? '1:1' : '16:9' )
 			) }`,
 			attributes.equalHeight !== false
 				? 'skvn-collection--equal-height'
@@ -74,6 +76,39 @@ export function CollectionEdit( {
 		<section { ...blockProps }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Content', 'skvn-marine-blocks' ) }>
+					<TextControl
+						label={ __( 'Eyebrow label', 'skvn-marine-blocks' ) }
+						onChange={ ( eyebrow ) => setAttributes( { eyebrow } ) }
+						value={ attributes.eyebrow || '' }
+					/>
+					<ToggleControl
+						checked={ attributes.showHeading !== false }
+						label={ __( 'Show heading', 'skvn-marine-blocks' ) }
+						onChange={ ( showHeading ) => setAttributes( { showHeading } ) }
+					/>
+					<TextControl
+						label={ __( 'Archive URL', 'skvn-marine-blocks' ) }
+						onChange={ ( archiveUrl ) => setAttributes( { archiveUrl } ) }
+						value={ attributes.archiveUrl || '' }
+					/>
+					{ ( attributes.archiveUrl || '' ) !== '' && (
+						<TextControl
+							label={ __( 'Archive link label', 'skvn-marine-blocks' ) }
+							onChange={ ( archiveLabel ) =>
+								setAttributes( { archiveLabel } )
+							}
+							value={ attributes.archiveLabel || '' }
+						/>
+					) }
+					{ contentType === 'product' && (
+						<TextControl
+							label={ __( 'Catalog PDF URL', 'skvn-marine-blocks' ) }
+							onChange={ ( catalogPdfUrl ) =>
+								setAttributes( { catalogPdfUrl } )
+							}
+							value={ attributes.catalogPdfUrl || '' }
+						/>
+					) }
 					<TextControl
 						label={ __( 'Accessible label', 'skvn-marine-blocks' ) }
 						onChange={ ( accessibleLabel ) =>
@@ -182,7 +217,15 @@ export function CollectionEdit( {
 							setAttributes( { imageRatio: imageRatio as ImageRatio } )
 						}
 						options={ IMAGE_RATIO_OPTIONS }
-						value={ attributes.imageRatio || '4:3' }
+						value={ attributes.imageRatio || ( contentType === 'product' ? '1:1' : '16:9' ) }
+					/>
+					<SelectControl
+						label={ __( 'Card style', 'skvn-marine-blocks' ) }
+						onChange={ ( cardStyle ) =>
+							setAttributes( { cardStyle: cardStyle as CardStyle } )
+						}
+						options={ CARD_STYLE_OPTIONS }
+						value={ attributes.cardStyle || 'default' }
 					/>
 					<ToggleControl
 						checked={ attributes.equalHeight !== false }
@@ -312,13 +355,18 @@ export function CollectionEdit( {
 				) }
 				<PanelBody title={ __( 'Advanced', 'skvn-marine-blocks' ) } />
 			</InspectorControls>
-			<RichText
-				className="skvn-collection__heading"
-				onChange={ ( heading ) => setAttributes( { heading } ) }
-				placeholder={ __( 'Collection heading...', 'skvn-marine-blocks' ) }
-				tagName="h2"
-				value={ attributes.heading }
-			/>
+			{ ( attributes.eyebrow || '' ) !== '' && (
+				<p className="skvn-collection__eyebrow">{ attributes.eyebrow }</p>
+			) }
+			{ attributes.showHeading !== false && (
+				<RichText
+					className="skvn-collection__heading"
+					onChange={ ( heading ) => setAttributes( { heading } ) }
+					placeholder={ __( 'Collection heading...', 'skvn-marine-blocks' ) }
+					tagName="h2"
+					value={ attributes.heading }
+				/>
+			) }
 			<RichText
 				className="skvn-collection__intro"
 				onChange={ ( intro ) => setAttributes( { intro } ) }
