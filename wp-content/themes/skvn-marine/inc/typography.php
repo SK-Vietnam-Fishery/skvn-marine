@@ -50,32 +50,20 @@ function skvn_marine_get_default_typography() {
 }
 
 /**
- * Get saved typography settings deep-merged with defaults.
+ * Get typography settings safe for CSS output.
+ *
+ * When skvn-marine-blocks is active, delegate read + sanitize to the plugin
+ * owner of skvn_typography. When the plugin is inactive, return theme defaults
+ * only and ignore any raw option value in the database (C1 fallback).
  *
  * @return array<string,mixed>
  */
 function skvn_marine_get_typography() {
-	$saved    = get_option( SKVN_MARINE_TYPOGRAPHY_OPTION, array() );
-	$defaults = skvn_marine_get_default_typography();
-
-	if ( ! is_array( $saved ) ) {
-		return $defaults;
+	if ( function_exists( 'skvn_marine_blocks_get_typography' ) ) {
+		return skvn_marine_blocks_get_typography();
 	}
 
-	if ( isset( $saved['palette'] ) && is_array( $saved['palette'] ) ) {
-		$defaults['palette'] = array_merge( $defaults['palette'], $saved['palette'] );
-	}
-
-	foreach ( array( 'h1', 'h2', 'h3', 'h4' ) as $level ) {
-		if ( isset( $saved['heading'][ $level ] ) && is_array( $saved['heading'][ $level ] ) ) {
-			$defaults['heading'][ $level ] = array_merge(
-				$defaults['heading'][ $level ],
-				$saved['heading'][ $level ]
-			);
-		}
-	}
-
-	return $defaults;
+	return skvn_marine_get_default_typography();
 }
 
 // ---------------------------------------------------------------------------

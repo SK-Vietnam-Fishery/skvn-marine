@@ -3,7 +3,8 @@ export type FeatureItem = {
 	heading: string;
 	copy: string;
 	imageId: number;
-	imageUrl: string;
+	/** Legacy attribute from older saves; not written by the editor. */
+	imageUrl?: string;
 	imageAlt: string;
 	linkUrl?: string;
 	linkText?: string;

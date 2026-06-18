@@ -3,6 +3,19 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+const repoRoot = path.resolve(import.meta.dirname, '..', '..');
+
+function assertInsideRoot(targetPath) {
+	const resolved = path.resolve(targetPath);
+	const rel = path.relative(repoRoot, resolved);
+
+	if (rel.startsWith('..') || path.isAbsolute(rel)) {
+		throw new Error(`Refusing to operate outside repo root: ${targetPath}`);
+	}
+
+	return resolved;
+}
+
 const HELP = `SKVN Layout Translator
 
 Usage:
@@ -744,24 +757,26 @@ async function main() {
 		throw new Error('--kind must be auto, html, or screenshot.');
 	}
 
-	const source = await readFile(args.input, 'utf8').catch((error) => {
-		if (args.kind === 'screenshot' || detectKind(args.input, args.kind, '') === 'screenshot') {
+	const inputPath = assertInsideRoot(args.input);
+
+	const source = await readFile(inputPath, 'utf8').catch((error) => {
+		if (args.kind === 'screenshot' || detectKind(inputPath, args.kind, '') === 'screenshot') {
 			return '';
 		}
 		throw error;
 	});
 
-	const kind = detectKind(args.input, args.kind, source);
+	const kind = detectKind(inputPath, args.kind, source);
 	const result = kind === 'screenshot'
-		? translateScreenshot(args.input, args)
-		: translateHtml(args.input, source, args);
+		? translateScreenshot(inputPath, args)
+		: translateHtml(inputPath, source, args);
 
 	const output = args.format === 'json'
 		? `${JSON.stringify(result, null, 2)}\n`
 		: toMarkdown(result);
 
 	if (args.output) {
-		await writeFile(args.output, output, 'utf8');
+		await writeFile(assertInsideRoot(args.output), output, 'utf8');
 		return;
 	}
 

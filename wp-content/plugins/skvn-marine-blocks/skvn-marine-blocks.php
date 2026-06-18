@@ -17,6 +17,7 @@ require_once __DIR__ . '/modules/footer-settings/footer-settings.php';
 require_once __DIR__ . '/modules/header-settings/header-settings.php';
 require_once __DIR__ . '/modules/collection-render/collection-render.php';
 require_once __DIR__ . '/modules/slider-render/slider-render.php';
+require_once __DIR__ . '/modules/feature-showcase-render/feature-showcase-render.php';
 require_once __DIR__ . '/modules/typography-settings/typography-settings.php';
 require_once __DIR__ . '/modules/core-control/core-control.php';
 
@@ -255,11 +256,12 @@ function skvn_marine_blocks_register_blocks() {
 				$args['style_handles'] = array( 'skvn-marine-slider-view' );
 			}
 
-			if (
-				'feature-showcase' === $block &&
-				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
-			) {
-				$args['style_handles'] = array( 'skvn-marine-blocks-editor' );
+			if ( 'feature-showcase' === $block ) {
+				$args['render_callback'] = 'skvn_marine_blocks_render_feature_showcase';
+
+				if ( wp_style_is( 'skvn-marine-blocks-editor', 'registered' ) ) {
+					$args['style_handles'] = array( 'skvn-marine-blocks-editor' );
+				}
 			}
 
 			if (

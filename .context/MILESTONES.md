@@ -674,6 +674,7 @@ Acceptance draft:
 - [ ] Setup actions are previewable or clearly described before running
 - [ ] Setup actions are idempotent where possible
 - [ ] Request A Quote Workflow setup maps to approved CF7/page/docs contract
+- [ ] Setup/docs mention trusted `source_url` contract (no `HTTP_HOST`; WP routing only) — aligns with T-2 in 1.4.1
 - [ ] No n8n webhook is exposed
 - [ ] Human approves milestone completion
 
@@ -686,10 +687,21 @@ Purpose:
 - Run the deferred editor/frontend/runtime validation for the `1.1.0` card-grid and card blocks.
 - Evaluate whether `skvn-marine/quote` is justified only after card-grid/card validation evidence is available.
 - Keep deferred validation explicit instead of treating the untested `1.1.0` implementation as runtime-approved.
+- Close **T-2** (trusted `source_url` / quote context URL) from the 2026 security audit: source hardening landed in 1.3.6; onsite verification and quote-chain confirmation belong here with the other quote evaluation work.
+
+Carry-in from security audit — **T-2: Trusted `source_url`**
+
+Context:
+
+- Finding: building `source_url` from `$_SERVER['HTTP_HOST']` allowed host-header poisoning in quote query params.
+- Source fix (1.3.6): `skvn_marine_blocks_get_current_source_url()` in `modules/collection-render/cards.php` now uses WordPress routing (`get_permalink()`, `home_url()`, archive/term APIs). See `docs/standards/security-guidelines.md`.
+- Remaining work for 1.4.x: prove the value end-to-end in the quote flow (URL → CF7 hidden field → CFDB7), not only in source review.
 
 Testing:
 
 - `docs/testing/card-grid-layout-blocks-1.1.0.md`
+- `docs/testing/onsite-quote-flow-0.7.1.md` — include `source_url` host/context checks
+- `docs/standards/security-guidelines.md` — T-2 audit reference
 
 Acceptance draft:
 
@@ -701,6 +713,9 @@ Acceptance draft:
 - [ ] Browser console issues are recorded or confirmed clean
 - [ ] `skvn-marine/quote` is evaluated after validation evidence is available
 - [ ] Any source defects found during validation are fixed and re-tested
+- [ ] **T-2:** Product-collection (or product CTA) quote URL `source_url` matches the real onsite page URL (same site host as WordPress config; no forged/external host)
+- [ ] **T-2:** CFDB7 test row stores `source_url` and it matches the page the user clicked from
+- [ ] **T-2:** Human approves closing T-2 after onsite quote evidence (or documents deferral with target milestone if quote test blocked)
 - [ ] Human approves closing the deferred `1.1.0` validation
 
 

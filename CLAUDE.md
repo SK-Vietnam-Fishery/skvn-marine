@@ -34,14 +34,15 @@ Only read it if I explicitly say "check full rules".
 - Do not overwrite manually entered image ALT text.
 - Do not auto-generate captions in V1.
 
-## Work Plan Rule (Non-Negotiable)
+## Work Plan Rule
 
-Before implementing ANY change:
-1. Write a detailed work plan: what will change, in which files, exactly which CSS rules / lines, and why
-2. Wait for explicit user approval
-3. Only then implement
+Follow `AGENTS.md` → **Agent response routing**:
 
-Do NOT start editing files before the plan is approved.
+- **`CODE_NOW`** (human đã chọn hướng: `theo E`, `làm A+C1`, `implement`, `fix`): implement ngay; plan ngắn trong reply là đủ.
+- **`ASK_ARCHITECTURE`** / scope mơ hồ: plan chi tiết → chờ explicit approval → rồi mới implement.
+- **`EXPLAIN`**: chỉ giải thích; không code cho đến khi human bảo làm tiếp.
+
+Do NOT block `CODE_NOW` tasks with a full plan + wait-for-approval loop.
 
 ## Task Format
 

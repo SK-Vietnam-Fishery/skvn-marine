@@ -326,12 +326,59 @@ function skvn_marine_blocks_maybe_append_product_context( $url, $product, $attri
 /**
  * Get current page URL for quote source context.
  *
+ * Builds URLs from WordPress routing (home_url, permalinks, queried objects).
+ * Do not use $_SERVER['HTTP_HOST'] — it is client-controlled and can poison
+ * quote hidden-field context.
+ *
  * @return string
  */
 function skvn_marine_blocks_get_current_source_url() {
-	$scheme = is_ssl() ? 'https://' : 'http://';
-	$host   = isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
-	$uri    = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+	if ( is_singular() ) {
+		$permalink = get_permalink();
 
-	return esc_url_raw( $scheme . $host . $uri );
+		if ( is_string( $permalink ) && '' !== $permalink ) {
+			return esc_url_raw( $permalink );
+		}
+	}
+
+	if ( is_search() ) {
+		return esc_url_raw(
+			add_query_arg(
+				array(
+					's' => get_search_query(),
+				),
+				home_url( '/' )
+			)
+		);
+	}
+
+	if ( is_post_type_archive() ) {
+		$post_type = get_query_var( 'post_type' );
+		$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
+		$link      = get_post_type_archive_link( (string) $post_type );
+
+		if ( is_string( $link ) && '' !== $link ) {
+			return esc_url_raw( $link );
+		}
+	}
+
+	if ( is_category() || is_tag() || is_tax() ) {
+		$term = get_queried_object();
+
+		if ( $term instanceof WP_Term ) {
+			$link = get_term_link( $term );
+
+			if ( ! is_wp_error( $link ) ) {
+				return esc_url_raw( $link );
+			}
+		}
+	}
+
+	global $wp;
+
+	if ( isset( $wp->request ) && is_string( $wp->request ) && '' !== $wp->request ) {
+		return esc_url_raw( home_url( user_trailingslashit( $wp->request ) ) );
+	}
+
+	return esc_url_raw( home_url( '/' ) );
 }
