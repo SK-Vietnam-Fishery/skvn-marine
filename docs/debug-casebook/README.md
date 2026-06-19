@@ -110,6 +110,8 @@ layout/003_DUPLICATE_FULL_WIDTH_OWNERSHIP.md
 - `docs/decisions/`: quyết định kiến trúc hoặc UX được phê duyệt.
 - `docs/testing/`: quy trình và evidence cần human kiểm tra.
 - `docs/debug-casebook/`: lỗi cụ thể, cách chứng minh và tiền lệ sửa lỗi.
+- `docs/debug-casebook/PITFALLS.md`: tổng hợp pitfalls + checklist agent — entry
+  point nhanh trước khi đọc từng CASE-XXX.
 - `.context/`: active working memory và milestone protocol.
 
 Casebook không thay thế decision document hoặc onsite test checklist.

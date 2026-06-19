@@ -342,7 +342,7 @@ function initSlider( slider: SliderElement ): void {
 		const timedPagination =
 			config.paginationStyle === 'timed-fraction' ||
 			config.paginationStyle === 'timed-segments';
-		const syncViewportHeight = () => {
+		const syncViewportHeight = ( swiperInstance?: Swiper ) => {
 			if ( config.heightPreset !== 'viewport-below-header' ) {
 				return;
 			}
@@ -361,6 +361,12 @@ function initSlider( slider: SliderElement ): void {
 				'--skvn-slider-viewport-offset',
 				`${ Math.max( 0, Math.round( offset ) ) }px`
 			);
+
+			const activeSwiper = swiperInstance ?? slider.swiper;
+			if ( activeSwiper && ! activeSwiper.destroyed ) {
+				activeSwiper.updateSize();
+				activeSwiper.updateSlides();
+			}
 		};
 		syncViewportHeight();
 
@@ -478,6 +484,7 @@ function initSlider( slider: SliderElement ): void {
 					? 1
 					: config.slidesPerView,
 			} );
+			syncViewportHeight( swiper );
 
 			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;

@@ -99,6 +99,41 @@ assert.match(sliderView, /slider\.swiper\?\.destroyed/);
 assert.match(sliderView, /classList\.remove\(\s*'skvn-slider--initialized'/);
 assert.match(sliderStyle, /skvn-slider__controls--cluster/);
 assert.match(sliderStyle, /prefers-reduced-motion:\s*reduce/);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--height-viewport-below-header:not\(\.skvn-slider--editor\)\s*\{[\s\S]*--skvn-slider-viewport-height/,
+	'viewport-below-header must own explicit slider height',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--height-viewport-below-header:not\(\.skvn-slider--editor\)\s+\.skvn-slider__wrapper[\s\S]*height:\s*100%/,
+	'viewport-below-header must propagate height through the Swiper wrapper',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--height-viewport-below-header:not\(\.skvn-slider--editor\)\s+\.skvn-slide__media[\s\S]*height:\s*100%/,
+	'viewport-below-header must stretch the media frame to the slide height',
+);
+assert.match(
+	sliderView,
+	/syncViewportHeight\(\s*swiper\s*\)/,
+	'Swiper init must resync viewport height after the height chain is active',
+);
+assert.match(
+	sliderView,
+	/activeSwiper\.updateSize\(\)/,
+	'viewport offset changes must refresh Swiper geometry',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--hero \.skvn-slide\s*\{[\s\S]*align-items:\s*center/,
+	'hero slide content column must center on the cross axis',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--hero \.skvn-slide__content > \*\s*\{[\s\S]*margin-inline:\s*auto/,
+	'hero copy blocks must center inside the slide frame',
+);
 assert.match(slideEdit, /select\(\s*coreDataStore\s*\)/);
 assert.match(slideEdit, /attachment\?\.source_url\s*\|\|\s*attributes\.backgroundImageUrl/);
 assert.match(sliderRenderer, /count\(\s*\$block->inner_blocks\s*\)/);
