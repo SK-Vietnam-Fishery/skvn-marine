@@ -7,6 +7,8 @@
  *
  * This file owns only CSS delivery. Admin UI and option write belong to:
  * wp-content/plugins/skvn-marine-blocks/modules/typography-settings/typography-settings.php
+ *
+ * Scope contract: docs/decisions/typography-scope-and-font-loading.md
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -18,8 +20,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 const SKVN_MARINE_TYPOGRAPHY_OPTION = 'skvn_typography';
 
-add_action( 'wp_enqueue_scripts',    'skvn_marine_inject_typography_css', 20 );
+add_action( 'wp_enqueue_scripts', 'skvn_marine_inject_typography_css', 20 );
 add_action( 'enqueue_block_editor_assets', 'skvn_marine_inject_typography_css_editor', 20 );
+
+// ---------------------------------------------------------------------------
+// Scope helper (shared with inc/customizer.php)
+// ---------------------------------------------------------------------------
+
+/**
+ * CSS selector root for typography custom properties.
+ *
+ * @param string $context 'frontend' or 'editor'.
+ * @return string
+ */
+function skvn_marine_typography_scope_selector( string $context ): string {
+	return 'editor' === $context
+		? '.editor-styles-wrapper'
+		: 'body:not(.wp-admin)';
+}
 
 // ---------------------------------------------------------------------------
 // Defaults and getter
@@ -71,26 +89,29 @@ function skvn_marine_get_typography() {
 // ---------------------------------------------------------------------------
 
 /**
- * Build the :root CSS custom properties string from saved settings.
+ * Build scoped CSS custom properties from saved settings.
  *
+ * @param string $context 'frontend' or 'editor'.
  * @return string CSS to inject.
  */
-function skvn_marine_build_typography_css() {
-	$t = skvn_marine_get_typography();
-	$p = $t['palette'];
-	$h = $t['heading'];
+function skvn_marine_build_typography_css( string $context = 'frontend' ): string {
+	$t      = skvn_marine_get_typography();
+	$p      = $t['palette'];
+	$h      = $t['heading'];
+	$scope  = skvn_marine_typography_scope_selector( $context );
 
 	return sprintf(
-		':root {
-	--skvn-color-primary: %1$s;
-	--skvn-color-accent:  %2$s;
-	--skvn-color-surface: %3$s;
-	--skvn-color-text:    %4$s;
-	--skvn-h1-size: %5$s; --skvn-h1-weight: %6$s;
-	--skvn-h2-size: %7$s; --skvn-h2-weight: %8$s;
-	--skvn-h3-size: %9$s; --skvn-h3-weight: %10$s;
-	--skvn-h4-size: %11$s; --skvn-h4-weight: %12$s;
+		'%1$s {
+	--skvn-color-primary: %2$s;
+	--skvn-color-accent:  %3$s;
+	--skvn-color-surface: %4$s;
+	--skvn-color-text:    %5$s;
+	--skvn-h1-size: %6$s; --skvn-h1-weight: %7$s;
+	--skvn-h2-size: %8$s; --skvn-h2-weight: %9$s;
+	--skvn-h3-size: %10$s; --skvn-h3-weight: %11$s;
+	--skvn-h4-size: %12$s; --skvn-h4-weight: %13$s;
 }',
+		$scope,
 		esc_attr( $p['primary'] ),
 		esc_attr( $p['accent'] ),
 		esc_attr( $p['surface'] ),
@@ -116,15 +137,15 @@ function skvn_marine_inject_typography_css() {
 		return;
 	}
 
-	wp_add_inline_style( 'skvn-marine-style', skvn_marine_build_typography_css() );
+	wp_add_inline_style( 'skvn-marine-style', skvn_marine_build_typography_css( 'frontend' ) );
 }
 
 // ---------------------------------------------------------------------------
-// Inject — block editor
+// Inject — block editor canvas
 // ---------------------------------------------------------------------------
 
 /**
- * Inject typography CSS into the block editor.
+ * Inject typography CSS into the block editor canvas.
  *
  * Uses a virtual style handle so the injection does not depend on
  * the exact handle WordPress assigns to add_editor_style().
@@ -134,5 +155,5 @@ function skvn_marine_inject_typography_css() {
 function skvn_marine_inject_typography_css_editor() {
 	wp_register_style( 'skvn-marine-typography-editor', false, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
 	wp_enqueue_style( 'skvn-marine-typography-editor' );
-	wp_add_inline_style( 'skvn-marine-typography-editor', skvn_marine_build_typography_css() );
+	wp_add_inline_style( 'skvn-marine-typography-editor', skvn_marine_build_typography_css( 'editor' ) );
 }

@@ -89,7 +89,7 @@
     },
     "showAuthor": {
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "showPostCategories": {
       "type": "boolean",
@@ -134,6 +134,22 @@
     "archiveLabel": {
       "type": "string",
       "default": ""
+    },
+    "showCatalogCta": {
+      "type": "boolean",
+      "default": false
+    },
+    "catalogCtaUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "catalogCtaLabel": {
+      "type": "string",
+      "default": "Tải catalog"
+    },
+    "readMoreLabel": {
+      "type": "string",
+      "default": "Đọc thêm →"
     }
   },
   "supports": {

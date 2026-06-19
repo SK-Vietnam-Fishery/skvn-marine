@@ -5,6 +5,8 @@
 **Ngày tạo:** 2026-06-17  
 **Context:** GeneratePress parent + skvn-marine child theme + skvn-marine-blocks plugin.
 
+**Follow-up (hardening):** Typography scope isolation — `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` (wp-admin font leak fix + Vietnamese gfonts contract). Có thể implement song song hoặc ngay sau trục A/B.
+
 ---
 
 ## 1. Mục tiêu

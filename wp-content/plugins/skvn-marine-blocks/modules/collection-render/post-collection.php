@@ -48,6 +48,8 @@ function skvn_marine_blocks_render_post_collection( $attributes ) {
 		skvn_marine_blocks_maybe_enqueue_collection_view();
 	}
 
+	$footer_html = skvn_marine_blocks_render_collection_footer( $attributes, 'carousel' === $layout ? 'carousel' : 'grid' );
+
 	ob_start();
 	?>
 	<section class="<?php echo esc_attr( $classes ); ?>"<?php echo $aria_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
@@ -63,7 +65,7 @@ function skvn_marine_blocks_render_post_collection( $attributes ) {
 		<?php if ( empty( $posts ) ) : ?>
 			<p class="skvn-collection__empty"><?php esc_html_e( 'No posts found.', 'skvn-marine-blocks' ); ?></p>
 		<?php elseif ( 'carousel' === $layout ) : ?>
-			<?php echo skvn_marine_blocks_render_collection_carousel( $posts, $attributes, 'post' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo skvn_marine_blocks_render_collection_carousel( $posts, $attributes, 'post', $footer_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php else : ?>
 			<div class="skvn-collection__grid">
 				<?php
@@ -72,13 +74,7 @@ function skvn_marine_blocks_render_post_collection( $attributes ) {
 				}
 				?>
 			</div>
-		<?php endif; ?>
-		<?php if ( '' !== $archive_url ) : ?>
-			<div class="skvn-collection__footer">
-				<a class="skvn-collection__archive-link" href="<?php echo esc_url( $archive_url ); ?>">
-					<?php echo esc_html( '' !== $archive_label ? $archive_label : __( 'View all', 'skvn-marine-blocks' ) ); ?>
-				</a>
-			</div>
+			<?php echo $footer_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php endif; ?>
 	</section>
 	<?php

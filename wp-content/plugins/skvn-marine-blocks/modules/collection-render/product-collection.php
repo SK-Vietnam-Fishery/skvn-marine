@@ -25,7 +25,6 @@ function skvn_marine_blocks_render_product_collection( $attributes ) {
 	$ratio        = isset( $attributes['imageRatio'] ) ? 'skvn-collection--ratio-' . str_replace( ':', '-', $attributes['imageRatio'] ) : '';
 	$archive_url  = isset( $attributes['archiveUrl'] ) ? esc_url_raw( $attributes['archiveUrl'] ) : '';
 	$archive_label = isset( $attributes['archiveLabel'] ) ? sanitize_text_field( $attributes['archiveLabel'] ) : '';
-	$catalog_url  = isset( $attributes['catalogPdfUrl'] ) ? esc_url_raw( $attributes['catalogPdfUrl'] ) : '';
 	$classes  = implode(
 		' ',
 		array_filter(
@@ -70,7 +69,8 @@ function skvn_marine_blocks_render_product_collection( $attributes ) {
 			<?php elseif ( 'carousel' === $layout ) : ?>
 				<?php
 				skvn_marine_blocks_maybe_enqueue_collection_view();
-				echo skvn_marine_blocks_render_collection_carousel( $products, $attributes, 'product' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				$footer_html = skvn_marine_blocks_render_collection_footer( $attributes, 'carousel' );
+				echo skvn_marine_blocks_render_collection_carousel( $products, $attributes, 'product', $footer_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				?>
 			<?php else : ?>
 				<div class="skvn-collection__grid">
@@ -80,21 +80,8 @@ function skvn_marine_blocks_render_product_collection( $attributes ) {
 					}
 					?>
 				</div>
+				<?php echo skvn_marine_blocks_render_collection_footer( $attributes, 'grid' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 			<?php endif; ?>
-		<?php endif; ?>
-		<?php if ( '' !== $archive_url || '' !== $catalog_url ) : ?>
-			<div class="skvn-collection__footer">
-				<?php if ( '' !== $archive_url ) : ?>
-					<a class="skvn-collection__archive-link" href="<?php echo esc_url( $archive_url ); ?>">
-						<?php echo esc_html( '' !== $archive_label ? $archive_label : __( 'View all', 'skvn-marine-blocks' ) ); ?>
-					</a>
-				<?php endif; ?>
-				<?php if ( '' !== $catalog_url ) : ?>
-					<a class="skvn-collection__catalog-link" href="<?php echo esc_url( $catalog_url ); ?>" target="_blank" rel="noopener noreferrer">
-						<?php esc_html_e( 'Download catalog (PDF)', 'skvn-marine-blocks' ); ?>
-					</a>
-				<?php endif; ?>
-			</div>
 		<?php endif; ?>
 	</section>
 	<?php

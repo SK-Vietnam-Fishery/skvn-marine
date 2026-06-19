@@ -139,7 +139,27 @@
       "type": "string",
       "default": ""
     },
-    "catalogPdfUrl": {
+    "catalogCtaUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "showCatalogCta": {
+      "type": "boolean",
+      "default": false
+    },
+    "catalogCtaLabel": {
+      "type": "string",
+      "default": "Tải catalog"
+    },
+    "showSpecChips": {
+      "type": "boolean",
+      "default": true
+    },
+    "chipStyle": {
+      "type": "string",
+      "default": "tag"
+    },
+    "chipColorScheme": {
       "type": "string",
       "default": ""
     }

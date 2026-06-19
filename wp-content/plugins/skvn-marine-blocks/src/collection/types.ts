@@ -11,6 +11,7 @@ export type BadgeBehavior = 'display' | 'archive-link';
 export type CardStyle = 'default' | 'featured';
 export type PostActionMode = 'read' | 'custom';
 export type ProductActionMode = 'view' | 'quote' | 'both' | 'custom';
+export type ChipStyle = 'tag' | 'hashtag' | 'dot' | 'plain';
 
 export type CollectionAttributes = {
 	layout: CollectionLayout;
@@ -21,7 +22,9 @@ export type CollectionAttributes = {
 	accessibleLabel: string;
 	archiveUrl: string;
 	archiveLabel: string;
-	catalogPdfUrl: string;
+	catalogCtaUrl: string;
+	showCatalogCta: boolean;
+	catalogCtaLabel: string;
 	categories: string[];
 	tags: string[];
 	relation: CollectionRelation;
@@ -47,6 +50,10 @@ export type CollectionAttributes = {
 	productActionMode: ProductActionMode;
 	customActionUrl: string;
 	appendQuoteContext: boolean;
+	showSpecChips: boolean;
+	chipStyle: ChipStyle;
+	chipColorScheme: string;
+	readMoreLabel: string;
 	showArrows: boolean;
 	showPagination: boolean;
 	autoplay: boolean;
