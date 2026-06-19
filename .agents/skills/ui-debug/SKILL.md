@@ -185,6 +185,7 @@ window.dispatchEvent(new Event('resize'))
 ## References Theo Case
 
 - WordPress/Gutenberg footer đã render nhưng layout vẫn sai, `alignfull` tràn ngang, wrapper `site-footer` lệch âm, hoặc có khoảng trắng dưới footer: đọc `references/footer-full-width-overflow.md`.
+- SKVN Marine — full agent+human workflow (diagnose → compare options → human chọn → implement → DevTools verify → decision vs ideation docs): `docs/workflows/agent-ui-layout-collaboration-method.md`. Case: single post hero GP flex sibling + mobile island padding stack.
 
 ---
 

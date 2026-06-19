@@ -42,33 +42,33 @@ if ( $skvn_first_cat ) {
 $skvn_related_query = new WP_Query( $skvn_related_args );
 ?>
 
-<!-- POST HERO -->
-<div class="skvn-post-hero">
-	<?php if ( has_post_thumbnail() ) : ?>
-		<?php the_post_thumbnail( 'full', array( 'class' => 'skvn-post-hero__img', 'alt' => '' ) ); ?>
-		<div class="skvn-post-hero__overlay" aria-hidden="true"></div>
-	<?php else : ?>
-		<div class="skvn-post-hero__placeholder" aria-hidden="true"></div>
-	<?php endif; ?>
-
-	<div class="skvn-post-hero__content">
-		<div class="skvn-post-hero__meta">
-			<?php if ( $skvn_first_cat ) : ?>
-				<a class="skvn-post-hero__cat" href="<?php echo esc_url( get_category_link( $skvn_first_cat->term_id ) ); ?>">
-					<?php echo esc_html( $skvn_first_cat->name ); ?>
-				</a>
-			<?php endif; ?>
-			<time class="skvn-post-hero__date" datetime="<?php echo esc_attr( get_the_date( 'Y-m-d' ) ); ?>">
-				<?php echo esc_html( get_the_date() ); ?>
-			</time>
-		</div>
-		<h1 class="skvn-post-hero__title"><?php the_title(); ?></h1>
-	</div>
-</div>
-
 <!-- POST LAYOUT -->
 <div class="skvn-single-wrap">
 	<div class="skvn-single-layout">
+
+		<!-- POST HERO — grid column 1, row 1 -->
+		<div class="skvn-post-hero">
+			<?php if ( has_post_thumbnail() ) : ?>
+				<?php the_post_thumbnail( 'full', array( 'class' => 'skvn-post-hero__img', 'alt' => '' ) ); ?>
+				<div class="skvn-post-hero__overlay" aria-hidden="true"></div>
+			<?php else : ?>
+				<div class="skvn-post-hero__placeholder" aria-hidden="true"></div>
+			<?php endif; ?>
+
+			<div class="skvn-post-hero__content">
+				<div class="skvn-post-hero__meta">
+					<?php if ( $skvn_first_cat ) : ?>
+						<a class="skvn-post-hero__cat" href="<?php echo esc_url( get_category_link( $skvn_first_cat->term_id ) ); ?>">
+							<?php echo esc_html( $skvn_first_cat->name ); ?>
+						</a>
+					<?php endif; ?>
+					<time class="skvn-post-hero__date" datetime="<?php echo esc_attr( get_the_date( 'Y-m-d' ) ); ?>">
+						<?php echo esc_html( get_the_date() ); ?>
+					</time>
+				</div>
+				<h1 class="skvn-post-hero__title"><?php the_title(); ?></h1>
+			</div>
+		</div>
 
 		<main class="skvn-single-main" id="main">
 			<article id="post-<?php the_ID(); ?>" <?php post_class( 'skvn-post-body' ); ?>>
