@@ -317,11 +317,12 @@ Planning:
 Acceptance draft:
 
 **Trục C — Single Post Fix:**
-- [ ] Hero `.skvn-post-hero` render full-width trong GP content area
-- [ ] Heading trong hero dùng `font-family: var(--skvn-font-heading)`
-- [ ] Thumbnail hero dùng `aspect-ratio: 16/9` + `object-fit: cover`
-- [ ] Card thumbnail (archive, related) dùng `aspect-ratio: 3/2` + `object-fit: cover`
-- [ ] Không có `add_image_size()` mới — ThumbPress-compatible
+- [x] Hero `.skvn-post-hero` render full-width trong GP content area
+- [x] Heading trong hero dùng `font-family: var(--skvn-font-heading)`
+- [x] Thumbnail hero dùng `aspect-ratio: 16/9` + `object-fit: cover`
+- [x] Card thumbnail (archive, related) dùng `aspect-ratio: 3/2` + `object-fit: cover`
+- [x] Không có `add_image_size()` mới — ThumbPress-compatible
+- [x] Hero content inset + spacing đồng bộ với article (`--skvn-single-gap`, `--skvn-single-inset-inline`) — human verified 2026-06-19
 
 **Trục A — Editor UX:**
 - [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
@@ -330,7 +331,14 @@ Acceptance draft:
 - [ ] Block icons và descriptions không còn blank trong inserter
 - [ ] Inspector panel refactor không invalidate content hiện có
 
-**Trục B — Slider Parallax:**
+**Slider bottom-center flank controls (layout — planning 031):**
+- [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)
+- [ ] `pill` + cluster giữ order mặc định `arrows | pagination`
+- [ ] `bottom-left` / `bottom-right` / `side-center` không regression
+- [ ] Editor preview khớp frontend flank layout
+- [ ] Mobile timed pagination width — tune deferred tới 1.3.9 QA
+
+**Trục B — Slider Parallax (motion — planning 026, artifact transition):**
 - [ ] `enableParallax` attribute tồn tại trong Slider block.json
 - [ ] Parallax chạy đúng trên desktop với intensity preset (subtle/medium/strong)
 - [ ] `prefers-reduced-motion` tắt parallax hoàn toàn

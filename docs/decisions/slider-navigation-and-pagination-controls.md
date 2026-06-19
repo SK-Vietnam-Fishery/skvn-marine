@@ -103,11 +103,35 @@ bottom-center
 bottom-right
 ```
 
-The cluster order is always:
+The default cluster order is always:
 
 ```text
 arrows | pagination
 ```
+
+### 5.1 Bottom-center flank exception (V1 / 1.3.6)
+
+When **all** of the following are true:
+
+- arrows and pagination are both visible,
+- `arrowPosition` and `paginationPosition` are both `bottom-center`,
+- `arrowStyle` is not `pill`,
+
+the renderer uses an additional flank modifier instead of the default
+grouped-arrow cluster:
+
+```text
+previous arrow | pagination | next arrow
+```
+
+Pagination **style** (`dots`, `fraction`, `timed-fraction`, `timed-segments`)
+does not change flank eligibility. Pagination **position** must still be
+`bottom-center`.
+
+`pill` always keeps the default cluster order from §5 because both controls
+live inside one capsule surface.
+
+Planning: `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
 
 When the positions differ, arrows and pagination retain their independent
 positions. The implementation may use one stable controls wrapper and

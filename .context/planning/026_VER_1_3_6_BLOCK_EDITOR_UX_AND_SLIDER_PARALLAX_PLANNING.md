@@ -7,6 +7,8 @@
 
 **Follow-up (hardening):** Typography scope isolation — `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` (wp-admin font leak fix + Vietnamese gfonts contract). Có thể implement song song hoặc ngay sau trục A/B.
 
+**Related (layout only, tách khỏi Trục B motion):** Bottom-center flank controls — `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`. Artifact `docs/artifacts/slider-parallax-1.3.6-mockup.html` dùng cho controls row **và** transition motion; 031 chỉ ship layout `‹ pagination ›`.
+
 ---
 
 ## 1. Mục tiêu

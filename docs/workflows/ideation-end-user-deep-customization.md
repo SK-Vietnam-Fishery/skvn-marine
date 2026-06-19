@@ -116,6 +116,71 @@ Featured image chỉ trong content hoặc ẩn hero shell.
 - Control surface: post editor sidebar (marketing) hoặc Customizer default + per-post override.
 - Plan 030 có thể implement **magazine** trước; giữ **class contract** để Option A/C thêm sau không rewrite PHP.
 
+### Layout preset vs hero bleed (margin âm) — tách hai tầng
+
+Brainstorm 2026-06-19 (thread mobile hero full-width): **margin âm gutter** và **layout preset** là hai concern khác nhau; không gộp vào một rule CSS duy nhất.
+
+```text
+Tầng layout (preset)     → ai nằm hàng/cột nào trong .skvn-single-layout
+Tầng surface / bleed     → hero có chạm mép canvas hay nằm trong gutter wrap
+```
+
+| Tầng | Ví dụ class | Trả lời câu hỏi |
+|------|-------------|-----------------|
+| Layout preset | `.skvn-post-layout--magazine`, `--banner` | Hero cạnh sidebar hay full hàng trên? |
+| Bleed modifier | `.skvn-post-hero--bleed` (tên gợi ý) | Ảnh/gradient hero có cancel `--skvn-page-gutter` không? |
+
+**Magazine (hiện tại, D1):** hero cột trái row 1; sidebar span 2 rows — không “full hàng” trên desktop.
+
+**Banner (Option A, future):**
+
+```text
+┌──────────────────────────────────┐
+│           Hero                   │  grid-column: 1 / -1
+├──────────────────────┬───────────┤
+│       Content        │  Sidebar   │
+└──────────────────────┴───────────┘
+```
+
+Desktop banner: **grid span** (`grid-column: 1 / -1`) — **không** cần margin âm; wrap vẫn owner gutter, hero placement do grid.
+
+**Bleed trong wrap (mobile / tùy surface):** khi wrap còn `padding-inline: var(--skvn-page-gutter)` mà muốn hero **visual** sát mép SKVN canvas:
+
+```css
+.skvn-post-hero--bleed {
+	margin-inline: calc(-1 * var(--skvn-page-gutter));
+}
+.skvn-post-hero--bleed .skvn-post-hero__content {
+	padding-inline: var(--skvn-page-gutter);
+}
+```
+
+- Cùng pattern đã dùng cho `.skvn-island--navy` (decision D5/D7) — sync token, không hardcode `-1rem`.
+- **Không** dùng `100vw` / margin viewport (css-layout-safety D3).
+
+**Matrix gợi ý khi có preset:**
+
+| Preset | Desktop hero full hàng? | Bleed modifier |
+|--------|-------------------------|----------------|
+| `--magazine` | Không (cột trái) | Optional mobile `--bleed` |
+| `--banner` | Có (`grid-column: 1 / -1`) | Desktop: thường không; mobile: optional `--bleed` nếu wrap còn gutter |
+| `--no-hero` | N/A | N/A |
+
+**Anti-patterns (không implement):**
+
+- Gắn `margin-inline: calc(-1 * …)` vào `.skvn-post-hero` **default** — banner desktop đã full grid, margin âm thừa và dễ lệch sidebar.
+- Nhầm preset banner với bleed — banner = đổi grid; bleed = cancel gutter wrap.
+- Đổi HTML `single.php` mỗi lần thêm preset — chỉ đổi class trên `.skvn-single-layout` (+ optional modifier trên hero).
+
+**Lộ trình gợi ý:**
+
+```text
+V1 / now (tuning)   Magazine + optional .skvn-post-hero--bleed @mobile (chưa preset picker)
+~1.6.0            Layout class contract + Customizer default; surface presets (009) có thể map bleed
+```
+
+Liên quan surface presets (009): `skvn-surface--flat` / `--edge` có thể **delegate** bleed modifier — một implementation, không duplicate logic per layout.
+
 ---
 
 ## Phạm vi “tùy biến sâu” — bảng brainstorm
@@ -166,3 +231,4 @@ Featured image chỉ trong content hoặc ẩn hero shell.
 | 2026-06-19 | Tạo brainstorm từ thread Grok UI debug + human goal “end-user tùy biến sâu” |
 | 2026-06-19 | Thêm A1: Hero image crop position (object-position) — mặc định center center (030), future customize top/center/bottom |
 | 2026-06-19 | Link decision doc `docs/decisions/single-post-layout-and-mobile-surfaces.md` — tách decided vs brainstorm |
+| 2026-06-19 | Thêm § layout preset vs hero bleed: modifier `.skvn-post-hero--bleed`, banner = grid span, margin âm ≠ preset |
