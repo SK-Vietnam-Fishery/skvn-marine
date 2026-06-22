@@ -2,7 +2,7 @@
 Theme Name: SKVN Marine
 Template: generatepress
 Text Domain: skvn-marine
-Version: 1.3.5
+Version: 1.3.7
 Requires at least: 6.5
 Requires PHP: 7.4
 Update URI: false
@@ -72,27 +72,43 @@ Author: SKVN
 	--skvn-wide-width:     1200px;
 }
 
-body,
+body:not(.wp-admin) {
+	color: var(--skvn-color-slate-700);
+	font-family: var(--skvn-font-body);
+}
+
 .editor-styles-wrapper {
 	color: var(--skvn-color-slate-700);
 	font-family: var(--skvn-font-body);
 }
 
-button,
-input,
-optgroup,
-select,
-textarea {
+body:not(.wp-admin) button,
+body:not(.wp-admin) input,
+body:not(.wp-admin) optgroup,
+body:not(.wp-admin) select,
+body:not(.wp-admin) textarea,
+.editor-styles-wrapper button,
+.editor-styles-wrapper input,
+.editor-styles-wrapper optgroup,
+.editor-styles-wrapper select,
+.editor-styles-wrapper textarea {
 	font-family: var(--skvn-font-ui);
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.wp-block-heading {
+body:not(.wp-admin) h1,
+body:not(.wp-admin) h2,
+body:not(.wp-admin) h3,
+body:not(.wp-admin) h4,
+body:not(.wp-admin) h5,
+body:not(.wp-admin) h6,
+body:not(.wp-admin) .wp-block-heading,
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4,
+.editor-styles-wrapper h5,
+.editor-styles-wrapper h6,
+.editor-styles-wrapper .wp-block-heading {
 	font-family: var(--skvn-font-heading);
 	letter-spacing: 0;
 	color: var(--skvn-heading-color);
@@ -663,10 +679,6 @@ body.block-editor-iframe__body.editor-styles-wrapper.post-type-page {
 	background: var(--skvn-footer-bg);
 	color: var(--skvn-footer-text);
 	overflow-x: clip;
-}
-
-body.skvn-has-footer-page {
-	background: var(--skvn-footer-bg);
 }
 
 body.skvn-footer-bg-default,
@@ -2868,9 +2880,10 @@ body.skvn-has-footer-page .site {
    ========================================================================== */
 
 .skvn-archive-wrap {
+	--skvn-page-gutter: 1rem;
 	max-width: var(--skvn-wide-width);
 	margin-inline: auto;
-	padding-inline: 1rem;
+	padding-inline: var(--skvn-page-gutter);
 	padding-block: 2.5rem 4rem;
 }
 
@@ -3053,7 +3066,7 @@ body.skvn-has-footer-page .site {
 }
 
 .skvn-post-card__thumb {
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 3 / 2;
 	background: var(--skvn-color-blue-900);
 	overflow: hidden;
 	flex-shrink: 0;
@@ -3335,6 +3348,48 @@ body.skvn-has-footer-page .site {
 	color: var(--skvn-color-slate-700);
 }
 
+/* Mobile — page gutter + flat sidebar islands (archive + single) */
+@media (max-width: 900px) {
+	.skvn-archive-wrap,
+	.skvn-single-wrap {
+		--skvn-page-gutter: 0.75rem;
+		padding-inline: var(--skvn-page-gutter);
+	}
+
+	.skvn-archive-sidebar,
+	.skvn-single-sidebar {
+		gap: 0;
+	}
+
+	.skvn-island:not(.skvn-island--navy) {
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		padding: 0;
+		padding-block-end: 1.25rem;
+		border-bottom: 1px solid rgba(51, 65, 85, 0.12);
+	}
+
+	.skvn-island--navy {
+		margin-inline: calc(-1 * var(--skvn-page-gutter));
+		padding: 1.25rem var(--skvn-page-gutter);
+		border-radius: 0;
+	}
+
+	.skvn-archive-sidebar > .skvn-island:last-child,
+	.skvn-single-sidebar > .skvn-island:last-child {
+		border-bottom: none;
+		padding-block-end: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.skvn-archive-wrap,
+	.skvn-single-wrap {
+		--skvn-page-gutter: 0.5rem;
+	}
+}
+
 /* Archive — responsive */
 @media (max-width: 900px) {
 	.skvn-archive-featured {
@@ -3373,13 +3428,14 @@ body.skvn-has-footer-page .site {
 /* Product page outer layout: content area + sidebar */
 .woocommerce div.product,
 .skvn-product-layout {
+	--skvn-page-gutter: 1rem;
 	display: grid;
 	grid-template-columns: 3fr 1fr;
 	gap: 2.5rem;
 	align-items: start;
 	max-width: var(--skvn-wide-width);
 	margin-inline: auto;
-	padding-inline: 1rem;
+	padding-inline: var(--skvn-page-gutter);
 	padding-block: 2.5rem;
 }
 
@@ -3805,6 +3861,8 @@ body.skvn-has-footer-page .site {
 @media (max-width: 900px) {
 	.woocommerce div.product,
 	.skvn-product-layout {
+		--skvn-page-gutter: 0.75rem;
+		padding-inline: var(--skvn-page-gutter);
 		grid-template-columns: 1fr;
 	}
 
@@ -3818,6 +3876,11 @@ body.skvn-has-footer-page .site {
 }
 
 @media (max-width: 600px) {
+	.woocommerce div.product,
+	.skvn-product-layout {
+		--skvn-page-gutter: 0.5rem;
+	}
+
 	.skvn-product-trust {
 		grid-template-columns: 1fr;
 	}
@@ -3833,13 +3896,12 @@ body.skvn-has-footer-page .site {
    Hero uses position:relative within the content flow — no 100vw breakout.
    ========================================================================== */
 
-/* Post hero */
+/* Post hero — 16:9 frame; original attachment + CSS crop (ThumbPress-safe). */
 .skvn-post-hero {
+	aspect-ratio: 16 / 9;
+	width: 100%;
 	position: relative;
-	min-height: 24rem;
 	background: var(--skvn-color-blue-900);
-	display: flex;
-	align-items: flex-end;
 	overflow: hidden;
 }
 
@@ -3849,6 +3911,7 @@ body.skvn-has-footer-page .site {
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+	object-position: center center;
 	display: block;
 }
 
@@ -3865,12 +3928,13 @@ body.skvn-has-footer-page .site {
 }
 
 .skvn-post-hero__content {
-	position: relative;
+	position: absolute;
+	inset-inline: 0;
+	bottom: 0;
 	z-index: 1;
-	max-width: var(--skvn-wide-width);
-	margin-inline: auto;
-	padding: 0 1rem 2.25rem;
+	padding: 0 var(--skvn-single-inset-inline) 2.25rem;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 .skvn-post-hero__meta {
@@ -3897,6 +3961,7 @@ body.skvn-has-footer-page .site {
 }
 
 .skvn-post-hero__title {
+	font-family: var(--skvn-font-heading);
 	font-size: clamp(1.5rem, 3.5vw, 2.4rem);
 	font-weight: 800;
 	color: var(--skvn-color-white);
@@ -3907,26 +3972,53 @@ body.skvn-has-footer-page .site {
 
 /* Single post outer wrap + layout */
 .skvn-single-wrap {
+	--skvn-page-gutter: 1rem;
+	--skvn-single-gap: 1.5rem;
+	--skvn-single-inset-inline: 3rem;
 	max-width: var(--skvn-wide-width);
 	margin-inline: auto;
-	padding-inline: 1rem;
-	padding-block: 2.5rem 4rem;
+	padding-inline: var(--skvn-page-gutter);
+	padding-block: var(--skvn-single-gap) 4rem;
 }
 
 .skvn-single-layout {
 	display: grid;
-	grid-template-columns: 2fr 1fr;
-	gap: 2.5rem;
+	grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+	grid-template-rows: auto 1fr;
+	column-gap: var(--skvn-single-gap);
+	row-gap: 0;
 	align-items: start;
 }
 
-/* Post body card */
+/* Grid placement: hero row 1, main row 2, sidebar spans both */
+.skvn-single-layout > .skvn-post-hero {
+	grid-column: 1;
+	grid-row: 1;
+	border-radius: var(--skvn-radius-card);
+	overflow: hidden;
+}
+
+.skvn-single-layout > .skvn-single-main {
+	grid-column: 1;
+	grid-row: 2;
+}
+
+.skvn-single-sidebar {
+	grid-column: 2;
+	grid-row: 1 / 3;
+}
+
+/* Post body card — one --skvn-single-gap unit below hero (same as column gap) */
 .skvn-post-body {
 	background: var(--skvn-color-white);
 	border: 1px solid rgba(51, 65, 85, 0.12);
 	border-radius: var(--skvn-radius-card);
-	padding: 2.5rem 3rem;
+	padding: 0 var(--skvn-single-inset-inline) 2.5rem;
 	margin: 0;
+}
+
+.skvn-post-body > .skvn-post-author:first-child {
+	padding-top: var(--skvn-single-gap);
 }
 
 /* Author row */
@@ -4093,7 +4185,7 @@ body.skvn-has-footer-page .site {
 }
 
 .skvn-post-related__thumb {
-	aspect-ratio: 16 / 9;
+	aspect-ratio: 3 / 2;
 	background: var(--skvn-color-blue-900);
 	overflow: hidden;
 }
@@ -4219,16 +4311,47 @@ body.skvn-has-footer-page .site {
 
 /* Single post — responsive */
 @media (max-width: 900px) {
+	.skvn-single-wrap {
+		padding-top: 0;
+		padding-bottom: 2.5rem;
+	}
+
 	.skvn-single-layout {
 		grid-template-columns: 1fr;
+		grid-template-rows: auto;
+		gap: 0;
+	}
+
+	.skvn-single-layout > .skvn-post-hero,
+	.skvn-single-layout > .skvn-single-main,
+	.skvn-single-sidebar {
+		grid-column: 1;
+		grid-row: auto;
 	}
 
 	.skvn-single-sidebar {
 		position: static;
+		margin-top: 1.5rem;
+	}
+
+	.skvn-single-layout > .skvn-post-hero {
+		border-radius: 0;
+		/* width:100% + grid clips right bleed — expand then pull both sides. */
+		box-sizing: border-box;
+		width: calc(100% + 2 * var(--skvn-page-gutter));
+		max-width: none;
+		margin-inline: calc(-1 * var(--skvn-page-gutter));
+	}
+
+	.skvn-single-layout > .skvn-post-hero .skvn-post-hero__content {
+		padding-inline: var(--skvn-page-gutter);
 	}
 
 	.skvn-post-body {
-		padding: 1.75rem 1.5rem;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		padding: 1rem 0 1.5rem;
 	}
 
 	.skvn-post-related__grid {
@@ -4237,10 +4360,6 @@ body.skvn-has-footer-page .site {
 }
 
 @media (max-width: 600px) {
-	.skvn-post-hero {
-		min-height: 16rem;
-	}
-
 	.skvn-post-related__grid {
 		grid-template-columns: 1fr;
 	}

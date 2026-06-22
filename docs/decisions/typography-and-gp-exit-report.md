@@ -441,3 +441,21 @@ grep -n "var(--wp--preset--color" /mnt/d/Github/skvn-marine/wp-content/themes/sk
 - Đổi H1 size → Save → Frontend reload: h1 size thay đổi
 - Mở block editor: heading block color picker chỉ hiện SKVN palette, không có free hex
 - Heading size dropdown chỉ hiện preset sizes, không có custom input
+
+---
+
+## 16. Typography scope isolation (2026-06-19)
+
+**Vấn đề phát hiện sau 1.5.0:** CSS inject qua `:root` và bare `body` trên `enqueue_block_editor_assets` làm font/palette token leak sang wp-admin chrome.
+
+**Source of truth mới:** `docs/decisions/typography-scope-and-font-loading.md`
+
+**Planning implement:** `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
+
+**Không thay đổi từ §4–§6 của report này:**
+
+- Plugin vẫn own admin UI + `skvn_typography` option (palette + heading scale).
+- Theme vẫn own CSS inject — chỉ đổi **selector scope** và Google Fonts URL contract.
+- Font preset vẫn ở Customizer (`inc/customizer.php`), không gộp vào plugin Typography page.
+
+**Test sau fix:** `docs/testing/typography-scope-isolation-1.3.6.md`

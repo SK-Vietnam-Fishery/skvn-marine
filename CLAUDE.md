@@ -34,6 +34,16 @@ Only read it if I explicitly say "check full rules".
 - Do not overwrite manually entered image ALT text.
 - Do not auto-generate captions in V1.
 
+## Work Plan Rule
+
+Follow `AGENTS.md` → **Agent response routing**:
+
+- **`CODE_NOW`** (human đã chọn hướng: `theo E`, `làm A+C1`, `implement`, `fix`): implement ngay; plan ngắn trong reply là đủ.
+- **`ASK_ARCHITECTURE`** / scope mơ hồ: plan chi tiết → chờ explicit approval → rồi mới implement.
+- **`EXPLAIN`**: chỉ giải thích; không code cho đến khi human bảo làm tiếp.
+
+Do NOT block `CODE_NOW` tasks with a full plan + wait-for-approval loop.
+
 ## Task Format
 
 Every task should include: Context, Goal, Files allowed to change, Files forbidden to change, Acceptance checklist, Tension/conflict section.

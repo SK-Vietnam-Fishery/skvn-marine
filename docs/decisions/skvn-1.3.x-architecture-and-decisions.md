@@ -137,6 +137,9 @@ Plugin và component CSS dùng alias này — không reference `--wp--preset--*`
 
 ## 5. Font Preset System (1.3.5)
 
+> **Scope contract (2026-06-19):** `docs/decisions/typography-scope-and-font-loading.md`  
+> Planning fix: `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
+
 ### 5.1 Flow
 
 ```mermaid
@@ -148,16 +151,21 @@ flowchart LR
     D2["lora-inter\nLora + Inter"]
     D3["barlow\nBarlow"]
     D4["system\nNo Google Fonts"]
-    E["wp_enqueue_style\nGoogle Fonts link\n(khi cần)"]
-    F["wp_add_inline_style\n→ skvn-marine-style\n:root {\n  --skvn-font-heading: …;\n  --skvn-font-body: …;\n}"]
-    G["h1-h6, body\ndùng token"]
+    E["wp_enqueue_style\nGoogle Fonts CSS2\n(frontend + editor canvas)"]
+    F1["wp_add_inline_style\nbody:not(.wp-admin)\n--skvn-font-*"]
+    F2["wp_add_inline_style\n.editor-styles-wrapper\n--skvn-font-*"]
+    G["Scoped h1-h6 + body\ndùng token"]
 
     A --> B --> C
     C --> D1 & D2 & D3 & D4
     D1 & D2 & D3 & D4 --> E
-    D1 & D2 & D3 & D4 --> F
-    F --> G
+    D1 & D2 & D3 & D4 --> F1
+    D1 & D2 & D3 & D4 --> F2
+    F1 --> G
+    F2 --> G
 ```
+
+**Không inject** `--skvn-font-*` lên `:root` hoặc bare `body` trong wp-admin. Admin chrome giữ WordPress default UI font.
 
 ### 5.2 Preset table
 

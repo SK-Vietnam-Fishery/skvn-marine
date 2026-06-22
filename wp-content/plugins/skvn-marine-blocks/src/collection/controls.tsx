@@ -2,6 +2,7 @@ import {
 	InspectorControls,
 	RichText,
 	useBlockProps,
+	useSettings,
 } from '@wordpress/block-editor';
 import {
 	CheckboxControl,
@@ -16,6 +17,8 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import {
 	BADGE_BEHAVIOR_OPTIONS,
+	CARD_STYLE_OPTIONS,
+	CHIP_STYLE_OPTIONS,
 	IMAGE_RATIO_OPTIONS,
 	LAYOUT_OPTIONS,
 	ORDER_MODE_OPTIONS,
@@ -26,6 +29,8 @@ import {
 } from './constants';
 import type {
 	BadgeBehavior,
+	CardStyle,
+	ChipStyle,
 	CollectionAttributes,
 	CollectionLayout,
 	CollectionOrderMode,
@@ -59,7 +64,7 @@ export function CollectionEdit( {
 			`skvn-collection--${ attributes.layout || 'grid' }`,
 			`skvn-collection--preset-${ attributes.responsivePreset || '3-2-1' }`,
 			`skvn-collection--ratio-${ sanitizeClassPart(
-				attributes.imageRatio || '4:3'
+				attributes.imageRatio || ( contentType === 'product' ? '1:1' : '16:9' )
 			) }`,
 			attributes.equalHeight !== false
 				? 'skvn-collection--equal-height'
@@ -74,6 +79,55 @@ export function CollectionEdit( {
 		<section { ...blockProps }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Content', 'skvn-marine-blocks' ) }>
+					<TextControl
+						label={ __( 'Eyebrow label', 'skvn-marine-blocks' ) }
+						onChange={ ( eyebrow ) => setAttributes( { eyebrow } ) }
+						value={ attributes.eyebrow || '' }
+					/>
+					<ToggleControl
+						checked={ attributes.showHeading !== false }
+						label={ __( 'Show heading', 'skvn-marine-blocks' ) }
+						onChange={ ( showHeading ) => setAttributes( { showHeading } ) }
+					/>
+					<TextControl
+						label={ __( 'Archive URL', 'skvn-marine-blocks' ) }
+						onChange={ ( archiveUrl ) => setAttributes( { archiveUrl } ) }
+						value={ attributes.archiveUrl || '' }
+					/>
+					{ ( attributes.archiveUrl || '' ) !== '' && (
+						<TextControl
+							label={ __( 'Archive link label', 'skvn-marine-blocks' ) }
+							onChange={ ( archiveLabel ) =>
+								setAttributes( { archiveLabel } )
+							}
+							value={ attributes.archiveLabel || '' }
+						/>
+					) }
+					<ToggleControl
+						checked={ attributes.showCatalogCta === true }
+						label={ __( 'Show catalog CTA', 'skvn-marine-blocks' ) }
+						onChange={ ( showCatalogCta ) =>
+							setAttributes( { showCatalogCta } )
+						}
+					/>
+					{ attributes.showCatalogCta && (
+						<>
+							<TextControl
+								label={ __( 'Catalog CTA URL', 'skvn-marine-blocks' ) }
+								onChange={ ( catalogCtaUrl ) =>
+									setAttributes( { catalogCtaUrl } )
+								}
+								value={ attributes.catalogCtaUrl || '' }
+							/>
+							<TextControl
+								label={ __( 'Catalog CTA label', 'skvn-marine-blocks' ) }
+								onChange={ ( catalogCtaLabel ) =>
+									setAttributes( { catalogCtaLabel } )
+								}
+								value={ attributes.catalogCtaLabel || '' }
+							/>
+						</>
+					) }
 					<TextControl
 						label={ __( 'Accessible label', 'skvn-marine-blocks' ) }
 						onChange={ ( accessibleLabel ) =>
@@ -182,7 +236,15 @@ export function CollectionEdit( {
 							setAttributes( { imageRatio: imageRatio as ImageRatio } )
 						}
 						options={ IMAGE_RATIO_OPTIONS }
-						value={ attributes.imageRatio || '4:3' }
+						value={ attributes.imageRatio || ( contentType === 'product' ? '1:1' : '16:9' ) }
+					/>
+					<SelectControl
+						label={ __( 'Card style', 'skvn-marine-blocks' ) }
+						onChange={ ( cardStyle ) =>
+							setAttributes( { cardStyle: cardStyle as CardStyle } )
+						}
+						options={ CARD_STYLE_OPTIONS }
+						value={ attributes.cardStyle || 'default' }
 					/>
 					<ToggleControl
 						checked={ attributes.equalHeight !== false }
@@ -312,13 +374,18 @@ export function CollectionEdit( {
 				) }
 				<PanelBody title={ __( 'Advanced', 'skvn-marine-blocks' ) } />
 			</InspectorControls>
-			<RichText
-				className="skvn-collection__heading"
-				onChange={ ( heading ) => setAttributes( { heading } ) }
-				placeholder={ __( 'Collection heading...', 'skvn-marine-blocks' ) }
-				tagName="h2"
-				value={ attributes.heading }
-			/>
+			{ ( attributes.eyebrow || '' ) !== '' && (
+				<p className="skvn-collection__eyebrow">{ attributes.eyebrow }</p>
+			) }
+			{ attributes.showHeading !== false && (
+				<RichText
+					className="skvn-collection__heading"
+					onChange={ ( heading ) => setAttributes( { heading } ) }
+					placeholder={ __( 'Collection heading...', 'skvn-marine-blocks' ) }
+					tagName="h2"
+					value={ attributes.heading }
+				/>
+			) }
 			<RichText
 				className="skvn-collection__intro"
 				onChange={ ( intro ) => setAttributes( { intro } ) }
@@ -402,26 +469,26 @@ function PostCardControls( {
 				onChange={ ( showDate ) => setAttributes( { showDate } ) }
 			/>
 			<ToggleControl
-				checked={ attributes.showAuthor !== false }
+				checked={ attributes.showAuthor === true }
 				label={ __( 'Show author', 'skvn-marine-blocks' ) }
 				onChange={ ( showAuthor ) => setAttributes( { showAuthor } ) }
 			/>
 			<ToggleControl
 				checked={ attributes.showPostCategories !== false }
-				label={ __( 'Show categories', 'skvn-marine-blocks' ) }
+				label={ __( 'Show categories (badge overlay)', 'skvn-marine-blocks' ) }
 				onChange={ ( showPostCategories ) =>
 					setAttributes( { showPostCategories } )
 				}
 			/>
 			<ToggleControl
-				checked={ attributes.showPostTags === true }
-				label={ __( 'Show tags', 'skvn-marine-blocks' ) }
-				onChange={ ( showPostTags ) => setAttributes( { showPostTags } ) }
-			/>
-			<ToggleControl
 				checked={ attributes.showExcerpt !== false }
 				label={ __( 'Show excerpt', 'skvn-marine-blocks' ) }
 				onChange={ ( showExcerpt ) => setAttributes( { showExcerpt } ) }
+			/>
+			<TextControl
+				label={ __( 'Read more label', 'skvn-marine-blocks' ) }
+				onChange={ ( readMoreLabel ) => setAttributes( { readMoreLabel } ) }
+				value={ attributes.readMoreLabel || '' }
 			/>
 		</>
 	);
@@ -431,37 +498,51 @@ function ProductCardControls( {
 	attributes,
 	setAttributes,
 }: Pick< CollectionEditProps, 'attributes' | 'setAttributes' > ) {
+	const [ colorPalette ] = useSettings( 'color.palette' ) as Array<
+		Array< { slug: string; name: string; color: string } >
+	>;
+	const chipColorOptions = [
+		{ label: __( 'Default', 'skvn-marine-blocks' ), value: '' },
+		...( colorPalette || [] ).map( ( c ) => ( {
+			label: c.name,
+			value: c.slug,
+		} ) ),
+	];
+
 	return (
 		<>
 			<ToggleControl
-				checked={ attributes.showPrice !== false }
-				label={ __( 'Show price', 'skvn-marine-blocks' ) }
-				onChange={ ( showPrice ) => setAttributes( { showPrice } ) }
-			/>
-			<ToggleControl
-				checked={ attributes.showSku === true }
-				label={ __( 'Show SKU', 'skvn-marine-blocks' ) }
-				onChange={ ( showSku ) => setAttributes( { showSku } ) }
-			/>
-			<ToggleControl
-				checked={ attributes.showStock === true }
-				label={ __( 'Show stock', 'skvn-marine-blocks' ) }
-				onChange={ ( showStock ) => setAttributes( { showStock } ) }
-			/>
-			<ToggleControl
-				checked={ attributes.showProductCategories !== false }
-				label={ __( 'Show categories', 'skvn-marine-blocks' ) }
-				onChange={ ( showProductCategories ) =>
-					setAttributes( { showProductCategories } )
-				}
-			/>
-			<ToggleControl
-				checked={ attributes.showProductTags === true }
-				label={ __( 'Show tags', 'skvn-marine-blocks' ) }
+				checked={ attributes.showProductTags !== false }
+				label={ __( 'Show tags (badge overlay)', 'skvn-marine-blocks' ) }
 				onChange={ ( showProductTags ) =>
 					setAttributes( { showProductTags } )
 				}
 			/>
+			<ToggleControl
+				checked={ attributes.showSpecChips !== false }
+				label={ __( 'Show spec chips', 'skvn-marine-blocks' ) }
+				onChange={ ( showSpecChips ) => setAttributes( { showSpecChips } ) }
+			/>
+			{ attributes.showSpecChips !== false && (
+				<>
+					<SelectControl
+						label={ __( 'Chip style', 'skvn-marine-blocks' ) }
+						onChange={ ( chipStyle ) =>
+							setAttributes( { chipStyle: chipStyle as ChipStyle } )
+						}
+						options={ CHIP_STYLE_OPTIONS as unknown as { label: string; value: string }[] }
+						value={ attributes.chipStyle || 'tag' }
+					/>
+					<SelectControl
+						label={ __( 'Chip color scheme', 'skvn-marine-blocks' ) }
+						onChange={ ( chipColorScheme ) =>
+							setAttributes( { chipColorScheme } )
+						}
+						options={ chipColorOptions }
+						value={ attributes.chipColorScheme || '' }
+					/>
+				</>
+			) }
 		</>
 	);
 }

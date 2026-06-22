@@ -61,8 +61,14 @@ assert.match(indexTs, /deprecated:\s*sliderDeprecated/);
 
 assert.match(sliderEdit, /skvn-slider--editor/);
 assert.match(sliderEdit, /skvn-slider__editor-stack/);
-assert.match(sliderEdit, /GOVERNED_DELAYS\s*=\s*\[\s*5000,\s*7000,\s*9000,\s*12000\s*\]/);
-assert.match(sliderEdit, /legacy duration/i);
+assert.match(sliderEdit, /skvn-slider__editor-toolbar/);
+assert.match(sliderEdit, /InnerBlocks\.ButtonBlockAppender/);
+assert.doesNotMatch(
+	sliderEdit,
+	/renderAppender=\{\s*\(\)\s*=>\s*null\s*\}/,
+	'editor must keep a Gutenberg slide appender',
+);
+assert.match(sliderEdit, /GovernedTimeControl/);
 assert.match(sliderEdit, /arrowPosition\s*===\s*[\r\n\t ]*'side-center'/);
 assert.match(sliderEdit, /arrowStyle === 'pill'/);
 assert.doesNotMatch(sliderEdit, /from 'swiper'|new\s+Swiper/, 'editor must not initialize Swiper');
@@ -99,8 +105,81 @@ assert.match(sliderView, /slider\.swiper\?\.destroyed/);
 assert.match(sliderView, /classList\.remove\(\s*'skvn-slider--initialized'/);
 assert.match(sliderStyle, /skvn-slider__controls--cluster/);
 assert.match(sliderStyle, /prefers-reduced-motion:\s*reduce/);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--height-viewport-below-header:not\(\.skvn-slider--editor\)\s*\{[\s\S]*--skvn-slider-viewport-height/,
+	'viewport-below-header must own explicit slider height',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--height-viewport-below-header:not\(\.skvn-slider--editor\)\s+\.skvn-slider__wrapper[\s\S]*height:\s*100%/,
+	'viewport-below-header must propagate height through the Swiper wrapper',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--height-viewport-below-header:not\(\.skvn-slider--editor\)\s+\.skvn-slide__media[\s\S]*height:\s*100%/,
+	'viewport-below-header must stretch the media frame to the slide height',
+);
+assert.match(
+	sliderView,
+	/syncViewportHeight\(\s*swiper\s*\)/,
+	'Swiper init must resync viewport height after the height chain is active',
+);
+assert.match(
+	sliderView,
+	/activeSwiper\.updateSize\(\)/,
+	'viewport offset changes must refresh Swiper geometry',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--hero \.skvn-slide\s*\{[\s\S]*align-items:\s*center/,
+	'hero slide content column must center on the cross axis',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--hero \.skvn-slide__content > \*\s*\{[\s\S]*margin-inline:\s*auto/,
+	'hero copy blocks must center inside the slide frame',
+);
 assert.match(slideEdit, /select\(\s*coreDataStore\s*\)/);
 assert.match(slideEdit, /attachment\?\.source_url\s*\|\|\s*attributes\.backgroundImageUrl/);
+assert.match(
+	slideEdit,
+	/context\[\s*'skvn-marine\/sliderPreset'\s*\]/,
+	'slide preset must come from block context, not unstable useSelect object',
+);
+assert.doesNotMatch(
+	slideEdit,
+	/return\s*\{\s*[\s\S]*clientId:\s*parentClientId[\s\S]*preset:/,
+	'useSelect must not return a new parentSlider object each store tick',
+);
+assert.match(sliderStyle, /--skvn-slider-arrow-glyph-size/);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider__arrows \.skvn-slider__arrow--prev::after[\s\S]*font-size:\s*var\(--skvn-slider-arrow-glyph-size\)/,
+	'circle arrow glyph must stay inside the SKVN button frame',
+);
+assert.doesNotMatch(
+	sliderEdit,
+	/controls--editor-preview[\s\S]*swiper-button-prev/,
+	'editor preview arrows must not use Swiper runtime hook classes',
+);
+assert.match(
+	sliderStyle,
+	/\.editor-styles-wrapper \.skvn-slider--editor \.skvn-slider__controls--editor-preview \.skvn-slider__arrow[\s\S]*padding:\s*0/,
+	'editor preview arrow must reset iframe button padding',
+);
+assert.match(sliderView, /skvn-slider--editor/);
+assert.match(sliderStyle, /skvn-slider__editor-toolbar/);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--editor \.skvn-slider__controls--editor-preview[\s\S]*pointer-events:\s*none/,
+	'editor controls preview must not steal clicks from slide content or toolbar',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider__editor-toolbar[\s\S]*pointer-events:\s*auto/,
+	'editor toolbar must own add-slide hit target',
+);
 assert.match(sliderRenderer, /count\(\s*\$block->inner_blocks\s*\)/);
 assert.match(sliderRenderer, /\$show_arrows\s*=\s*\$show_arrows && \$has_multiple_slides/);
 assert.match(sliderRenderer, /\$show_pagination\s*=\s*\$show_pagination && \$has_multiple_slides/);

@@ -14,6 +14,8 @@ import {
 	SelectControl,
 	TextControl,
 } from '@wordpress/components';
+import { store as coreDataStore } from '@wordpress/core-data';
+import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import type { CSSProperties } from 'react';
@@ -28,9 +30,44 @@ type FeatureShowcaseEditProps = {
 
 type SelectedImage = {
 	id: number;
-	url: string;
 	alt?: string;
 };
+
+type FeatureItemImageProps = {
+	imageAlt: string;
+	imageId: number;
+};
+
+function FeatureItemImage( { imageAlt, imageId }: FeatureItemImageProps ) {
+	const attachment = useSelect(
+		( select ) => {
+			if ( ! imageId ) {
+				return null;
+			}
+
+			const coreData = select( coreDataStore ) as {
+				getMedia: (
+					id: number
+				) => { source_url?: string } | null | undefined;
+			};
+
+			return coreData.getMedia( imageId );
+		},
+		[ imageId ]
+	);
+
+	if ( ! attachment?.source_url ) {
+		return null;
+	}
+
+	return (
+		<img
+			alt={ imageAlt }
+			className="skvn-feature-showcase__image"
+			src={ attachment.source_url }
+		/>
+	);
+}
 
 function createItem( index: number ): FeatureItem {
 	const itemNumber = String( index + 1 ).padStart( 2, '0' );
@@ -40,7 +77,6 @@ function createItem( index: number ): FeatureItem {
 		heading: 'Feature heading',
 		copy: 'Describe the capability, process, or outcome represented by this panel.',
 		imageId: 0,
-		imageUrl: '',
 		imageAlt: '',
 		linkUrl: '',
 		linkText: '',
@@ -298,13 +334,10 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 							className="skvn-feature-showcase__item"
 							key={ index }
 						>
-							{ item.imageUrl && (
-								<img
-									alt={ item.imageAlt }
-									className="skvn-feature-showcase__image"
-									src={ item.imageUrl }
-								/>
-							) }
+							<FeatureItemImage
+								imageAlt={ item.imageAlt }
+								imageId={ item.imageId }
+							/>
 							<div className="skvn-feature-showcase__shade" />
 							<RichText
 								allowedFormats={ [] }
@@ -436,7 +469,6 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 											setItem( index, {
 												imageAlt: image.alt || '',
 												imageId: image.id,
-												imageUrl: image.url,
 											} )
 										}
 										render={ ( { open } ) => (
@@ -444,7 +476,7 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 												onClick={ open }
 												variant="secondary"
 											>
-												{ item.imageUrl
+												{ item.imageId
 													? __(
 															'Replace image',
 															'skvn-marine-blocks'
@@ -458,7 +490,7 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 										value={ item.imageId }
 									/>
 								</MediaUploadCheck>
-								{ item.imageUrl && (
+								{ item.imageId > 0 && (
 									<>
 										<TextControl
 											label={ __(
@@ -476,15 +508,14 @@ export function Edit( { attributes, setAttributes }: FeatureShowcaseEditProps ) 
 												setItem( index, {
 													imageAlt: '',
 													imageId: 0,
-													imageUrl: '',
 												} )
 											}
 											variant="link"
 										>
 											{ __(
-											'Remove image',
-											'skvn-marine-blocks'
-										) }
+												'Remove image',
+												'skvn-marine-blocks'
+											) }
 										</Button>
 									</>
 								) }

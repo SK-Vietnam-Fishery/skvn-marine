@@ -52,3 +52,15 @@ export const PRODUCT_ACTION_OPTIONS = [
 	{ label: __( 'Both', 'skvn-marine-blocks' ), value: 'both' },
 	{ label: __( 'Custom URL', 'skvn-marine-blocks' ), value: 'custom' },
 ] as const;
+
+export const CARD_STYLE_OPTIONS = [
+	{ label: __( 'Default', 'skvn-marine-blocks' ), value: 'default' },
+	{ label: __( 'Featured (badge overlay)', 'skvn-marine-blocks' ), value: 'featured' },
+] as const;
+
+export const CHIP_STYLE_OPTIONS = [
+	{ label: __( 'Tag (pill + border)', 'skvn-marine-blocks' ), value: 'tag' },
+	{ label: __( 'Hashtag (#)', 'skvn-marine-blocks' ), value: 'hashtag' },
+	{ label: __( 'Dot (•)', 'skvn-marine-blocks' ), value: 'dot' },
+	{ label: __( 'Plain (/)', 'skvn-marine-blocks' ), value: 'plain' },
+] as const;

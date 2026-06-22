@@ -3,11 +3,10 @@
  * Font preset Customizer control for SKVN Marine.
  *
  * Registers a radio control under Appearance > Customize > Typography.
- * Selected preset drives a <link> Google Fonts enqueue and inline CSS that
- * writes --skvn-font-heading / --skvn-font-body to :root.
+ * Selected preset drives a Google Fonts enqueue and inline CSS that writes
+ * --skvn-font-heading / --skvn-font-body on scoped surfaces only.
  *
- * Cascade intention: plugin CSS reads --skvn-font-* as fallback tokens;
- * this inline CSS overrides them at the theme layer without touching plugin code.
+ * Scope contract: docs/decisions/typography-scope-and-font-loading.md
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -29,19 +28,19 @@ function skvn_marine_font_presets(): array {
 			'label'   => 'Instrument Serif (mặc định)',
 			'heading' => "'Instrument Serif', Georgia, serif",
 			'body'    => 'system-ui, sans-serif',
-			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Instrument+Serif&subset=vietnamese&display=swap',
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap',
 		),
 		'lora-inter' => array(
 			'label'   => 'Lora + Inter',
 			'heading' => "'Lora', Georgia, serif",
 			'body'    => "'Inter', system-ui, sans-serif",
-			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500&subset=vietnamese&display=swap',
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Inter:wght@400;500&display=swap',
 		),
 		'barlow'     => array(
 			'label'   => 'Barlow (sans-serif)',
 			'heading' => "'Barlow', system-ui, sans-serif",
 			'body'    => "'Barlow', system-ui, sans-serif",
-			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&subset=vietnamese&display=swap',
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap',
 		),
 		'system'     => array(
 			'label'   => 'System (không cần Google Fonts)',
@@ -176,11 +175,11 @@ function skvn_marine_sanitize_heading_scope( string $value ): string {
 }
 
 // ---------------------------------------------------------------------------
-// CSS helper — build heading selector from scope setting
+// CSS helpers
 // ---------------------------------------------------------------------------
 
 /**
- * Return the CSS selector string for the active heading scope.
+ * Return the CSS selector string for the active heading scope (unscoped).
  *
  * @param string $scope One of 'h1', 'h1-h3', 'all'.
  * @return string CSS selector.
@@ -196,6 +195,68 @@ function skvn_marine_heading_selector( string $scope ): string {
 	}
 }
 
+/**
+ * Prefix heading selectors with the typography scope root.
+ *
+ * @param string $scope   One of 'h1', 'h1-h3', 'all'.
+ * @param string $context 'frontend' or 'editor'.
+ * @return string CSS selector.
+ */
+function skvn_marine_scoped_heading_selector( string $scope, string $context ): string {
+	$root     = skvn_marine_typography_scope_selector( $context );
+	$headings = explode( ',', skvn_marine_heading_selector( $scope ) );
+	$scoped   = array();
+
+	foreach ( $headings as $heading ) {
+		$scoped[] = $root . ' ' . trim( $heading );
+	}
+
+	return implode( ',', $scoped );
+}
+
+/**
+ * Build inline CSS for font preset tokens and scoped heading font-family.
+ *
+ * @param string $context 'frontend' or 'editor'.
+ * @return string
+ */
+function skvn_marine_build_font_preset_css( string $context ): string {
+	$key     = skvn_marine_get_font_preset();
+	$presets = skvn_marine_font_presets();
+	$preset  = $presets[ $key ];
+	$scope   = skvn_marine_typography_scope_selector( $context );
+
+	// Values come from our own controlled preset array — no user input.
+	$css  = $scope . '{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
+	$css .= skvn_marine_scoped_heading_selector( skvn_marine_get_heading_scope(), $context );
+	$css .= '{font-family:var(--skvn-font-heading);}';
+
+	return $css;
+}
+
+/**
+ * Enqueue Google Fonts for the active preset when needed.
+ *
+ * @param string $handle_suffix Suffix for the style handle.
+ * @return void
+ */
+function skvn_marine_enqueue_google_fonts( string $handle_suffix ): void {
+	$key     = skvn_marine_get_font_preset();
+	$presets = skvn_marine_font_presets();
+	$preset  = $presets[ $key ];
+
+	if ( empty( $preset['gfonts'] ) ) {
+		return;
+	}
+
+	wp_enqueue_style(
+		'skvn-gfonts-' . $key . $handle_suffix,
+		$preset['gfonts'],
+		array(),
+		null // phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google Fonts manages cache headers.
+	);
+}
+
 // ---------------------------------------------------------------------------
 // Frontend output — Google Fonts link + inline CSS tokens
 // ---------------------------------------------------------------------------
@@ -203,65 +264,33 @@ function skvn_marine_heading_selector( string $scope ): string {
 add_action( 'wp_enqueue_scripts', 'skvn_marine_enqueue_font_preset', 15 );
 
 /**
- * Enqueue Google Fonts link (when needed) and inject --skvn-font-* tokens.
- *
- * Priority 15 runs after the main stylesheet (priority 10) so the inline CSS
- * attaches to 'skvn-marine-style' and inherits the correct cascade position.
+ * Enqueue Google Fonts link (when needed) and inject scoped --skvn-font-* tokens.
  *
  * @return void
  */
 function skvn_marine_enqueue_font_preset(): void {
-	$key     = skvn_marine_get_font_preset();
-	$presets = skvn_marine_font_presets();
-	$preset  = $presets[ $key ];
+	skvn_marine_enqueue_google_fonts( '' );
 
-	// Enqueue Google Fonts only when the preset needs it.
-	if ( ! empty( $preset['gfonts'] ) ) {
-		wp_enqueue_style(
-			'skvn-gfonts-' . $key,
-			$preset['gfonts'],
-			array(),
-			null // Google Fonts manages its own cache headers.
-		);
-	}
-
-	// Inject CSS custom properties + scoped heading font-family rule.
-	// Values come from our own controlled preset array — no user input, no escaping needed.
-	// esc_attr() would corrupt single-quoted font names into HTML entities (invalid CSS).
-	$scope    = skvn_marine_get_heading_scope();
-	$selector = skvn_marine_heading_selector( $scope );
-	$css      = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
-	$css     .= $selector . '{font-family:var(--skvn-font-heading);}';
-
-	// Virtual handle — no src URL, depends on skvn-marine-style so it outputs after.
-	// Avoids wp_style_is() timing issues with the 'enqueued' check.
 	wp_register_style( 'skvn-font-preset', false, array( 'skvn-marine-style' ), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
 	wp_enqueue_style( 'skvn-font-preset' );
-	wp_add_inline_style( 'skvn-font-preset', $css );
+	wp_add_inline_style( 'skvn-font-preset', skvn_marine_build_font_preset_css( 'frontend' ) );
 }
 
 // ---------------------------------------------------------------------------
-// Editor output — same tokens so the block editor preview matches frontend
+// Editor canvas output — match frontend preview
 // ---------------------------------------------------------------------------
 
 add_action( 'enqueue_block_editor_assets', 'skvn_marine_enqueue_font_preset_editor', 15 );
 
 /**
- * Inject font tokens into the block editor so headings preview correctly.
+ * Inject scoped font tokens and Google Fonts into the block editor canvas.
  *
  * @return void
  */
 function skvn_marine_enqueue_font_preset_editor(): void {
-	$key     = skvn_marine_get_font_preset();
-	$presets = skvn_marine_font_presets();
-	$preset  = $presets[ $key ];
-
-	$scope    = skvn_marine_get_heading_scope();
-	$selector = skvn_marine_heading_selector( $scope );
-	$css      = ':root{--skvn-font-heading:' . $preset['heading'] . ';--skvn-font-body:' . $preset['body'] . ';}';
-	$css     .= $selector . '{font-family:var(--skvn-font-heading);}';
+	skvn_marine_enqueue_google_fonts( '-editor' );
 
 	wp_register_style( 'skvn-marine-font-editor', false, array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters
 	wp_enqueue_style( 'skvn-marine-font-editor' );
-	wp_add_inline_style( 'skvn-marine-font-editor', $css );
+	wp_add_inline_style( 'skvn-marine-font-editor', skvn_marine_build_font_preset_css( 'editor' ) );
 }

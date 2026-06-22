@@ -60,12 +60,11 @@ addFilter(
 
 			return (
 				<>
-					<BlockEdit { ...props } />
 					{ isCoreControlEnabled( 'button_hover' ) && (
-						<InspectorControls>
+						<InspectorControls group="styles">
 							<PanelBody
 								title={ __(
-									'SKVN Hover Colors',
+									'Hover Color',
 									'skvn-marine-blocks'
 								) }
 								initialOpen={ false }
@@ -141,6 +140,7 @@ addFilter(
 							</PanelBody>
 						</InspectorControls>
 					) }
+					<BlockEdit { ...props } />
 				</>
 			);
 		};

@@ -276,6 +276,10 @@ function setPaginationA11y(
 }
 
 function initSlider( slider: SliderElement ): void {
+		if ( slider.classList.contains( 'skvn-slider--editor' ) ) {
+			return;
+		}
+
 		if ( slider.swiper?.destroyed ) {
 			slider.skvnSliderCleanup?.();
 			delete slider.swiper;
@@ -293,6 +297,45 @@ function initSlider( slider: SliderElement ): void {
 			wrapper?.querySelectorAll( ':scope > .swiper-slide' ).length ?? 0;
 		const rawConfig = slider.getAttribute( 'data-skvn-slider' ) || '{}';
 		const config = parseSliderConfig( rawConfig, realSlideCount );
+
+		// Apply style/position classes that save.tsx omits — read from JSON config.
+		const controlsEl = slider.querySelector< HTMLElement >( '.skvn-slider__controls' );
+		const arrowsEl = slider.querySelector< HTMLElement >( '.skvn-slider__arrows' );
+		const paginEl = slider.querySelector< HTMLElement >( '.swiper-pagination' );
+		if ( arrowsEl && config.showArrows ) {
+			arrowsEl.classList.add(
+				`skvn-slider__arrows--${ config.arrowStyle }`,
+				`skvn-slider__arrows--${ config.arrowPosition }`
+			);
+		}
+		if ( paginEl && config.showPagination ) {
+			paginEl.classList.add(
+				`skvn-slider__pagination--${ config.paginationStyle }`,
+				`skvn-slider__pagination--${ config.paginationPosition }`
+			);
+		}
+		const controlsCluster =
+			config.showArrows &&
+			config.showPagination &&
+			config.arrowPosition !== 'side-center' &&
+			config.arrowPosition === config.paginationPosition;
+		if ( controlsEl && controlsCluster ) {
+			controlsEl.classList.add(
+				'skvn-slider__controls--cluster',
+				`skvn-slider__controls--${ config.arrowPosition }`
+			);
+			if (
+				arrowsEl &&
+				paginEl &&
+				! controlsEl.querySelector( '.skvn-slider__controls-separator' )
+			) {
+				const sep = document.createElement( 'span' );
+				sep.setAttribute( 'aria-hidden', 'true' );
+				sep.className = 'skvn-slider__controls-separator';
+				arrowsEl.after( sep );
+			}
+		}
+
 		const usesCardBreakpoints = config.responsiveSlides === '3-2-1';
 		const reducedMotion = prefersReducedMotion();
 		const transitionStyle = reducedMotion
@@ -303,7 +346,7 @@ function initSlider( slider: SliderElement ): void {
 		const timedPagination =
 			config.paginationStyle === 'timed-fraction' ||
 			config.paginationStyle === 'timed-segments';
-		const syncViewportHeight = () => {
+		const syncViewportHeight = ( swiperInstance?: Swiper ) => {
 			if ( config.heightPreset !== 'viewport-below-header' ) {
 				return;
 			}
@@ -322,6 +365,12 @@ function initSlider( slider: SliderElement ): void {
 				'--skvn-slider-viewport-offset',
 				`${ Math.max( 0, Math.round( offset ) ) }px`
 			);
+
+			const activeSwiper = swiperInstance ?? slider.swiper;
+			if ( activeSwiper && ! activeSwiper.destroyed ) {
+				activeSwiper.updateSize();
+				activeSwiper.updateSlides();
+			}
 		};
 		syncViewportHeight();
 
@@ -439,6 +488,7 @@ function initSlider( slider: SliderElement ): void {
 					? 1
 					: config.slidesPerView,
 			} );
+			syncViewportHeight( swiper );
 
 			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;

@@ -122,6 +122,26 @@ Agent debugging checklist:
    compatibility adapter. Do not copy the GeneratePress negative-margin
    algorithm into future standalone theme CSS.
 
+## [manual] Typography Scope
+
+Typography có hai lớp — **không gộp**:
+
+| Lớp | Admin UI | Theme file | Plugin file |
+|---|---|---|---|
+| Palette + heading scale | SKVN Marine → Typography | `inc/typography.php` | `modules/typography-settings/` |
+| Font preset + Google Fonts | Appearance → Customize → Typography (SKVN) | `inc/customizer.php` | — |
+
+**Scope contract (bắt buộc):** `docs/decisions/typography-scope-and-font-loading.md`
+
+- Frontend: `body:not(.wp-admin)` — full SKVN tokens + fonts.
+- Block editor canvas: `.editor-styles-wrapper` — preview khớp frontend.
+- wp-admin chrome (menu, list tables, SKVN settings pages): **không** inject theme font/color tokens.
+- Cấm `:root` font/palette inject từ `enqueue_block_editor_assets`.
+- Google Fonts: CSS2 API, Vietnamese-capable presets; không dùng `subset=vietnamese` (API v1 legacy).
+- Plugin typography-settings **không** enqueue CSS — chỉ save option.
+
+Planning implement: `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
+
 ## [manual] Page Display Controls
 
 - 0.5.1 introduces page-level controls for marketing-owned pages that need alternate chrome.

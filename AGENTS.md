@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.4 — Core Control Foundation & Core Button Hover**
+Current milestone: **V1 / 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -123,8 +123,8 @@ echo wp_kses_post($content);
 4. Detect tensions (xem Section 4)
 5. Nếu tension HIGH → generate `TENSIONS_OPEN.md` entry → DỪNG, chờ quyết định
 6. Nếu tension LOW hoặc không có → tiếp tục
-7. Plan changes — liệt kê files sẽ sửa (≤5 files trừ khi có lý do)
-8. Implement — follow coding standards bên dưới
+7. Route response (xem **Agent response routing** bên dưới) — code ngay, hỏi kiến trúc, hoặc giải thích khi human yêu cầu
+8. Implement — follow coding standards bên dưới (plan chi tiết chỉ bắt buộc khi routing = `ASK_ARCHITECTURE` hoặc human chưa chọn hướng)
 9. Self-check (xem checklist cuối file)
 10. Update .context/ nếu có quyết định mới
 11. Chỉ khi human chuyển version/milestone mới, update `AGENTS.md` + `.context/MILESTONES.md`, move milestone cũ sang `.context/MILESTONES_HISTORY.md`, và move tension `RESOLVED_ACTIVE` của milestone cũ khỏi `.context/TENSIONS_ACTIVE.md` sang `.context/TENSIONS_HISTORY.md` với `Status: ARCHIVED`
@@ -134,11 +134,11 @@ echo wp_kses_post($content);
 ### Sau khi implement xong
 
 ```bash
-# Theme PHP
+# Theme PHP syntax check
 php -l wp-content/themes/skvn-marine/functions.php
 
-# Plugin JS/TS (nếu có thay đổi block)
-cd wp-content/plugins/skvn-marine-blocks && npm run build 2>&1 | tail -10
+# Plugin build + PHP lint (combined — chạy sau mỗi lượt làm việc có thay đổi plugin)
+source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build && find modules/ -name "*.php" -exec php -l {} \;
 
 # Kiểm tra block nếu thay đổi block registration
 grep -r "registerBlockType" wp-content/plugins/skvn-marine-blocks/src/
@@ -148,6 +148,8 @@ node tools/build-deploy-artifact.mjs
 bash tools/package-plugin-zip.sh
 unzip -l build/skvn-marine-blocks.zip | grep 'skvn-marine-blocks/modules/'
 ```
+
+> Cuối mỗi lượt làm việc có thay đổi plugin, agent phải **output lệnh trên dưới dạng text** để user tự copy và chạy. Agent không được tự chạy lệnh build hoặc lint qua tool.
 
 ### Command responsiveness — Bắt buộc
 
@@ -164,6 +166,27 @@ unzip -l build/skvn-marine-blocks.zip | grep 'skvn-marine-blocks/modules/'
   human vì human thao tác terminal trực tiếp nhanh và đáng tin cậy hơn.
 - Agent chỉ được chạy lại sau khi human cung cấp output hoặc yêu cầu rõ ràng
   agent thử lại.
+
+### Agent response routing — Bắt buộc
+
+Sau khi load context, agent **không** mặc định viết plan dài rồi chờ approve. Chọn
+một trong ba mode:
+
+| Mode | Khi nào | Agent làm gì |
+|---|---|---|
+| **`CODE_NOW`** | Human chỉ đường implement rõ (`theo E`, `làm T-1 A+C1`, `fix`, `implement`, đã chọn phương án A/B/C) | Đọc context → sửa source ngay → self-check → báo human chạy build/test. Plan trong response **ngắn** (files + mục tiêu), không chặn bằng “chờ approve”. |
+| **`ASK_ARCHITECTURE`** | Nhiều hướng hợp lệ, boundary theme/plugin chưa rõ, HIGH tension, hoặc human hỏi *nên làm thế nào / so sánh* | Chỉ hỏi hoặc trình bày trade-off **kiến trúc & phạm vi** — **không** sửa file. Chờ human chọn hướng rồi chuyển `CODE_NOW`. |
+| **`EXPLAIN`** | Human hỏi *giải thích kỹ*, *tại sao*, *T2 là gì*, audit/review only | Giải thích đủ sâu; **không** code trừ khi human nói tiếp “làm luôn” / chọn phương án. |
+
+**Quy tắc nhanh:**
+
+- Có **một** hướng đã được human chọn → `CODE_NOW` (không hỏi lại “bạn có muốn implement không?”).
+- Human hỏi **so sánh phương án** (ví dụ `B vs A+C`) → `ASK_ARCHITECTURE` hoặc `EXPLAIN`; chưa code.
+- Human giao **audit / đọc codebase** → báo cáo compact theo domain; chỉ code khi human giao fix cụ thể hoặc milestone checklist.
+- Human giao **ghi milestone / standard / protocol** → cập nhật `.context/` hoặc `docs/standards/` ngay (`CODE_NOW` cho docs).
+- `[manual]` còn placeholder, tension HIGH, hoặc đụng `themes/generatepress/` → **DỪNG** (không thuộc ba mode trên).
+
+`CLAUDE.md` Work Plan Rule: coi là đã satisfy khi (a) human đã approve hướng trong cùng thread, hoặc (b) routing = `CODE_NOW` với chỉ thị implement rõ. Plan dài + chờ approve chỉ khi routing = `ASK_ARCHITECTURE` hoặc scope còn mơ hồ.
 
 ### Agent + Human collaboration — Bắt buộc
 
@@ -466,6 +489,10 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 [ ] Không rename namespace/prefix
 [ ] Không đặt block logic trong theme
 [ ] Input sanitized, output escaped
+[ ] Đã đọc `docs/standards/security-guidelines.md` nếu task chạm output path (option, block attr, URL, inline CSS, tools IO)
+[ ] `get_option()` / block attributes trên output path có sanitize-at-read (không chỉ lúc save)
+[ ] Block public href/src/inline style dùng PHP `render_callback` hoặc escape filter đã document
+[ ] Không dùng `$_SERVER['HTTP_HOST']` cho trusted URL (quote context, redirect, canonical)
 [ ] Animation có prefers-reduced-motion guard
 [ ] Editor không hide content với opacity: 0
 [ ] CSS layout task đã đọc `docs/standards/css-layout-safety-contract.md`
@@ -617,10 +644,10 @@ Kiểm tra server:
 curl -I http://localhost:8080/wp-login.php
 ```
 
-Chạy plugin build bằng Node trong WSL:
+Chạy plugin build + PHP lint (combined) bằng Node trong WSL:
 
 ```bash
-wsl -d Debian -- bash -lc "source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build"
+source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build && find modules/ -name "*.php" -exec php -l {} \;
 ```
 
 Nếu command WSL không trả output, không kết thúc, hoặc timeout: áp dụng

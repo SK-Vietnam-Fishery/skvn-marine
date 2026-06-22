@@ -184,6 +184,10 @@ function skvn_marine_page_display_body_classes( $classes ) {
  * @return string
  */
 function skvn_marine_page_display_sidebar_layout( $layout ) {
+	if ( function_exists( 'is_product' ) && is_product() ) {
+		return 'no-sidebar';
+	}
+
 	if ( ! is_page() ) {
 		return $layout;
 	}

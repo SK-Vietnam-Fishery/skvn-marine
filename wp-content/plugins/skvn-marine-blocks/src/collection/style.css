@@ -3,6 +3,27 @@
 	width: 100%;
 }
 
+.skvn-collection__eyebrow {
+	align-items: center;
+	color: #0D9488;
+	display: flex;
+	font-size: 0.8rem;
+	font-weight: 600;
+	gap: 0.5rem;
+	letter-spacing: 0.08em;
+	margin: 0 0 0.5rem;
+	text-transform: uppercase;
+}
+
+.skvn-collection__eyebrow::before {
+	background: #0D9488;
+	content: '';
+	display: block;
+	flex-shrink: 0;
+	height: 2px;
+	width: 22px;
+}
+
 .skvn-collection__heading {
 	margin: 0 0 0.5rem;
 }
@@ -10,6 +31,58 @@
 .skvn-collection__intro {
 	margin: 0 0 1.25rem;
 	max-width: 64ch;
+}
+
+.skvn-collection__footer {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 1.25rem;
+}
+
+.skvn-collection__footer-left {
+	align-items: center;
+	display: flex;
+}
+
+.skvn-collection__footer-right {
+	align-items: center;
+	display: flex;
+	gap: 1rem;
+}
+
+.skvn-collection__footer-left .skvn-collection__pagination {
+	justify-content: flex-start;
+	margin-top: 0;
+}
+
+.skvn-collection__archive-link {
+	align-items: center;
+	color: #25404d;
+	display: inline-flex;
+	font-weight: 600;
+	gap: 0.3rem;
+	text-decoration: none;
+}
+
+.skvn-collection__archive-link:hover {
+	text-decoration: underline;
+}
+
+.skvn-collection__catalog-cta {
+	border: 1.5px solid #0D9488;
+	border-radius: 4px;
+	color: #0D9488;
+	font-size: 0.9rem;
+	font-weight: 600;
+	padding: 0.35rem 0.9rem;
+	text-decoration: none;
+	transition: background 0.15s, color 0.15s;
+}
+
+.skvn-collection__catalog-cta:hover {
+	background: #0D9488;
+	color: #fff;
 }
 
 .skvn-collection__grid {
@@ -59,6 +132,7 @@
 .skvn-collection-card__media {
 	background: #edf4f7;
 	display: block;
+	position: relative;
 }
 
 .skvn-collection-card__image {
@@ -137,6 +211,13 @@ a.skvn-collection-card__badge:hover {
 	background: #d0e8f0;
 }
 
+/* Badge overlay — universal (top-left on image) */
+.skvn-collection-card__media .skvn-collection-card__badges {
+	left: 0.75rem;
+	position: absolute;
+	top: 0.75rem;
+}
+
 /* Actions */
 .skvn-collection-card__actions {
 	display: flex;
@@ -146,6 +227,10 @@ a.skvn-collection-card__badge:hover {
 }
 
 /* Carousel */
+.skvn-collection__carousel-outer {
+	position: relative;
+}
+
 .skvn-collection__carousel {
 	overflow: hidden;
 	position: relative;
@@ -247,4 +332,159 @@ a.skvn-collection-card__badge:hover {
 	.skvn-collection__carousel .swiper-wrapper {
 		transition: none !important;
 	}
+}
+
+/* ── Product card — new classes ────────────────────────────────────────── */
+
+.skvn-collection-card__specs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+}
+
+.skvn-collection-card__spec-tag {
+	background: #f0f6fa;
+	border: 1px solid #c6d9e2;
+	border-radius: 3px;
+	color: #25404d;
+	font-size: 0.78rem;
+	padding: 0.1rem 0.4rem;
+}
+
+/* chipStyle: hashtag */
+.skvn-collection-card--chip-hashtag .skvn-collection-card__spec-tag {
+	background: none;
+	border: none;
+	color: #0D9488;
+	padding: 0;
+}
+
+.skvn-collection-card--chip-hashtag .skvn-collection-card__spec-tag::before {
+	content: '#';
+}
+
+/* chipStyle: dot */
+.skvn-collection-card--chip-dot .skvn-collection-card__spec-tag {
+	background: none;
+	border: none;
+	padding: 0;
+}
+
+.skvn-collection-card--chip-dot .skvn-collection-card__spec-tag::before {
+	content: '• ';
+}
+
+/* chipStyle: plain */
+.skvn-collection-card--chip-plain .skvn-collection-card__spec-tag {
+	background: none;
+	border: none;
+	padding: 0;
+}
+
+.skvn-collection-card--chip-plain .skvn-collection-card__spec-tag + .skvn-collection-card__spec-tag::before {
+	color: #c6d9e2;
+	content: ' / ';
+}
+
+/* chipColorScheme — teal + navy (add more when new palette slugs needed) */
+.skvn-chips--teal .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--teal);
+	color: var(--wp--preset--color--teal);
+}
+
+.skvn-chips--navy .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--navy);
+	color: var(--wp--preset--color--navy);
+}
+
+/* Cert dots */
+.skvn-collection-card__certs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+}
+
+.skvn-collection-card__cert-dot {
+	color: #0D9488;
+	font-size: 0.78rem;
+	font-weight: 600;
+}
+
+.skvn-collection-card__cert-dot::before {
+	content: '• ';
+}
+
+/* MOQ / Lead Time stats */
+.skvn-collection-card__stats {
+	border-top: 1px solid #e8f0f4;
+	display: grid;
+	gap: 0.5rem;
+	grid-template-columns: 1fr 1fr;
+	padding-top: 0.6rem;
+}
+
+.skvn-collection-card__stat-label {
+	color: #7b9aaa;
+	display: block;
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.skvn-collection-card__stat-value {
+	color: #25404d;
+	display: block;
+	font-size: 0.95rem;
+	font-weight: 700;
+}
+
+/* Quote / action CTA — full width */
+.skvn-collection-card__cta {
+	background: #0A2540;
+	border-radius: 4px;
+	color: #fff;
+	display: block;
+	font-weight: 600;
+	margin-top: auto;
+	padding: 0.55rem 1rem;
+	text-align: center;
+	text-decoration: none;
+	transition: background 0.15s;
+}
+
+.skvn-collection-card__cta:hover {
+	background: #0D9488;
+}
+
+/* Spec sheet PDF link */
+.skvn-collection-card__pdf {
+	color: #0D9488;
+	font-size: 0.85rem;
+	text-align: center;
+	text-decoration: none;
+}
+
+.skvn-collection-card__pdf:hover {
+	text-decoration: underline;
+}
+
+/* ── Post card — new classes ─────────────────────────────────────────────── */
+
+.skvn-collection-card__date,
+.skvn-collection-card__author {
+	color: #7b9aaa;
+	font-size: 0.78rem;
+}
+
+.skvn-collection-card__read-more {
+	color: #0D9488;
+	font-size: 0.9rem;
+	font-weight: 600;
+	margin-top: auto;
+	text-decoration: none;
+}
+
+.skvn-collection-card__read-more:hover {
+	text-decoration: underline;
 }
