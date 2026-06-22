@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 .skvn-slider {
-	--swiper-navigation-size: 1.125rem;
+	--skvn-slider-arrow-size: 2.75rem;
+	--skvn-slider-arrow-glyph-size: 1rem;
+	--swiper-navigation-size: var(--skvn-slider-arrow-glyph-size);
 	box-sizing: border-box;
 	font-family: "Inter", system-ui, sans-serif;
 	position: relative;
@@ -90,6 +92,10 @@
 	z-index: 2;
 }
 
+.skvn-slider__arrows {
+	--swiper-navigation-size: var(--skvn-slider-arrow-glyph-size);
+}
+
 .skvn-slider__arrow {
 	align-items: center;
 	background: rgba(7, 59, 90, 0.92);
@@ -98,44 +104,72 @@
 	box-sizing: border-box;
 	color: #fff;
 	display: inline-flex;
-	height: 2.75rem;
+	flex-shrink: 0;
+	height: var(--skvn-slider-arrow-size);
 	justify-content: center;
 	margin: 0;
+	max-height: var(--skvn-slider-arrow-size);
+	max-width: var(--skvn-slider-arrow-size);
+	min-height: var(--skvn-slider-arrow-size);
+	min-width: var(--skvn-slider-arrow-size);
 	overflow: hidden;
 	padding: 0;
 	position: relative;
-	width: 2.75rem;
+	width: var(--skvn-slider-arrow-size);
 }
 
-/* Swiper navigation.css sizes ::after at 44px — keep glyph inside SKVN circle. */
+/* Swiper navigation.css defaults ::after to 44px — keep glyph inside SKVN circle. */
 .skvn-slider__arrows .skvn-slider__arrow.swiper-button-prev,
-.skvn-slider__arrows .skvn-slider__arrow.swiper-button-next {
+.skvn-slider__arrows .skvn-slider__arrow.swiper-button-next,
+.skvn-slider__arrows .skvn-slider__arrow--prev,
+.skvn-slider__arrows .skvn-slider__arrow--next {
+	color: #fff;
 	flex-shrink: 0;
-	height: 2.75rem;
+	height: var(--skvn-slider-arrow-size);
 	left: auto;
 	margin-top: 0;
+	max-height: var(--skvn-slider-arrow-size);
+	max-width: var(--skvn-slider-arrow-size);
+	min-height: var(--skvn-slider-arrow-size);
+	min-width: var(--skvn-slider-arrow-size);
+	padding: 0;
 	position: relative;
 	right: auto;
 	top: auto;
-	width: 2.75rem;
+	width: var(--skvn-slider-arrow-size);
 }
 
+.skvn-slider__arrows .skvn-slider__arrow--prev::after,
+.skvn-slider__arrows .skvn-slider__arrow--next::after,
 .skvn-slider__arrows .skvn-slider__arrow.swiper-button-prev::after,
 .skvn-slider__arrows .skvn-slider__arrow.swiper-button-next::after {
 	display: block;
+	flex-shrink: 0;
 	font-family: swiper-icons;
-	font-size: 1.125rem;
+	font-size: var(--skvn-slider-arrow-glyph-size);
 	font-weight: 400;
-	height: auto;
+	height: 1em;
 	inset: auto;
 	left: auto;
 	line-height: 1;
 	margin: 0;
+	max-height: 100%;
+	max-width: 100%;
 	position: static;
 	right: auto;
 	top: auto;
 	transform: none;
-	width: auto;
+	width: 1em;
+}
+
+.skvn-slider__arrows .skvn-slider__arrow--prev::after,
+.skvn-slider__arrows .skvn-slider__arrow.swiper-button-prev::after {
+	content: "prev";
+}
+
+.skvn-slider__arrows .skvn-slider__arrow--next::after,
+.skvn-slider__arrows .skvn-slider__arrow.swiper-button-next::after {
+	content: "next";
 }
 
 .skvn-slider__arrows .skvn-slider__arrow.swiper-button-prev svg,
@@ -361,52 +395,102 @@
 	background: #fff;
 }
 
-.skvn-slider--editor .skvn-slider__controls {
+.skvn-slider__editor-toolbar {
+	align-items: center;
+	display: flex;
+	gap: 0.75rem;
+	justify-content: center;
+	margin-block-end: 1rem;
+	pointer-events: auto;
+	position: relative;
+	z-index: 10;
+}
+
+.skvn-slider__add-slide {
+	white-space: nowrap;
+}
+
+.skvn-slider--editor .skvn-slider__controls--editor-preview {
+	align-items: center;
 	background: #073b5a;
 	border-radius: 0.25rem;
+	display: grid;
+	gap: 0.75rem;
+	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
 	inset: auto;
 	margin-block-start: 1rem;
 	min-height: 4rem;
+	pointer-events: none;
 	padding: 0.75rem;
 	position: relative;
+	z-index: 1;
 }
 
-.skvn-slider--editor .skvn-slider__controls {
-	align-items: center;
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-	gap: 0.75rem;
-}
-
-.skvn-slider--editor .skvn-slider__controls .skvn-slider__arrows,
-.skvn-slider--editor .skvn-slider__controls .skvn-slider__pagination {
+.skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__arrows,
+.skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__pagination {
 	inset: auto;
 	position: relative;
 	transform: none;
 }
 
-.skvn-slider--editor .skvn-slider__controls--cluster {
+.skvn-slider--editor .skvn-slider__controls--editor-preview.skvn-slider__controls--cluster {
 	bottom: auto;
 	transform: none;
 	width: 100%;
 }
 
-.skvn-slider--editor .skvn-slider__arrows {
+.skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__arrows {
 	justify-self: start;
 }
 
-.skvn-slider--editor .skvn-slider__pagination {
+.skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__pagination {
 	justify-self: end;
 }
 
-.skvn-slider__add-slide {
-	grid-column: 2;
-	justify-self: center;
-	white-space: nowrap;
+.skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__controls-separator {
+	display: none;
 }
 
-.skvn-slider--editor .skvn-slider__controls-separator {
-	display: none;
+/* CASE-006: beat .editor-styles-wrapper button padding and Swiper theme color. */
+.editor-styles-wrapper .skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__arrow,
+.skvn-slider--editor .skvn-slider__controls--editor-preview .skvn-slider__arrow {
+	appearance: none;
+	color: #fff;
+	margin: 0;
+	padding: 0;
+	-webkit-appearance: none;
+}
+
+.editor-styles-wrapper
+	.skvn-slider--editor
+	.skvn-slider__controls--editor-preview
+	.skvn-slider__arrows--circle
+	.skvn-slider__arrow,
+.skvn-slider--editor
+	.skvn-slider__controls--editor-preview
+	.skvn-slider__arrows--circle
+	.skvn-slider__arrow {
+	background: rgba(255, 255, 255, 0.16);
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+.editor-styles-wrapper
+	.skvn-slider--editor
+	.skvn-slider__controls--editor-preview
+	.skvn-slider__arrow--prev::after,
+.editor-styles-wrapper
+	.skvn-slider--editor
+	.skvn-slider__controls--editor-preview
+	.skvn-slider__arrow--next::after,
+.skvn-slider--editor
+	.skvn-slider__controls--editor-preview
+	.skvn-slider__arrow--prev::after,
+.skvn-slider--editor
+	.skvn-slider__controls--editor-preview
+	.skvn-slider__arrow--next::after {
+	color: #fff;
+	font-family: swiper-icons;
+	font-size: var(--skvn-slider-arrow-glyph-size);
 }
 
 .skvn-slider--has-arrows.skvn-slider--arrows-bottom-left .skvn-slide,

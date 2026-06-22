@@ -117,8 +117,8 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 		attributes.arrowPosition !== 'side-center' &&
 		attributes.arrowPosition === attributes.paginationPosition;
 	const staticControlsClass = controlsCluster
-		? `skvn-slider__controls skvn-slider__controls--cluster skvn-slider__controls--${ attributes.arrowPosition }`
-		: 'skvn-slider__controls';
+		? `skvn-slider__controls skvn-slider__controls--editor-preview skvn-slider__controls--cluster skvn-slider__controls--${ attributes.arrowPosition }`
+		: 'skvn-slider__controls skvn-slider__controls--editor-preview';
 
 	return (
 		<div {...blockProps}>
@@ -359,19 +359,45 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 					)}
 				</PanelBody>
 			</InspectorControls>
+			<div className="skvn-slider__editor-toolbar">
+				<Button
+					className="skvn-slider__add-slide"
+					disabled={ reachedSlideLimit }
+					icon="plus-alt2"
+					onClick={ addSlide }
+					title={
+						reachedSlideLimit
+							? __(
+									'This Slider preset supports up to five slides.',
+									'skvn-marine-blocks'
+							  )
+							: __( 'Add slide', 'skvn-marine-blocks' )
+					}
+					variant="primary"
+				>
+					{ reachedSlideLimit
+						? __( 'Slide limit reached', 'skvn-marine-blocks' )
+						: __( 'Add slide', 'skvn-marine-blocks' ) }
+				</Button>
+			</div>
 			<div className="skvn-slider__editor-stack">
 				<InnerBlocks
 					allowedBlocks={ allowedBlocks }
-					renderAppender={ () => null }
+					renderAppender={
+						reachedSlideLimit
+							? false
+							: InnerBlocks.ButtonBlockAppender
+					}
 					template={ TEMPLATE }
 				/>
 			</div>
 			<div
+				aria-hidden="true"
 				aria-label={__(
 					'Static controls preview',
 					'skvn-marine-blocks'
 				)}
-				className={staticControlsClass}
+				className={ staticControlsClass }
 			>
 						{attributes.showArrows && (
 							<div
@@ -395,25 +421,6 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 								/>
 							</div>
 						)}
-						<Button
-							className="skvn-slider__add-slide"
-							disabled={reachedSlideLimit}
-							icon="plus-alt2"
-							onClick={addSlide}
-							title={
-								reachedSlideLimit
-									? __(
-											'This Slider preset supports up to five slides.',
-											'skvn-marine-blocks'
-									  )
-									: __('Add slide', 'skvn-marine-blocks')
-							}
-							variant="secondary"
-						>
-							{reachedSlideLimit
-								? __('Slide limit reached', 'skvn-marine-blocks')
-								: __('Add slide', 'skvn-marine-blocks')}
-						</Button>
 						{controlsCluster && (
 							<span
 								aria-hidden="true"

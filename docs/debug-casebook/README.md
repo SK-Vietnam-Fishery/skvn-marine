@@ -112,6 +112,10 @@ layout/003_DUPLICATE_FULL_WIDTH_OWNERSHIP.md
 - `docs/debug-casebook/`: lỗi cụ thể, cách chứng minh và tiền lệ sửa lỗi.
 - `docs/debug-casebook/PITFALLS.md`: tổng hợp pitfalls + checklist agent — entry
   point nhanh trước khi đọc từng CASE-XXX.
+- `docs/decisions/gutenberg-editor-chrome-contract.md`: contract bắt buộc khi
+  agent sửa editor chrome (appender, overlay CSS, useSelect typing path).
+- `docs/decisions/slider-editor-arrow-preview-1.3.6.md`: decision reference CASE-006
+  (editor arrow preview cascade, hook class, contrast — đọc khi nhiều agent tham gia).
 - `.context/`: active working memory và milestone protocol.
 
 Casebook không thay thế decision document hoặc onsite test checklist.

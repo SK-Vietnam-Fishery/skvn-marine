@@ -10,12 +10,15 @@ import { Button, PanelBody, RangeControl } from '@wordpress/components';
 import { store as coreDataStore } from '@wordpress/core-data';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { memo, useMemo } from '@wordpress/element';
 
 const TEMPLATE = [
 	[ 'core/heading', { level: 3, placeholder: 'Slide heading' } ],
 	[ 'core/paragraph', { placeholder: 'Slide copy' } ],
 	[ 'core/buttons', {}, [ [ 'core/button', { text: 'Learn more' } ] ] ],
 ];
+
+const PRESETS_WITHOUT_BACKGROUND = [ 'product-showcase', 'card-carousel' ];
 
 type SlideAttributes = {
 	backgroundImageId: number;
@@ -27,6 +30,9 @@ type SlideAttributes = {
 type SlideEditProps = {
 	attributes: SlideAttributes;
 	clientId: string;
+	context: {
+		'skvn-marine/sliderPreset'?: string;
+	};
 	setAttributes: ( attributes: Partial< SlideAttributes > ) => void;
 };
 
@@ -36,7 +42,68 @@ type SelectedImage = {
 	alt?: string;
 };
 
-export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) {
+type SlideBackgroundPreviewProps = {
+	alt: string;
+	overlayOpacity: number;
+	showChooseImage: boolean;
+	src: string;
+	onSelect: ( image: SelectedImage ) => void;
+};
+
+const SlideBackgroundPreview = memo( function SlideBackgroundPreview( {
+	alt,
+	overlayOpacity,
+	showChooseImage,
+	src,
+	onSelect,
+}: SlideBackgroundPreviewProps ) {
+	if ( src ) {
+		return (
+			<>
+				<img
+					alt={ alt }
+					className="skvn-slide__background-image"
+					src={ src }
+				/>
+				<span
+					aria-hidden="true"
+					className="skvn-slide__overlay"
+					style={ { opacity: overlayOpacity / 100 } }
+				/>
+			</>
+		);
+	}
+
+	if ( ! showChooseImage ) {
+		return null;
+	}
+
+	return (
+		<MediaUploadCheck>
+			<MediaUpload
+				allowedTypes={ [ 'image' ] }
+				onSelect={ onSelect }
+				render={ ( { open } ) => (
+					<Button
+						className="skvn-slide__choose-image"
+						onClick={ open }
+						variant="secondary"
+					>
+						{ __( 'Choose background image', 'skvn-marine-blocks' ) }
+					</Button>
+				) }
+			/>
+		</MediaUploadCheck>
+	);
+} );
+
+export const Edit = memo( function SlideEdit( {
+	attributes,
+	clientId,
+	context,
+	setAttributes,
+}: SlideEditProps ) {
+	const preset = String( context[ 'skvn-marine/sliderPreset' ] || '' );
 	const attachment = useSelect(
 		( select ) => {
 			if ( ! attributes.backgroundImageId ) {
@@ -53,45 +120,32 @@ export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) 
 		},
 		[ attributes.backgroundImageId ]
 	);
-	const resolvedImageUrl =
-		attachment?.source_url || attributes.backgroundImageUrl;
-	const hasImage = Boolean(
-		attributes.backgroundImageId || attributes.backgroundImageUrl
-	);
-	const parentSlider = useSelect(
+	const parentSliderClientId = useSelect(
 		( select ) => {
 			const editor = select( blockEditorStore ) as {
-				getBlockAttributes: (
-					blockClientId: string
-				) => Record< string, unknown > | null;
 				getBlockName: ( blockClientId: string ) => string | null;
 				getBlockParents: ( blockClientId: string ) => string[];
 			};
-			const parentClientId =
+
+			return (
 				editor
 					.getBlockParents( clientId )
 					.find(
 						( parentId ) =>
 							editor.getBlockName( parentId ) ===
 							'skvn-marine/slider'
-					) || '';
-
-			return {
-				clientId: parentClientId,
-				preset: parentClientId
-					? String(
-							editor.getBlockAttributes( parentClientId )
-								?.preset || ''
-					  )
-					: '',
-			};
+					) || ''
+			);
 		},
 		[ clientId ]
 	);
-	const supportsBackgroundImage = ! [
-		'product-showcase',
-		'card-carousel',
-	].includes( parentSlider.preset );
+	const resolvedImageUrl =
+		attachment?.source_url || attributes.backgroundImageUrl;
+	const hasImage = Boolean(
+		attributes.backgroundImageId || attributes.backgroundImageUrl
+	);
+	const supportsBackgroundImage =
+		! PRESETS_WITHOUT_BACKGROUND.includes( preset );
 	const showsBackgroundImage =
 		supportsBackgroundImage && Boolean( resolvedImageUrl );
 	const { selectBlock } = useDispatch( blockEditorStore ) as {
@@ -102,28 +156,34 @@ export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) 
 			showsBackgroundImage ? ' skvn-slide--has-background' : ''
 		}`,
 	} );
-	const selectImage = ( image: SelectedImage ) => {
-		setAttributes( {
-			backgroundImageAlt: image.alt || '',
-			backgroundImageId: image.id,
-			backgroundImageUrl: image.url,
-		} );
-	};
-	const removeImage = () => {
-		setAttributes( {
-			backgroundImageAlt: '',
-			backgroundImageId: 0,
-			backgroundImageUrl: '',
-		} );
-	};
+	const selectImage = useMemo(
+		() => ( image: SelectedImage ) => {
+			setAttributes( {
+				backgroundImageAlt: image.alt || '',
+				backgroundImageId: image.id,
+				backgroundImageUrl: image.url,
+			} );
+		},
+		[ setAttributes ]
+	);
+	const removeImage = useMemo(
+		() => () => {
+			setAttributes( {
+				backgroundImageAlt: '',
+				backgroundImageId: 0,
+				backgroundImageUrl: '',
+			} );
+		},
+		[ setAttributes ]
+	);
 
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
 				<PanelBody title={ __( 'Slider settings', 'skvn-marine-blocks' ) }>
 					<Button
-						disabled={ ! parentSlider.clientId }
-						onClick={ () => selectBlock( parentSlider.clientId ) }
+						disabled={ ! parentSliderClientId }
+						onClick={ () => selectBlock( parentSliderClientId ) }
 						variant="secondary"
 					>
 						{ __( 'Open Slider settings', 'skvn-marine-blocks' ) }
@@ -211,42 +271,16 @@ export function Edit( { attributes, clientId, setAttributes }: SlideEditProps ) 
 					)
 				) }
 			</InspectorControls>
-			{ showsBackgroundImage ? (
-				<>
-					<img
-						alt={ attributes.backgroundImageAlt }
-						className="skvn-slide__background-image"
-						src={ resolvedImageUrl }
-					/>
-					<span
-						aria-hidden="true"
-						className="skvn-slide__overlay"
-						style={ { opacity: attributes.overlayOpacity / 100 } }
-					/>
-				</>
-			) : supportsBackgroundImage ? (
-				<MediaUploadCheck>
-					<MediaUpload
-						allowedTypes={ [ 'image' ] }
-						onSelect={ selectImage }
-						render={ ( { open } ) => (
-							<Button
-								className="skvn-slide__choose-image"
-								onClick={ open }
-								variant="secondary"
-							>
-								{ __(
-									'Choose background image',
-									'skvn-marine-blocks'
-								) }
-							</Button>
-						) }
-					/>
-				</MediaUploadCheck>
-			) : null }
+			<SlideBackgroundPreview
+				alt={ attributes.backgroundImageAlt }
+				onSelect={ selectImage }
+				overlayOpacity={ attributes.overlayOpacity }
+				showChooseImage={ supportsBackgroundImage }
+				src={ showsBackgroundImage ? resolvedImageUrl : '' }
+			/>
 			<div className="skvn-slide__content">
 				<InnerBlocks template={ TEMPLATE } />
 			</div>
 		</div>
 	);
-}
+} );

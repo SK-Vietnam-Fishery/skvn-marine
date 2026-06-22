@@ -15,6 +15,9 @@
 | Viewport height chỉ `min-height` trên slide | Container đủ cao, ảnh nền không full height | Plugin CSS + Swiper chain | [CASE-002](slider/002_VIEWPORT_BELOW_HEADER_IMAGE_NOT_FULL_HEIGHT.md) |
 | Nhầm `text-align` với block center | Canh giữa trong editor, frontend vẫn lệch trái | Plugin CSS (hero preset) | [CASE-003](slider/003_HERO_TEXT_ALIGN_VS_BLOCK_CENTER.md) |
 | Agent đọc code, không đo geometry | Fix “đúng spec” nhưng UI vẫn sai | Workflow / QA | § Agent anti-patterns |
+| Tắt appender WP, custom nút trong frontend overlay | Add slide không click được; picker trúng `core/buttons` trong slide | Plugin editor + CSS | [CASE-004](slider/004_SLIDER_EDITOR_ADD_SLIDE_HIT_TEST_FAILURE.md) |
+| `useSelect` return object mới mỗi keystroke | IME lag, caret nhảy `triênr→tr→triển` khi gõ slide heading | Plugin `slide/edit.tsx` | [CASE-005](slider/005_SLIDER_EDITOR_IME_TYPING_RERENDER_CASCADE.md) |
+| Editor preview arrow reuse Swiper hook + CSS yếu | Circle “rỗng”, chevron xanh to/lệch; `aria-controls` trên preview button | Plugin editor CSS + `view.ts` selector | [CASE-006](slider/006_SLIDER_EDITOR_ARROW_PREVIEW_CSS_CASCADE.md) |
 
 ---
 
@@ -109,6 +112,87 @@ console.log('offset from slide center (px):', Math.round(blockCenter - slideCent
 
 ---
 
+## Pitfall 4 — Custom editor chrome reuse frontend overlay
+
+**Triệu chứng:** Nút “Add slide” có `onClick` trong source nhưng không thêm slide; DevTools
+picker trúng `core/buttons` (“Explore solutions”) thay vì `button.skvn-slider__add-slide`.
+
+**State Delta:**
+
+```text
+State A: Click Add slide → insertBlock('skvn-marine/slide')
+State B: Click vùng user nghĩ là Add slide → hit slide InnerBlocks
+Delta: renderAppender={() => null} + nút trong .skvn-slider__controls (frontend overlay)
+```
+
+**Nguyên nhân:** Agent thay appender Gutenberg vì “khó thấy” nhưng không tách editor toolbar
+và không verify hit-target. `pointer-events: auto` trên nút **không đủ** nếu pixel click
+không thuộc nút.
+
+**Cách tránh:**
+
+1. Đọc `docs/decisions/gutenberg-editor-chrome-contract.md` trước khi sửa editor slider.
+2. Giữ `ButtonBlockAppender` hoặc appender mặc định — custom nút chỉ là shortcut.
+3. Class editor riêng (`.skvn-slider__editor-toolbar`), không reuse `.skvn-slider__controls`.
+4. **Bắt buộc:** Ctrl+Shift+C click label control → đúng node trước khi merge.
+
+**Không làm:** `renderAppender={() => null}` + một Button trong shell frontend overlay.
+
+---
+
+## Pitfall 5 — `useSelect` unstable object khi user đang gõ
+
+**Triệu chứng:** Gõ heading trong slide lag; IME caret nhảy giữa composition phases.
+
+**Nguyên nhân:** `slide/edit.tsx` `useSelect` return `{ clientId, preset }` mới mỗi store
+tick → mọi slide re-render mỗi keystroke.
+
+**Cách tránh:**
+
+1. Dùng `usesContext` / `providesContext` cho `preset` (đã khai báo trong `block.json`).
+2. `useSelect` chỉ trả primitive; không return object/array literal.
+3. `React.memo()` + tách preview ảnh nền khỏi typing path.
+
+**Verify:** React Highlight updates — chỉ slide đang edit flash, không cả stack.
+
+---
+
+## Pitfall 6 — Editor arrow preview: CSS cascade + Swiper hook class
+
+**Triệu chứng:** Thumbnail/preview arrow trong editor: vòng tròn mỏng, chevron xanh
+to và lệch; có thể thấy `aria-controls="swiper-wrapper-…"` trên preview button.
+
+**State Delta (đã PROVEN bằng DevTools):**
+
+```text
+Spec SKVN:     padding 0 · color #fff · glyph 1rem · fill navy
+Computed thực: padding 10px 20px · color rgb(0,122,255) · width/height 44px
+Visual:        fill gần nền preview #073b5a → chỉ thấy viền
+Geometry:      44px box − 40px padding ngang → glyph ::after bị ép/tràn
+```
+
+**Nguyên nhân (3 lớp, không đoán một mình):**
+
+1. `.editor-styles-wrapper button` thắng `.skvn-slider__arrow { padding: 0 }`.
+2. Swiper theme color thắng `color: #fff` (stylesheet load sau / cùng specificity).
+3. Preview bar và fill circle cùng tông navy → camouflage.
+4. (Bonus) Class `swiper-button-prev` trên editor preview → `view.ts` có thể bind Swiper.
+
+**Cách tránh:**
+
+1. Đọc `docs/decisions/gutenberg-editor-chrome-contract.md` §2.5–§2.6 và
+   `docs/decisions/slider-editor-arrow-preview-1.3.6.md` (CASE-006 chi tiết).
+2. Editor preview **không** dùng hook selector runtime (`swiper-button-*`) trừ khi
+   đã guard `view.ts` skip `.skvn-slider--editor`.
+3. CSS editor control: specificity ≥ `.editor-styles-wrapper button`; verify computed
+   trong iframe, không chỉ frontend.
+4. Preview contrast: fill/viền/glyph phải đọc được trên `#073b5a`.
+5. Geometry check: `padding === 0` trước khi đóng task visual.
+
+**Không làm:** Chỉ chỉnh `font-size` glyph khi computed `padding` vẫn là `10px 20px`.
+
+---
+
 ## Agent anti-patterns (vì sao lỗi “ngớ ngẩn” lặp lại)
 
 ### 1. Đọc rule local, bỏ qua integration contract
@@ -147,6 +231,19 @@ Nhảy vào `!important`, `overflow: hidden`, hoặc tăng `min-height` khi chư
 
 **Tránh:** Bắt buộc ISOLATE → DIFF → PROVE (ui-debug skill) cho mọi UI bug.
 
+### 7. “Có onClick là xong” (editor chrome)
+
+Thấy `<Button onClick={addSlide}>` trong `edit.tsx` coi là đủ — không chạy picker,
+không giữ appender Gutenberg.
+
+**Tránh:** Hit-target proof + `gutenberg-editor-chrome-contract.md` (CASE-004).
+
+### 8. Subscribe store trên toàn slider khi user gõ
+
+`useSelect` walk parent / return object trong block có RichText con.
+
+**Tránh:** Context + memo (CASE-005).
+
 ---
 
 ## Checklist agent — trước khi submit slider layout fix
@@ -159,6 +256,17 @@ Nhảy vào `!important`, `overflow: hidden`, hoặc tăng `min-height` khi chư
 [ ] Đã đưa lệnh getBoundingClientRect() cho human verify
 [ ] Regression guard trong tests/slider-block.test.mjs nếu thêm rule mới
 [ ] Không dùng overflow-x/100vw để che geometry (css-layout-safety-contract)
+```
+
+## Checklist agent — trước khi submit slider **editor** fix
+
+```text
+[ ] Đã đọc gutenberg-editor-chrome-contract.md
+[ ] Không tắt InnerBlocks appender mà không có replacement đã picker-verify
+[ ] Editor toolbar tách class khỏi frontend .skvn-slider__controls
+[ ] useSelect không return object literal; preset qua context nếu có
+[ ] IME typing: Highlight updates không flash cả slide stack
+[ ] CASE-004 / CASE-005 verification steps nếu chạm add-slide hoặc slide/edit.tsx
 ```
 
 ---
@@ -180,4 +288,5 @@ Sau `npm run build`, human onsite verify để promote case sang `ONSITE_VERIFIE
 - `.agents/skills/ui-debug/SKILL.md` — State Delta framework
 - `docs/standards/css-layout-safety-contract.md` — width/overflow owners
 - `docs/decisions/slider-completion-spec-1.3.0.md` — layer contract markup
+- `docs/decisions/gutenberg-editor-chrome-contract.md` — editor chrome vs frontend overlay
 - `docs/testing/onsite-slider-motion-1.3.2.md` — viewport below header QA steps

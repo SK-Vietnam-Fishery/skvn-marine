@@ -365,6 +365,12 @@ Slider editor UX decision for V1 / 1.2.0:
 
 - Active Slider source of truth:
   `docs/decisions/slider-completion-spec-1.3.0.md`.
+- Editor chrome contract (appender, toolbar, useSelect typing path):
+  `docs/decisions/gutenberg-editor-chrome-contract.md`.
+- Editor arrow preview (CSS cascade, no Swiper hook on preview, contrast bar):
+  `docs/decisions/slider-editor-arrow-preview-1.3.6.md` — CASE-006.
+- Proven editor failures: CASE-004 (Add slide hit-test), CASE-005 (IME re-render),
+  CASE-006 (arrow preview cascade) in `docs/debug-casebook/INDEX.md`.
 - V1 / 1.3.0 completes dynamic rendering, compatibility, accessibility, and
   baseline geometry before expanded carousel/showcase UX.
 - Do not run Swiper/autoplay inside Gutenberg.

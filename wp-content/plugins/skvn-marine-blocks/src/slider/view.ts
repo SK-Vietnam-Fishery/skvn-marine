@@ -276,6 +276,10 @@ function setPaginationA11y(
 }
 
 function initSlider( slider: SliderElement ): void {
+		if ( slider.classList.contains( 'skvn-slider--editor' ) ) {
+			return;
+		}
+
 		if ( slider.swiper?.destroyed ) {
 			slider.skvnSliderCleanup?.();
 			delete slider.swiper;
