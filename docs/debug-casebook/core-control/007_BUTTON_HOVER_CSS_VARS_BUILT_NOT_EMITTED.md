@@ -9,7 +9,7 @@ Component: core/button + modules/core-control/features/button-hover.php
 Milestone: V1 / 1.3.4
 Observed: 2026-06-22
 Environment: WordPress frontend (view source + DevTools)
-Status: PROVEN · FIXED · REGRESSION_GUARDED
+Status: PROVEN · REGRESSED → RE-FIXED (2026-06-22, plan 033)
 Onsite verification: PENDING
 ```
 
@@ -58,24 +58,32 @@ Delta:
 `<style>` — dead data path; comment file nói "inject CSS custom properties"
 nhưng implementation chỉ inject hover selectors.
 
-## Fix contract
+## Fix contract (v1 — scoped `<style>`, superseded)
 
-Scoped inline `<style>` phải có **hai** phần trên cùng class scope:
+Scoped inline `<style>` phải có **hai** phần trên cùng class scope. Implementation
+này đã fix CASE-007 ban đầu nhưng gây regression flex layout (`margin-left: 192px`)
+khi `<style>` trở thành flex child trong `wp-block-buttons`.
+
+## Fix contract (v2 — current, plan 033)
+
+Pivot sang inline vars + class scoping, không prepend `<style>` vào block markup:
+
+1. **Define** vars trên wrapper qua `style="--skvn-btn-hover-*:…"` + class
+   `has-skvn-button-hover` (PHP `preg_replace_callback`).
+2. **Consume** vars qua handle `skvn-marine-core-button-hover` dùng
+   `wp_register_style` + `wp_add_inline_style`, dependency `skvn-marine-style`.
+3. Selector specificity **0,3,1**:
 
 ```css
-.wp-block-button.skvn-btn-xxxxxxxx {
-  --skvn-btn-hover-text: #rrggbb;
-  --skvn-btn-hover-bg: #rrggbb;
-}
-.wp-block-button.skvn-btn-xxxxxxxx .wp-block-button__link:hover,
-.wp-block-button.skvn-btn-xxxxxxxx .wp-block-button__link:focus-visible {
+.wp-block-button.has-skvn-button-hover .wp-block-button__link:hover,
+.wp-block-button.has-skvn-button-hover .wp-block-button__link:focus-visible {
   color: var(--skvn-btn-hover-text, inherit);
-  background-color: var(--skvn-btn-hover-bg, inherit);
+  background: var(--skvn-btn-hover-bg, inherit);
 }
 ```
 
-Dùng `.wp-block-button.<scope>` để vars inherit xuống `<a>` và tăng specificity
-so với theme `.skvn-button--primary:hover`.
+Dùng `background` (không `background-color`) để gradient hover hoạt động.
+Editor preview dùng `editor.BlockListBlock` + `wrapperProps` (không `BlockEdit`).
 
 ## Verification
 

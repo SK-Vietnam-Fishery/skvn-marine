@@ -3,7 +3,7 @@
 ```
 Version:   1.3.8
 Date:      2026-06-22
-Status:    PLANNING — awaiting implement approval
+Status:    IMPLEMENTED (2026-06-22 — onsite QA pending)
 Feature:   Core Control → Core Button Hover Colors
 Decision:  docs/decisions/core-control-core-button-hover.md
 ```

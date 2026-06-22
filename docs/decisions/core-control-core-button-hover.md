@@ -1,8 +1,8 @@
 # Core Control and Core Button Hover
 
-Status: DECIDED, implementation not started  
-Target: V1 / 1.3.4
-Date: 2026-06-12
+Status: IMPLEMENTED (plan 033 — frontend + editor preview, onsite QA pending)  
+Target: V1 / 1.3.4 (foundation), fix V1 / 1.3.8  
+Date: 2026-06-12 (updated 2026-06-22)
 
 ## Decision
 
@@ -280,11 +280,12 @@ has-skvn-button-hover
 The plugin stylesheet applies these values to both `:hover` and
 `:focus-visible`.
 
-Scoped PHP inline `<style>` (when attrs are set at render time) must emit
-**both** a define block on the wrapper scope and consume rules on the link.
-Building a `$css_vars` array without writing it into the emitted CSS produces a
-silent failure: `var(--token, inherit)` stays valid but never changes color.
-See `docs/debug-casebook/core-control/007_BUTTON_HOVER_CSS_VARS_BUILT_NOT_EMITTED.md`.
+Frontend define path: inline CSS custom properties on the `.wp-block-button`
+wrapper (`style="--skvn-btn-hover-*"`) plus class `has-skvn-button-hover`.
+Consume path: handle `skvn-marine-core-button-hover` via `wp_add_inline_style`,
+loaded after theme handle `skvn-marine-style`. Do **not** prepend `<style>` into
+block markup (flex layout regression). Building `$css_vars` without emitting them
+on the wrapper produces a silent failure. See CASE-007 and plan 033.
 
 Additional rules:
 

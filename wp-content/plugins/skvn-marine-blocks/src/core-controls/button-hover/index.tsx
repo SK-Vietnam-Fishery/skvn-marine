@@ -115,3 +115,54 @@ addFilter(
 		};
 	}
 );
+
+/**
+ * Inject hover CSS vars on the editor block wrapper for live preview.
+ */
+addFilter(
+	'editor.BlockListBlock',
+	'skvn-marine/button-hover-wrapper-props',
+	( BlockListBlock: React.ComponentType< any > ) => {
+		return function ButtonHoverWrapper( props: any ) {
+			if (
+				props.name !== 'core/button' ||
+				! isCoreControlEnabled( 'button_hover' )
+			) {
+				return <BlockListBlock { ...props } />;
+			}
+
+			const { skvnHoverTextColor, skvnHoverBgColor } = props.attributes;
+
+			if ( ! skvnHoverTextColor && ! skvnHoverBgColor ) {
+				return <BlockListBlock { ...props } />;
+			}
+
+			const vars: Record< string, string > = {};
+
+			if ( skvnHoverTextColor ) {
+				vars[ '--skvn-btn-hover-text' ] = skvnHoverTextColor;
+			}
+			if ( skvnHoverBgColor ) {
+				vars[ '--skvn-btn-hover-bg' ] = skvnHoverBgColor;
+			}
+
+			const existingClass = props.wrapperProps?.className ?? '';
+			const className = existingClass.includes( 'has-skvn-button-hover' )
+				? existingClass
+				: `${ existingClass } has-skvn-button-hover`.trim();
+
+			const wrapperProps = {
+				...( props.wrapperProps ?? {} ),
+				className,
+				style: {
+					...( props.wrapperProps?.style ?? {} ),
+					...vars,
+				},
+			};
+
+			return (
+				<BlockListBlock { ...props } wrapperProps={ wrapperProps } />
+			);
+		};
+	}
+);

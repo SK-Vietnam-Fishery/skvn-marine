@@ -25,20 +25,36 @@ function skvn_marine_blocks_enqueue_button_hover_frontend_style(): void {
 		return;
 	}
 
-	$enqueued   = true;
-	$plugin_dir = dirname( dirname( dirname( __DIR__ ) ) );
-	$style_file = $plugin_dir . '/build/style-index.ts.css';
+	$enqueued = true;
 
-	if ( ! file_exists( $style_file ) ) {
-		return;
+	$deps = array();
+	if ( wp_style_is( 'skvn-marine-style', 'registered' ) || wp_style_is( 'skvn-marine-style', 'enqueued' ) ) {
+		$deps[] = 'skvn-marine-style';
 	}
 
-	wp_enqueue_style(
+	wp_register_style(
 		'skvn-marine-core-button-hover',
-		plugins_url( 'build/style-index.ts.css', $plugin_dir . '/skvn-marine-blocks.php' ),
-		array(),
-		(string) filemtime( $style_file )
+		false,
+		$deps,
+		null
 	);
+
+	wp_enqueue_style( 'skvn-marine-core-button-hover' );
+
+	$css = '
+.wp-block-button.has-skvn-button-hover .wp-block-button__link:hover,
+.wp-block-button.has-skvn-button-hover .wp-block-button__link:focus-visible {
+	color: var(--skvn-btn-hover-text, inherit);
+	background: var(--skvn-btn-hover-bg, inherit);
+	transition: color 0.15s ease, background 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-button.has-skvn-button-hover .wp-block-button__link {
+		transition: none;
+	}
+}';
+
+	wp_add_inline_style( 'skvn-marine-core-button-hover', $css );
 }
 
 /**
@@ -77,6 +93,12 @@ function skvn_marine_blocks_render_button_hover( string $block_content, array $b
 	$block_content = preg_replace_callback(
 		'/(<div\s+class="([^"]*wp-block-button[^"]*)")(\s+style="([^"]*)")?/i',
 		static function ( array $matches ) use ( $style_attr ): string {
+			$classes = $matches[2];
+
+			if ( ! str_contains( $classes, 'has-skvn-button-hover' ) ) {
+				$classes .= ' has-skvn-button-hover';
+			}
+
 			$existing = isset( $matches[4] ) ? $matches[4] : '';
 			$merged   = $existing;
 
@@ -86,7 +108,7 @@ function skvn_marine_blocks_render_button_hover( string $block_content, array $b
 
 			$merged .= $style_attr;
 
-			return $matches[1] . ' style="' . esc_attr( $merged ) . '"';
+			return '<div class="' . esc_attr( $classes ) . '" style="' . esc_attr( $merged ) . '"';
 		},
 		$block_content,
 		1

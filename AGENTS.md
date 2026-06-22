@@ -59,6 +59,26 @@ unit, overflow, grid/flex, absolute positioning, header/footer), agent PHẢI đ
 
 `docs/standards/css-layout-safety-contract.md`
 
+### CSS block extension safety — Bắt buộc
+
+Trước mọi task viết CSS cho **Gutenberg block extension** (PHP filter `render_block_*`
++ `editor.BlockEdit` / `editor.BlockListBlock`), agent PHẢI đọc:
+
+`docs/standards/gutenberg-block-extension-css-contract.md`
+
+Quy tắc tóm tắt (không thay thế việc đọc doc):
+
+- **Specificity trước, CSS sau**: check theme rule mạnh nhất cho element trước khi viết
+  consuming rule. Plugin rule phải ≥ specificity đó — dùng scoped class trên wrapper.
+- **Editor DOM ≠ Frontend DOM**: `editor.BlockListBlock` inject class vào outer wrapper,
+  không phải vào `.wp-block-button`. Selector editor CSS phải dùng cấu trúc
+  `.has-scoped-class .wp-block-button .link:hover`, không phải `.wp-block-button.has-scoped-class`.
+- **Bundle boundary**: không enqueue plugin bundle cho feature CSS nhỏ — dùng
+  `wp_add_inline_style` với handle riêng có dependency vào theme stylesheet.
+- **`editor.BlockEdit` ≠ `editor.BlockListBlock`**: `BlockEdit` chỉ inject Inspector panel;
+  `wrapperStyle` build trong `BlockEdit` là dead code — gắn vars qua `BlockListBlock`.
+- **Pivot phải atomic**: bỏ cơ chế specificity cũ phải kèm replacement trong cùng commit.
+
 Quy tắc tóm tắt:
 
 - Layout width phải có đúng một owner: page canvas, content wrapper, hoặc component.
@@ -499,6 +519,13 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 [ ] Layout width có một owner; không duplicate GP/Gutenberg/SKVN full-width calculation
 [ ] Viewport units/margin âm mới có rationale và geometry test với scrollbar dọc
 [ ] `overflow-x` không được dùng để che bounding box sai
+[ ] Block extension CSS task đã đọc `docs/standards/gutenberg-block-extension-css-contract.md`
+[ ] Specificity plugin rule ≥ theme rule mạnh nhất cho element target (check DevTools trước khi viết)
+[ ] Scoped class thêm đúng element (PHP: cùng element với vars; Editor: outer wrapper)
+[ ] Editor CSS selector dùng `.has-class .wp-block-* .link` (không phải `.wp-block-*.has-class`)
+[ ] Feature CSS dùng handle riêng + `wp_add_inline_style`, không enqueue bundle chung
+[ ] `editor.BlockListBlock` cho wrapperProps — không build wrapperStyle trong `editor.BlockEdit`
+[ ] Test block extension: mockRenderFunction assert HTML output, không chỉ grep PHP source
 [ ] Image ALT: chỉ fill khi empty, không overwrite
 [ ] Dependency mới có rationale
 [ ] Files sửa ≤ 5 (hoặc có lý do nếu hơn)
