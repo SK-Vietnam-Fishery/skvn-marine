@@ -314,6 +314,13 @@ function initSlider( slider: SliderElement ): void {
 				`skvn-slider__pagination--${ config.paginationPosition }`
 			);
 		}
+		const useFlankCluster =
+			config.showArrows &&
+			config.showPagination &&
+			config.slideCount > 1 &&
+			config.arrowPosition === 'bottom-center' &&
+			config.paginationPosition === 'bottom-center' &&
+			config.arrowStyle !== 'pill';
 		const controlsCluster =
 			config.showArrows &&
 			config.showPagination &&
@@ -324,7 +331,12 @@ function initSlider( slider: SliderElement ): void {
 				'skvn-slider__controls--cluster',
 				`skvn-slider__controls--${ config.arrowPosition }`
 			);
-			if (
+			if ( useFlankCluster ) {
+				controlsEl.classList.add(
+					'skvn-slider__controls--cluster-flank',
+					`skvn-slider__controls--arrows-${ config.arrowStyle }`
+				);
+			} else if (
 				arrowsEl &&
 				paginEl &&
 				! controlsEl.querySelector( '.skvn-slider__controls-separator' )

@@ -111,14 +111,52 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 	const blockProps = useBlockProps({
 		className: `skvn-slider skvn-slider--editor skvn-slider--height-${ attributes.heightPreset }${ presetClass }`,
 	});
+	const controlsFlank =
+		attributes.showArrows &&
+		attributes.showPagination &&
+		slideCount > 1 &&
+		attributes.arrowPosition === 'bottom-center' &&
+		attributes.paginationPosition === 'bottom-center' &&
+		attributes.arrowStyle !== 'pill';
 	const controlsCluster =
 		attributes.showArrows &&
 		attributes.showPagination &&
 		attributes.arrowPosition !== 'side-center' &&
-		attributes.arrowPosition === attributes.paginationPosition;
-	const staticControlsClass = controlsCluster
-		? `skvn-slider__controls skvn-slider__controls--editor-preview skvn-slider__controls--cluster skvn-slider__controls--${ attributes.arrowPosition }`
-		: 'skvn-slider__controls skvn-slider__controls--editor-preview';
+		attributes.arrowPosition === attributes.paginationPosition &&
+		! controlsFlank;
+	let staticControlsClass =
+		'skvn-slider__controls skvn-slider__controls--editor-preview';
+	if ( controlsFlank ) {
+		staticControlsClass += ` skvn-slider__controls--cluster skvn-slider__controls--bottom-center skvn-slider__controls--cluster-flank skvn-slider__controls--arrows-${ attributes.arrowStyle }`;
+	} else if ( controlsCluster ) {
+		staticControlsClass += ` skvn-slider__controls--cluster skvn-slider__controls--${ attributes.arrowPosition }`;
+	}
+	const paginationPreview = attributes.showPagination ? (
+		<div
+			className={ `skvn-slider__pagination skvn-slider__pagination--${ attributes.paginationStyle } skvn-slider__pagination--${ attributes.paginationPosition }` }
+		>
+			{ attributes.paginationStyle.includes( 'fraction' ) ? (
+				<>
+					<span>01</span>
+					{ attributes.paginationStyle === 'timed-fraction' && (
+						<span
+							aria-hidden="true"
+							className="skvn-slider__timer"
+						/>
+					) }
+					<span>{ String( slideCount ).padStart( 2, '0' ) }</span>
+				</>
+			) : (
+				Array.from( { length: slideCount }, ( _, index ) => (
+					<span
+						aria-current={ index === 0 ? 'true' : undefined }
+						className="skvn-slider__static-bullet"
+						key={ index }
+					/>
+				) )
+			) }
+		</div>
+	) : null;
 
 	return (
 		<div {...blockProps}>
@@ -399,75 +437,59 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 				)}
 				className={ staticControlsClass }
 			>
-						{attributes.showArrows && (
+				{ controlsFlank ? (
+					<>
+						<button
+							aria-label={ __(
+								'Previous slide',
+								'skvn-marine-blocks'
+							) }
+							className="skvn-slider__arrow skvn-slider__arrow--prev"
+							type="button"
+						/>
+						{ paginationPreview }
+						<button
+							aria-label={ __(
+								'Next slide',
+								'skvn-marine-blocks'
+							) }
+							className="skvn-slider__arrow skvn-slider__arrow--next"
+							type="button"
+						/>
+					</>
+				) : (
+					<>
+						{ attributes.showArrows && (
 							<div
-								className={`skvn-slider__arrows skvn-slider__arrows--${ attributes.arrowStyle } skvn-slider__arrows--${ attributes.arrowPosition }`}
+								className={ `skvn-slider__arrows skvn-slider__arrows--${ attributes.arrowStyle } skvn-slider__arrows--${ attributes.arrowPosition }` }
 							>
 								<button
-									aria-label={__(
+									aria-label={ __(
 										'Previous slide',
 										'skvn-marine-blocks'
-									)}
+									) }
 									className="skvn-slider__arrow skvn-slider__arrow--prev"
 									type="button"
 								/>
 								<button
-									aria-label={__(
+									aria-label={ __(
 										'Next slide',
 										'skvn-marine-blocks'
-									)}
+									) }
 									className="skvn-slider__arrow skvn-slider__arrow--next"
 									type="button"
 								/>
 							</div>
-						)}
-						{controlsCluster && (
+						) }
+						{ controlsCluster && (
 							<span
 								aria-hidden="true"
 								className="skvn-slider__controls-separator"
 							/>
-						)}
-						{attributes.showPagination && (
-							<div
-								className={`skvn-slider__pagination skvn-slider__pagination--${ attributes.paginationStyle } skvn-slider__pagination--${ attributes.paginationPosition }`}
-							>
-								{attributes.paginationStyle.includes(
-									'fraction'
-								) ? (
-									<>
-										<span>01</span>
-										{attributes.paginationStyle ===
-											'timed-fraction' && (
-											<span
-												aria-hidden="true"
-												className="skvn-slider__timer"
-											/>
-										)}
-										<span>
-											{String( slideCount ).padStart(
-												2,
-												'0'
-											)}
-										</span>
-									</>
-								) : (
-									Array.from(
-										{ length: slideCount },
-										( _, index ) => (
-											<span
-												aria-current={
-													index === 0
-														? 'true'
-														: undefined
-												}
-												className="skvn-slider__static-bullet"
-												key={index}
-											/>
-										)
-									)
-								)}
-							</div>
-						)}
+						) }
+						{ paginationPreview }
+					</>
+				) }
 			</div>
 		</div>
 	);

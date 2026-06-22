@@ -280,6 +280,12 @@ has-skvn-button-hover
 The plugin stylesheet applies these values to both `:hover` and
 `:focus-visible`.
 
+Scoped PHP inline `<style>` (when attrs are set at render time) must emit
+**both** a define block on the wrapper scope and consume rules on the link.
+Building a `$css_vars` array without writing it into the emitted CSS produces a
+silent failure: `var(--token, inherit)` stays valid but never changes color.
+See `docs/debug-casebook/core-control/007_BUTTON_HOVER_CSS_VARS_BUILT_NOT_EMITTED.md`.
+
 Additional rules:
 
 - Existing buttons are unchanged until hover values are configured.

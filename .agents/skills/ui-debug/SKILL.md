@@ -39,6 +39,10 @@ Mỗi câu mô tả lỗi đều chứa **ít nhất 1 clue ẩn**:
 | "Sau khi scroll mới sai" | Sticky/fixed positioning hoặc scroll event JS |
 | "Chỉ sai khi login" | CSS/JS load khác nhau cho user roles |
 | "Đôi khi sai, đôi khi đúng" | Race condition hoặc cache không nhất quán |
+| "Attrs set trong editor, frontend không đổi" | PHP render filter không fire hoặc `$block['attrs']` không đọc đúng key |
+| "Editor preview đúng, frontend sai" | PHP render output khác editor JS — wrapperStyle/wrapperProps không gắn vào DOM |
+| "Feature bật rồi nhưng style không load" | Late enqueue bị static-var-guard bail sớm, hoặc enqueue sai handle/bundle |
+| "Hover/color đúng vars nhưng màu không đổi" | CSS specificity của plugin thua theme — vars có nhưng rule consume bị override |
 
 **→ Luôn liệt kê clues trước khi đề xuất fix.**
 
@@ -88,13 +92,27 @@ Trước resize ≠ Sau resize
 
 ### Trục 3 — Layer Delta
 ```
-HTML → CSS → JavaScript → Plugin → Theme → Server
+HTML → CSS → JavaScript → Gutenberg Editor → PHP Render Filter → DB Attrs → Plugin → Theme → Server
 ```
 **Quy trình loại trừ từng layer:**
 1. Disable JS → vẫn lỗi? → Không phải JS
 2. Remove inline styles → vẫn lỗi? → Không phải inline CSS
 3. Disable plugin một cái → hết lỗi? → Plugin đó là culprit
 4. Switch sang default theme → hết lỗi? → Theme problem
+
+**Với Gutenberg block extension — thêm 4 bước loại trừ:**
+
+5. Attrs có trong DB không? → `wp post get <ID> --field=post_content | grep skvnHover`
+   - Không có → user chưa Save, hoặc block attribute chưa được register
+   - Có → vào bước 6
+6. PHP render filter có fire không? → Check `has_filter('render_block_core/button', ...)` qua WP-CLI
+   - Không → toggle gate đang off, hoặc `add_filter` chưa chạy
+   - Có → vào bước 7
+7. CSS vars có trên wrapper HTML không? → `document.querySelector('.wp-block-button')?.getAttribute('style')`
+   - Không có → PHP sanitize đang drop giá trị (alpha color, gradient, wrong key name)
+   - Có → vào bước 8
+8. Rule consume có bị theme override không? → DevTools Elements → hover link → Styles tab → xem rule nào strikethrough
+   - Bị strikethrough → specificity thua theme; cần scoped class hoặc tăng specificity
 
 ### Trục 4 — Scope Delta
 ```
@@ -137,6 +155,89 @@ Database state ≠ JS runtime state ≠ CSS computed state
 - Fix xong → **cố tình reproduce lại bug** theo đúng điều kiện cũ
 - Nếu không reproduce được → fix đúng
 - Nếu reproduce được → fix chưa đủ hoặc sai nguyên nhân
+
+---
+
+## Bước 5.5: Gutenberg Block Extension — Verification Commands
+
+Dùng khi feature là Gutenberg block filter/extension (không phải custom block). Chạy theo thứ tự pipeline:
+
+### Pipeline chuẩn
+```
+DB post_content → parse_blocks() → render_block filter → HTML output → CSS consume
+```
+
+### WP-CLI (chạy trong WSL, path lấy từ .local/ENVIRONMENT.md)
+
+```bash
+# 1. Attrs có trong DB không?
+wp post get <POST_ID> --field=post_content --path=<WP_ROOT> | grep -o '"skvnHover[^"]*":"[^"]*"'
+
+# 2. Option toggle có đúng không?
+wp option get skvn_core_controls --format=json --path=<WP_ROOT>
+
+# 3. PHP filter có được hook không?
+wp eval "echo has_filter('render_block_core/button', 'skvn_marine_blocks_render_button_hover') ? 'HOOKED' : 'NOT HOOKED';" --path=<WP_ROOT>
+
+# 4. Render output thực tế của block
+wp post get <POST_ID> --field=post_content --path=<WP_ROOT> | wp eval-file - --path=<WP_ROOT>
+# (hoặc view source trang sau khi apply_filters)
+```
+
+### Browser DevTools — Editor layer
+
+```javascript
+// Attrs hiện tại của block đang select trong editor
+wp.data.select('core/block-editor').getSelectedBlock()?.attributes
+
+// Filter đã được register chưa?
+wp.hooks.hasFilter('blocks.registerBlockType', 'skvn-marine/button-hover-attributes')
+wp.hooks.hasFilter('editor.BlockEdit', 'skvn-marine/button-hover-controls')
+
+// CSS vars có trên wrapper wrapper không (editor)?
+const w = document.querySelector('[data-block].wp-block-button');
+w?.getAttribute('style'); // inline vars phải có ở đây nếu wrapperProps đúng
+```
+
+### Browser DevTools — Frontend layer
+
+```javascript
+// CSS vars có trên wrapper HTML không?
+const w = document.querySelector('.wp-block-button');
+console.log({
+  inlineStyle: w?.getAttribute('style'),
+  computedText: getComputedStyle(w).getPropertyValue('--skvn-btn-hover-text').trim(),
+  computedBg:   getComputedStyle(w).getPropertyValue('--skvn-btn-hover-bg').trim(),
+});
+// computedText/computedBg rỗng → vars không có → PHP pipeline lỗi
+// computedText/computedBg có giá trị → vars OK → vào kiểm tra specificity
+```
+
+### CSS Specificity Conflict Detection
+
+Trước khi viết rule consume, PHẢI kiểm tra specificity tối thiểu cần đạt:
+
+```
+Plugin rule cần ≥ specificity của theme rule mạnh nhất cho cùng element.
+```
+
+**Workflow:**
+
+1. Mở DevTools → Elements → chọn `<a class="wp-block-button__link">` → Styles tab
+2. Lọc theo `:hover` — liệt kê tất cả rules đang apply kèm specificity
+3. Tìm rule nào có specificity cao nhất với hard-coded value (không phải var)
+4. Plugin rule phải có specificity ≥ rule đó, HOẶC dùng scoped class để tăng
+
+**Ví dụ pattern SKVN Marine:**
+```css
+/* Theme — 0,3,1 (class + class + element) */
+.wp-block-button.skvn-button--primary .wp-block-button__link:hover { background: #hardcoded; }
+
+/* Plugin cần ≥ 0,3,1 để thắng — dùng scoped class */
+.wp-block-button.has-skvn-button-hover .wp-block-button__link:hover { background: var(--skvn-btn-hover-bg, inherit); }
+```
+
+Global rule 0,2,1 sẽ thua — đây là bug im lặng phổ biến nhất với block extension.
 
 ---
 
@@ -209,6 +310,23 @@ window.dispatchEvent(new Event('resize'))
 → Luôn verify assumption bằng test cụ thể
 ```
 
+### ❌ Test grep PHP source = false positive (Gutenberg-specific)
+```
+assert.match(phpSource, /--skvn-btn-hover-text:/) → PASS
+→ Nhưng không chứng minh vars được consume đúng, hoặc specificity đủ thắng theme.
+
+Test đúng: gọi PHP function với mock $block_content + $block array,
+assert output HTML có class scoped + inline vars.
+Không assert "có string trong source" — assert "output HTML đúng contract".
+```
+
+### ❌ Viết rule consume trước khi check specificity theme
+```
+Plugin CSS 0,2,1 viết trước → deploy → hover không đổi màu
+→ Trước khi viết rule consume, PHẢI mở DevTools kiểm tra
+   theme rule mạnh nhất đang apply cho element đó là bao nhiêu.
+```
+
 ### ✅ Đúng: Đọc clue → Tìm delta → Loại trừ từng layer → Prove fix
 
 ---
@@ -241,5 +359,13 @@ Trước khi đào sâu, chạy qua checklist này:
 - [ ] Lỗi ở tất cả pages hay chỉ 1 page?
 - [ ] Lỗi ở tất cả elements hay chỉ 1 element?
 - [ ] Lỗi xuất hiện ngay hay sau action nào đó?
+
+**Thêm nếu là Gutenberg block extension:**
+- [ ] Attrs có trong DB không? (WP-CLI `wp post get`)
+- [ ] Toggle option đang on? (`wp option get skvn_core_controls`)
+- [ ] PHP filter có hook không? (`has_filter(...)`)
+- [ ] CSS vars có trên wrapper HTML không? (`getAttribute('style')`)
+- [ ] Specificity plugin rule có ≥ theme rule không? (DevTools → hover → Styles)
+- [ ] Test file có đang chỉ grep PHP source không? (false positive risk)
 
 Mỗi câu trả lời **loại trừ** ít nhất 1 layer, thu hẹp phạm vi debug.

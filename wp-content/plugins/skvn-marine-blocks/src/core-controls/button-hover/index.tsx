@@ -1,7 +1,9 @@
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+} from '@wordpress/block-editor';
 import { addFilter } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ColorPicker, BaseControl } from '@wordpress/components';
 import type { BlockConfiguration } from '@wordpress/blocks';
 
 import { isCoreControlEnabled } from '../config';
@@ -50,94 +52,61 @@ addFilter(
 			const { attributes, setAttributes } = props;
 			const { skvnHoverTextColor, skvnHoverBgColor } = attributes;
 
-			const wrapperStyle: React.CSSProperties = {};
-			if ( skvnHoverBgColor ) {
-				wrapperStyle[ '--skvn-btn-hover-bg' as any ] = skvnHoverBgColor;
-			}
-			if ( skvnHoverTextColor ) {
-				wrapperStyle[ '--skvn-btn-hover-text' as any ] = skvnHoverTextColor;
-			}
+			const bgIsGradient =
+				/^(?:linear|radial|conic)-gradient\(/i.test( skvnHoverBgColor );
 
 			return (
 				<>
 					{ isCoreControlEnabled( 'button_hover' ) && (
 						<InspectorControls group="styles">
-							<PanelBody
+							<PanelColorGradientSettings
 								title={ __(
-									'Hover Color',
+									'Hover Colors',
 									'skvn-marine-blocks'
 								) }
 								initialOpen={ false }
-							>
-								<BaseControl
-									id="skvn-btn-hover-text"
-									label={ __(
-										'Hover text color',
-										'skvn-marine-blocks'
-									) }
-								>
-									<ColorPicker
-										color={ skvnHoverTextColor || '' }
-										onChange={ ( value: string ) =>
+								settings={ [
+									{
+										colorValue:
+											skvnHoverTextColor || undefined,
+										onColorChange: (
+											value: string | undefined
+										) =>
 											setAttributes( {
-												skvnHoverTextColor: value,
-											} )
-										}
-										enableAlpha
-									/>
-									{ skvnHoverTextColor && (
-										<button
-											type="button"
-											className="button button-small"
-											style={ { marginTop: 4 } }
-											onClick={ () =>
-												setAttributes( {
-													skvnHoverTextColor: '',
-												} )
-											}
-										>
-											{ __(
-												'Clear',
-												'skvn-marine-blocks'
-											) }
-										</button>
-									) }
-								</BaseControl>
-								<BaseControl
-									id="skvn-btn-hover-bg"
-									label={ __(
-										'Hover background color',
-										'skvn-marine-blocks'
-									) }
-								>
-									<ColorPicker
-										color={ skvnHoverBgColor || '' }
-										onChange={ ( value: string ) =>
+												skvnHoverTextColor:
+													value ?? '',
+											} ),
+										label: __(
+											'Text',
+											'skvn-marine-blocks'
+										),
+									},
+									{
+										colorValue: bgIsGradient
+											? undefined
+											: skvnHoverBgColor || undefined,
+										gradientValue: bgIsGradient
+											? skvnHoverBgColor
+											: undefined,
+										onColorChange: (
+											value: string | undefined
+										) =>
 											setAttributes( {
-												skvnHoverBgColor: value,
-											} )
-										}
-										enableAlpha
-									/>
-									{ skvnHoverBgColor && (
-										<button
-											type="button"
-											className="button button-small"
-											style={ { marginTop: 4 } }
-											onClick={ () =>
-												setAttributes( {
-													skvnHoverBgColor: '',
-												} )
-											}
-										>
-											{ __(
-												'Clear',
-												'skvn-marine-blocks'
-											) }
-										</button>
-									) }
-								</BaseControl>
-							</PanelBody>
+												skvnHoverBgColor: value ?? '',
+											} ),
+										onGradientChange: (
+											value: string | undefined
+										) =>
+											setAttributes( {
+												skvnHoverBgColor: value ?? '',
+											} ),
+										label: __(
+											'Background',
+											'skvn-marine-blocks'
+										),
+									},
+								] }
+							/>
 						</InspectorControls>
 					) }
 					<BlockEdit { ...props } />
