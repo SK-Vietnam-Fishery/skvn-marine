@@ -84,10 +84,12 @@
 	font-weight: 600;
 	gap: 0.3rem;
 	text-decoration: none;
+	transition: gap 0.18s ease, color 0.18s ease;
 }
 
 .skvn-collection__archive-link:hover {
-	text-decoration: underline;
+	color: #0D9488;
+	gap: 0.55rem;
 }
 
 .skvn-collection__catalog-cta {
@@ -148,11 +150,21 @@
 	flex-direction: column;
 	min-width: 0;
 	overflow: hidden;
+	transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1),
+	            box-shadow 0.28s ease,
+	            border-color 0.28s ease;
+}
+
+.skvn-collection-card:hover {
+	border-color: #99bfcc;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+	transform: translateY(-6px);
 }
 
 .skvn-collection-card__media {
 	background: #edf4f7;
 	display: block;
+	overflow: hidden;
 	position: relative;
 }
 
@@ -161,7 +173,12 @@
 	display: block;
 	height: auto;
 	object-fit: cover;
+	transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.3, 1);
 	width: 100%;
+}
+
+.skvn-collection-card:hover .skvn-collection-card__image {
+	transform: scale(1.045);
 }
 
 .skvn-collection-card__body {
@@ -291,12 +308,14 @@ a.skvn-collection-card__badge:hover {
 	height: 2.5rem;
 	justify-content: center;
 	line-height: 1;
+	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 	width: 2.5rem;
 }
 
 .skvn-collection__arrow:hover {
-	background: #edf4f7;
-	border-color: #99bfcc;
+	background: #0A2540;
+	border-color: #0A2540;
+	color: #fff;
 }
 
 .skvn-collection__arrow.swiper-button-disabled {
@@ -319,6 +338,7 @@ a.skvn-collection-card__badge:hover {
 	cursor: pointer;
 	height: 0.6rem;
 	padding: 0;
+	transition: all 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
 	width: 0.6rem;
 }
 
@@ -479,6 +499,10 @@ a.skvn-collection-card__badge:hover {
 	background: #0D9488;
 }
 
+.skvn-collection-card__cta:active {
+	transform: translateY(1px);
+}
+
 /* Spec sheet PDF link */
 .skvn-collection-card__pdf {
 	color: #0D9488;
@@ -519,13 +543,13 @@ a.skvn-collection-card__badge:hover {
 	border: 1px dashed #c6d9e2;
 	border-radius: 4px;
 	color: #99bfcc;
-	font-size: 0.75rem;
+	font-size: 0.85rem;
 	padding: 0.4rem 0.6rem;
 	text-align: center;
 }
 
 .skvn-collection__editor-info {
-	font-size: 0.85rem;
+	font-size: 0.95rem;
 }
 
 .skvn-collection__editor-info-heading {
@@ -540,7 +564,7 @@ a.skvn-collection-card__badge:hover {
 
 .skvn-collection__editor-info-subheading {
 	color: #99bfcc;
-	font-size: 0.75rem;
+	font-size: 0.85rem;
 	margin: 0.5rem 0 0.3rem;
 }
 
@@ -578,7 +602,7 @@ a.skvn-collection-card__badge:hover {
 
 .skvn-collection__editor-product-list {
 	color: #4b6470;
-	font-size: 0.85rem;
+	font-size: 0.95rem;
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -586,13 +610,13 @@ a.skvn-collection-card__badge:hover {
 
 .skvn-collection__editor-product-status {
 	color: #99bfcc;
-	font-size: 0.82rem;
+	font-size: 0.9rem;
 	margin: 0;
 }
 
 .skvn-collection__editor-product-note {
 	color: #99bfcc;
-	font-size: 0.75rem;
+	font-size: 0.85rem;
 	margin: 0.2rem 0 0;
 }
 

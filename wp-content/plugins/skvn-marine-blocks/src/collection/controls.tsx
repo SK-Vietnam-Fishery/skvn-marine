@@ -466,7 +466,8 @@ type PostRecord = {
 	title: { rendered: string };
 };
 
-function useProductPreview(
+function useQueryPreview(
+	contentType: 'post' | 'product',
 	attributes: CollectionAttributes,
 	categoryTerms: TermRecord[],
 	tagTerms: TermRecord[]
@@ -479,10 +480,10 @@ function useProductPreview(
 		.filter( ( id ): id is number => id !== undefined );
 
 	const orderMap: Record< string, { orderby: string; order: string } > = {
-		newest:           { orderby: 'date',       order: 'desc' },
-		featured:         { orderby: 'menu_order', order: 'asc' },
-		manual:           { orderby: 'menu_order', order: 'asc' },
-		'shuffle-balanced': { orderby: 'rand',     order: 'desc' },
+		newest:             { orderby: 'date',       order: 'desc' },
+		featured:           { orderby: 'menu_order', order: 'asc' },
+		manual:             { orderby: 'menu_order', order: 'asc' },
+		'shuffle-balanced': { orderby: 'rand',       order: 'desc' },
 	};
 	const { orderby, order } =
 		orderMap[ attributes.orderMode || 'newest' ] ||
@@ -494,16 +495,22 @@ function useProductPreview(
 		orderby,
 		order,
 	};
-	if ( catIds.length > 0 ) queryParams.product_cat = catIds.join( ',' );
-	if ( tagIds.length > 0 ) queryParams.product_tag = tagIds.join( ',' );
 
-	const queryKey = JSON.stringify( queryParams );
+	if ( contentType === 'product' ) {
+		if ( catIds.length > 0 ) queryParams.product_cat = catIds.join( ',' );
+		if ( tagIds.length > 0 ) queryParams.product_tag = tagIds.join( ',' );
+	} else {
+		if ( catIds.length > 0 ) queryParams.categories = catIds;
+		if ( tagIds.length > 0 ) queryParams.tags = tagIds;
+	}
+
+	const queryKey = contentType + JSON.stringify( queryParams );
 
 	return useSelect(
 		( select ) =>
 			( select( 'core' ).getEntityRecords(
 				'postType',
-				'product',
+				contentType === 'product' ? 'product' : 'post',
 				queryParams
 			) as PostRecord[] | null ),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -511,7 +518,7 @@ function useProductPreview(
 	);
 }
 
-const DUMMY_SPECS = [ 'CO-treated', 'Loin', 'Vacuum Pack' ];
+const DUMMY_SPECS = [ 'Product attribute', 'Loin', 'Vacuum Pack' ];
 
 function PlaceholderCard( {
 	attributes,
@@ -530,27 +537,62 @@ function PlaceholderCard( {
 		.filter( Boolean )
 		.join( ' ' );
 
-	const showTags  = attributes.showProductTags !== false && contentType === 'product';
-	const showSpecs = attributes.showSpecChips !== false && contentType === 'product';
+	if ( contentType === 'post' ) {
+		const showCategories = attributes.showPostCategories !== false;
+		const showExcerpt    = attributes.showExcerpt !== false;
+		const showDate       = attributes.showDate !== false;
+		const readMoreText   = ( attributes.readMoreLabel || '' ).trim() || __( 'Read more →', 'skvn-marine-blocks' );
+
+		return (
+			<div className={ cardClass }>
+				<div className="skvn-collection-card__media">
+					{ showCategories && (
+						<div className="skvn-collection-card__badges">
+							<span className="skvn-collection-card__badge">Category</span>
+						</div>
+					) }
+					<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" />
+				</div>
+				<div className="skvn-collection-card__body">
+					<h3 className="skvn-collection-card__title">
+						{ __( 'Post title', 'skvn-marine-blocks' ) }
+					</h3>
+					{ showDate && (
+						<span className="skvn-collection-card__date">Jan 1, 2025</span>
+					) }
+					{ showExcerpt && (
+						<p className="skvn-collection-card__excerpt">
+							{ __( 'Post excerpt preview…', 'skvn-marine-blocks' ) }
+						</p>
+					) }
+					<span className="skvn-collection-card__read-more">{ readMoreText }</span>
+				</div>
+			</div>
+		);
+	}
+
+	// product
+	const showTags  = attributes.showProductTags !== false;
+	const showSpecs = attributes.showSpecChips !== false;
 	const actionMode = attributes.productActionMode || 'quote';
 	const ctaText =
-		actionMode === 'quote' ? __( 'Yêu cầu báo giá', 'skvn-marine-blocks' ) :
+		actionMode === 'quote' ? __( 'Request quote', 'skvn-marine-blocks' ) :
 		actionMode === 'none'  ? null :
-		__( 'Xem chi tiết', 'skvn-marine-blocks' );
+		__( 'View details', 'skvn-marine-blocks' );
 
 	return (
 		<div className={ cardClass }>
 			<div className="skvn-collection-card__media">
 				{ showTags && (
 					<div className="skvn-collection-card__badges">
-						<span className="skvn-collection-card__badge">WILD CAUGHT</span>
+						<span className="skvn-collection-card__badge">Product tag</span>
 					</div>
 				) }
 				<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" />
 			</div>
 			<div className="skvn-collection-card__body">
 				<h3 className="skvn-collection-card__title">
-					Yellowfin Tuna Loin – Wild Caught
+					{ __( 'Product name', 'skvn-marine-blocks' ) }
 				</h3>
 				{ showSpecs && (
 					<div className="skvn-collection-card__specs">
@@ -585,35 +627,34 @@ function EditorInfoPanel( {
 	categoryTerms: TermRecord[];
 	tagTerms: TermRecord[];
 } ) {
-	const products = useProductPreview( attributes, categoryTerms, tagTerms );
+	const items = useQueryPreview( contentType, attributes, categoryTerms, tagTerms );
 	const isProduct = contentType === 'product';
 
 	const fields = [
-		{ label: __( 'Hình ảnh', 'skvn-marine-blocks' ),       active: attributes.showImage !== false },
+		{ label: 'Image',        active: attributes.showImage !== false },
 		...( isProduct
 			? [
-				{ label: __( 'Spec chips', 'skvn-marine-blocks' ),  active: attributes.showSpecChips !== false },
-				{ label: __( 'Tags badge', 'skvn-marine-blocks' ),  active: attributes.showProductTags !== false },
+				{ label: 'Spec chips', active: attributes.showSpecChips !== false },
+				{ label: 'Tags badge', active: attributes.showProductTags !== false },
 			  ]
 			: [
-				{ label: __( 'Excerpt', 'skvn-marine-blocks' ),     active: attributes.showExcerpt !== false },
-				{ label: __( 'Date', 'skvn-marine-blocks' ),        active: attributes.showDate !== false },
+				{ label: 'Excerpt',    active: attributes.showExcerpt !== false },
+				{ label: 'Date',       active: attributes.showDate !== false },
+				{ label: 'Author',     active: attributes.showAuthor === true },
 			  ]
 		),
-		{ label: `CTA: ${ actionModeLabel( attributes.productActionMode || 'quote' ) }`, active: ( attributes.productActionMode || 'quote' ) !== 'none' },
-		{ label: __( 'Equal height', 'skvn-marine-blocks' ),    active: attributes.equalHeight !== false },
+		isProduct
+			? { label: `CTA: ${ actionModeLabel( attributes.productActionMode || 'quote' ) }`, active: ( attributes.productActionMode || 'quote' ) !== 'none' }
+			: { label: `CTA: ${ actionModeLabel( attributes.postActionMode || 'read' ) }`,    active: true },
+		{ label: 'Equal height', active: attributes.equalHeight !== false },
 	];
 
-	const catalogFields = [
-		__( 'Chứng nhận', 'skvn-marine-blocks' ),
-		__( 'MOQ / Lead time', 'skvn-marine-blocks' ),
-		__( 'PDF link', 'skvn-marine-blocks' ),
-	];
+	const catalogFields = [ 'Certifications', 'MOQ / Lead time', 'PDF link' ];
 
 	return (
 		<div className="skvn-collection__editor-info">
 			<p className="skvn-collection__editor-info-heading">
-				{ __( 'Dữ liệu được chọn:', 'skvn-marine-blocks' ) }
+				{ __( 'Card data:', 'skvn-marine-blocks' ) }
 			</p>
 			<ul className="skvn-collection__editor-field-list">
 				{ fields.map( ( f ) => (
@@ -644,25 +685,29 @@ function EditorInfoPanel( {
 				</>
 			) }
 			<p className="skvn-collection__editor-info-heading skvn-collection__editor-info-heading--products">
-				{ __( 'Sản phẩm sẽ xuất hiện:', 'skvn-marine-blocks' ) }
+				{ isProduct
+					? __( 'Products in query:', 'skvn-marine-blocks' )
+					: __( 'Posts in query:', 'skvn-marine-blocks' ) }
 			</p>
-			{ products === null ? (
+			{ items === null ? (
 				<p className="skvn-collection__editor-product-status">
-					{ __( 'Đang tải...', 'skvn-marine-blocks' ) }
+					{ __( 'Loading...', 'skvn-marine-blocks' ) }
 				</p>
-			) : products.length === 0 ? (
+			) : items.length === 0 ? (
 				<p className="skvn-collection__editor-product-status">
-					{ __( 'Chưa có sản phẩm khớp.', 'skvn-marine-blocks' ) }
+					{ isProduct
+						? __( 'No products match.', 'skvn-marine-blocks' )
+						: __( 'No posts match.', 'skvn-marine-blocks' ) }
 				</p>
 			) : (
 				<>
 					<ol className="skvn-collection__editor-product-list">
-						{ products.map( ( p ) => (
+						{ items.map( ( p ) => (
 							<li key={ p.id }>{ p.title.rendered }</li>
 						) ) }
 					</ol>
 					<p className="skvn-collection__editor-product-note">
-						{ __( '* Danh sách ước tính', 'skvn-marine-blocks' ) }
+						{ __( '* Approximate list', 'skvn-marine-blocks' ) }
 					</p>
 				</>
 			) }
@@ -672,12 +717,12 @@ function EditorInfoPanel( {
 
 function actionModeLabel( mode: string ): string {
 	const map: Record< string, string > = {
-		quote:  'Báo giá',
-		view:   'Xem chi tiết',
-		both:   'Báo giá + Xem',
+		quote:  'Quote',
+		view:   'View',
+		both:   'Quote + View',
 		custom: 'Custom',
-		none:   'Ẩn',
-		read:   'Đọc thêm',
+		none:   'Hidden',
+		read:   'Read more',
 	};
 	return map[ mode ] || mode;
 }
