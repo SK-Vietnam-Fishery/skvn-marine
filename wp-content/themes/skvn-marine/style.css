@@ -3612,6 +3612,20 @@ body.skvn-has-footer-page .site {
 	margin-top: 0.5rem;
 }
 
+/* Product title — prevent oversized h1 from wrapping in narrow summary column */
+.woocommerce div.product .product_title {
+	font-size: clamp(1.25rem, 3vw, 1.75rem);
+	line-height: 1.25;
+	word-break: break-word;
+	margin-bottom: 0.75rem;
+}
+
+/* CTA buttons — prevent text wrap */
+.skvn-product-cta-primary,
+.skvn-product-cta-secondary {
+	white-space: nowrap;
+}
+
 /* Trust signals */
 .skvn-product-trust {
 	display: grid;
