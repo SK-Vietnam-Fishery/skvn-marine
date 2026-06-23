@@ -71,6 +71,16 @@ Key lookup rules:
 - Plugin build runs from `wp-content/plugins/skvn-marine-blocks/`, not from repo root.
 - `context-gen` consistency check command is in `.local/ENVIRONMENT.md` under `CONTEXT_GEN_CHECK_CMD`.
 
+## Ideation Scratchpad
+
+`docs/ideations/` là scratchpad cho phiên chat (gitignored). **Đầu mỗi phiên**, đọc `docs/ideations/README-claude.md` để biết topic nào đang open — tránh lặp lại reasoning đã có hoặc đã bị bác bỏ.
+
+Workflow:
+- Brainstorm / hypothesis mới → ghi vào `docs/ideations/<topic>.md` với status `open`.
+- User xác nhận / bác bỏ bằng data → update status ngay (`confirmed` / `rejected + lý do`).
+- Thành quyết định → promote sang `docs/decisions/` (git). Ideation file giữ nguyên đến hết phiên.
+- **Không ghi** transcript, code snippet, hay thứ đã có trong file source — chỉ ghi diagnosis, rejected-why, open-question.
+
 ## Blocked / Timeout Rule
 
 If a step requires runtime access (WP server, database, browser, onsite QA) and cannot proceed, stop and ask the user (Dev) instead of guessing or fabricating output.

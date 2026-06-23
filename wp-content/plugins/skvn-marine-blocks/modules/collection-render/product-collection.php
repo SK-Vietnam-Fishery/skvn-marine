@@ -46,15 +46,7 @@ function skvn_marine_blocks_render_product_collection( $attributes ) {
 	ob_start();
 	?>
 	<section class="<?php echo esc_attr( $classes ); ?>"<?php echo $aria_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
-		<?php if ( '' !== $eyebrow ) : ?>
-			<p class="skvn-collection__eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-		<?php endif; ?>
-		<?php if ( $show_heading && '' !== $heading ) : ?>
-			<h2 class="skvn-collection__heading"><?php echo esc_html( $heading ); ?></h2>
-		<?php endif; ?>
-		<?php if ( '' !== $intro ) : ?>
-			<div class="skvn-collection__intro"><?php echo wp_kses_post( wpautop( $intro ) ); ?></div>
-		<?php endif; ?>
+		<?php echo skvn_marine_blocks_render_collection_header( $attributes, 'carousel' === $layout ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<?php if ( ! function_exists( 'wc_get_products' ) ) : ?>
 			<p class="skvn-collection__empty">
 				<?php esc_html_e( 'Product collections require WooCommerce to be active.', 'skvn-marine-blocks' ); ?>

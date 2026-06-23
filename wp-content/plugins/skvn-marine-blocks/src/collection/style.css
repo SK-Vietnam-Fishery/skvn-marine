@@ -3,6 +3,27 @@
 	width: 100%;
 }
 
+/* Section header: text left, nav arrows right */
+.skvn-collection__header {
+	align-items: flex-start;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 1.25rem;
+}
+
+.skvn-collection__header-text {
+	flex: 1;
+	min-width: 0;
+}
+
+.skvn-collection__header-nav {
+	align-items: center;
+	display: flex;
+	flex-shrink: 0;
+	gap: 0.5rem;
+	padding-top: 0.25rem;
+}
+
 .skvn-collection__eyebrow {
 	align-items: center;
 	color: #0D9488;
@@ -29,7 +50,7 @@
 }
 
 .skvn-collection__intro {
-	margin: 0 0 1.25rem;
+	margin: 0;
 	max-width: 64ch;
 }
 
@@ -256,26 +277,22 @@ a.skvn-collection-card__badge:hover {
 	flex: 1;
 }
 
-/* Carousel arrows */
+/* Carousel arrows — static position inside .skvn-collection__header-nav */
 .skvn-collection__arrow {
+	align-items: center;
 	background: #fff;
 	border: 1px solid #c6d9e2;
 	border-radius: 50%;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
 	color: #25404d;
 	cursor: pointer;
+	display: flex;
 	font-size: 1.5rem;
 	height: 2.5rem;
+	justify-content: center;
 	line-height: 1;
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
 	width: 2.5rem;
-	z-index: 10;
 }
-
-.skvn-collection__arrow--prev { left: -1.25rem; }
-.skvn-collection__arrow--next { right: -1.25rem; }
 
 .skvn-collection__arrow:hover {
 	background: #edf4f7;
@@ -395,6 +412,11 @@ a.skvn-collection-card__badge:hover {
 .skvn-chips--navy .skvn-collection-card__spec-tag {
 	border-color: var(--wp--preset--color--navy);
 	color: var(--wp--preset--color--navy);
+}
+
+/* Catalog slot — woo-catalog (1.5.0) sẽ own nội dung này. See woo-catalog-css-migration-1.5.0.md */
+.skvn-collection-card__catalog {
+	display: contents;
 }
 
 /* Cert dots */

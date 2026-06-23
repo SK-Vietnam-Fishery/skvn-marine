@@ -9,10 +9,17 @@
  *
  * Specificity 0,2,1 is safe here — no theme rules conflict inside editor iframe.
  */
-.has-skvn-button-hover .wp-block-button .wp-block-button__link:hover,
-.has-skvn-button-hover .wp-block-button .wp-block-button__link:focus-visible {
-	color: var( --skvn-btn-hover-text, inherit );
-	background: var( --skvn-btn-hover-bg, inherit );
+.has-skvn-btn-hover-text .wp-block-button .wp-block-button__link:hover,
+.has-skvn-btn-hover-text .wp-block-button .wp-block-button__link:focus-visible {
+	color: var( --skvn-btn-hover-text );
+}
+
+.has-skvn-btn-hover-bg .wp-block-button .wp-block-button__link:hover,
+.has-skvn-btn-hover-bg .wp-block-button .wp-block-button__link:focus-visible {
+	background: var( --skvn-btn-hover-bg );
+}
+
+.has-skvn-button-hover .wp-block-button .wp-block-button__link {
 	transition: color 0.15s ease, background 0.15s ease;
 }
 

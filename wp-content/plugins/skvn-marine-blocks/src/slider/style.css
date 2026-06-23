@@ -629,14 +629,16 @@
 	width: 100%;
 }
 
+/* Default: all hero content flush-left to the same edge. Center/right are opt-in
+   via per-block alignment so heading, text and buttons never stagger. */
 .skvn-slider--hero .skvn-slide__content > * {
-	margin-inline: auto;
+	margin-inline: 0;
 	max-width: 48rem;
 	width: 100%;
 }
 
-.skvn-slider--hero .skvn-slide__content > :where(.has-text-align-left) {
-	margin-inline: 0;
+.skvn-slider--hero .skvn-slide__content > :where(.has-text-align-center) {
+	margin-inline: auto;
 }
 
 .skvn-slider--hero .skvn-slide__content > :where(.has-text-align-right) {
@@ -645,13 +647,13 @@
 }
 
 .skvn-slider--hero .skvn-slide__content > .wp-block-buttons {
-	margin-inline: auto;
+	margin-inline: 0;
 	max-width: 48rem;
 	width: fit-content;
 }
 
-.skvn-slider--hero .skvn-slide__content > .wp-block-buttons.is-content-justification-left {
-	margin-inline: 0;
+.skvn-slider--hero .skvn-slide__content > .wp-block-buttons.is-content-justification-center {
+	margin-inline: auto;
 }
 
 .skvn-slider--hero .skvn-slide__content > .wp-block-buttons.is-content-justification-right {
@@ -688,15 +690,23 @@
 .skvn-slider--hero .wp-block-button__link {
 	background: #fff;
 	border-radius: 999px;
-	color: #073b5a;
 	font-weight: 700;
 	padding: 0.85rem 1.35rem;
 }
 
 .skvn-slider--hero .wp-block-button__link:hover,
-.skvn-slider--hero .wp-block-button__link:focus {
+.skvn-slider--hero .wp-block-button__link:focus-visible {
 	background: #eaf7ff;
-	color: #073b5a;
+}
+
+.skvn-slider--hero .wp-block-button.has-skvn-btn-hover-bg .wp-block-button__link:hover,
+.skvn-slider--hero .wp-block-button.has-skvn-btn-hover-bg .wp-block-button__link:focus-visible {
+	background: var( --skvn-btn-hover-bg );
+}
+
+.skvn-slider--hero .wp-block-button.has-skvn-btn-hover-text .wp-block-button__link:hover,
+.skvn-slider--hero .wp-block-button.has-skvn-btn-hover-text .wp-block-button__link:focus-visible {
+	color: var( --skvn-btn-hover-text );
 }
 
 .skvn-slider--product-showcase .skvn-slide {

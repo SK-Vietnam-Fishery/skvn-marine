@@ -39,6 +39,11 @@ addFilter(
 
 /**
  * Add hover color Inspector panel to core/button edit when feature is enabled.
+ *
+ * Solid color and gradient are stored in SEPARATE attributes
+ * (skvnHoverBgColor / skvnHoverBgGradient). Sharing a single attribute breaks
+ * with PanelColorGradientSettings because the unused handler fires with
+ * undefined and clobbers the value the user just picked.
  */
 addFilter(
 	'editor.BlockEdit',
@@ -50,10 +55,11 @@ addFilter(
 			}
 
 			const { attributes, setAttributes } = props;
-			const { skvnHoverTextColor, skvnHoverBgColor } = attributes;
-
-			const bgIsGradient =
-				/^(?:linear|radial|conic)-gradient\(/i.test( skvnHoverBgColor );
+			const {
+				skvnHoverTextColor,
+				skvnHoverBgColor,
+				skvnHoverBgGradient,
+			} = attributes;
 
 			return (
 				<>
@@ -82,23 +88,24 @@ addFilter(
 										),
 									},
 									{
-										colorValue: bgIsGradient
-											? undefined
-											: skvnHoverBgColor || undefined,
-										gradientValue: bgIsGradient
-											? skvnHoverBgColor
-											: undefined,
+										colorValue:
+											skvnHoverBgColor || undefined,
+										gradientValue:
+											skvnHoverBgGradient || undefined,
 										onColorChange: (
 											value: string | undefined
 										) =>
 											setAttributes( {
-												skvnHoverBgColor: value ?? '',
+												skvnHoverBgColor: value || '',
+												skvnHoverBgGradient: '',
 											} ),
 										onGradientChange: (
 											value: string | undefined
 										) =>
 											setAttributes( {
-												skvnHoverBgColor: value ?? '',
+												skvnHoverBgGradient:
+													value || '',
+												skvnHoverBgColor: '',
 											} ),
 										label: __(
 											'Background',
@@ -117,7 +124,9 @@ addFilter(
 );
 
 /**
- * Inject hover CSS vars on the editor block wrapper for live preview.
+ * Inject hover CSS vars + marker classes on the editor block wrapper for live
+ * preview. Markers mirror the frontend render filter so a text-only button
+ * never has its background overridden, and vice versa.
  */
 addFilter(
 	'editor.BlockListBlock',
@@ -131,25 +140,37 @@ addFilter(
 				return <BlockListBlock { ...props } />;
 			}
 
-			const { skvnHoverTextColor, skvnHoverBgColor } = props.attributes;
+			const {
+				skvnHoverTextColor,
+				skvnHoverBgColor,
+				skvnHoverBgGradient,
+			} = props.attributes;
+			const hoverBg = skvnHoverBgGradient || skvnHoverBgColor;
 
-			if ( ! skvnHoverTextColor && ! skvnHoverBgColor ) {
+			if ( ! skvnHoverTextColor && ! hoverBg ) {
 				return <BlockListBlock { ...props } />;
 			}
 
 			const vars: Record< string, string > = {};
+			const markers: string[] = [ 'has-skvn-button-hover' ];
 
 			if ( skvnHoverTextColor ) {
 				vars[ '--skvn-btn-hover-text' ] = skvnHoverTextColor;
+				markers.push( 'has-skvn-btn-hover-text' );
 			}
-			if ( skvnHoverBgColor ) {
-				vars[ '--skvn-btn-hover-bg' ] = skvnHoverBgColor;
+			if ( hoverBg ) {
+				vars[ '--skvn-btn-hover-bg' ] = hoverBg;
+				markers.push( 'has-skvn-btn-hover-bg' );
 			}
 
 			const existingClass = props.wrapperProps?.className ?? '';
-			const className = existingClass.includes( 'has-skvn-button-hover' )
-				? existingClass
-				: `${ existingClass } has-skvn-button-hover`.trim();
+			const className = markers.reduce(
+				( cls: string, marker: string ) =>
+					cls.includes( marker )
+						? cls
+						: `${ cls } ${ marker }`.trim(),
+				existingClass
+			);
 
 			const wrapperProps = {
 				...( props.wrapperProps ?? {} ),

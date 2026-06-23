@@ -50,8 +50,11 @@ function initCollectionCarousel( container: CollectionCarouselElement ): void {
 	const canLoop    = slideCount > maxVisible;
 	const useAutoplay = config.autoplay && canLoop && ! prefersReducedMotion();
 
-	const arrowPrevEl    = container.querySelector< HTMLButtonElement >( '.skvn-collection__arrow--prev' );
-	const arrowNextEl    = container.querySelector< HTMLButtonElement >( '.skvn-collection__arrow--next' );
+	// Arrows live in the section header (outside carousel-outer), so walk up to
+	// the nearest .skvn-collection ancestor to find them.
+	const arrowScope  = container.closest< HTMLElement >( '.skvn-collection' ) ?? container;
+	const arrowPrevEl = arrowScope.querySelector< HTMLButtonElement >( '.skvn-collection__arrow--prev' );
+	const arrowNextEl = arrowScope.querySelector< HTMLButtonElement >( '.skvn-collection__arrow--next' );
 	const paginationEl   = container.querySelector< HTMLElement >( '.skvn-collection__pagination' );
 	const pauseBtn       = container.querySelector< HTMLButtonElement >( '.skvn-collection__pause-btn' );
 

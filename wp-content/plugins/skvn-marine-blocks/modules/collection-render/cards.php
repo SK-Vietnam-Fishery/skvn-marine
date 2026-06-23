@@ -144,29 +144,37 @@ function skvn_marine_blocks_render_collection_product_card( $product, $attribute
 					</div>
 				<?php endif; ?>
 			<?php endif; ?>
-			<?php if ( ! empty( $certs ) && is_array( $certs ) ) : ?>
-				<div class="skvn-collection-card__certs">
-					<?php foreach ( $certs as $cert ) : ?>
-						<span class="skvn-collection-card__cert-dot"><?php echo esc_html( $cert ); ?></span>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
-			<?php if ( '' !== $moq || '' !== $lead_time ) : ?>
-				<div class="skvn-collection-card__stats">
-					<?php if ( '' !== $moq ) : ?>
-						<div>
-							<span class="skvn-collection-card__stat-label"><?php esc_html_e( 'MOQ', 'skvn-marine-blocks' ); ?></span>
-							<span class="skvn-collection-card__stat-value"><?php echo esc_html( $moq ); ?></span>
-						</div>
-					<?php endif; ?>
-					<?php if ( '' !== $lead_time ) : ?>
-						<div>
-							<span class="skvn-collection-card__stat-label"><?php esc_html_e( 'Lead time', 'skvn-marine-blocks' ); ?></span>
-							<span class="skvn-collection-card__stat-value"><?php echo esc_html( $lead_time ); ?></span>
-						</div>
-					<?php endif; ?>
-				</div>
-			<?php endif; ?>
+			<?php // Catalog slot — owned by woo-catalog (1.5.0). Move this div + CSS to woo-catalog plugin when ready. See docs/decisions/woo-catalog-css-migration-1.5.0.md ?>
+			<div class="skvn-collection-card__catalog">
+				<?php if ( ! empty( $certs ) && is_array( $certs ) ) : ?>
+					<div class="skvn-collection-card__certs">
+						<?php foreach ( $certs as $cert ) : ?>
+							<span class="skvn-collection-card__cert-dot"><?php echo esc_html( $cert ); ?></span>
+						<?php endforeach; ?>
+					</div>
+				<?php endif; ?>
+				<?php if ( '' !== $moq || '' !== $lead_time ) : ?>
+					<div class="skvn-collection-card__stats">
+						<?php if ( '' !== $moq ) : ?>
+							<div>
+								<span class="skvn-collection-card__stat-label"><?php esc_html_e( 'MOQ', 'skvn-marine-blocks' ); ?></span>
+								<span class="skvn-collection-card__stat-value"><?php echo esc_html( $moq ); ?></span>
+							</div>
+						<?php endif; ?>
+						<?php if ( '' !== $lead_time ) : ?>
+							<div>
+								<span class="skvn-collection-card__stat-label"><?php esc_html_e( 'Lead time', 'skvn-marine-blocks' ); ?></span>
+								<span class="skvn-collection-card__stat-value"><?php echo esc_html( $lead_time ); ?></span>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<?php if ( '' !== $pdf_url ) : ?>
+					<a class="skvn-collection-card__pdf" href="<?php echo esc_url( $pdf_url ); ?>" target="_blank" rel="noopener noreferrer">
+						<?php esc_html_e( 'Download spec sheet (PDF)', 'skvn-marine-blocks' ); ?>
+					</a>
+				<?php endif; ?>
+			</div>
 			<?php if ( in_array( $action_mode, array( 'quote', 'both' ), true ) ) : ?>
 				<a class="skvn-collection-card__cta" href="<?php echo esc_url( skvn_marine_blocks_get_product_quote_url( $product ) ); ?>">
 					<?php esc_html_e( 'Request quote', 'skvn-marine-blocks' ); ?>
@@ -178,11 +186,6 @@ function skvn_marine_blocks_render_collection_product_card( $product, $attribute
 			<?php elseif ( 'custom' === $action_mode && '' !== $custom_url ) : ?>
 				<a class="skvn-collection-card__cta" href="<?php echo esc_url( skvn_marine_blocks_maybe_append_product_context( $custom_url, $product, $attributes ) ); ?>">
 					<?php esc_html_e( 'Learn more', 'skvn-marine-blocks' ); ?>
-				</a>
-			<?php endif; ?>
-			<?php if ( '' !== $pdf_url ) : ?>
-				<a class="skvn-collection-card__pdf" href="<?php echo esc_url( $pdf_url ); ?>" target="_blank" rel="noopener noreferrer">
-					<?php esc_html_e( 'Download spec sheet (PDF)', 'skvn-marine-blocks' ); ?>
 				</a>
 			<?php endif; ?>
 		</div>
@@ -283,7 +286,63 @@ function skvn_marine_blocks_render_collection_footer( $attributes, $context = 'g
 }
 
 /**
+ * Render the section header (eyebrow + heading + intro + optional nav arrows).
+ *
+ * In carousel mode the nav arrows are placed here (top-right) rather than
+ * floating on the sides of the track. JS finds them via
+ * closest('.skvn-collection') so they can live outside carousel-outer.
+ *
+ * @param array $attributes  Block attributes.
+ * @param bool  $is_carousel Whether to include nav arrows.
+ * @return string
+ */
+function skvn_marine_blocks_render_collection_header( array $attributes, bool $is_carousel = false ): string {
+	$eyebrow      = isset( $attributes['eyebrow'] ) ? sanitize_text_field( $attributes['eyebrow'] ) : '';
+	$show_heading = skvn_marine_blocks_collection_bool( $attributes, 'showHeading', true );
+	$heading      = isset( $attributes['heading'] ) ? sanitize_text_field( $attributes['heading'] ) : '';
+	$intro        = isset( $attributes['intro'] ) ? wp_kses_post( $attributes['intro'] ) : '';
+	$show_arrows  = $is_carousel && skvn_marine_blocks_collection_bool( $attributes, 'showArrows', true );
+
+	$has_text = ( '' !== $eyebrow ) || ( $show_heading && '' !== $heading ) || ( '' !== $intro );
+
+	if ( ! $has_text && ! $show_arrows ) {
+		return '';
+	}
+
+	ob_start();
+	?>
+	<div class="skvn-collection__header">
+		<?php if ( $has_text ) : ?>
+		<div class="skvn-collection__header-text">
+			<?php if ( '' !== $eyebrow ) : ?>
+				<p class="skvn-collection__eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+			<?php endif; ?>
+			<?php if ( $show_heading && '' !== $heading ) : ?>
+				<h2 class="skvn-collection__heading"><?php echo esc_html( $heading ); ?></h2>
+			<?php endif; ?>
+			<?php if ( '' !== $intro ) : ?>
+				<div class="skvn-collection__intro"><?php echo wp_kses_post( wpautop( $intro ) ); ?></div>
+			<?php endif; ?>
+		</div>
+		<?php endif; ?>
+		<?php if ( $show_arrows ) : ?>
+		<div class="skvn-collection__header-nav">
+			<button class="skvn-collection__arrow skvn-collection__arrow--prev" aria-label="<?php esc_attr_e( 'Previous', 'skvn-marine-blocks' ); ?>">&#8249;</button>
+			<button class="skvn-collection__arrow skvn-collection__arrow--next" aria-label="<?php esc_attr_e( 'Next', 'skvn-marine-blocks' ); ?>">&#8250;</button>
+		</div>
+		<?php endif; ?>
+	</div>
+	<?php
+
+	return (string) ob_get_clean();
+}
+
+/**
  * Render the carousel wrapper (swiper container + slides + controls).
+ *
+ * Arrows are NOT rendered here — they live in the section header produced by
+ * skvn_marine_blocks_render_collection_header(). JS locates them by walking
+ * up to the nearest .skvn-collection ancestor.
  *
  * @param array  $items       WP_Post[] or WC_Product[] array.
  * @param array  $attributes  Block attributes.
@@ -317,10 +376,6 @@ function skvn_marine_blocks_render_collection_carousel( $items, $attributes, $co
 	ob_start();
 	?>
 	<div class="skvn-collection__carousel-outer" data-skvn-collection-carousel="<?php echo esc_attr( (string) wp_json_encode( $config ) ); ?>">
-		<?php if ( $show_arrows ) : ?>
-			<button class="skvn-collection__arrow skvn-collection__arrow--prev" aria-label="<?php esc_attr_e( 'Previous', 'skvn-marine-blocks' ); ?>">&#8249;</button>
-			<button class="skvn-collection__arrow skvn-collection__arrow--next" aria-label="<?php esc_attr_e( 'Next', 'skvn-marine-blocks' ); ?>">&#8250;</button>
-		<?php endif; ?>
 		<div class="skvn-collection__carousel swiper">
 			<div class="swiper-wrapper">
 				<?php foreach ( $items as $item ) : ?>

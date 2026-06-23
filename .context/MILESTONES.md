@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.6 — Block Editor UX & Single Post Fix**
+Current: **V1 / 1.3.7 — Collection Block UI & Card Styles**
 Status: **IN PROGRESS**
-Started: **2026-06-17**
+Started: **2026-06-23**
 
 AGENTS.md current milestone phải match file này.
 
@@ -298,57 +298,6 @@ Acceptance draft:
 - [ ] Desktop + Mobile QA pass cho cả 3 page types
 - [ ] Human approves milestone completion
 
-### 1.3.6 — Block Editor UX & Single Post Fix
-
-Status: **IN PROGRESS**
-Started: **2026-06-17**
-
-Purpose:
-
-- Nâng cấp Inspector panel UX cho tất cả SKVN blocks (Content/Style/Layout/Advanced).
-- Fix single post hero width, heading font, và thumbnail aspect-ratio (1.3.5 visual debt).
-- ThumbPress-compatible: dùng CSS `aspect-ratio` + `object-fit: cover`, không `add_image_size()`.
-- ~~Slider Parallax~~ — deferred → **1.3.8** (decision locked 2026-06-22).
-
-Planning:
-
-- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md`
-
-Acceptance draft:
-
-**Trục C — Single Post Fix:**
-- [x] Hero `.skvn-post-hero` render full-width trong GP content area
-- [x] Heading trong hero dùng `font-family: var(--skvn-font-heading)`
-- [x] Thumbnail hero dùng `aspect-ratio: 16/9` + `object-fit: cover`
-- [x] Card thumbnail (archive, related) dùng `aspect-ratio: 3/2` + `object-fit: cover`
-- [x] Không có `add_image_size()` mới — ThumbPress-compatible
-- [x] Hero content inset + spacing đồng bộ với article (`--skvn-single-gap`, `--skvn-single-inset-inline`) — human verified 2026-06-19
-
-**Trục A — Editor UX:**
-- [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
-- [ ] Slider và Accordion có empty state placeholder với action button
-- [ ] Collection skeleton grid match responsive preset khi editor đang load
-- [ ] Block icons và descriptions không còn blank trong inserter
-- [ ] Inspector panel refactor không invalidate content hiện có
-
-**Slider bottom-center flank controls (Trục D — planning 031 v2.0, chưa implement):**
-- Planning: `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
-- Onsite: `docs/testing/onsite-slider-flank-controls-1.3.6.md`
-- Umbrella: `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` §4.6
-- [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)
-- [ ] `pill` + cluster giữ order mặc định `arrows | pagination`
-- [ ] `bottom-left` / `bottom-right` / `side-center` không regression
-- [ ] Editor preview khớp frontend flank layout
-- [ ] `tests/slider-block.test.mjs` flank regression pass
-- [ ] Human onsite PASS per flank test doc
-- [ ] Mobile timed pagination width — tune deferred tới 1.3.9 QA
-
-**Chung:**
-- [ ] Plugin build pass, PHP lint pass
-- [ ] Human approves milestone completion
-
----
-
 ### 1.3.8 — Slider Parallax
 
 Status: **PENDING**
@@ -569,7 +518,7 @@ Acceptance draft:
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
 - [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
 
-**Collections (1.3.3) Deferred QA:**
+**Collections (1.3.3 + 1.3.7 polish + button hover) Deferred QA:**
 - [ ] Product Grid renders correctly onsite with WooCommerce products (real data)
 - [ ] Post Grid renders correctly onsite with real posts
 - [ ] Product Carousel renders and Swiper initializes without errors
@@ -579,6 +528,8 @@ Acceptance draft:
 - [ ] Post card read action links to the correct post URL
 - [ ] Image fallback (product placeholder / SKVN fallback) works when no image is set
 - [ ] WooCommerce inactive state shows graceful fallback, no fatal
+- [ ] New collection CTAs (cta, catalog-cta, read-more, archive, pdf) hovers match 028 spec + reduced-motion works (see onsite-button-hover-1.3.7.md).
+- [ ] Buttons inside Slider (with/without Core Button Hover feature) exhibit correct hover (custom colors when set; base --contrast or preset otherwise). DevTools specificity audit passed per contract. See dedicated test doc.
 
 **General:**
 - [ ] Human verifies idle and repeated-interaction memory use settles without continuous growth
@@ -588,9 +539,10 @@ Acceptance draft:
 - [ ] Human approves closing Slider & Collections comprehensive QA
 ### 1.3.7 — Collection Block UI & Card Styles
 
-Status: **BRAINSTORM / PLANNING IN PROGRESS**
+Status: **IN PROGRESS**
+Started: **2026-06-23**
 
-> ⚠️ Planning chưa hoàn tất. Milestone này cần một session brainstorm riêng trước khi bắt đầu implementation.
+Human confirmed (Option A + added scope 2026-06-22): Dedicated 1.3.7 slot for collection UI/card styles polish + "hover button" work (fix stuck case of buttons inside Slider not receiving hover like Gutenberg `a:hover { color: var(--contrast); }` mechanism, plus polish hovers on new collection CTAs). See `docs/testing/onsite-button-hover-1.3.7.md` for DevTools verification steps. Planning source 028 finalized; button hover compatibility pulled from 1.3.8 plans per user request. Human moved current milestone to 1.3.7 on 2026-06-23.
 
 Purpose:
 
@@ -599,6 +551,7 @@ Purpose:
 - Thêm các block attribute mới để kiểm soát heading, spacing, archive CTA.
 - Triển khai card style variants dựa trên design artifact `.local/Seafood Export Carousels Tailwind.html`.
 - **Không bao gồm** các feature yêu cầu data model chưa tồn tại (MOQ, Lead Time, certifications) — đó là scope 1.5.0.
+- Resolve "hover button" for action elements: ensure new collection CTAs (quote, catalog, read-more...) have proper hovers per 028 spec + reduced-motion; make buttons/links inside Slider respect base Gutenberg hover (`a:hover, a:focus, a:active { color: var(--contrast); }`) or Core Button Hover feature when configured (without being overridden by hero preset hard-codes). DevTools tests per contract (specificity, class/vars, computed styles on :hover).
 
 Planning:
 
@@ -623,6 +576,8 @@ Phase 1 scope (data có sẵn — làm được ngay):
 - Card styles: ít nhất 1 style variant từ design artifact (product card + post card)
 - Category badge overlay trên ảnh (thay vì bên dưới title như hiện tại)
 - 4-column preset: thêm option `4-2-1` vào SelectControl editor và CSS
+- Hover polish for new CTAs (catalog-cta, cta, read-more, archive, pdf per 028 CSS) + reduced-motion guard.
+- Slider button hover compatibility (buttons inside slides use custom hover from Core feature or base --contrast when expected; hero hard-codes use var fallback).
 
 Các feature CHƯA planning xong (cần brainstorm tiếp):
 
@@ -636,6 +591,18 @@ Constraints:
 - Không implement MOQ, Lead Time, certifications, spec sheet PDF — scope 1.5.0.
 - Card styles phải work với dữ liệu WooCommerce/WP có sẵn, không cần custom meta.
 - Plugin-owned CSS; không phụ thuộc vào theme class.
+- Hover work must follow gutenberg-block-extension-css-contract.md (specificity check in DevTools first, editor.BlockListBlock for preview, scoped class+vars, behavior test not source grep, reduced-motion for all hovers). Slider case limited to making preset hovers respect feature vars (no change to core-control itself).
+
+Acceptance draft (add to 1.3.7):
+
+- [ ] New collection CTAs hovers implemented per 028 §4 (bg/underline changes, transitions); reduced-motion guard present and works (no trans on reduce); :focus-visible visible.
+- [ ] Buttons (core/button with feature) placed inside SKVN Slider slides (hero/product/card presets) receive configured custom hover colors on :hover/:focus-visible (feature rule applies, no strikethrough in DevTools; computed colors match vars). Falls back to preset when no custom hover or feature off.
+- [ ] Base Gutenberg hover mechanism (`a:hover, a:focus, a:active { color: var(--contrast); }` or equivalent) is not broken for regular links/buttons inside slider vs outside.
+- [ ] Specificity audit passed per contract: relevant hover rule (feature or collection) ≥ strongest theme/slider rule for the element.
+- [ ] Editor preview hover works (BlockListBlock wrapper + vars visible in iframe DevTools).
+- [ ] Onsite + DevTools evidence per `docs/testing/onsite-button-hover-1.3.7.md` (including live site repro, console notes, screenshots of Styles/Computed on forced hover, class/vars presence).
+- [ ] No regression on existing button visuals or collection card hovers.
+- [ ] Plugin build + PHP lint pass.
 
 ---
 
