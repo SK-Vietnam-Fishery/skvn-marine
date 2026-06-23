@@ -491,6 +491,111 @@ a.skvn-collection-card__badge:hover {
 	text-decoration: underline;
 }
 
+/* ── Editor preview layout ───────────────────────────────────────────────── */
+
+.skvn-collection--editor-preview .skvn-collection__editor-body {
+	display: grid;
+	gap: 1.5rem;
+	grid-template-columns: 260px 1fr;
+	margin-top: 1rem;
+}
+
+.skvn-collection-card__image--placeholder {
+	aspect-ratio: 1 / 1;
+	background-color: #edf4f7;
+	background-image: repeating-linear-gradient(
+		45deg,
+		#d0e0ea 0,
+		#d0e0ea 1px,
+		transparent 0,
+		transparent 50%
+	);
+	background-size: 10px 10px;
+	display: block;
+	width: 100%;
+}
+
+.skvn-collection-card__catalog--placeholder {
+	border: 1px dashed #c6d9e2;
+	border-radius: 4px;
+	color: #99bfcc;
+	font-size: 0.75rem;
+	padding: 0.4rem 0.6rem;
+	text-align: center;
+}
+
+.skvn-collection__editor-info {
+	font-size: 0.85rem;
+}
+
+.skvn-collection__editor-info-heading {
+	color: #25404d;
+	font-weight: 600;
+	margin: 0 0 0.4rem;
+}
+
+.skvn-collection__editor-info-heading--products {
+	margin-top: 1rem;
+}
+
+.skvn-collection__editor-info-subheading {
+	color: #99bfcc;
+	font-size: 0.75rem;
+	margin: 0.5rem 0 0.3rem;
+}
+
+.skvn-collection__editor-field-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.skvn-collection__editor-field {
+	align-items: center;
+	color: #7b9aaa;
+	display: flex;
+	gap: 0.4rem;
+	line-height: 1.7;
+}
+
+.skvn-collection__editor-field.is-active {
+	color: #25404d;
+}
+
+.skvn-collection__editor-field-icon {
+	color: #c6d9e2;
+	font-size: 0.7rem;
+	width: 1em;
+}
+
+.skvn-collection__editor-field.is-active .skvn-collection__editor-field-icon {
+	color: #0D9488;
+}
+
+.skvn-collection__editor-field-list--deferred .skvn-collection__editor-field {
+	color: #c6d9e2;
+}
+
+.skvn-collection__editor-product-list {
+	color: #4b6470;
+	font-size: 0.85rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.skvn-collection__editor-product-status {
+	color: #99bfcc;
+	font-size: 0.82rem;
+	margin: 0;
+}
+
+.skvn-collection__editor-product-note {
+	color: #99bfcc;
+	font-size: 0.75rem;
+	margin: 0.2rem 0 0;
+}
+
 /* ── Post card — new classes ─────────────────────────────────────────────── */
 
 .skvn-collection-card__date,

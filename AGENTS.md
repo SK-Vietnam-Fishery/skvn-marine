@@ -446,8 +446,9 @@ if (!prefersReduced) { /* run animation */ }
 ### Footer Page Settings
 
 - 0.9.0 scope: plugin settings page stores `skvn_footer_page_id`; theme renders the selected footer page through GeneratePress' `generate_footer` surface.
-- Implement 0.9.0 footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin; do not create or rename to a `gutenberg-supercharger` or `gutenberg-turbo` plugin in V1.
-- The future umbrella plugin concept `Gutenberg Supercharger` is documented as a possible V4 / 4.0.0 direction and standard/core product name, not current scope. `Gutenberg Supercharger Stage 2` is the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
+- Implement 0.9.0 footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin until the **post-1.5.x product launch**.
+- **Human locked (2026-06-23):** first public plugin launch = **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace) **after V1 / 1.5.x** stabilizes — not at 1.3.11. Until launch, keep dev slug `skvn-marine-blocks` and block namespace `skvn-marine/*` for all production sites. See `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
+- `Gutenberg Supercharger Stage 2` remains the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
 - Footer settings may use a module-shaped folder such as `modules/footer-settings/` or `includes/modules/footer-settings/` inside `wp-content/plugins/skvn-marine-blocks/`.
 - Keep current plugin slug, text domain, and option key: `skvn-marine-blocks`, `skvn-marine-blocks`, and `skvn_footer_page_id`.
 - Do not rename namespaces, option keys, plugin headers, build entrypoints, or activation path for 0.9.0.
@@ -569,6 +570,9 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.3 | Dynamic Product And Post Collections |
 | 1.3.4 | Core Control Foundation & Core Button Hover |
 | 1.3.5 | Post, Product & Archive Page Improvements |
+| 1.3.7 | Collection Block UI & Card Styles |
+| 1.3.11 | Comprehensive Onsite QA (Slider, Collections & Controls) |
+| Post 1.5.x | GU Supercharger 0.0.1 Product Launch |
 | 1.3.9 | Slider Dynamic Rendering & Controls Onsite QA |
 | 1.3.10 | SKVN Team Credits Easter Egg |
 | 1.4.0 | SKVN Theme Init Setup UI |

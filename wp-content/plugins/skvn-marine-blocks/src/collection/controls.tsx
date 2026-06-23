@@ -393,22 +393,24 @@ export function CollectionEdit( {
 				tagName="p"
 				value={ attributes.intro }
 			/>
-			<div className="skvn-collection__notice">
-				{ contentType === 'post'
-					? __(
-							'Live post grid renders on the frontend.',
-							'skvn-marine-blocks'
-					  )
-					: __(
-							'Product collection is guarded for WooCommerce availability.',
-							'skvn-marine-blocks'
-					  ) }
+			<div className="skvn-collection__editor-body">
+				<PlaceholderCard
+					attributes={ attributes }
+					contentType={ contentType }
+				/>
+				<EditorInfoPanel
+					attributes={ attributes }
+					contentType={ contentType }
+					categoryTerms={ categoryTerms }
+					tagTerms={ tagTerms }
+				/>
 			</div>
 		</section>
 	);
 }
 
 type TermRecord = {
+	id: number;
 	name: string;
 	slug: string;
 };
@@ -455,6 +457,229 @@ function normalizeSelectedTerms(
 
 function sanitizeClassPart( value: string ) {
 	return value.replace( /[^a-z0-9-]/gi, '-' ).toLowerCase();
+}
+
+// ── Editor preview components ────────────────────────────────────────────────
+
+type PostRecord = {
+	id: number;
+	title: { rendered: string };
+};
+
+function useProductPreview(
+	attributes: CollectionAttributes,
+	categoryTerms: TermRecord[],
+	tagTerms: TermRecord[]
+): PostRecord[] | null {
+	const catIds = ( attributes.categories || [] )
+		.map( ( slug ) => categoryTerms.find( ( t ) => t.slug === slug )?.id )
+		.filter( ( id ): id is number => id !== undefined );
+	const tagIds = ( attributes.tags || [] )
+		.map( ( slug ) => tagTerms.find( ( t ) => t.slug === slug )?.id )
+		.filter( ( id ): id is number => id !== undefined );
+
+	const orderMap: Record< string, { orderby: string; order: string } > = {
+		newest:           { orderby: 'date',       order: 'desc' },
+		featured:         { orderby: 'menu_order', order: 'asc' },
+		manual:           { orderby: 'menu_order', order: 'asc' },
+		'shuffle-balanced': { orderby: 'rand',     order: 'desc' },
+	};
+	const { orderby, order } =
+		orderMap[ attributes.orderMode || 'newest' ] ||
+		{ orderby: 'date', order: 'desc' };
+
+	const queryParams: Record< string, unknown > = {
+		per_page: Math.min( attributes.itemsToShow || 3, 5 ),
+		status:   'publish',
+		orderby,
+		order,
+	};
+	if ( catIds.length > 0 ) queryParams.product_cat = catIds.join( ',' );
+	if ( tagIds.length > 0 ) queryParams.product_tag = tagIds.join( ',' );
+
+	const queryKey = JSON.stringify( queryParams );
+
+	return useSelect(
+		( select ) =>
+			( select( 'core' ).getEntityRecords(
+				'postType',
+				'product',
+				queryParams
+			) as PostRecord[] | null ),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ queryKey ]
+	);
+}
+
+const DUMMY_SPECS = [ 'CO-treated', 'Loin', 'Vacuum Pack' ];
+
+function PlaceholderCard( {
+	attributes,
+	contentType,
+}: {
+	attributes: CollectionAttributes;
+	contentType: 'post' | 'product';
+} ) {
+	const chipClass = attributes.chipStyle
+		? `skvn-collection-card--chip-${ attributes.chipStyle }`
+		: '';
+	const chipColorClass = attributes.chipColorScheme
+		? `skvn-chips--${ attributes.chipColorScheme }`
+		: '';
+	const cardClass = [ 'skvn-collection-card', chipClass, chipColorClass ]
+		.filter( Boolean )
+		.join( ' ' );
+
+	const showTags  = attributes.showProductTags !== false && contentType === 'product';
+	const showSpecs = attributes.showSpecChips !== false && contentType === 'product';
+	const actionMode = attributes.productActionMode || 'quote';
+	const ctaText =
+		actionMode === 'quote' ? __( 'Yêu cầu báo giá', 'skvn-marine-blocks' ) :
+		actionMode === 'none'  ? null :
+		__( 'Xem chi tiết', 'skvn-marine-blocks' );
+
+	return (
+		<div className={ cardClass }>
+			<div className="skvn-collection-card__media">
+				{ showTags && (
+					<div className="skvn-collection-card__badges">
+						<span className="skvn-collection-card__badge">WILD CAUGHT</span>
+					</div>
+				) }
+				<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" />
+			</div>
+			<div className="skvn-collection-card__body">
+				<h3 className="skvn-collection-card__title">
+					Yellowfin Tuna Loin – Wild Caught
+				</h3>
+				{ showSpecs && (
+					<div className="skvn-collection-card__specs">
+						{ DUMMY_SPECS.map( ( s ) => (
+							<span key={ s } className="skvn-collection-card__spec-tag">
+								{ s }
+							</span>
+						) ) }
+					</div>
+				) }
+				<div className="skvn-collection-card__catalog skvn-collection-card__catalog--placeholder">
+					<span className="skvn-collection-card__catalog-label">
+						Catalog data — woo-catalog 1.5.0
+					</span>
+				</div>
+				{ ctaText && (
+					<span className="skvn-collection-card__cta">{ ctaText }</span>
+				) }
+			</div>
+		</div>
+	);
+}
+
+function EditorInfoPanel( {
+	attributes,
+	contentType,
+	categoryTerms,
+	tagTerms,
+}: {
+	attributes: CollectionAttributes;
+	contentType: 'post' | 'product';
+	categoryTerms: TermRecord[];
+	tagTerms: TermRecord[];
+} ) {
+	const products = useProductPreview( attributes, categoryTerms, tagTerms );
+	const isProduct = contentType === 'product';
+
+	const fields = [
+		{ label: __( 'Hình ảnh', 'skvn-marine-blocks' ),       active: attributes.showImage !== false },
+		...( isProduct
+			? [
+				{ label: __( 'Spec chips', 'skvn-marine-blocks' ),  active: attributes.showSpecChips !== false },
+				{ label: __( 'Tags badge', 'skvn-marine-blocks' ),  active: attributes.showProductTags !== false },
+			  ]
+			: [
+				{ label: __( 'Excerpt', 'skvn-marine-blocks' ),     active: attributes.showExcerpt !== false },
+				{ label: __( 'Date', 'skvn-marine-blocks' ),        active: attributes.showDate !== false },
+			  ]
+		),
+		{ label: `CTA: ${ actionModeLabel( attributes.productActionMode || 'quote' ) }`, active: ( attributes.productActionMode || 'quote' ) !== 'none' },
+		{ label: __( 'Equal height', 'skvn-marine-blocks' ),    active: attributes.equalHeight !== false },
+	];
+
+	const catalogFields = [
+		__( 'Chứng nhận', 'skvn-marine-blocks' ),
+		__( 'MOQ / Lead time', 'skvn-marine-blocks' ),
+		__( 'PDF link', 'skvn-marine-blocks' ),
+	];
+
+	return (
+		<div className="skvn-collection__editor-info">
+			<p className="skvn-collection__editor-info-heading">
+				{ __( 'Dữ liệu được chọn:', 'skvn-marine-blocks' ) }
+			</p>
+			<ul className="skvn-collection__editor-field-list">
+				{ fields.map( ( f ) => (
+					<li
+						key={ f.label }
+						className={ `skvn-collection__editor-field${ f.active ? ' is-active' : '' }` }
+					>
+						<span className="skvn-collection__editor-field-icon">
+							{ f.active ? '✓' : '✗' }
+						</span>
+						{ f.label }
+					</li>
+				) ) }
+			</ul>
+			{ isProduct && (
+				<>
+					<p className="skvn-collection__editor-info-subheading">
+						— woo-catalog 1.5.0 —
+					</p>
+					<ul className="skvn-collection__editor-field-list skvn-collection__editor-field-list--deferred">
+						{ catalogFields.map( ( f ) => (
+							<li key={ f } className="skvn-collection__editor-field">
+								<span className="skvn-collection__editor-field-icon">·</span>
+								{ f }
+							</li>
+						) ) }
+					</ul>
+				</>
+			) }
+			<p className="skvn-collection__editor-info-heading skvn-collection__editor-info-heading--products">
+				{ __( 'Sản phẩm sẽ xuất hiện:', 'skvn-marine-blocks' ) }
+			</p>
+			{ products === null ? (
+				<p className="skvn-collection__editor-product-status">
+					{ __( 'Đang tải...', 'skvn-marine-blocks' ) }
+				</p>
+			) : products.length === 0 ? (
+				<p className="skvn-collection__editor-product-status">
+					{ __( 'Chưa có sản phẩm khớp.', 'skvn-marine-blocks' ) }
+				</p>
+			) : (
+				<>
+					<ol className="skvn-collection__editor-product-list">
+						{ products.map( ( p ) => (
+							<li key={ p.id }>{ p.title.rendered }</li>
+						) ) }
+					</ol>
+					<p className="skvn-collection__editor-product-note">
+						{ __( '* Danh sách ước tính', 'skvn-marine-blocks' ) }
+					</p>
+				</>
+			) }
+		</div>
+	);
+}
+
+function actionModeLabel( mode: string ): string {
+	const map: Record< string, string > = {
+		quote:  'Báo giá',
+		view:   'Xem chi tiết',
+		both:   'Báo giá + Xem',
+		custom: 'Custom',
+		none:   'Ẩn',
+		read:   'Đọc thêm',
+	};
+	return map[ mode ] || mode;
 }
 
 function PostCardControls( {

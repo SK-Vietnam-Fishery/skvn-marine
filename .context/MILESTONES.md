@@ -316,7 +316,7 @@ Decision:
 
 Dependencies:
 
-- V1 / 1.3.6 editor UX and single post fixes completed.
+- V1 / 1.3.6 Trục C (single post fix) completed; Trục A → **1.3.7** impl; Trục D onsite QA → **1.3.11**.
 - V1 / 1.3.1 controls and dynamic rendering foundation stable.
 
 Acceptance draft:
@@ -471,23 +471,28 @@ Acceptance draft:
 - [ ] Plugin build, PHP syntax checks, deploy artifact audit, and onsite QA pass
 - [ ] Human approves milestone completion
 
-### 1.3.11 — Slider Dynamic Rendering, Controls & Parallax Onsite QA
+### 1.3.11 — Comprehensive Onsite QA (Slider, Collections & Controls)
 
 Status: **PENDING**
 
 Purpose:
 
-- Consolidated QA for Slider family: Hero, Product Showcase, Card Carousel, Parallax effect, Step Slider.
+- Consolidated **onsite QA** for Slider family: Hero, Product Showcase, Card Carousel, Parallax effect, Step Slider.
 - Test V1 / 1.3.0 dynamic rendering + 1.3.1 controls + 1.3.8 parallax + 1.3.10 step slider on live site.
 - Verify Accordion, Card motion, and B2B Feature Showcase checks that were deferred from earlier milestones.
-- Verify 1.3.3 dynamic collections (Product/Post Grid + Carousel) from onsite.
+- Verify 1.3.3 dynamic collections + **1.3.7** collection polish and button-hover work onsite.
+- Verify **1.3.6** carry-in: slider bottom-center flank controls (source shipped).
 - Run comprehensive memory, accessibility, responsive, and reduced-motion validation.
+
+Product launch **deferred** → post **V1 / 1.5.x** as **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace). Decision: `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
 
 Testing:
 
 - `docs/testing/onsite-slider-motion-1.3.2.md`
 - `docs/testing/onsite-feature-showcase-1.2.3.md`
 - `docs/testing/onsite-dynamic-collections-1.3.3.md`
+- `docs/testing/onsite-button-hover-1.3.7.md`
+- `docs/testing/onsite-slider-flank-controls-1.3.6.md`
 
 Acceptance draft:
 
@@ -518,7 +523,23 @@ Acceptance draft:
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
 - [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
 
-**Collections (1.3.3 + 1.3.7 polish + button hover) Deferred QA:**
+**Slider bottom-center flank controls (carry-in 1.3.6 Trục D — source shipped):**
+- [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)
+- [ ] `pill` + cluster giữ order mặc định `arrows | pagination`
+- [ ] `bottom-left` / `bottom-right` / `side-center` không regression
+- [ ] Editor preview khớp frontend flank layout
+- [ ] Human onsite PASS per `docs/testing/onsite-slider-flank-controls-1.3.6.md`
+- [ ] Mobile timed pagination width — tune deferred (evidence in QA notes)
+
+**Button hover & collection CTAs (carry-in 1.3.7 — onsite QA):**
+- [ ] Buttons (core/button with feature) inside SKVN Slider slides receive configured custom hover on :hover/:focus-visible onsite (no strikethrough in DevTools; computed colors match vars); falls back to preset when no custom hover or feature off
+- [ ] Base Gutenberg hover (`a:hover, a:focus, a:active { color: var(--contrast); }` or equivalent) không bị break cho links/buttons trong slider vs ngoài slider
+- [ ] Specificity audit passed per contract onsite: hover rule (feature or collection) ≥ strongest theme/slider rule
+- [ ] Onsite + DevTools evidence per `docs/testing/onsite-button-hover-1.3.7.md`
+- [ ] New collection CTAs hovers match 028 spec onsite (bg/underline, reduced-motion, :focus-visible)
+- [ ] No regression on existing button visuals, slider layouts, or collection card hovers
+
+**Collections (1.3.3 + 1.3.7 polish) onsite QA:**
 - [ ] Product Grid renders correctly onsite with WooCommerce products (real data)
 - [ ] Post Grid renders correctly onsite with real posts
 - [ ] Product Carousel renders and Swiper initializes without errors
@@ -528,8 +549,6 @@ Acceptance draft:
 - [ ] Post card read action links to the correct post URL
 - [ ] Image fallback (product placeholder / SKVN fallback) works when no image is set
 - [ ] WooCommerce inactive state shows graceful fallback, no fatal
-- [ ] New collection CTAs (cta, catalog-cta, read-more, archive, pdf) hovers match 028 spec + reduced-motion works (see onsite-button-hover-1.3.7.md).
-- [ ] Buttons inside Slider (with/without Core Button Hover feature) exhibit correct hover (custom colors when set; base --contrast or preset otherwise). DevTools specificity audit passed per contract. See dedicated test doc.
 
 **General:**
 - [ ] Human verifies idle and repeated-interaction memory use settles without continuous growth
@@ -537,12 +556,15 @@ Acceptance draft:
 - [ ] Any source defects are fixed and re-tested
 - [ ] Browser console is clean across all tested surfaces
 - [ ] Human approves closing Slider & Collections comprehensive QA
+
 ### 1.3.7 — Collection Block UI & Card Styles
 
 Status: **IN PROGRESS**
 Started: **2026-06-23**
 
 Human confirmed (Option A + added scope 2026-06-22): Dedicated 1.3.7 slot for collection UI/card styles polish + "hover button" work (fix stuck case of buttons inside Slider not receiving hover like Gutenberg `a:hover { color: var(--contrast); }` mechanism, plus polish hovers on new collection CTAs). See `docs/testing/onsite-button-hover-1.3.7.md` for DevTools verification steps. Planning source 028 finalized; button hover compatibility pulled from 1.3.8 plans per user request. Human moved current milestone to 1.3.7 on 2026-06-23.
+
+Human routing (2026-06-23): Implementation + build gate thuộc **1.3.7**; onsite/human/DevTools QA thuộc **1.3.11**.
 
 Purpose:
 
@@ -556,6 +578,10 @@ Purpose:
 Planning:
 
 - `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md`
+- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` (Trục A — carry-in)
+- `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (Trục D — carry-in, source shipped)
+
+Onsite QA: deferred to **1.3.11** (`onsite-button-hover-1.3.7.md`, `onsite-dynamic-collections-1.3.3.md`, `onsite-slider-flank-controls-1.3.6.md`).
 
 Design artifact:
 
@@ -593,16 +619,35 @@ Constraints:
 - Plugin-owned CSS; không phụ thuộc vào theme class.
 - Hover work must follow gutenberg-block-extension-css-contract.md (specificity check in DevTools first, editor.BlockListBlock for preview, scoped class+vars, behavior test not source grep, reduced-motion for all hovers). Slider case limited to making preset hovers respect feature vars (no change to core-control itself).
 
-Acceptance draft (add to 1.3.7):
+Acceptance draft:
 
-- [ ] New collection CTAs hovers implemented per 028 §4 (bg/underline changes, transitions); reduced-motion guard present and works (no trans on reduce); :focus-visible visible.
-- [ ] Buttons (core/button with feature) placed inside SKVN Slider slides (hero/product/card presets) receive configured custom hover colors on :hover/:focus-visible (feature rule applies, no strikethrough in DevTools; computed colors match vars). Falls back to preset when no custom hover or feature off.
-- [ ] Base Gutenberg hover mechanism (`a:hover, a:focus, a:active { color: var(--contrast); }` or equivalent) is not broken for regular links/buttons inside slider vs outside.
-- [ ] Specificity audit passed per contract: relevant hover rule (feature or collection) ≥ strongest theme/slider rule for the element.
-- [ ] Editor preview hover works (BlockListBlock wrapper + vars visible in iframe DevTools).
-- [ ] Onsite + DevTools evidence per `docs/testing/onsite-button-hover-1.3.7.md` (including live site repro, console notes, screenshots of Styles/Computed on forced hover, class/vars presence).
-- [ ] No regression on existing button visuals or collection card hovers.
-- [ ] Plugin build + PHP lint pass.
+**Carry-in 1.3.6 — Editor UX (Trục A):**
+- [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
+- [ ] Slider và Accordion có empty state placeholder với action button
+- [ ] Collection skeleton grid match responsive preset khi editor đang load
+- [ ] Block icons và descriptions không còn blank trong inserter
+- [ ] Inspector panel refactor không invalidate content hiện có
+
+**Collection UI & card styles (1.3.7 Phase 1):**
+- [ ] `imageRatio` tạo class `skvn-collection--ratio-*` và áp dụng đúng trên frontend + editor
+- [ ] Carousel nav arrows nằm section header (không bị clip bởi Swiper overflow)
+- [ ] Spacing margin-top/bottom + heading → grid/carousel gap hoạt động
+- [ ] `showHeading`, `eyebrow`, `intro` render và style đúng
+- [ ] Archive CTA (`archiveUrl` + `archiveLabel`) render đúng section footer
+- [ ] Catalog CTA toggle + URL + label hoạt động (product + post collection)
+- [ ] Card style variant (product + post) khớp design artifact baseline
+- [ ] Category badge overlay trên ảnh
+- [ ] Preset `4-2-1` có trong editor SelectControl và CSS responsive
+
+**Button hover & collection CTAs (implementation):**
+- [ ] New collection CTAs hovers implemented per 028 §4 (bg/underline changes, transitions); reduced-motion guard in CSS; :focus-visible styles present
+- [ ] Core Button Hover + slider preset CSS shipped: custom hover vars apply when feature on; preset fallbacks when off
+- [ ] Editor preview hover works (BlockListBlock wrapper + vars visible in editor iframe DevTools)
+
+**Chung:**
+- [ ] `tests/slider-block.test.mjs` flank regression pass (automated guard for 1.3.6 Trục D source)
+- [ ] Plugin build + PHP lint pass
+- [ ] Human approves milestone completion (implementation scope; onsite QA closes in 1.3.11)
 
 ---
 
@@ -797,6 +842,50 @@ Acceptance draft (sơ bộ, cần hoàn thiện):
 - [ ] Collection product card hiển thị đủ certifications, MOQ, Lead Time, spec sheet link
 - [ ] Human approves data model schema và field formats trước khi code
 - [ ] Human approves milestone completion
+
+---
+
+### Post 1.5.x — GU Supercharger 0.0.1 Product Launch
+
+Status: **PENDING**
+
+Human decision (2026-06-23): Launch product plugin **sau khi V1 / 1.5.x ổn định** (woo-catalog + blocks integration + confidence trên nhiều site production). Không launch tại 1.3.11.
+
+Decision + name research: `docs/decisions/gu-supercharger-launch-post-1.5x.md`
+
+Identity (locked):
+
+```text
+Display name:    Gutenberg Supercharger (marketing / admin)
+Plugin slug:     gu-supercharger
+Text domain:     gu-supercharger
+Block namespace: gu-supercharger/*
+Product version: 0.0.1
+```
+
+Name research summary (2026-06-23):
+
+- wp.org slug `gu-supercharger` — **available** (0 plugins)
+- wp.org slug `supercharger` — **taken** (Supercharger AI — khác product; tránh slug trùng)
+- Block namespace `gu-supercharger` — no public conflict found; migration từ `skvn-marine/*` bắt buộc
+
+Dependencies:
+
+- V1 / 1.5.x milestones DONE (woo-catalog + `skvn-marine-blocks` optional-read + onsite)
+- 1.3.11 comprehensive QA DONE (hoặc defects từ QA đã fix trước launch)
+- Multi-site migration tool + pilot evidence
+
+Acceptance draft:
+
+- [ ] Human approves launch identity: **GU Supercharger** / **Gutenberg Supercharger** `0.0.1`
+- [ ] wp.org slug `gu-supercharger` reserved or submitted (nếu distribute qua directory)
+- [ ] Plugin folder/zip `gu-supercharger`; block namespace `gu-supercharger/*` registered
+- [ ] Migration tool converts saved `skvn-marine/*` blocks → `gu-supercharger/*` (pilot site PASS)
+- [ ] Option keys: map hoặc shim documented; không mất footer/core-control settings sau migrate
+- [ ] Release metadata `0.0.1` + deploy artifact audit pass
+- [ ] Runbook: deactivate `skvn-marine-blocks` → migrate → activate `gu-supercharger` (per site)
+- [ ] Onsite smoke trên ≥1 pilot site: Slider + Collection + Core Control — no fatal, no invalid-block
+- [ ] Human approves public launch **GU Supercharger 0.0.1**
 
 ---
 

@@ -854,12 +854,12 @@ Next milestone:
 
 ## V1 / 1.3.6 — Block Editor UX & Single Post Fix
 
-Status: **DONE**
+Status: **CARRIED_WITH_SCOPE_DEBT**
 Started: **2026-06-17**
-Completed: **2026-06-23**
-Approved by human: **2026-06-23**
+Carried forward: **2026-06-23**
+Approved by human to continue: **2026-06-23**
 
-Note: Single Post Fix completed (Trục C). Editor UX improvements (Trục A), Slider bottom-center flank controls, and general items were not fully implemented at transition time; human explicitly directed move to 1.3.7 for Collection Block UI & Card Styles (including hover/button work and 1.3.3 polish). Some editor UX and testing debt carried forward as appropriate.
+Note: Human directed **current milestone pointer** → 1.3.7 (2026-06-23). Đây **không** phải đóng milestone 1.3.6 với toàn bộ acceptance DONE. Chỉ Trục C (Single Post Fix) hoàn tất tại thời điểm archive. Trục A → **1.3.7** impl; Trục D + collections/button-hover QA → **1.3.11**. Product launch **GU Supercharger 0.0.1** deferred post **1.5.x** (`gu-supercharger`). Lỗi archive ban đầu ghi `Status: DONE` là sai protocol — đã sửa.
 
 Purpose:
 
@@ -889,7 +889,7 @@ Acceptance draft:
 - [ ] Block icons và descriptions không còn blank trong inserter
 - [ ] Inspector panel refactor không invalidate content hiện có
 
-**Slider bottom-center flank controls (Trục D — planning 031 v2.0, chưa implement):**
+**Slider bottom-center flank controls (Trục D — planning 031 v2.0, source IMPLEMENTED — pending QA):**
 - Planning: `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
 - Onsite: `docs/testing/onsite-slider-flank-controls-1.3.6.md`
 - Umbrella: `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` §4.6
