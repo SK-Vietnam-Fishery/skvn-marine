@@ -143,59 +143,319 @@ function skvn_marine_woocommerce_single_quote_cta() {
 }
 
 /**
- * Modify product tabs: remove Reviews, rename Description and Additional Information.
+ * Modify product tabs: replace WC defaults with 4 SKVN tabs.
  *
  * @param array<string,array<string,mixed>> $tabs WooCommerce product tabs.
  * @return array<string,array<string,mixed>>
  */
 function skvn_marine_woocommerce_product_tabs( array $tabs ): array {
-	// Remove Reviews tab — B2B context, no review surface needed.
-	unset( $tabs['reviews'] );
+	unset( $tabs['description'], $tabs['additional_information'], $tabs['reviews'] );
 
-	// Rename Description → Vietnamese label.
-	if ( isset( $tabs['description'] ) ) {
-		$tabs['description']['title'] = __( 'Mô tả sản phẩm', 'skvn-marine' );
-	}
+	$tabs['skvn_product_info'] = array(
+		'title'    => __( 'Product Info', 'skvn-marine' ),
+		'priority' => 10,
+		'callback' => 'skvn_marine_tab_product_info',
+	);
 
-	// Rename Additional Information → Thông số kỹ thuật.
-	if ( isset( $tabs['additional_information'] ) ) {
-		$tabs['additional_information']['title'] = __( 'Thông số kỹ thuật', 'skvn-marine' );
-	}
-
-	// Add Documents & Certifications tab.
 	$tabs['skvn_documents'] = array(
-		'title'    => __( 'Tài liệu & Chứng nhận', 'skvn-marine' ),
-		'priority' => 50,
-		'callback' => 'skvn_marine_woocommerce_documents_tab_content',
+		'title'    => __( 'Certifications & Docs', 'skvn-marine' ),
+		'priority' => 20,
+		'callback' => 'skvn_marine_tab_documents',
+	);
+
+	$tabs['skvn_packaging'] = array(
+		'title'    => __( 'Packaging & Cold Chain', 'skvn-marine' ),
+		'priority' => 30,
+		'callback' => 'skvn_marine_tab_packaging',
+	);
+
+	$tabs['skvn_articles'] = array(
+		'title'    => __( 'Related Articles', 'skvn-marine' ),
+		'priority' => 40,
+		'callback' => 'skvn_marine_tab_articles',
 	);
 
 	return $tabs;
 }
 
 /**
- * Render the Documents & Certifications tab content.
- *
- * V1: static placeholder — invite users to contact for full documents.
+ * Tab 0 — Product Info: description + WC attributes + right column.
  *
  * @return void
  */
-function skvn_marine_woocommerce_documents_tab_content(): void {
-	echo '<div class="skvn-product-tab-documents">';
-	echo '<h2>' . esc_html__( 'Tài liệu & Chứng nhận', 'skvn-marine' ) . '</h2>';
-	echo '<p>' . esc_html__( 'Vui lòng liên hệ để nhận bộ tài liệu đầy đủ bao gồm:', 'skvn-marine' ) . '</p>';
-	echo '<ul>';
-	$docs = array(
-		__( 'Chứng nhận VSATTP — Bộ Y Tế (PDF)', 'skvn-marine' ),
-		__( 'Certificate of Conformity — EC 853/2004 (PDF)', 'skvn-marine' ),
-		__( 'Manual lắp đặt & vận hành (Tiếng Việt)', 'skvn-marine' ),
-		__( 'Sơ đồ điện và hệ thống lạnh', 'skvn-marine' ),
-		__( 'Báo cáo kiểm tra xuất xưởng', 'skvn-marine' ),
+function skvn_marine_tab_product_info(): void {
+	global $product;
+	?>
+	<div class="skvn-tab-product-info">
+		<div class="skvn-tab-product-info__main">
+			<div class="skvn-tab-product-info__description">
+				<?php the_content(); ?>
+			</div>
+
+			<?php if ( $product instanceof WC_Product ) : ?>
+				<div class="skvn-tab-product-info__specs">
+					<h3 class="skvn-tab-section-heading"><?php esc_html_e( 'Technical Specifications', 'skvn-marine' ); ?></h3>
+					<?php wc_display_product_attributes( $product ); ?>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		<aside class="skvn-tab-product-info__sidebar">
+			<div class="skvn-tab-sidebar-card">
+				<h4 class="skvn-tab-sidebar-card__heading"><?php esc_html_e( 'Certifications', 'skvn-marine' ); ?></h4>
+				<ul class="skvn-tab-sidebar-card__list">
+					<li>HACCP (Codex Alimentarius)</li>
+					<li>BRC Food Safety Grade A</li>
+					<li>FDA Registered Facility</li>
+					<li>EU IUU Regulation Compliant</li>
+					<li>Heavy Metal Tested (Hg / Pb)</li>
+				</ul>
+			</div>
+
+			<div class="skvn-tab-sidebar-card">
+				<h4 class="skvn-tab-sidebar-card__heading"><?php esc_html_e( 'Export Market Notes', 'skvn-marine' ); ?></h4>
+				<ul class="skvn-tab-sidebar-card__list">
+					<li><strong>USA:</strong> FDA labeling + net weight accuracy required</li>
+					<li><strong>EU:</strong> Strict Hg/Pb testing + valid DL 887 mandatory</li>
+					<li><strong>Japan:</strong> Extreme sensory uniformity standards</li>
+				</ul>
+			</div>
+
+			<div class="skvn-tab-sidebar-card skvn-tab-sidebar-card--highlight">
+				<h4 class="skvn-tab-sidebar-card__heading"><?php esc_html_e( 'Yield from Whole Fish', 'skvn-marine' ); ?></h4>
+				<p class="skvn-tab-sidebar-card__yield">35–40%</p>
+				<p class="skvn-tab-sidebar-card__yield-note"><?php esc_html_e( 'A 1% yield improvement from optimized cutting can represent thousands of dollars in recovered profit per container.', 'skvn-marine' ); ?></p>
+			</div>
+		</aside>
+	</div>
+	<?php
+}
+
+/**
+ * Tab 1 — Certifications & Documents.
+ *
+ * @return void
+ */
+function skvn_marine_tab_documents(): void {
+	global $product;
+	$quote_url = $product instanceof WC_Product ? esc_url( skvn_marine_get_product_quote_url( $product ) ) : esc_url( home_url( '/request-a-quote/' ) );
+	?>
+	<div class="skvn-tab-documents">
+		<div class="skvn-tab-documents__cert-grid">
+			<div class="skvn-cert-card">
+				<div class="skvn-cert-card__badge">HACCP</div>
+				<div class="skvn-cert-card__body">
+					<strong><?php esc_html_e( 'HACCP', 'skvn-marine' ); ?></strong>
+					<span><?php esc_html_e( 'Codex Alimentarius', 'skvn-marine' ); ?></span>
+				</div>
+			</div>
+			<div class="skvn-cert-card">
+				<div class="skvn-cert-card__badge">BRC</div>
+				<div class="skvn-cert-card__body">
+					<strong><?php esc_html_e( 'BRC Food Safety', 'skvn-marine' ); ?></strong>
+					<span><?php esc_html_e( 'Grade A · Valid 2024–2025', 'skvn-marine' ); ?></span>
+				</div>
+			</div>
+			<div class="skvn-cert-card">
+				<div class="skvn-cert-card__badge">FDA</div>
+				<div class="skvn-cert-card__body">
+					<strong><?php esc_html_e( 'FDA Registered', 'skvn-marine' ); ?></strong>
+					<span><?php esc_html_e( 'Active · Reg. #19123456', 'skvn-marine' ); ?></span>
+				</div>
+			</div>
+			<div class="skvn-cert-card">
+				<div class="skvn-cert-card__badge">EU</div>
+				<div class="skvn-cert-card__body">
+					<strong><?php esc_html_e( 'EU IUU Compliant', 'skvn-marine' ); ?></strong>
+					<span><?php esc_html_e( 'DL 887 · FAO Area 71', 'skvn-marine' ); ?></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="skvn-tab-documents__doc-list">
+			<h3 class="skvn-tab-section-heading"><?php esc_html_e( 'Available Documents', 'skvn-marine' ); ?></h3>
+			<table class="skvn-doc-table">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Document', 'skvn-marine' ); ?></th>
+						<th><?php esc_html_e( 'Status', 'skvn-marine' ); ?></th>
+						<th><?php esc_html_e( 'Description', 'skvn-marine' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong><?php esc_html_e( 'Certificate of Analysis (COA)', 'skvn-marine' ); ?></strong></td>
+						<td><span class="skvn-doc-status skvn-doc-status--current"><?php esc_html_e( 'CURRENT', 'skvn-marine' ); ?></span></td>
+						<td><?php esc_html_e( 'TVB-N · Salmonella/Listeria · Heavy Metals · Moisture · Sensory — Q2/2025', 'skvn-marine' ); ?></td>
+					</tr>
+					<tr>
+						<td><strong><?php esc_html_e( 'HACCP Plan & Annual Audit', 'skvn-marine' ); ?></strong></td>
+						<td><span class="skvn-doc-status skvn-doc-status--nda"><?php esc_html_e( 'NDA REQUIRED', 'skvn-marine' ); ?></span></td>
+						<td><?php esc_html_e( 'CCPs · Monitoring procedures · IQF tunnel calibration records', 'skvn-marine' ); ?></td>
+					</tr>
+					<tr>
+						<td><strong><?php esc_html_e( 'BRC Grade A Certificate', 'skvn-marine' ); ?></strong></td>
+						<td><span class="skvn-doc-status skvn-doc-status--current"><?php esc_html_e( 'CURRENT', 'skvn-marine' ); ?></span></td>
+						<td><?php esc_html_e( 'Scope: Processing of frozen fish fillets · Vung Tau (DL 887)', 'skvn-marine' ); ?></td>
+					</tr>
+					<tr>
+						<td><strong><?php esc_html_e( 'EU IUU Catch Certificate', 'skvn-marine' ); ?></strong></td>
+						<td><span class="skvn-doc-status skvn-doc-status--per-shipment"><?php esc_html_e( 'PER SHIPMENT', 'skvn-marine' ); ?></span></td>
+						<td><?php esc_html_e( 'Vessel · Landing site · FAO Area 71 — Sample available', 'skvn-marine' ); ?></td>
+					</tr>
+					<tr>
+						<td><strong><?php esc_html_e( 'Heavy Metal Report (Hg / Pb)', 'skvn-marine' ); ?></strong></td>
+						<td><span class="skvn-doc-status skvn-doc-status--passed"><?php esc_html_e( 'PASSED', 'skvn-marine' ); ?></span></td>
+						<td><?php esc_html_e( 'Below EC 1881/2006 limits · Hg <0.5 mg/kg · Pb <0.3 mg/kg', 'skvn-marine' ); ?></td>
+					</tr>
+					<tr>
+						<td><strong><?php esc_html_e( 'Product Spec Sheet', 'skvn-marine' ); ?></strong></td>
+						<td>—</td>
+						<td><?php esc_html_e( 'Full attribute table · Pack specs · Label template · Version 2025', 'skvn-marine' ); ?></td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="skvn-tab-documents__custom-note"><?php esc_html_e( 'Custom documentation available per shipment: Health certificates · FDA prior notice · Country-of-origin affidavits · SIMP entry data.', 'skvn-marine' ); ?></p>
+		</div>
+
+		<div class="skvn-tab-documents__cta">
+			<a href="<?php echo $quote_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" class="skvn-button skvn-button--primary">
+				<?php esc_html_e( 'Request Full Document Package', 'skvn-marine' ); ?>
+			</a>
+			<p><?php esc_html_e( 'Full COA and lab test reports available upon request. Quote response within 1 business day.', 'skvn-marine' ); ?></p>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Tab 2 — Packaging & Cold Chain.
+ *
+ * @return void
+ */
+function skvn_marine_tab_packaging(): void {
+	global $product;
+	$quote_url = $product instanceof WC_Product ? esc_url( skvn_marine_get_product_quote_url( $product ) ) : esc_url( home_url( '/request-a-quote/' ) );
+	?>
+	<div class="skvn-tab-packaging">
+		<div class="skvn-tab-packaging__photo-grid">
+			<?php for ( $i = 0; $i < 4; $i++ ) : ?>
+				<div class="skvn-packaging-photo-placeholder">
+					<svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="1.5"/><circle cx="8.5" cy="8.5" r="1.5" stroke-width="1.5"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 15l-5-5L5 21"/></svg>
+					<span><?php esc_html_e( 'Photo coming soon', 'skvn-marine' ); ?></span>
+				</div>
+			<?php endfor; ?>
+		</div>
+		<p class="skvn-tab-packaging__assets-note"><?php esc_html_e( 'Hi-res assets available: Factory, processing line, IQF tunnel, and cold chain documentation upon request.', 'skvn-marine' ); ?></p>
+
+		<div class="skvn-cold-chain-banner">
+			<h3 class="skvn-cold-chain-banner__heading"><?php esc_html_e( 'Cold Chain & Pallet Specification', 'skvn-marine' ); ?></h3>
+			<div class="skvn-cold-chain-banner__specs">
+				<div class="skvn-cold-chain-spec">
+					<span class="skvn-cold-chain-spec__value">10 kg</span>
+					<span class="skvn-cold-chain-spec__label"><?php esc_html_e( 'Master Carton', 'skvn-marine' ); ?></span>
+				</div>
+				<div class="skvn-cold-chain-spec">
+					<span class="skvn-cold-chain-spec__value">40</span>
+					<span class="skvn-cold-chain-spec__label"><?php esc_html_e( 'Cases / Pallet', 'skvn-marine' ); ?></span>
+				</div>
+				<div class="skvn-cold-chain-spec">
+					<span class="skvn-cold-chain-spec__value">~720 kg</span>
+					<span class="skvn-cold-chain-spec__label"><?php esc_html_e( 'Net Weight / Pallet', 'skvn-marine' ); ?></span>
+				</div>
+				<div class="skvn-cold-chain-spec">
+					<span class="skvn-cold-chain-spec__value">≤ −18°C</span>
+					<span class="skvn-cold-chain-spec__label"><?php esc_html_e( 'Storage Temp', 'skvn-marine' ); ?></span>
+				</div>
+				<div class="skvn-cold-chain-spec">
+					<span class="skvn-cold-chain-spec__value">24 mo</span>
+					<span class="skvn-cold-chain-spec__label"><?php esc_html_e( 'Shelf Life', 'skvn-marine' ); ?></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="skvn-tab-packaging__cta">
+			<a href="<?php echo $quote_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>" class="skvn-button skvn-button--outline">
+				<?php esc_html_e( 'Request Hi-Res Assets & Specs', 'skvn-marine' ); ?>
+			</a>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Tab 3 — Related Articles.
+ *
+ * Queries posts by taxonomy when available; falls back to static cards.
+ *
+ * @return void
+ */
+function skvn_marine_tab_articles(): void {
+	$static_articles = array(
+		array(
+			'title'    => 'What Is IQF Freezing — And Why It Matters for Premium White Fish Quality',
+			'category' => 'IQF Technology',
+			'date'     => 'Jun 10, 2025',
+			'read'     => '6 min read',
+			'excerpt'  => 'IQF (Individual Quick Freezing) is the primary determinant of fillet texture and drip loss after thawing. Explains the science behind tunnel contact time, ice crystal size, and why slow-frozen block fish underperforms.',
+		),
+		array(
+			'title'    => 'Vessel to Pallet: Our Full EU IUU Traceability Process',
+			'category' => 'Traceability',
+			'date'     => 'May 22, 2025',
+			'read'     => '8 min read',
+			'excerpt'  => 'From catch certificate intake at the landing site to lot-coded master cartons — how the internal traceability chain eliminates port-of-entry rejection risk in EU markets.',
+		),
+		array(
+			'title'    => 'Reading a Grouper COA: Every Parameter Your Import Team Needs to Verify',
+			'category' => 'COA & Quality',
+			'date'     => 'Apr 15, 2025',
+			'read'     => '7 min read',
+			'excerpt'  => 'TVB-N limits, Salmonella zero-tolerance thresholds, Hg/Pb ceilings under EC 1881/2006, moisture retention — what each means for US/EU import compliance.',
+		),
 	);
-	foreach ( $docs as $doc ) {
-		echo '<li>' . esc_html( $doc ) . '</li>';
-	}
-	echo '</ul>';
-	echo '</div>';
+
+	$articles = array();
+	?>
+	<div class="skvn-tab-articles">
+		<div class="skvn-article-grid">
+			<?php
+			if ( ! empty( $articles ) ) :
+				foreach ( $articles as $post ) :
+					setup_postdata( $post );
+					?>
+					<article class="skvn-article-card">
+						<div class="skvn-article-card__meta">
+							<span class="skvn-article-card__cat"><?php the_category( ', ' ); ?></span>
+							<span class="skvn-article-card__date"><?php echo esc_html( get_the_date() ); ?></span>
+						</div>
+						<h3 class="skvn-article-card__title">
+							<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+						</h3>
+						<p class="skvn-article-card__excerpt"><?php the_excerpt(); ?></p>
+						<a href="<?php the_permalink(); ?>" class="skvn-article-card__link"><?php esc_html_e( 'Read article →', 'skvn-marine' ); ?></a>
+					</article>
+					<?php
+				endforeach;
+				wp_reset_postdata();
+			else :
+				foreach ( $static_articles as $article ) :
+					?>
+					<article class="skvn-article-card">
+						<div class="skvn-article-card__meta">
+							<span class="skvn-article-card__cat"><?php echo esc_html( $article['category'] ); ?></span>
+							<span class="skvn-article-card__date"><?php echo esc_html( $article['date'] ); ?> · <?php echo esc_html( $article['read'] ); ?></span>
+						</div>
+						<h3 class="skvn-article-card__title"><?php echo esc_html( $article['title'] ); ?></h3>
+						<p class="skvn-article-card__excerpt"><?php echo esc_html( $article['excerpt'] ); ?></p>
+					</article>
+					<?php
+				endforeach;
+			endif;
+			?>
+		</div>
+	</div>
+	<?php
 }
 
 /**

@@ -214,6 +214,16 @@ body.block-editor-iframe__body.editor-styles-wrapper.post-type-page {
 	color: var(--skvn-color-white);
 }
 
+.skvn-button--outline:not(.wp-block-button) {
+	background: transparent;
+	border: 1.5px solid var(--skvn-color-blue-950, #082f49);
+	color: var(--skvn-color-blue-950, #082f49);
+}
+
+.skvn-button--outline:not(.wp-block-button):hover {
+	background: var(--skvn-color-sky-50);
+}
+
 .skvn-card {
 	background: var(--skvn-color-white);
 	border: 1px solid rgba(51, 65, 85, 0.14);
@@ -3425,13 +3435,22 @@ body.skvn-has-footer-page .site {
    No hardcoded px/em for layout sizing — fr/% only.
    ========================================================================== */
 
-/* Product page outer layout: content area + sidebar */
+/* Single product island — rounded card, đồng bộ với .skvn-post-body */
+.woocommerce-page.single-product .inside-article {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	overflow: hidden;
+}
+
+/* Product page: 2-col hero (gallery | summary), full-width below */
 .woocommerce div.product,
 .skvn-product-layout {
 	--skvn-page-gutter: 1rem;
 	display: grid;
-	grid-template-columns: 3fr 1fr;
-	gap: 2.5rem;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 3rem;
+	row-gap: 2.5rem;
 	align-items: start;
 	max-width: var(--skvn-wide-width);
 	margin-inline: auto;
@@ -3439,15 +3458,48 @@ body.skvn-has-footer-page .site {
 	padding-block: 2.5rem;
 }
 
-/* WooCommerce default product gallery — clear floats, let grid own the layout */
-.woocommerce div.product div.images {
-	float: none;
-	width: 100%;
+/* Tabs, upsells, related products — span full width below hero */
+.woocommerce div.product .woocommerce-tabs,
+.woocommerce div.product .up-sells,
+.woocommerce div.product .related {
+	grid-column: 1 / -1;
 }
 
-.woocommerce div.product div.summary {
+/* Hide GP sidebar on single product page */
+body.single-product .widget-area {
+	display: none !important;
+}
+
+/* Override GP site-level layout: make content area full width */
+body.single-product .site-content {
+	grid-template-columns: 1fr !important;
+	display: block !important;
+}
+
+body.single-product #primary,
+body.single-product .content-area {
+	width: 100% !important;
+	max-width: 100% !important;
+	float: none !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+/* WooCommerce default product gallery — reset WC floats, let grid own the layout */
+.woocommerce #content div.product div.images,
+.woocommerce div.product div.images,
+.woocommerce-page #content div.product div.images,
+.woocommerce-page div.product div.images {
 	float: none;
-	width: 100%;
+	width: auto;
+}
+
+.woocommerce #content div.product div.summary,
+.woocommerce div.product div.summary,
+.woocommerce-page #content div.product div.summary,
+.woocommerce-page div.product div.summary {
+	float: none;
+	width: auto;
 	clear: none;
 }
 
@@ -3709,13 +3761,14 @@ body.skvn-has-footer-page .site {
 }
 
 .woocommerce div.product .woocommerce-tabs ul.tabs li.active a {
-	color: var(--skvn-color-blue-950);
-	border-bottom-color: var(--skvn-color-blue-950);
+	color: var(--skvn-color-slate-900);
+	border-bottom: 2px solid var(--skvn-color-teal-600);
 }
 
 .woocommerce div.product .woocommerce-tabs ul.tabs li a:hover {
 	color: var(--skvn-color-slate-900);
 }
+
 
 .woocommerce div.product .woocommerce-tabs .panel {
 	background: var(--skvn-color-white);
@@ -3749,13 +3802,391 @@ body.skvn-has-footer-page .site {
 	margin-bottom: 0.375rem;
 }
 
-/* Documents tab */
-.skvn-product-tab-documents h2 {
-	font-size: 1rem;
+/* ── Tab nav: mobile horizontal scroll ─────────────────────────────────── */
+@media (max-width: 600px) {
+	.woocommerce div.product .woocommerce-tabs ul.tabs {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		flex-wrap: nowrap;
+		scrollbar-width: none;
+	}
+	.woocommerce div.product .woocommerce-tabs ul.tabs::-webkit-scrollbar {
+		display: none;
+	}
+	.woocommerce div.product .woocommerce-tabs ul.tabs li {
+		flex-shrink: 0;
+	}
+}
+
+/* ── Shared tab utility ─────────────────────────────────────────────────── */
+.skvn-tab-section-heading {
+	font-size: 0.8125rem;
 	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--skvn-color-slate-700);
+	margin: 0 0 1rem;
+}
+
+/* ── Tab 0: Product Info — 3-col desktop layout ─────────────────────────── */
+.skvn-tab-product-info {
+	display: grid;
+	grid-template-columns: 1fr 280px;
+	gap: 2.5rem;
+	align-items: start;
+}
+
+.skvn-tab-product-info__description {
+	margin-bottom: 2rem;
+	font-size: 0.90625rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.7;
+}
+
+.skvn-tab-product-info__description p { margin-bottom: 0.875rem; }
+
+.skvn-tab-product-info__specs { margin-top: 0; }
+
+.skvn-tab-sidebar-card {
+	background: var(--skvn-color-sky-50);
+	border: 1px solid rgba(51, 65, 85, 0.1);
+	border-radius: var(--skvn-radius-card);
+	padding: 1.125rem 1.25rem;
+	margin-bottom: 1rem;
+}
+
+.skvn-tab-sidebar-card--highlight {
+	background: var(--skvn-color-white);
+	border-color: var(--skvn-color-teal-600);
+}
+
+.skvn-tab-sidebar-card__heading {
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-teal-600);
+	margin: 0 0 0.625rem;
+}
+
+.skvn-tab-sidebar-card__list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-size: 0.8125rem;
+	color: var(--skvn-color-slate-700);
+}
+
+.skvn-tab-sidebar-card__list li {
+	padding: 0.25rem 0;
+	border-bottom: 1px solid rgba(51, 65, 85, 0.07);
+}
+
+.skvn-tab-sidebar-card__list li:last-child { border-bottom: none; }
+
+.skvn-tab-sidebar-card__yield {
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--skvn-color-teal-600);
+	margin: 0 0 0.375rem;
+	font-family: 'Instrument Serif', Georgia, serif;
+}
+
+.skvn-tab-sidebar-card__yield-note {
+	font-size: 0.75rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.5;
+	margin: 0;
+}
+
+@media (max-width: 900px) {
+	.skvn-tab-product-info {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ── Tab 1: Certifications & Docs ───────────────────────────────────────── */
+.skvn-tab-documents__cert-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.875rem;
+	margin-bottom: 2rem;
+}
+
+.skvn-cert-card {
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	padding: 1rem;
+	background: var(--skvn-color-white);
+	display: flex;
+	flex-direction: column;
+	gap: 0.625rem;
+}
+
+.skvn-cert-card__badge {
+	display: inline-block;
+	font-size: 0.625rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+	color: var(--skvn-color-white);
+	background: var(--skvn-color-teal-600);
+	padding: 0.2rem 0.5rem;
+	border-radius: 4px;
+	align-self: flex-start;
+}
+
+.skvn-cert-card__body strong {
+	display: block;
+	font-size: 0.8125rem;
 	color: var(--skvn-color-slate-900);
+	margin-bottom: 0.2rem;
+}
+
+.skvn-cert-card__body span {
+	font-size: 0.75rem;
+	color: var(--skvn-color-slate-700);
+}
+
+@media (max-width: 600px) {
+	.skvn-tab-documents__cert-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.skvn-doc-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.8125rem;
+	margin-bottom: 1rem;
+}
+
+.skvn-doc-table th {
+	text-align: left;
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--skvn-color-slate-700);
+	padding: 0.5rem 0.75rem;
+	background: var(--skvn-color-sky-50);
+	border-bottom: 1px solid rgba(51, 65, 85, 0.12);
+}
+
+.skvn-doc-table td {
+	padding: 0.625rem 0.75rem;
+	color: var(--skvn-color-slate-700);
+	border-bottom: 1px solid rgba(51, 65, 85, 0.07);
+	vertical-align: top;
+}
+
+.skvn-doc-table tr:last-child td { border-bottom: none; }
+
+.skvn-doc-status {
+	display: inline-block;
+	font-size: 0.625rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	padding: 0.2rem 0.5rem;
+	border-radius: 4px;
+	white-space: nowrap;
+}
+
+.skvn-doc-status--current    { background: #dcfce7; color: #166534; }
+.skvn-doc-status--nda        { background: #fef9c3; color: #854d0e; }
+.skvn-doc-status--per-shipment { background: #e0f2fe; color: #0369a1; }
+.skvn-doc-status--passed     { background: #dcfce7; color: #166534; }
+
+.skvn-tab-documents__custom-note {
+	font-size: 0.8125rem;
+	color: var(--skvn-color-slate-700);
+	margin: 0.875rem 0 1.5rem;
+}
+
+.skvn-tab-documents__cta {
+	border-top: 1px solid rgba(51, 65, 85, 0.1);
+	padding-top: 1.5rem;
+	display: flex;
+	align-items: center;
+	gap: 1.25rem;
+}
+
+.skvn-tab-documents__cta p {
+	font-size: 0.8125rem;
+	color: var(--skvn-color-slate-700);
+	margin: 0;
+}
+
+/* ── Tab 2: Packaging & Cold Chain ──────────────────────────────────────── */
+.skvn-tab-packaging__photo-grid {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.75rem;
 	margin-bottom: 0.75rem;
 }
+
+.skvn-packaging-photo-placeholder {
+	aspect-ratio: 4 / 3;
+	background: var(--skvn-color-sky-50);
+	border: 1px dashed rgba(51, 65, 85, 0.2);
+	border-radius: var(--skvn-radius-card);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	color: rgba(51, 65, 85, 0.35);
+	font-size: 0.6875rem;
+}
+
+@media (max-width: 600px) {
+	.skvn-tab-packaging__photo-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.skvn-tab-packaging__assets-note {
+	font-size: 0.8125rem;
+	color: var(--skvn-color-slate-700);
+	margin: 0 0 1.75rem;
+}
+
+.skvn-cold-chain-banner {
+	background: var(--skvn-color-blue-950, #082f49);
+	border-radius: var(--skvn-radius-card);
+	padding: 1.75rem 2rem;
+	margin-bottom: 1.5rem;
+	color: var(--skvn-color-white);
+}
+
+.skvn-cold-chain-banner__heading {
+	font-size: 0.75rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-teal-600);
+	margin: 0 0 1.25rem;
+}
+
+.skvn-cold-chain-banner__specs {
+	display: flex;
+	gap: 2rem;
+	flex-wrap: wrap;
+}
+
+.skvn-cold-chain-spec {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.skvn-cold-chain-spec__value {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--skvn-color-white);
+	font-family: 'Instrument Serif', Georgia, serif;
+}
+
+.skvn-cold-chain-spec__label {
+	font-size: 0.6875rem;
+	color: rgba(255, 255, 255, 0.6);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.skvn-tab-packaging__cta { margin-top: 0.5rem; }
+
+/* ── Tab 3: Related Articles ─────────────────────────────────────────────── */
+.skvn-article-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1.25rem;
+}
+
+@media (max-width: 600px) {
+	.skvn-article-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.skvn-article-card {
+	background: var(--skvn-color-white);
+	border: 1px solid rgba(51, 65, 85, 0.12);
+	border-radius: var(--skvn-radius-card);
+	padding: 1.25rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.skvn-article-card {
+		transition: box-shadow 0.15s;
+	}
+}
+
+.skvn-article-card:hover {
+	box-shadow: var(--skvn-shadow-card);
+}
+
+.skvn-article-card__meta {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	flex-wrap: wrap;
+}
+
+.skvn-article-card__cat {
+	font-size: 0.625rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var(--skvn-color-white);
+	background: var(--skvn-color-teal-600);
+	padding: 0.2rem 0.5rem;
+	border-radius: 4px;
+}
+
+.skvn-article-card__date {
+	font-size: 0.6875rem;
+	color: var(--skvn-color-slate-700);
+}
+
+.skvn-article-card__title {
+	font-size: 0.9375rem;
+	font-weight: 700;
+	color: var(--skvn-color-slate-900);
+	line-height: 1.35;
+	margin: 0;
+}
+
+.skvn-article-card__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.skvn-article-card__title a:hover {
+	color: var(--skvn-color-teal-600);
+}
+
+.skvn-article-card__excerpt {
+	font-size: 0.8125rem;
+	color: var(--skvn-color-slate-700);
+	line-height: 1.6;
+	margin: 0;
+	flex: 1;
+}
+
+.skvn-article-card__link {
+	font-size: 0.8125rem;
+	font-weight: 600;
+	color: var(--skvn-color-teal-600);
+	text-decoration: none;
+	margin-top: 0.25rem;
+}
+
+/* ── Legacy documents tab ────────────────────────────────────────────────── */
 
 /* WooCommerce additional information (specs table) */
 .woocommerce div.product .woocommerce-tabs #tab-additional_information h2 {
