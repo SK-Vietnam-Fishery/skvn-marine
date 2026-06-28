@@ -3241,6 +3241,38 @@ body.skvn-has-footer-page .site {
 	color: var(--skvn-color-white);
 }
 
+/* CTA island — colors driven by inline preset vars from plugin settings.
+   Button hover auto-derives by swapping base/text (guaranteed contrast). */
+.skvn-island--cta {
+	background: var(--skvn-cta-bg, var(--skvn-color-blue-950));
+	border-color: transparent;
+	color: var(--skvn-cta-fg, var(--skvn-color-white));
+}
+
+.skvn-island--cta .skvn-island__eyebrow {
+	color: var(--skvn-cta-fg, var(--skvn-color-white));
+	opacity: 0.7;
+}
+
+.skvn-island--cta .skvn-island__heading {
+	color: var(--skvn-cta-fg, var(--skvn-color-white));
+}
+
+.skvn-island--cta .skvn-island__note {
+	color: var(--skvn-cta-fg, var(--skvn-color-white));
+	opacity: 0.5;
+}
+
+.skvn-island--cta .skvn-island__cta {
+	background: var(--skvn-cta-btn-base, var(--skvn-color-gold-300));
+	color: var(--skvn-cta-btn-text, var(--skvn-color-blue-950));
+}
+
+.skvn-island--cta .skvn-island__cta:hover {
+	background: var(--skvn-cta-btn-text, var(--skvn-color-blue-950));
+	color: var(--skvn-cta-btn-base, var(--skvn-color-gold-300));
+}
+
 .skvn-island__eyebrow {
 	font-size: 0.5625rem;
 	text-transform: uppercase;
@@ -3381,6 +3413,17 @@ body.skvn-has-footer-page .site {
 	}
 
 	.skvn-island--navy {
+		margin-inline: calc(-1 * var(--skvn-page-gutter));
+		padding: 1.25rem var(--skvn-page-gutter);
+		border-radius: 0;
+	}
+
+	/* Single post: mobile chỉ hiện CTA, ẩn các island còn lại. */
+	.skvn-single-sidebar > .skvn-island:not(.skvn-island--cta) {
+		display: none;
+	}
+
+	.skvn-single-sidebar .skvn-island--cta {
 		margin-inline: calc(-1 * var(--skvn-page-gutter));
 		padding: 1.25rem var(--skvn-page-gutter);
 		border-radius: 0;
@@ -4409,7 +4452,7 @@ body.single-product .content-area {
 	font-family: var(--skvn-font-heading);
 	font-size: clamp(1.5rem, 3.5vw, 2.4rem);
 	font-weight: 800;
-	color: var(--skvn-color-white);
+	color: white !important;
 	letter-spacing: -0.03em;
 	line-height: 1.2;
 	max-width: 42.5rem;
@@ -4417,7 +4460,7 @@ body.single-product .content-area {
 
 /* Single post outer wrap + layout */
 .skvn-single-wrap {
-	--skvn-page-gutter: 1rem;
+	--skvn-page-gutter: 16px;
 	--skvn-single-gap: 1.5rem;
 	--skvn-single-inset-inline: 3rem;
 	max-width: var(--skvn-wide-width);
@@ -4757,6 +4800,7 @@ body.single-product .content-area {
 /* Single post — responsive */
 @media (max-width: 900px) {
 	.skvn-single-wrap {
+		--skvn-page-gutter: 12px;
 		padding-top: 0;
 		padding-bottom: 2.5rem;
 	}
@@ -4805,6 +4849,10 @@ body.single-product .content-area {
 }
 
 @media (max-width: 600px) {
+	.skvn-single-wrap {
+		--skvn-page-gutter: 8px;
+	}
+
 	.skvn-post-related__grid {
 		grid-template-columns: 1fr;
 	}

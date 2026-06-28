@@ -8,6 +8,23 @@
     "color": {
       "custom": false,
       "customGradient": false,
+      "gradients": [
+        {
+          "slug": "skvn-navy-deep",
+          "name": "SKVN Navy Deep",
+          "gradient": "linear-gradient(135deg, #082f49 0%, #0c4a6e 100%)"
+        },
+        {
+          "slug": "skvn-ocean",
+          "name": "SKVN Ocean",
+          "gradient": "linear-gradient(135deg, #0c4a6e 0%, #0d9488 100%)"
+        },
+        {
+          "slug": "skvn-midnight",
+          "name": "SKVN Midnight",
+          "gradient": "linear-gradient(135deg, #082f49 0%, #0f172a 100%)"
+        }
+      ],
       "palette": [
         {
           "slug": "skvn-blue-950",
