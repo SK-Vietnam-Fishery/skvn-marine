@@ -142,7 +142,7 @@ function skvn_marine_blocks_sanitize_preloader( $value ) {
 	};
 
 	return array(
-		'type'         => $choice( $value['type'] ?? '', array( 'preloader', 'splash', 'brandbar', 'off' ), $defaults['type'] ),
+		'type'         => $choice( $value['type'] ?? '', array( 'preloader', 'splash', 'skeleton', 'brandbar', 'off' ), $defaults['type'] ),
 		'scope'        => $choice( $value['scope'] ?? '', array( 'front', 'site' ), $defaults['scope'] ),
 		'dismiss'      => $choice( $value['dismiss'] ?? '', array( 'hero', 'window', 'time' ), $defaults['dismiss'] ),
 		'min_display'  => max( 0, min( 5000, isset( $value['min_display'] ) ? absint( $value['min_display'] ) : 0 ) ),
@@ -219,6 +219,7 @@ function skvn_marine_blocks_render_preloader_page() {
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[type]", $s['type'], array(
 						'preloader' => esc_html__( 'Preloader (overlay + spinner)', 'skvn-marine-blocks' ),
 						'splash'    => esc_html__( 'Splash (chỉ 1 lần / phiên)', 'skvn-marine-blocks' ),
+						'skeleton'  => esc_html__( 'Skeleton (khung xám shimmer)', 'skvn-marine-blocks' ),
 						'brandbar'  => esc_html__( 'Brand bar (thanh mỏng, không che)', 'skvn-marine-blocks' ),
 						'off'       => esc_html__( 'Off (tắt)', 'skvn-marine-blocks' ),
 					) ); ?></td>

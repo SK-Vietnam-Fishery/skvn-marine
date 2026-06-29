@@ -30,6 +30,7 @@ User báo trang chủ "flash" lúc vào: thấy **nền + text trước, ảnh h
 |---|---|
 | **Preloader** | overlay + spinner, ẩn theo `hero`/`window`/`time` + min-display |
 | **Splash** | overlay brand, **1 lần/phiên** (`sessionStorage`, skip sớm trong head → không nháy) |
+| **Skeleton** | overlay khung xám shimmer (5 thanh mô phỏng hero); nền = field bg (color/gradient), thanh tint theo `text_color`; dismiss như preloader |
 | **Brand bar** | thanh mỏng ở đỉnh, **không che**, CSS animation tự chạy |
 | **Off** | không render |
 

@@ -100,6 +100,30 @@ function skvn_marine_preloader_gradient( $slug ) {
 	return $map[ $slug ] ?? 'linear-gradient(135deg, #082f49 0%, #0c4a6e 100%)';
 }
 
+/**
+ * Convert a hex color to an rgba() string (for skeleton bar tints).
+ *
+ * @param string $hex   Hex color (#rgb or #rrggbb).
+ * @param string $alpha Alpha component, e.g. '0.14'.
+ * @return string
+ */
+function skvn_marine_preloader_rgba( $hex, $alpha ) {
+	$hex = ltrim( (string) $hex, '#' );
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+	if ( 6 !== strlen( $hex ) || ! ctype_xdigit( $hex ) ) {
+		return 'rgba(255, 255, 255, ' . $alpha . ')';
+	}
+	return sprintf(
+		'rgba(%d, %d, %d, %s)',
+		hexdec( substr( $hex, 0, 2 ) ),
+		hexdec( substr( $hex, 2, 2 ) ),
+		hexdec( substr( $hex, 4, 2 ) ),
+		$alpha
+	);
+}
+
 add_action( 'wp_head', 'skvn_marine_preloader_head', 1 );
 add_action( 'wp_body_open', 'skvn_marine_preloader_markup' );
 
@@ -170,6 +194,23 @@ function skvn_marine_preloader_head() {
 			.skvn-preloader__spinner { animation: none; opacity: .5; }
 			#skvn-preloader { transition: none; }
 		}
+		.skvn-skeleton { width: min(760px, 90vw); display: flex; flex-direction: column; gap: 18px; }
+		.skvn-skeleton__bar {
+			position: relative; overflow: hidden; height: 16px; border-radius: 6px;
+			background: <?php echo esc_html( skvn_marine_preloader_rgba( $fg, '0.14' ) ); ?>;
+		}
+		.skvn-skeleton__bar--eyebrow { width: 120px; height: 12px; }
+		.skvn-skeleton__bar--title { width: 65%; height: 30px; }
+		.skvn-skeleton__bar--title2 { width: 48%; height: 30px; }
+		.skvn-skeleton__bar--text { width: 54%; }
+		.skvn-skeleton__bar--btn { width: 150px; height: 44px; margin-top: 8px; }
+		.skvn-skeleton__bar::after {
+			content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+			background: linear-gradient(90deg, transparent, <?php echo esc_html( skvn_marine_preloader_rgba( $fg, '0.30' ) ); ?>, transparent);
+			animation: skvn-shimmer 1.3s infinite;
+		}
+		@keyframes skvn-shimmer { to { transform: translateX(100%); } }
+		@media (prefers-reduced-motion: reduce) { .skvn-skeleton__bar::after { animation: none; } }
 	</style>
 	<script id="skvn-preloader-lock">
 		( function () {
@@ -199,13 +240,23 @@ function skvn_marine_preloader_markup() {
 		return;
 	}
 
-	$is_splash = 'splash' === $cfg['type'];
-	$mark      = '' !== $cfg['mark_text'] ? $cfg['mark_text'] : get_bloginfo( 'name' );
-	$logo      = $cfg['use_logo'] && $cfg['logo_id']
+	$is_splash   = 'splash' === $cfg['type'];
+	$is_skeleton = 'skeleton' === $cfg['type'];
+	$mark        = '' !== $cfg['mark_text'] ? $cfg['mark_text'] : get_bloginfo( 'name' );
+	$logo        = $cfg['use_logo'] && $cfg['logo_id']
 		? wp_get_attachment_image( $cfg['logo_id'], 'medium', false, array( 'class' => 'skvn-preloader__logo', 'alt' => $mark ) )
 		: '';
 	?>
 	<div id="skvn-preloader" class="skvn-preloader" role="status" aria-label="<?php esc_attr_e( 'Đang tải', 'skvn-marine' ); ?>">
+		<?php if ( $is_skeleton ) : ?>
+		<div class="skvn-skeleton" aria-hidden="true">
+			<span class="skvn-skeleton__bar skvn-skeleton__bar--eyebrow"></span>
+			<span class="skvn-skeleton__bar skvn-skeleton__bar--title"></span>
+			<span class="skvn-skeleton__bar skvn-skeleton__bar--title2"></span>
+			<span class="skvn-skeleton__bar skvn-skeleton__bar--text"></span>
+			<span class="skvn-skeleton__bar skvn-skeleton__bar--btn"></span>
+		</div>
+		<?php else : ?>
 		<div class="skvn-preloader__inner">
 			<?php if ( $logo ) : ?>
 				<?php echo $logo; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -219,6 +270,7 @@ function skvn_marine_preloader_markup() {
 				<span class="skvn-preloader__spinner" aria-hidden="true"></span>
 			<?php endif; ?>
 		</div>
+		<?php endif; ?>
 	</div>
 	<script id="skvn-preloader-js">
 	( function () {

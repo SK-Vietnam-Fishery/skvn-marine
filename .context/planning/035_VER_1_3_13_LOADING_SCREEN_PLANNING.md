@@ -35,7 +35,7 @@ Admin chọn loại loading screen + sửa nội dung; theme render qua getter, 
 - Config qua `function_exists` getter, else default theme.
 - Eligibility: off → bỏ; scope front → `is_front_page()`.
 - Resolve màu slug → literal (PHP) cho inline CSS bền vững.
-- 4 nhánh render: preloader (overlay+spinner+dismiss), splash (sessionStorage 1 lần/phiên), brandbar (thanh CSS), off.
+- 5 nhánh render: preloader (overlay+spinner+dismiss), splash (sessionStorage 1 lần/phiên), skeleton (khung shimmer, nền=bg field, thanh tint text_color), brandbar (thanh CSS), off.
 - An toàn: timeout 3.5s + window-load fallback + min-display + reduced-motion.
 
 **AC:** đổi setting → frontend đổi; off → trống; splash 1 lần/phiên; brandbar không che; logo/min-display/reduced-motion đúng; `php -l` sạch.
