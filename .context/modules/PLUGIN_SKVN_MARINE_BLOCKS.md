@@ -182,7 +182,7 @@ Do not make this plugin own the primary SKVN visual system.
 - This is a decided future direction only. Do not implement until human assigns
   it to a milestone.
 - Planning:
-  `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
+  `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
 
 ## [manual] Portable Plugin Animation Boundary
 

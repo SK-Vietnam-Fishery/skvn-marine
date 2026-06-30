@@ -24,8 +24,14 @@
 | 034 | `034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNING.md` | 1.3.12 | IMPLEMENTED | `docs/decisions/blog-sidebar-content-settings-1.3.12.md` |
 | 035 | `035_VER_1_3_13_LOADING_SCREEN_PLANNING.md` | 1.3.13 | IMPLEMENTED | `docs/decisions/loading-screen-settings-1.3.13.md` |
 | 036 | `036_VER_1_3_14_POST_HEADING_NUMBERING_PLANNING.md` | 1.3.14 | IMPLEMENTED | `docs/decisions/post-heading-numbering-1.3.14.md` |
+| 023 | `023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md` | 1.3.4 | IMPLEMENTED (partial) | `docs/decisions/core-control-core-button-hover.md` — Block Copy/Paste chưa ship |
+| 025 | `025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md` | 1.3.5 | IMPLEMENTED | `docs/decisions/skvn-1.3.x-architecture-and-decisions.md` |
 
 Onsite QA defer cho nhiều mục trên: **1.3.11** (slider, collections, button hover) hoặc ghi trong header từng file.
+
+## Wave 1b — done work cleanup (2026-06-30)
+
+Archive thêm các plan đã implement nhưng còn ở root: **023**, **025**.
 
 ---
 

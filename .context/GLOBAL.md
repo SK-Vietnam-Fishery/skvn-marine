@@ -59,8 +59,7 @@ Planning snapshots live in `.context/planning/` and use a three-digit ordering p
 Active planning (root — load when task liên quan):
 
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — layout blocks validation pending 1.4.1.
-- `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md` — Core Control foundation (1.3.4 PENDING).
-- `.context/planning/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md` — post/product/archive (1.3.5 PLANNING).
+
 - `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` — umbrella 1.3.6; Trục A carry-in → 1.3.7.
 - `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` — **current milestone** collection UI + card styles.
 - `.context/planning/032_VER_1_3_8_SLIDER_PARALLAX_IMPLEMENTATION_PLANNING.md` — Slider Parallax (1.3.8 PENDING).

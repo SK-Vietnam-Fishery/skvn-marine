@@ -240,7 +240,7 @@ migration if WordPress core later provides an equivalent reliable workflow.
 
 Detailed implementation and runtime gates:
 
-- `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
+- `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
 
 ## Editor UX
 

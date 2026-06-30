@@ -263,7 +263,7 @@ Purpose:
 
 Planning:
 
-- `.context/planning/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md`
+- `.context/planning/archives/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md`
 
 Design artifacts:
 
@@ -367,7 +367,7 @@ Decision:
 
 Planning:
 
-- `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
+- `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
 
 Dependencies:
 

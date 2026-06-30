@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/skvn-1.3.x-architecture-and-decisions.md (§5–§12)
+> Onsite QA defer: none (theme layer shipped)
+
 # SKVN Marine — Kế hoạch cải thiện trang Post, Product & Archive
 
 **Phiên bản:** 2.0  

@@ -1,6 +1,6 @@
 # Version 1.2.1 — SKVN Slider Presets & Inserter Planning
 
-Status: active
+Status: implemented — milestone 1.2.1 DONE
 Created: 2026-06-07
 Approved direction: 2026-06-07
 
