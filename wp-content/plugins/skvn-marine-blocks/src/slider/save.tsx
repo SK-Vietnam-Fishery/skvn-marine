@@ -15,6 +15,8 @@ type SliderAttributes = {
 	slidesPerView: number;
 	preset: string;
 	responsiveSlides: string;
+	enableParallax: boolean;
+	parallaxIntensity: string;
 };
 
 type SliderSaveProps = {
@@ -46,6 +48,8 @@ export function save({ attributes }: SliderSaveProps) {
 			...(attributes.responsiveSlides === '3-2-1'
 				? { responsiveSlides: attributes.responsiveSlides }
 				: {}),
+			enableParallax: attributes.enableParallax,
+			parallaxIntensity: attributes.parallaxIntensity,
 		}),
 	});
 

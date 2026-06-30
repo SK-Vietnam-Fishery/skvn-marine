@@ -343,6 +343,12 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		'heightPreset'      => $height_preset,
 		'slidesPerView'     => $slides_per_view,
 		'slideCount'        => $slide_count,
+		'enableParallax'    => isset( $attributes['enableParallax'] ) ? (bool) $attributes['enableParallax'] : false,
+		'parallaxIntensity' => skvn_marine_blocks_normalize_slider_choice(
+			$attributes['parallaxIntensity'] ?? 'medium',
+			array( 'subtle', 'medium', 'strong' ),
+			'medium'
+		),
 	);
 
 	if ( '3-2-1' === $responsive_slides ) {
@@ -469,11 +475,13 @@ function skvn_marine_blocks_render_slide( $attributes, $content, $block ) {
 	$output            .= '<div class="skvn-slide__media">';
 
 	if ( $has_image ) {
+		$output .= '<div class="skvn-slide__bg">';
 		$output .= sprintf(
 			'<img alt="%1$s" class="skvn-slide__background-image" src="%2$s" />',
 			esc_attr( $image_alt ),
 			esc_url( $image_url )
 		);
+		$output .= '</div>';
 		$output .= sprintf(
 			'<span aria-hidden="true" class="skvn-slide__overlay" style="opacity:%s"></span>',
 			esc_attr( number_format( $overlay_opacity / 100, 2, '.', '' ) )

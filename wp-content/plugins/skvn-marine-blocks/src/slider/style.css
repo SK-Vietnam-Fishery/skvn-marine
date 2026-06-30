@@ -43,6 +43,20 @@
 	z-index: 0;
 }
 
+.skvn-slide__bg {
+	inset: var(--skvn-parallax-inset, 0%);
+	position: absolute;
+	will-change: transform;
+}
+
+.skvn-slide__bg img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	width: 100%;
+}
+
 .skvn-slider--editor {
     max-width: none;
     width: 100%;
@@ -71,7 +85,7 @@
 }
 
 .skvn-slide__content,
-.skvn-slide--has-background > :not(.skvn-slide__media, .skvn-slide__background-image, .skvn-slide__overlay) {
+.skvn-slide--has-background > :not(.skvn-slide__media, .skvn-slide__background-image, .skvn-slide__overlay, .skvn-slide__bg) {
 	position: relative;
 	z-index: 2;
 }

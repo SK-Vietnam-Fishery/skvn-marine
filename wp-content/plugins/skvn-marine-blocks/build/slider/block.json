@@ -72,6 +72,19 @@
     "responsiveSlides": {
       "type": "string",
       "default": "uniform"
+    },
+    "enableParallax": {
+      "type": "boolean",
+      "default": false
+    },
+    "parallaxIntensity": {
+      "type": "string",
+      "enum": [
+        "subtle",
+        "medium",
+        "strong"
+      ],
+      "default": "medium"
     }
   },
   "allowedBlocks": [

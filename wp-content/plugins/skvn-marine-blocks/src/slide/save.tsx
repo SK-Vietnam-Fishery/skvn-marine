@@ -20,21 +20,27 @@ export function save( { attributes }: SlideSaveProps ) {
 
 	return (
 		<div { ...blockProps }>
-			{ hasImage && (
-				<>
-					<img
-						alt={ attributes.backgroundImageAlt }
-						className="skvn-slide__background-image"
-						src={ attributes.backgroundImageUrl }
-					/>
-					<span
-						aria-hidden="true"
-						className="skvn-slide__overlay"
-						style={ { opacity: attributes.overlayOpacity / 100 } }
-					/>
-				</>
-			) }
-			<InnerBlocks.Content />
+			<div className="skvn-slide__media">
+				{ hasImage && (
+					<>
+						<div className="skvn-slide__bg">
+							<img
+								alt={ attributes.backgroundImageAlt }
+								className="skvn-slide__background-image"
+								src={ attributes.backgroundImageUrl }
+							/>
+						</div>
+						<span
+							aria-hidden="true"
+							className="skvn-slide__overlay"
+							style={ { opacity: attributes.overlayOpacity / 100 } }
+						/>
+					</>
+				) }
+			</div>
+			<div className="skvn-slide__content">
+				<InnerBlocks.Content />
+			</div>
 		</div>
 	);
 }

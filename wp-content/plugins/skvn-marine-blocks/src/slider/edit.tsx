@@ -6,7 +6,9 @@ import {
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import {
+	BaseControl,
 	Button,
+	ButtonGroup,
 	Notice,
 	PanelBody,
 	RangeControl,
@@ -51,6 +53,8 @@ type SliderAttributes = {
 	slidesPerView: number;
 	preset: string;
 	responsiveSlides: string;
+	enableParallax: boolean;
+	parallaxIntensity: 'subtle' | 'medium' | 'strong';
 };
 
 type SliderEditProps = {
@@ -396,6 +400,46 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 						/>
 					)}
 				</PanelBody>
+				<PanelBody
+					initialOpen={false}
+					title={__('Motion', 'skvn-marine-blocks')}
+				>
+					<ToggleControl
+						checked={attributes.enableParallax}
+						help={__(
+							'Background image moves at a different speed than the slide, creating a sense of depth. Has no effect in the editor.',
+							'skvn-marine-blocks'
+						)}
+						label={__('Enable parallax', 'skvn-marine-blocks')}
+						onChange={(enableParallax) => setAttributes({ enableParallax })}
+					/>
+					{ attributes.enableParallax && (
+						<BaseControl
+							help={__(
+								'Controls how far the background travels and how much it scales during the transition.',
+								'skvn-marine-blocks'
+							)}
+							label={__('Intensity', 'skvn-marine-blocks')}
+						>
+							<ButtonGroup>
+								{ ( [ 'subtle', 'medium', 'strong' ] as const ).map( ( value ) => (
+									<Button
+										key={ value }
+										isPressed={ attributes.parallaxIntensity === value }
+										onClick={ () => setAttributes( { parallaxIntensity: value } ) }
+										variant="secondary"
+									>
+										{ value === 'subtle'
+											? __( 'Subtle', 'skvn-marine-blocks' )
+											: value === 'medium'
+											? __( 'Medium', 'skvn-marine-blocks' )
+											: __( 'Strong', 'skvn-marine-blocks' ) }
+									</Button>
+								) ) }
+							</ButtonGroup>
+						</BaseControl>
+					) }
+				</PanelBody>
 			</InspectorControls>
 			<div className="skvn-slider__editor-toolbar">
 				<Button
@@ -417,6 +461,11 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 						? __( 'Slide limit reached', 'skvn-marine-blocks' )
 						: __( 'Add slide', 'skvn-marine-blocks' ) }
 				</Button>
+				{ attributes.enableParallax && (
+					<span className="skvn-slider__parallax-badge">
+						{ `Parallax ON · ${ attributes.parallaxIntensity }` }
+					</span>
+				) }
 			</div>
 			<div className="skvn-slider__editor-stack">
 				<InnerBlocks
