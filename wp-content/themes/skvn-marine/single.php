@@ -238,7 +238,10 @@ if ( ! function_exists( 'skvn_marine_sidebar_related_ids' ) ) {
 				$skvn_toc_raw = function_exists( 'skvn_marine_blocks_get_post_toc' )
 					? skvn_marine_blocks_get_post_toc( get_the_ID() )
 					: '';
-				if ( '' !== trim( $skvn_toc_raw ) ) {
+				if ( '' === trim( $skvn_toc_raw ) && ! empty( $skvn_sidebar['toc']['html'] ) ) {
+						$skvn_toc_raw = $skvn_sidebar['toc']['html'];
+					}
+					if ( '' !== trim( $skvn_toc_raw ) ) {
 					ob_start(); ?>
 					<div class="skvn-island">
 						<p class="skvn-island__label"><?php echo esc_html( $skvn_sidebar['toc']['label'] ); ?></p>

@@ -78,6 +78,7 @@ function skvn_marine_blocks_get_default_sidebar_content() {
 		'toc'      => array(
 			'label' => esc_html__( 'Mục lục', 'skvn-marine-blocks' ),
 			'order' => 1,
+			'html'  => '',
 		),
 		'category' => array(
 			'label'   => esc_html__( 'Danh mục', 'skvn-marine-blocks' ),
@@ -186,6 +187,8 @@ function skvn_marine_blocks_sanitize_sidebar_content( $value ) {
 		'toc'      => array(
 			'label' => $text( $toc_in['label'] ?? '', $defaults['toc']['label'] ),
 			'order' => isset( $toc_in['order'] ) ? absint( $toc_in['order'] ) : $defaults['toc']['order'],
+			// Raw block HTML / shortcode (KSES sanitization deferred, admin-entered).
+			'html'  => isset( $toc_in['html'] ) ? (string) $toc_in['html'] : '',
 		),
 		'category' => array(
 			'label'   => $text( $cat_in['label'] ?? '', $defaults['category']['label'] ),
@@ -425,11 +428,18 @@ function skvn_marine_blocks_render_sidebar_content_page() {
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'TOC island (mục lục — nội dung điền theo từng bài)', 'skvn-marine-blocks' ); ?></h2>
+			<h2><?php esc_html_e( 'TOC island (mục lục)', 'skvn-marine-blocks' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Label', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_sidebar_text_field( "{$opt}[toc][label]", $settings['toc']['label'] ); ?></td>
+					</tr>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'TOC HTML / shortcode', 'skvn-marine-blocks' ); ?></th>
+						<td>
+							<textarea name="<?php echo esc_attr( "{$opt}[toc][html]" ); ?>" rows="6" class="large-text code" style="font-family:monospace;"><?php echo esc_textarea( (string) $settings['toc']['html'] ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'Dán HTML/shortcode/block mục lục (sinh từ plugin TOC khác). Trống → ưu tiên metabox per-post nếu có; không có cả hai → ẩn island.', 'skvn-marine-blocks' ); ?></p>
+						</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Order', 'skvn-marine-blocks' ); ?></th>

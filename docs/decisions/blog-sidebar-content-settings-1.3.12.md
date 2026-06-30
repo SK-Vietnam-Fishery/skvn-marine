@@ -8,6 +8,11 @@ Planning: .context/planning/034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNIN
 Ideation: docs/ideations/blog-sidebar-content-settings.md
 ```
 
+## ⚠️ Known issues — defer milestone sau (ghi 2026-06-28, onsite toihoc.whyschools.org)
+
+1. **Sticky sidebar chui dưới sticky header.** Sidebar `position:sticky; top:2rem` không trừ chiều cao sticky header → island trên cùng (CTA) bị header che khi cuộn (thấy trong screenshot). Fix sau: `top` = chiều cao header + gap (hoặc CSS var `scroll-margin`/`--header-h`), và/hoặc z-index. Ảnh hưởng cả product sidebar nếu cùng pattern.
+2. ~~**TOC HTML chưa có chỗ nhập rõ ràng.**~~ **ĐÃ XỬ LÝ 2026-06-28:** thêm field global **"TOC HTML / shortcode"** (`skvn_sidebar_content[toc][html]`) ngay trong trang setting — dán HTML/shortcode/block sinh từ plugin TOC khác. Render priority: **metabox per-post → fallback global html**. (Metabox per-post vẫn giữ làm override; KSES vẫn defer.) Nếu là shortcode/block động thì tự sinh TOC đúng từng bài; nếu HTML tĩnh thì giống nhau mọi bài.
+
 ## Vấn đề
 
 Sidebar single blog post hardcode 3 island, không có cách đổi nội dung. Cần trang admin tạm để dev/marketing đổi text/màu/thứ tự ngay, trước khi theme độc lập GP và làm block-config thật.
