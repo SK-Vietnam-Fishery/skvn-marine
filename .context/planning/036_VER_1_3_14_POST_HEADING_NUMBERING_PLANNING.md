@@ -3,7 +3,7 @@
 ```
 Version:   1.3.14
 Date:      2026-06-28
-Status:    PLANNED (chưa code)
+Status:    IMPLEMENTED (2026-06-28 — chờ Dev build + onsite test)
 Decision:  docs/decisions/post-heading-numbering-1.3.14.md
 Home:      modules/core-control (feature post_heading_numbers + sub-option)
 ```

@@ -27,6 +27,11 @@ function skvn_marine_blocks_core_control_registry(): array {
 			'description' => esc_html__( 'Add governed hover text and background color controls to core/button blocks via a separate SKVN inspector panel.', 'skvn-marine-blocks' ),
 			'default'     => false,
 		),
+		'post_heading_numbers' => array(
+			'label'       => esc_html__( 'Blog heading numbering', 'skvn-marine-blocks' ),
+			'description' => esc_html__( 'Auto-number h2–h5 inside blog post body (CSS counters) + per-heading toggle to skip. Style 1.1.1 không nên nhảy cấp; mixed (I/1/a) không bị.', 'skvn-marine-blocks' ),
+			'default'     => false,
+		),
 	);
 }
 

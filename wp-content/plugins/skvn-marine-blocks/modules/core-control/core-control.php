@@ -15,6 +15,7 @@ require_once __DIR__ . '/registry.php';
 require_once __DIR__ . '/admin-page.php';
 
 const SKVN_MARINE_BLOCKS_CORE_CONTROLS_OPTION = 'skvn_core_controls';
+const SKVN_MARINE_BLOCKS_HEADING_NUMBER_OPTION = 'skvn_heading_number';
 
 // Load feature PHP adapters that are enabled.
 add_action( 'init', 'skvn_marine_blocks_load_core_control_features', 1 );
@@ -53,6 +54,60 @@ function skvn_marine_blocks_register_core_control_settings() {
 			'sanitize_callback' => 'skvn_marine_blocks_sanitize_core_controls',
 			'default'           => skvn_marine_blocks_get_core_controls_defaults(),
 		)
+	);
+
+	// Sub-config for the post_heading_numbers feature — same settings group so it
+	// saves from the same Core Control form.
+	register_setting(
+		'skvn_core_controls_group',
+		SKVN_MARINE_BLOCKS_HEADING_NUMBER_OPTION,
+		array(
+			'type'              => 'array',
+			'sanitize_callback' => 'skvn_marine_blocks_sanitize_heading_number',
+			'default'           => skvn_marine_blocks_heading_number_defaults(),
+		)
+	);
+}
+
+/**
+ * Default heading-number sub-config.
+ *
+ * @return array{depth:string,style:string}
+ */
+function skvn_marine_blocks_heading_number_defaults(): array {
+	return array(
+		'depth' => 'h3',
+		'style' => 'decimal',
+	);
+}
+
+/**
+ * Sanitize the heading-number sub-config.
+ *
+ * @param mixed $value Raw submitted value.
+ * @return array{depth:string,style:string}
+ */
+function skvn_marine_blocks_sanitize_heading_number( $value ): array {
+	$defaults = skvn_marine_blocks_heading_number_defaults();
+	$value    = is_array( $value ) ? $value : array();
+
+	$depth = isset( $value['depth'] ) ? sanitize_key( $value['depth'] ) : '';
+	$style = isset( $value['style'] ) ? sanitize_key( $value['style'] ) : '';
+
+	return array(
+		'depth' => in_array( $depth, array( 'h3', 'h4', 'h5' ), true ) ? $depth : $defaults['depth'],
+		'style' => in_array( $style, array( 'decimal', 'mixed' ), true ) ? $style : $defaults['style'],
+	);
+}
+
+/**
+ * Get sanitized heading-number sub-config.
+ *
+ * @return array{depth:string,style:string}
+ */
+function skvn_marine_blocks_get_heading_number(): array {
+	return skvn_marine_blocks_sanitize_heading_number(
+		get_option( SKVN_MARINE_BLOCKS_HEADING_NUMBER_OPTION, skvn_marine_blocks_heading_number_defaults() )
 	);
 }
 
@@ -121,5 +176,9 @@ function skvn_marine_blocks_load_core_control_features() {
 
 	if ( ! empty( $enabled['button_hover'] ) ) {
 		require_once __DIR__ . '/features/button-hover.php';
+	}
+
+	if ( ! empty( $enabled['post_heading_numbers'] ) ) {
+		require_once __DIR__ . '/features/post-heading-numbers.php';
 	}
 }
