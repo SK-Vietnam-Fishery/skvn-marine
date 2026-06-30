@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/single-post-layout-and-mobile-surfaces.md
+> Onsite QA defer: none (Trục C done)
+
 # Plan: Single Post Hero Layout Fix — 1.3.6 Trục C
 
 ## Context

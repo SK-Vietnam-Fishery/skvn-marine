@@ -14,7 +14,7 @@ You are working in:
 
 **Planning source of truth:**
 
-`.context/planning/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md`
+`.context/planning/archives/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md`
 
 **Decision baseline:**
 
@@ -34,7 +34,7 @@ Read in order:
 3. `.context/MILESTONES.md` — note current milestone; **do not self-transition** to 1.3.8 unless human already declared it. This fix may land inside current milestone 1.3.6 if human did not bump milestone yet.
 4. `.context/TENSIONS_OPEN.md`
 5. `.context/TENSIONS_ACTIVE.md` — tag filter: `blocks`, `editor-governance`
-6. `.context/planning/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` — **read fully**
+6. `.context/planning/archives/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` — **read fully**
 7. `docs/decisions/core-control-core-button-hover.md`
 
 Read `.local/ENVIRONMENT.md` before WP-CLI / build. Inspect `git status` and relevant diffs; do not revert unrelated human work.
@@ -99,7 +99,7 @@ Do **not** change theme or slider CSS files for this task.
 
 Optional if human approves milestone doc sync:
 
-- `.context/planning/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` (status → IMPLEMENTED)
+- `.context/planning/archives/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` (status → IMPLEMENTED)
 
 ## Files forbidden
 

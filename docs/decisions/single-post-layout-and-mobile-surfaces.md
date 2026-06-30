@@ -5,7 +5,7 @@ Date: 2026-06-19
 Milestone context: V1 / 1.3.6 Trục C (Single Post Fix)  
 Sources merged:
 
-- `.context/planning/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md` — hero grid fix (Haiku)
+- `.context/planning/archives/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md` — hero grid fix (Haiku)
 - `docs/workflows/ideation-end-user-deep-customization.md` — future customization (brainstorm only)
 - Mobile surface pass — flatten islands + article + responsive gutter (Grok, hướng 3 A+B+C)
 

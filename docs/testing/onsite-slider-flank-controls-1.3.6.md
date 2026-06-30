@@ -1,6 +1,6 @@
 # Onsite QA — Slider Bottom-Center Flank Controls (V1 / 1.3.6)
 
-**Planning:** `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`  
+**Planning:** `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`  
 **Decision:** `docs/decisions/slider-navigation-and-pagination-controls.md` §5.1  
 **Milestone:** V1 / 1.3.6  
 **Status:** READY — chạy sau khi implement + `npm run build`

@@ -3,7 +3,7 @@
 ```
 Date:     2026-06-28
 Status:   IMPLEMENTED (code xong 2 phase — chờ Dev onsite test)
-Planning: .context/planning/035_VER_1_3_13_LOADING_SCREEN_PLANNING.md
+Planning: .context/planning/archives/035_VER_1_3_13_LOADING_SCREEN_PLANNING.md
 ```
 
 ## Bối cảnh — vì sao có feature này

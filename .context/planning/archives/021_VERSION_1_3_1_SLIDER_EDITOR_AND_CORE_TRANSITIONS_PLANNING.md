@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/slider-navigation-and-pagination-controls.md
+> Onsite QA defer: 1.3.11
+
 # V1 / 1.3.1 — Slider Editor And Core Transitions Planning
 
 Status: APPROVED DIRECTION

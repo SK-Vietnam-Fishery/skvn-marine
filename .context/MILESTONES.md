@@ -162,7 +162,7 @@ Decision:
 
 Planning:
 
-- `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`
+- `.context/planning/archives/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`
 
 Testing:
 
@@ -579,7 +579,7 @@ Planning:
 
 - `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md`
 - `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` (Trục A — carry-in)
-- `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (Trục D — carry-in, source shipped)
+- `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (Trục D — carry-in, source shipped)
 
 Onsite QA: deferred to **1.3.11** (`onsite-button-hover-1.3.7.md`, `onsite-dynamic-collections-1.3.3.md`, `onsite-slider-flank-controls-1.3.6.md`).
 

@@ -54,28 +54,27 @@ Current module context files:
 - `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md`
 - `.context/modules/QUOTE_FLOW.md`
 
-Planning snapshots live in `.context/planning/` and use a three-digit ordering prefix, starting at `000_`.
+Planning snapshots live in `.context/planning/` and use a three-digit ordering prefix, starting at `000_`. Implemented or completed plans move to `.context/planning/archives/` (prefix giữ nguyên) — index: `.context/planning/archives/README.md`.
 
-Current planning file:
+Active planning (root — load when task liên quan):
 
-- `.context/planning/000_VERSION_1_1_0_PLANNING.md`
-- `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — checkpoint plan for layout blocks promoted from `.context/proposals/proposal-layout-blocks.md`. Covers `skvn-marine/card-grid`, `skvn-marine/card`, and quote/testimonial block evaluation for repeated artifact sections that are too fragile for core blocks plus raw class names.
-- `.context/planning/010_VERSION_1_7_0_FRONT_PAGE_TRANG_CHUYEN_DOI_SO_PLANNING.md` — future front-page planning for the external `ChuyenDoiSo.html` benchmark: document/resource list, taxonomy/category counts from real data, whole-site search styling/hook boundary, and layout patterns discovered during the 1.1.0 brainstorm trigger.
-- Historical Slider planning from 1.2.0, 1.2.1, and the superseded 1.3.0 draft now lives under `.context/planning/archives/`.
-- `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md` — active `1.2.3` Feature Showcase plan. Source is activated under `src/feature-showcase/` as `skvn-marine/feature-showcase`.
-- `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md` — completed `1.3.2` plan for governed Feature Showcase hover/autoplay modes, snapping `3/5/7/9s` delay, per-panel Gutenberg LinkControl CTA, and shared autoplay invariants with Slider after `1.3.1` approval.
-- `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md` — active `1.3.3` plan for dynamic Product/Post Collection blocks: Product Grid, Product Carousel, Post Grid, Post Carousel, native WP/Woo query adapters, governed cards/actions, shuffle-balanced ordering, and onsite QA.
-- `.context/planning/021_VERSION_1_3_1_SLIDER_EDITOR_AND_CORE_TRANSITIONS_PLANNING.md` — approved expansion of the current `1.3.1` scope: centered editor Add Slide action, governed/hidden Slides Per View controls, Directional Wipe/Fade/Zoom Out, `600–1000ms` transition duration, and reduced-motion fallback.
-- `.context/planning/022_FUTURE_CANDIDATE_SLIDER_EXTENSION_API_PLANNING.md` — Future Candidate for the `2.x.x` phase: WordPress-native Transition/Pagination Extension API, namespaced registries, fallback/governance, and Portal Zoom plus Timed Tabs as reference integrations outside the lightweight core.
+- `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — layout blocks validation pending 1.4.1.
+- `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md` — Core Control foundation (1.3.4 PENDING).
+- `.context/planning/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md` — post/product/archive (1.3.5 PLANNING).
+- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` — umbrella 1.3.6; Trục A carry-in → 1.3.7.
+- `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` — **current milestone** collection UI + card styles.
+- `.context/planning/032_VER_1_3_8_SLIDER_PARALLAX_IMPLEMENTATION_PLANNING.md` — Slider Parallax (1.3.8 PENDING).
+- `.context/planning/018_VERSION_1_3_10_FULLSCREEN_STEP_SLIDER_PLANNING.md` — Step Slider (1.3.10 PENDING).
+- `.context/planning/027_VERSION_1_5_0_WOO_CATALOG_PLUGIN_PLANNING.md` — woo-catalog brainstorm (1.5.0).
+- `.context/planning/037_VER_1_5_3_TOC_BLOCK_AND_SHORTCODE_PLANNING.md` — native TOC + heading convergence (1.5.3 PLANNED).
+- `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md` — surface presets (1.6.0).
+- `.context/planning/010_VERSION_1_7_0_FRONT_PAGE_TRANG_CHUYEN_DOI_SO_PLANNING.md` — front page Chuyển đổi số (1.7.0).
+- `.context/planning/008_FUTURE_CANDIDATE_GUTENBERG_TURBO_PLANNING.md` — GU Supercharger product direction (post-1.5.x).
+- `.context/planning/022_FUTURE_CANDIDATE_SLIDER_EXTENSION_API_PLANNING.md` — 2.x Slider Extension API.
 - `docs/decisions/slider-completion-spec-1.3.0.md` — active Slider source of truth. V1 / 1.3.0 completes dynamic rendering, compatibility, accessibility, and geometry; expanded carousel/showcase UX remains a later human-approved milestone.
 - `docs/decisions/slider-navigation-and-pagination-controls.md` — approved V1 / 1.3.1 direction for independent arrow/pagination style and position controls, conditional bottom clustering, Swiper-owned timed pagination, governed `5/7/9/12s` duration, and responsive/accessibility fallbacks after the failed 1.3.0 media, width, pagination, and memory behavior is corrected.
 - `.context/planning/013_VERSION_2_0_0_TO_3_0_0_STANDALONE_BLOCK_THEME_PLANNING.md` — medium/long-term plan: 2.0.0 starts migration away from GeneratePress; 3.0.0 completes standalone SKVN theme direction. Gutenberg remains the WP content/editor model; custom blocks become additive governed site enhancements.
 - `.context/planning/014_VERSION_1_X_SKVN_ELEMENT_CPT_PLANNING.md` — 1.x foundation plan for SEO-safe reusable site elements (`skvn_element`) before 2.0.0 migration. Header/footer reusable content should move away from normal Pages toward non-public CPT elements.
-
-Future plugin architecture planning:
-
-- `.context/planning/008_FUTURE_CANDIDATE_GUTENBERG_TURBO_PLANNING.md` — split small Gutenberg enhancement plugins first, then possibly consolidate into an umbrella plugin named `Gutenberg Supercharger` around a future V4 / 4.0.0 candidate. Standard/core edition name: `Gutenberg Supercharger`; pro/commercial edition name: `Gutenberg Supercharger Stage 2`; `Gutenberg Remap` is retained only as an alternate/redirect candidate; community tagline: "Make your site feel more \"Á đù VTEC\"." Current V1 work may use migration-ready module structure, but must not create/rename to `gutenberg-supercharger` or `gutenberg-turbo`.
-- `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md` — SKVN-local hardening plan for approved flat/soft/glass/elevated/outlined surface presets. Theme owns `skvn-surface--*` classes and tokens; plugin/editor controls may select presets later. Production output must not depend on WindPress/Tailwind utilities.
 
 Proposal files under `.context/proposals/` are not active protocol and are ignored by git. Do not load them unless the human explicitly asks to review a proposal.
 

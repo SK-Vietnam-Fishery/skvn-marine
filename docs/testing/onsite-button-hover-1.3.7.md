@@ -1,6 +1,6 @@
 # Onsite QA — Button Hover Verification (Core Button Hover + Collection CTAs + Slider Compatibility) — V1 / 1.3.7
 
-**Planning:** `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` (for collection CTA hovers) + `.context/planning/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` (core feature + slider case)  
+**Planning:** `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` (for collection CTA hovers) + `.context/planning/archives/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` (core feature + slider case)  
 **Contracts/Decisions:** `docs/standards/gutenberg-block-extension-css-contract.md`, `docs/decisions/core-control-core-button-hover.md`, `docs/decisions/collection-card-system-1.3.7.md`  
 **Milestone:** V1 / 1.3.7 — Collection Block UI & Card Styles (includes hover button work per user request for slider case + collection polish)  
 **Status:** READY — chạy sau khi 1.3.7 source + build (collection CTAs + any slider hover adjustments for compatibility). Use on live site + test page.

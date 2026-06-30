@@ -4,7 +4,7 @@
 Date:     2026-06-28
 Status:   IMPLEMENTED (2026-06-28 — chờ Dev build + onsite test)
 Home:     Core Control feature (modules/core-control)
-Planning: .context/planning/036_VER_1_3_14_POST_HEADING_NUMBERING_PLANNING.md
+Planning: .context/planning/archives/036_VER_1_3_14_POST_HEADING_NUMBERING_PLANNING.md
 ```
 
 ## Goal

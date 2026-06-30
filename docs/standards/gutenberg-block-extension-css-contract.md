@@ -5,7 +5,7 @@
 
 **Case study gốc:** Core Button Hover Colors — 2 agent mắc lỗi, feature không hoạt động
 mà không có error. Document này rút ra từ retrospective
-`.context/planning/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md`.
+`.context/planning/archives/033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md`.
 
 ---
 

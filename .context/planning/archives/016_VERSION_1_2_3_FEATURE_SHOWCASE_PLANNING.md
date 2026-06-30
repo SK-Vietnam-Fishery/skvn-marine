@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/feature-showcase-1.2.3.md
+> Onsite QA defer: 1.2.9 (carried)
+
 # Version 1.2.3 — SKVN Feature Showcase Planning
 
 Status: milestone complete; onsite QA carried to V1 / 1.2.9

@@ -4,7 +4,7 @@
 Date:     2026-06-27
 Status:   IMPLEMENTED (code xong 3 phase — chờ Dev onsite test)
 Scope:    BẢN TẠM — milestone đúng (1.4–1.6.x) refactor thành block-config + drag-drop, bỏ module này
-Planning: .context/planning/034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNING.md
+Planning: .context/planning/archives/034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNING.md
 Ideation: docs/ideations/blog-sidebar-content-settings.md
 ```
 

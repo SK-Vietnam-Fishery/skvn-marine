@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/core-control-core-button-hover.md
+> Onsite QA defer: 1.3.11
+
 # 033 — Core Button Hover: Fix Plan & Retrospective
 
 ```

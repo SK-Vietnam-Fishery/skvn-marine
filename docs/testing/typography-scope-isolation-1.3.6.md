@@ -1,7 +1,7 @@
 # Typography Scope Isolation — Test Plan
 
 **Target milestone:** V1 / 1.3.6  
-**Planning:** `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`  
+**Planning:** `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`  
 **Decision:** `docs/decisions/typography-scope-and-font-loading.md`  
 **Status:** READY — implement 029 done; chờ human verify onsite/local
 

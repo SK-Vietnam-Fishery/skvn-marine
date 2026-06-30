@@ -49,12 +49,12 @@ Planning snapshots and version decisions live in:
 
 Current naming rule:
 
-- Planning files use a three-digit ordering prefix for human scanning.
+- Planning files use a three-digit ordering prefix for human scanning (thứ tự tư duy).
 - The first planning file starts at `000_`.
+- Implemented or completed plans move to `.context/planning/archives/` — prefix giữ nguyên.
+- Archive index: `.context/planning/archives/README.md`.
 
-Current files:
-
-- `000_VERSION_0_1_0_PLANNING.md`
+Active planning lives at `.context/planning/` root; see `GLOBAL.md` [manual] Planning section.
 
 Use planning files when discussing scope, layout direction, UX decisions, and future block boundaries.
 

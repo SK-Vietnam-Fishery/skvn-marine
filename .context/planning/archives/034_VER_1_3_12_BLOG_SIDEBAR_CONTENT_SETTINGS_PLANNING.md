@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/blog-sidebar-content-settings-1.3.12.md
+> Onsite QA defer: onsite test pending
+
 # 034 — Blog Sidebar Content Settings (bản tạm)
 
 ```

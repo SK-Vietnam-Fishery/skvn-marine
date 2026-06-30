@@ -890,7 +890,7 @@ Acceptance draft:
 - [ ] Inspector panel refactor không invalidate content hiện có
 
 **Slider bottom-center flank controls (Trục D — planning 031 v2.0, source IMPLEMENTED — pending QA):**
-- Planning: `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
+- Planning: `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
 - Onsite: `docs/testing/onsite-slider-flank-controls-1.3.6.md`
 - Umbrella: `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` §4.6
 - [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)

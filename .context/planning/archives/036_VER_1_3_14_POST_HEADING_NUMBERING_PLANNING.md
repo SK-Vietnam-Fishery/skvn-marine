@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/post-heading-numbering-1.3.14.md
+> Onsite QA defer: Dev build + onsite test pending
+
 # 036 — Post Heading Auto-Numbering (Core Control feature)
 
 ```

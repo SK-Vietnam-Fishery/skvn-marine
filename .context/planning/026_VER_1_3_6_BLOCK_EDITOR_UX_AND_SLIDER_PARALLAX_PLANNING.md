@@ -5,10 +5,10 @@
 **Ngày tạo:** 2026-06-17  
 **Context:** GeneratePress parent + skvn-marine child theme + skvn-marine-blocks plugin.
 
-**Follow-up (hardening):** Typography scope isolation — `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` (wp-admin font leak fix + Vietnamese gfonts contract). Có thể implement song song hoặc ngay sau trục A/B.
+**Follow-up (hardening):** Typography scope isolation — `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` (wp-admin font leak fix + Vietnamese gfonts contract). Có thể implement song song hoặc ngay sau trục A/B.
 
 **Trục D (layout slider):** Bottom-center flank controls — planning chi tiết
-`.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (v2.0).
+`.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (v2.0).
 Onsite: `docs/testing/onsite-slider-flank-controls-1.3.6.md`.
 
 **Trục B (parallax):** **Deferred → V1 / 1.3.8** (human lock 2026-06-22). Phần parallax
@@ -209,7 +209,7 @@ không thêm attribute, không đổi Swiper.
 
 **Không implement từ section tóm tắt này.** Source of truth:
 
-1. `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (v2.0)
+1. `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (v2.0)
    — predicate, markup, từng file, CSS mirror, test matrix.
 2. `docs/decisions/slider-navigation-and-pagination-controls.md` §5.1 — contract ngắn.
 3. `docs/testing/onsite-slider-flank-controls-1.3.6.md` — đóng checklist milestone.
