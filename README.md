@@ -7,6 +7,8 @@ AI context files, and development documentation used to build the site.
 
 This repository is **not** a full WordPress runtime installation.
 
+Build with Codex, Grok Build and Claude
+
 ---
 
 ## What This Repo Contains
