@@ -57,43 +57,43 @@ const SlideBackgroundPreview = memo( function SlideBackgroundPreview( {
 	src,
 	onSelect,
 }: SlideBackgroundPreviewProps ) {
-	if ( src ) {
-		return (
-			<>
-				<img
-					alt={ alt }
-					className="skvn-slide__background-image"
-					src={ src }
-				/>
-				<span
-					aria-hidden="true"
-					className="skvn-slide__overlay"
-					style={ { opacity: overlayOpacity / 100 } }
-				/>
-			</>
-		);
-	}
-
-	if ( ! showChooseImage ) {
-		return null;
-	}
-
 	return (
-		<MediaUploadCheck>
-			<MediaUpload
-				allowedTypes={ [ 'image' ] }
-				onSelect={ onSelect }
-				render={ ( { open } ) => (
-					<Button
-						className="skvn-slide__choose-image"
-						onClick={ open }
-						variant="secondary"
-					>
-						{ __( 'Choose background image', 'skvn-marine-blocks' ) }
-					</Button>
-				) }
-			/>
-		</MediaUploadCheck>
+		<div className="skvn-slide__media">
+			{ src ? (
+				<>
+					<div className="skvn-slide__bg">
+						<img
+							alt={ alt }
+							className="skvn-slide__background-image"
+							src={ src }
+						/>
+					</div>
+					<span
+						aria-hidden="true"
+						className="skvn-slide__overlay"
+						style={ { opacity: overlayOpacity / 100 } }
+					/>
+				</>
+			) : (
+				showChooseImage && (
+					<MediaUploadCheck>
+						<MediaUpload
+							allowedTypes={ [ 'image' ] }
+							onSelect={ onSelect }
+							render={ ( { open } ) => (
+								<Button
+									className="skvn-slide__choose-image"
+									onClick={ open }
+									variant="secondary"
+								>
+									{ __( 'Choose background image', 'skvn-marine-blocks' ) }
+								</Button>
+							) }
+						/>
+					</MediaUploadCheck>
+				)
+			) }
+		</div>
 	);
 } );
 

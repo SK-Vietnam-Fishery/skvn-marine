@@ -98,7 +98,7 @@ V1 / 1.3.3.
 V1 / 1.3.3 planned direction:
 
 - Decision: `docs/decisions/skvn-dynamic-collections-1.3.3.md`.
-- Planning: `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`.
+- Planning: `.context/planning/archives/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`.
 - Testing: `docs/testing/onsite-dynamic-collections-1.3.3.md`.
 - Build two custom dynamic SKVN blocks:
   `skvn-marine/product-collection` and `skvn-marine/post-collection`.
@@ -182,7 +182,7 @@ Do not make this plugin own the primary SKVN visual system.
 - This is a decided future direction only. Do not implement until human assigns
   it to a milestone.
 - Planning:
-  `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
+  `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
 
 ## [manual] Portable Plugin Animation Boundary
 
@@ -436,7 +436,7 @@ Implemented V1 / 1.2.1:
 
 Implemented V1 / 1.2.3 Feature Showcase:
 
-- Planning file: `.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`.
+- Planning file: `.context/planning/archives/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md`.
 - Decision doc: `docs/decisions/feature-showcase-1.2.3.md`.
 - Human-approved name: `SKVN Feature Showcase`.
 - Block slug: `skvn-marine/feature-showcase`.
@@ -460,7 +460,7 @@ Implemented V1 / 1.2.3 Feature Showcase:
 Completed V1 / 1.3.2 Feature Showcase autoplay and panel links:
 
 - Planning file:
-  `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`.
+  `.context/planning/archives/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`.
 - Implemented after V1 / 1.3.0 dynamic rendering and the human-approved
   V1 / 1.3.1 Slider controls milestone. Human approved transition on
   2026-06-13; any newly discovered defects are follow-up fixes.

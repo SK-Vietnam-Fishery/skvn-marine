@@ -152,7 +152,7 @@ Gutenberg's three width levels: normal blocks use `--skvn-content-width`,
 Planning source:
 
 ```text
-.context/planning/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md
+.context/planning/archives/016_VERSION_1_2_3_FEATURE_SHOWCASE_PLANNING.md
 ```
 
 Onsite QA:

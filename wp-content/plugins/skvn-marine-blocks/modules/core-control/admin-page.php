@@ -48,6 +48,36 @@ function skvn_marine_blocks_render_core_control_page() {
 				<?php endforeach; ?>
 				</tbody>
 			</table>
+			<?php
+			$hn     = skvn_marine_blocks_get_heading_number();
+			$hn_opt = SKVN_MARINE_BLOCKS_HEADING_NUMBER_OPTION;
+			?>
+			<h2><?php esc_html_e( 'Blog heading numbering', 'skvn-marine-blocks' ); ?></h2>
+			<p class="description"><?php esc_html_e( 'Áp dụng khi feature "Blog heading numbering" ở trên được bật.', 'skvn-marine-blocks' ); ?></p>
+			<table class="form-table" role="presentation">
+				<tbody>
+					<tr>
+						<th scope="row"><label for="skvn_hn_depth"><?php esc_html_e( 'Độ sâu', 'skvn-marine-blocks' ); ?></label></th>
+						<td>
+							<select id="skvn_hn_depth" name="<?php echo esc_attr( $hn_opt . '[depth]' ); ?>">
+								<option value="h3" <?php selected( $hn['depth'], 'h3' ); ?>><?php esc_html_e( 'Tới H3', 'skvn-marine-blocks' ); ?></option>
+								<option value="h4" <?php selected( $hn['depth'], 'h4' ); ?>><?php esc_html_e( 'Tới H4', 'skvn-marine-blocks' ); ?></option>
+								<option value="h5" <?php selected( $hn['depth'], 'h5' ); ?>><?php esc_html_e( 'Tới H5', 'skvn-marine-blocks' ); ?></option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="skvn_hn_style"><?php esc_html_e( 'Kiểu số', 'skvn-marine-blocks' ); ?></label></th>
+						<td>
+							<select id="skvn_hn_style" name="<?php echo esc_attr( $hn_opt . '[style]' ); ?>">
+								<option value="decimal" <?php selected( $hn['style'], 'decimal' ); ?>><?php esc_html_e( 'Decimal — 1, 1.1, 1.1.1', 'skvn-marine-blocks' ); ?></option>
+								<option value="mixed" <?php selected( $hn['style'], 'mixed' ); ?>><?php esc_html_e( 'Mixed — I, 1, a', 'skvn-marine-blocks' ); ?></option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
 			<?php submit_button(); ?>
 		</form>
 	</div>

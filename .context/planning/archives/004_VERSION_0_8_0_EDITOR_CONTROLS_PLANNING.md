@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/skvn-editor-controls-0.8.0.md
+> Onsite QA defer: none
+
 # Version 0.8.0 Planning — SKVN Editor Controls
 
 > Planning reference for Elementor-inspired sidebar controls inside Gutenberg.

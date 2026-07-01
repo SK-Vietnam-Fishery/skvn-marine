@@ -3,7 +3,7 @@
 **Target milestone:** V1 / 1.3.6 (Trục C — Single Post Fix)  
 **Planning:** `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md`  
 **Status:** REVIEWED — root cause confirmed onsite; **implement plan: Claude Haiku**  
-**Implement planning:** `.context/planning/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md` (authoritative for code)  
+**Implement planning:** `.context/planning/archives/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md` (authoritative for code)  
 **Future brainstorm:** `docs/workflows/ideation-end-user-deep-customization.md` (chưa quyết định)  
 **Collaboration method:** `docs/workflows/agent-ui-layout-collaboration-method.md` (handoff Haiku)  
 **Decisions:** `docs/decisions/single-post-layout-and-mobile-surfaces.md`  
@@ -91,7 +91,7 @@ File: `wp-content/themes/skvn-marine/style.css` (~line 960).
 
 ## Implement plan (Claude Haiku — authoritative)
 
-**File:** `.context/planning/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md`
+**File:** `.context/planning/archives/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md`
 
 Haiku chọn **HTML restructure + CSS grid placement** thay vì override GP `.site-content` flex.
 
@@ -254,7 +254,7 @@ Object { wrapW: 1200, heroTop: 220.1999969482422, mainTop: 580.2000122070312, he
 
 ## Handoff note for Claude Haiku
 
-1. **Source of truth:** `.context/planning/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md`
+1. **Source of truth:** `.context/planning/archives/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md`
 2. **Verify 2 PASS** — đọc section **DevTools proof → Verify 2** ở trên; human đã trả `wrapW: 1200`, `heroAboveMain: true`. Không reopen bug GP flex sibling trừ khi evidence mới fail.
 3. Đọc `docs/standards/css-layout-safety-contract.md` trước khi sửa CSS layout thêm.
 4. Files đã đổi: `single.php` + `style.css` only (2 files).

@@ -242,7 +242,7 @@ Slider regression QA remains scheduled under V1 / 1.3.9.
 Planning:
 
 ```text
-.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md
+.context/planning/archives/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md
 ```
 
 Agents changing Slider in V1 / 1.3.0 must keep the following behavior
@@ -332,6 +332,6 @@ Archived files are historical evidence, not active instructions.
 Active related documents:
 
 - `docs/testing/onsite-slider-motion-1.3.2.md`
-- `.context/planning/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
+- `.context/planning/archives/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
 - `docs/decisions/fullscreen-step-slider-1.5.0.md`
 - `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`

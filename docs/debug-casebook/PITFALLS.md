@@ -18,6 +18,7 @@
 | Tắt appender WP, custom nút trong frontend overlay | Add slide không click được; picker trúng `core/buttons` trong slide | Plugin editor + CSS | [CASE-004](slider/004_SLIDER_EDITOR_ADD_SLIDE_HIT_TEST_FAILURE.md) |
 | `useSelect` return object mới mỗi keystroke | IME lag, caret nhảy `triênr→tr→triển` khi gõ slide heading | Plugin `slide/edit.tsx` | [CASE-005](slider/005_SLIDER_EDITOR_IME_TYPING_RERENDER_CASCADE.md) |
 | Editor preview arrow reuse Swiper hook + CSS yếu | Circle “rỗng”, chevron xanh to/lệch; `aria-controls` trên preview button | Plugin editor CSS + `view.ts` selector | [CASE-006](slider/006_SLIDER_EDITOR_ARROW_PREVIEW_CSS_CASCADE.md) |
+| CSS vars build nhưng không emit define rule | Có `<style>` + `var(--x, inherit)`; hover không đổi; `--x` rỗng trên wrapper | PHP render_block adapter | [CASE-007](core-control/007_BUTTON_HOVER_CSS_VARS_BUILT_NOT_EMITTED.md) |
 
 ---
 
@@ -193,6 +194,38 @@ Geometry:      44px box − 40px padding ngang → glyph ::after bị ép/tràn
 
 ---
 
+## Pitfall 7 — CSS custom properties: build array ≠ emit define rule
+
+**Triệu chứng:** Frontend có scoped `<style>` và rule `:hover` dùng
+`var(--token, inherit)`, nhưng hover không đổi màu; `getComputedStyle(wrapper)`
+trả `--token` rỗng.
+
+**State Delta:**
+
+```text
+State A (editor):  wrapperStyle / inline style define --token trên element
+State B (frontend): PHP chỉ emit :hover { color: var(--token, inherit) }
+Delta:             thiếu selector { --token: <value> } trên cùng scope class
+```
+
+**Nguyên nhân:** Code populate `$css_vars` / mảng token nhưng `sprintf()` /
+string build chỉ ghi consumer rules. `var(..., inherit)` vẫn là CSS hợp lệ →
+bug im lặng.
+
+**Cách tránh:**
+
+1. Mọi scoped inline style từ PHP phải có **hai lớp**: define vars trên scope,
+   consume trong `:hover` / `:focus-visible`.
+2. View-source proof: tìm cả `--skvn-*:` assignment **và** `var(--skvn-*)`
+   reference.
+3. DevTools: `getPropertyValue('--token')` trên wrapper trước khi close task.
+4. Regression assert trong test đọc source PHP (CASE-007).
+
+**Không làm:** Coi “đã có `<style>` block” hoặc “attrs đã sanitize” là đủ; không
+debug thêm khi thiếu define rule.
+
+---
+
 ## Agent anti-patterns (vì sao lỗi “ngớ ngẩn” lặp lại)
 
 ### 1. Đọc rule local, bỏ qua integration contract
@@ -278,6 +311,7 @@ không giữ appender Gutenberg.
 | Swiper core CSS enqueue | `tests/slider-block.test.mjs`, `skvn-marine-blocks.php` |
 | Viewport height chain | `tests/slider-block.test.mjs` → `style.css`, `view.ts` |
 | Hero block centering | `tests/slider-block.test.mjs` → `style.css` |
+| Button hover CSS var define + consume | `tests/core-control-button-hover.test.mjs` → `button-hover.php` |
 
 Sau `npm run build`, human onsite verify để promote case sang `ONSITE_VERIFIED`.
 

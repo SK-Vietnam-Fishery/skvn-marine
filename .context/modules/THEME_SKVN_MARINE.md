@@ -140,7 +140,7 @@ Typography có hai lớp — **không gộp**:
 - Google Fonts: CSS2 API, Vietnamese-capable presets; không dùng `subset=vietnamese` (API v1 legacy).
 - Plugin typography-settings **không** enqueue CSS — chỉ save option.
 
-Planning implement: `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
+Planning implement: `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
 
 ## [manual] Page Display Controls
 

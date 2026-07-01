@@ -1,6 +1,6 @@
 # V1 / 1.3.0 — Slider Dynamic Rendering Architecture Planning
 
-Status: IN_PROGRESS
+Status: DONE — milestone 1.3.0 complete
 Created: 2026-06-08
 Started: 2026-06-11
 Current milestone: V1 / 1.3.0

@@ -5,24 +5,40 @@
 **Ngày tạo:** 2026-06-17  
 **Context:** GeneratePress parent + skvn-marine child theme + skvn-marine-blocks plugin.
 
-**Follow-up (hardening):** Typography scope isolation — `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` (wp-admin font leak fix + Vietnamese gfonts contract). Có thể implement song song hoặc ngay sau trục A/B.
+**Follow-up (hardening):** Typography scope isolation — `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` (wp-admin font leak fix + Vietnamese gfonts contract). Có thể implement song song hoặc ngay sau trục A/B.
 
-**Related (layout only, tách khỏi Trục B motion):** Bottom-center flank controls — `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`. Artifact `docs/artifacts/slider-parallax-1.3.6-mockup.html` dùng cho controls row **và** transition motion; 031 chỉ ship layout `‹ pagination ›`.
+**Trục D (layout slider):** Bottom-center flank controls — planning chi tiết
+`.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (v2.0).
+Onsite: `docs/testing/onsite-slider-flank-controls-1.3.6.md`.
+
+**Trục B (parallax):** **Deferred → V1 / 1.3.8** (human lock 2026-06-22). Phần parallax
+trong file này giữ làm reference; không implement trong 1.3.6.
+
+**Artifact:** `docs/artifacts/slider-parallax-1.3.6-mockup.html` có controls row **và**
+transition motion — 031/Trục D chỉ ship layout `‹ pagination ›`, không ship motion.
 
 ---
 
 ## 1. Mục tiêu
 
-Milestone này có ba trục:
+Milestone **1.3.6 đang active** có bốn trục (Trục B parallax chuyển sang 1.3.8):
 
 **Trục A — Editor UX cho SKVN blocks:**
 Nâng cấp Inspector panel, placeholder state, và control pattern cho tất cả các block
 trong `skvn-marine-blocks` để editor UX nhất quán, dễ dùng cho marketing user mà
 không cần chạm raw code.
 
-**Trục B — Slider Parallax:**
-Thêm hiệu ứng parallax cho Slide image layer, dùng Swiper Parallax Module. Không
-introduce scroll-spy hay custom animation engine riêng.
+**Trục B — Slider Parallax:** → **Deferred V1 / 1.3.8** (xem §4 và
+`docs/decisions/slider-parallax-both-1.3.8.md`). Không nằm trong scope implement
+1.3.6 hiện tại.
+
+**Trục C — Single Post Fix:** Visual debt 1.3.5 (hero width, font, aspect-ratio).
+
+**Trục D — Slider bottom-center flank controls:**
+Khi arrows + pagination **cùng Bottom center** (và arrow không phải pill), đổi layout
+controls từ `[‹›] | pagination` sang `‹ | pagination | ›`. Thuộc plugin slider;
+**không** đổi attribute schema. Spec đầy đủ: planning **031 v2.0** — đọc file đó
+trước khi code; file 026 này chỉ giải thích vị trí trong milestone.
 
 ---
 
@@ -104,7 +120,10 @@ Kiểm tra và chuẩn hoá:
 
 ---
 
-## 4. Trục B — Slider Parallax
+## 4. Trục B — Slider Parallax (DEFERRED → 1.3.8)
+
+> **Trạng thái:** Không implement trong milestone 1.3.6. Giữ §4 làm reference khi
+> mở 1.3.8. Tránh nhầm với Trục D (flank layout) — flank là CSS/markup only.
 
 ### 4.1 Cơ chế
 
@@ -165,6 +184,52 @@ text "Parallax ON" trong editor preview khi `enableParallax: true`.
 Slide hiện có `background-image` được set qua CSS hoặc `img` tag tùy preset.
 Cần audit `skvn-slide__bg` wrapper tồn tại đúng trong cả 3 Slider presets
 (Hero, Product Showcase, Card Carousel) trước khi gắn `data-swiper-parallax`.
+
+---
+
+## 4.6 Trục D — Slider bottom-center flank controls (ACTIVE — planning 031)
+
+### Vì sao có Trục D
+
+Milestone 1.3.1 đã ship **cluster** `arrows | pagination` khi hai control cùng bottom
+position. Với **bottom-center**, marketing muốn pagination nằm giữa và prev/next hai
+bên — giống mockup artifact. Đây là **exception layout**, không phải feature mới:
+không thêm attribute, không đổi Swiper.
+
+### Human đã chốt (2026-06-19)
+
+| Câu hỏi | Trả lời |
+|---------|---------|
+| Khi nào flank? | Cùng `bottom-center` + arrows on + pagination on + không pill |
+| Pill + bottom-center? | Giữ cluster cũ (capsule gom 2 nút) |
+| Pagination style? | Không ảnh hưởng eligibility (dots/fraction/timed đều flank được) |
+| Parallax motion? | Không — Trục B deferred 1.3.8 |
+
+### Implementer đọc đâu
+
+**Không implement từ section tóm tắt này.** Source of truth:
+
+1. `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (v2.0)
+   — predicate, markup, từng file, CSS mirror, test matrix.
+2. `docs/decisions/slider-navigation-and-pagination-controls.md` §5.1 — contract ngắn.
+3. `docs/testing/onsite-slider-flank-controls-1.3.6.md` — đóng checklist milestone.
+
+### Files chạm (tóm tắt — chi tiết trong 031 §7)
+
+| File | Việc |
+|------|------|
+| `modules/slider-render/slider-render.php` | Flank markup branch (canonical) |
+| `src/slider/view.ts` | Không inject separator khi flank |
+| `src/slider/edit.tsx` | Editor preview branch |
+| `src/slider/style.css` | `--cluster-flank` + `--arrows-{style}` mirror |
+| `tests/slider-block.test.mjs` | Regression flank + pill exception |
+
+**Không chạm:** `save.tsx`, theme, GeneratePress, Swiper module list.
+
+### Trạng thái code (2026-06-22)
+
+**0% implemented** — grep `cluster-flank` trong plugin = 0. Milestone bullets flank
+trong `MILESTONES.md` vẫn `[ ]`.
 
 ---
 
@@ -235,25 +300,20 @@ Fix: Thêm `display: block; width: 100%` explicit. Nếu GP flex container vẫn
 
 ---
 
-## 6. Thứ tự thực hiện
+## 6. Thứ tự thực hiện (cập nhật 2026-06-22)
 
 ```
-Step 1:  [C] Single Post — hero width fix + font-family trên heading elements
-Step 2:  [C] Aspect-ratio CSS cho tất cả thumbnail contexts (ThumbPress-compatible)
-Step 3:  [A] Audit tất cả blocks — Inspector panel gaps, placeholder state
-Step 4:  [A] Inspector panel refactor: slider + feature-showcase (complex nhất)
-Step 5:  [A] Inspector panel refactor: collection (tách Content/query vs Layout)
-Step 6:  [A] Inspector panel refactor: card-grid, card, accordion
-Step 7:  [A] Placeholder empty state cho slider, accordion
-Step 8:  [A] Collection skeleton preview
-Step 9:  [A] Block icon / inserter label audit và fix
-Step 10: [B] Slider Parallax — attributes, Swiper module, frontend init, reduced-motion
-Step 11: [B] Parallax editor UI (toggle + intensity preset trong Inspector)
-Step 12: Build + QA tổng
+Step 1–2:  [C] Single Post — DONE (human verified 2026-06-19)
+Step 3–9:  [A] Editor UX — IN PROGRESS / pending
+Step 10:     [D] Flank controls — theo 031 §9 (PHP → CSS → view → edit → test)
+Step 11:     [D] Onsite QA — docs/testing/onsite-slider-flank-controls-1.3.6.md
+Step 12:     Build + PHP lint + tick MILESTONES flank bullets
 ```
 
-Trục C trước — đây là visual debt từ 1.3.5, ảnh hưởng onsite ngay.
-Trục A và B sau, có thể song song sau Step 3.
+**Trục B (Parallax):** không nằm trong sequence 1.3.6 — chuyển sang milestone **1.3.8**.
+
+**Trục D** có thể làm song song Trục A sau khi có bandwidth; không phụ thuộc parallax.
+Ưu tiên D nếu onsite đang chờ layout bottom-center hero slider.
 
 ---
 
@@ -315,12 +375,17 @@ Không có thay đổi theme cho milestone này.
 - [ ] Block icons và descriptions không còn blank trong inserter
 - [ ] Inspector panel refactor không invalidate content hiện có
 
-**Trục B — Slider Parallax:**
-- [ ] `enableParallax` attribute tồn tại trong Slider block.json
-- [ ] Parallax chạy đúng trên desktop với intensity preset (subtle/medium/strong)
-- [ ] `prefers-reduced-motion` tắt parallax hoàn toàn
-- [ ] Parallax tắt khi `slidesPerView > 1`
-- [ ] Editor không chạy parallax — chỉ hiện badge "Parallax ON"
+**Trục B — Slider Parallax:** → moved to **V1 / 1.3.8** (không tick trong 1.3.6).
+
+**Trục D — Flank controls (planning 031 + onsite doc):**
+- [ ] `bottom-center` + `bottom-center` + circle/minimal → `‹ pagination ›`
+- [ ] Bốn pagination styles OK trong flank row
+- [ ] `pill` + bottom-center → cluster cũ, không flank
+- [ ] `bottom-left` / `bottom-right` / `side-center` / mismatched positions — no regression
+- [ ] Editor preview khớp frontend
+- [ ] `tests/slider-block.test.mjs` pass
+- [ ] Human onsite PASS (`docs/testing/onsite-slider-flank-controls-1.3.6.md`)
+- [ ] Mobile timed pagination width — deferred 1.3.9 (ghi note evidence)
 
 **Chung:**
 - [ ] Plugin build pass, PHP lint pass

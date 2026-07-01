@@ -1,7 +1,9 @@
-import { InspectorControls } from '@wordpress/block-editor';
+import {
+	InspectorControls,
+	__experimentalPanelColorGradientSettings as PanelColorGradientSettings,
+} from '@wordpress/block-editor';
 import { addFilter } from '@wordpress/hooks';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ColorPicker, BaseControl } from '@wordpress/components';
 import type { BlockConfiguration } from '@wordpress/blocks';
 
 import { isCoreControlEnabled } from '../config';
@@ -37,6 +39,11 @@ addFilter(
 
 /**
  * Add hover color Inspector panel to core/button edit when feature is enabled.
+ *
+ * Solid color and gradient are stored in SEPARATE attributes
+ * (skvnHoverBgColor / skvnHoverBgGradient). Sharing a single attribute breaks
+ * with PanelColorGradientSettings because the unused handler fires with
+ * undefined and clobbers the value the user just picked.
  */
 addFilter(
 	'editor.BlockEdit',
@@ -48,100 +55,134 @@ addFilter(
 			}
 
 			const { attributes, setAttributes } = props;
-			const { skvnHoverTextColor, skvnHoverBgColor } = attributes;
-
-			const wrapperStyle: React.CSSProperties = {};
-			if ( skvnHoverBgColor ) {
-				wrapperStyle[ '--skvn-btn-hover-bg' as any ] = skvnHoverBgColor;
-			}
-			if ( skvnHoverTextColor ) {
-				wrapperStyle[ '--skvn-btn-hover-text' as any ] = skvnHoverTextColor;
-			}
+			const {
+				skvnHoverTextColor,
+				skvnHoverBgColor,
+				skvnHoverBgGradient,
+			} = attributes;
 
 			return (
 				<>
 					{ isCoreControlEnabled( 'button_hover' ) && (
 						<InspectorControls group="styles">
-							<PanelBody
+							<PanelColorGradientSettings
 								title={ __(
-									'Hover Color',
+									'Hover Colors',
 									'skvn-marine-blocks'
 								) }
 								initialOpen={ false }
-							>
-								<BaseControl
-									id="skvn-btn-hover-text"
-									label={ __(
-										'Hover text color',
-										'skvn-marine-blocks'
-									) }
-								>
-									<ColorPicker
-										color={ skvnHoverTextColor || '' }
-										onChange={ ( value: string ) =>
+								settings={ [
+									{
+										colorValue:
+											skvnHoverTextColor || undefined,
+										onColorChange: (
+											value: string | undefined
+										) =>
 											setAttributes( {
-												skvnHoverTextColor: value,
-											} )
-										}
-										enableAlpha
-									/>
-									{ skvnHoverTextColor && (
-										<button
-											type="button"
-											className="button button-small"
-											style={ { marginTop: 4 } }
-											onClick={ () =>
-												setAttributes( {
-													skvnHoverTextColor: '',
-												} )
-											}
-										>
-											{ __(
-												'Clear',
-												'skvn-marine-blocks'
-											) }
-										</button>
-									) }
-								</BaseControl>
-								<BaseControl
-									id="skvn-btn-hover-bg"
-									label={ __(
-										'Hover background color',
-										'skvn-marine-blocks'
-									) }
-								>
-									<ColorPicker
-										color={ skvnHoverBgColor || '' }
-										onChange={ ( value: string ) =>
+												skvnHoverTextColor:
+													value ?? '',
+											} ),
+										label: __(
+											'Text',
+											'skvn-marine-blocks'
+										),
+									},
+									{
+										colorValue:
+											skvnHoverBgColor || undefined,
+										gradientValue:
+											skvnHoverBgGradient || undefined,
+										onColorChange: (
+											value: string | undefined
+										) =>
 											setAttributes( {
-												skvnHoverBgColor: value,
-											} )
-										}
-										enableAlpha
-									/>
-									{ skvnHoverBgColor && (
-										<button
-											type="button"
-											className="button button-small"
-											style={ { marginTop: 4 } }
-											onClick={ () =>
-												setAttributes( {
-													skvnHoverBgColor: '',
-												} )
-											}
-										>
-											{ __(
-												'Clear',
-												'skvn-marine-blocks'
-											) }
-										</button>
-									) }
-								</BaseControl>
-							</PanelBody>
+												skvnHoverBgColor: value || '',
+												skvnHoverBgGradient: '',
+											} ),
+										onGradientChange: (
+											value: string | undefined
+										) =>
+											setAttributes( {
+												skvnHoverBgGradient:
+													value || '',
+												skvnHoverBgColor: '',
+											} ),
+										label: __(
+											'Background',
+											'skvn-marine-blocks'
+										),
+									},
+								] }
+							/>
 						</InspectorControls>
 					) }
 					<BlockEdit { ...props } />
 				</>
+			);
+		};
+	}
+);
+
+/**
+ * Inject hover CSS vars + marker classes on the editor block wrapper for live
+ * preview. Markers mirror the frontend render filter so a text-only button
+ * never has its background overridden, and vice versa.
+ */
+addFilter(
+	'editor.BlockListBlock',
+	'skvn-marine/button-hover-wrapper-props',
+	( BlockListBlock: React.ComponentType< any > ) => {
+		return function ButtonHoverWrapper( props: any ) {
+			if (
+				props.name !== 'core/button' ||
+				! isCoreControlEnabled( 'button_hover' )
+			) {
+				return <BlockListBlock { ...props } />;
+			}
+
+			const {
+				skvnHoverTextColor,
+				skvnHoverBgColor,
+				skvnHoverBgGradient,
+			} = props.attributes;
+			const hoverBg = skvnHoverBgGradient || skvnHoverBgColor;
+
+			if ( ! skvnHoverTextColor && ! hoverBg ) {
+				return <BlockListBlock { ...props } />;
+			}
+
+			const vars: Record< string, string > = {};
+			const markers: string[] = [ 'has-skvn-button-hover' ];
+
+			if ( skvnHoverTextColor ) {
+				vars[ '--skvn-btn-hover-text' ] = skvnHoverTextColor;
+				markers.push( 'has-skvn-btn-hover-text' );
+			}
+			if ( hoverBg ) {
+				vars[ '--skvn-btn-hover-bg' ] = hoverBg;
+				markers.push( 'has-skvn-btn-hover-bg' );
+			}
+
+			const existingClass = props.wrapperProps?.className ?? '';
+			const className = markers.reduce(
+				( cls: string, marker: string ) =>
+					cls.includes( marker )
+						? cls
+						: `${ cls } ${ marker }`.trim(),
+				existingClass
+			);
+
+			const wrapperProps = {
+				...( props.wrapperProps ?? {} ),
+				className,
+				style: {
+					...( props.wrapperProps?.style ?? {} ),
+					...vars,
+				},
+			};
+
+			return (
+				<BlockListBlock { ...props } wrapperProps={ wrapperProps } />
 			);
 		};
 	}

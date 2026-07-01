@@ -849,3 +849,62 @@ Follow-up:
 Next milestone:
 
 - V1 / 1.3.3 — Dynamic Product And Post Collections.
+
+---
+
+## V1 / 1.3.6 — Block Editor UX & Single Post Fix
+
+Status: **CARRIED_WITH_SCOPE_DEBT**
+Started: **2026-06-17**
+Carried forward: **2026-06-23**
+Approved by human to continue: **2026-06-23**
+
+Note: Human directed **current milestone pointer** → 1.3.7 (2026-06-23). Đây **không** phải đóng milestone 1.3.6 với toàn bộ acceptance DONE. Chỉ Trục C (Single Post Fix) hoàn tất tại thời điểm archive. Trục A → **1.3.7** impl; Trục D + collections/button-hover QA → **1.3.11**. Product launch **GU Supercharger 0.0.1** deferred post **1.5.x** (`gu-supercharger`). Lỗi archive ban đầu ghi `Status: DONE` là sai protocol — đã sửa.
+
+Purpose:
+
+- Nâng cấp Inspector panel UX cho tất cả SKVN blocks (Content/Style/Layout/Advanced).
+- Fix single post hero width, heading font, và thumbnail aspect-ratio (1.3.5 visual debt).
+- ThumbPress-compatible: dùng CSS `aspect-ratio` + `object-fit: cover`, không `add_image_size()`.
+- ~~Slider Parallax~~ — deferred → **1.3.8** (decision locked 2026-06-22).
+
+Planning:
+
+- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md`
+
+Acceptance draft:
+
+**Trục C — Single Post Fix:**
+- [x] Hero `.skvn-post-hero` render full-width trong GP content area
+- [x] Heading trong hero dùng `font-family: var(--skvn-font-heading)`
+- [x] Thumbnail hero dùng `aspect-ratio: 16/9` + `object-fit: cover`
+- [x] Card thumbnail (archive, related) dùng `aspect-ratio: 3/2` + `object-fit: cover`
+- [x] Không có `add_image_size()` mới — ThumbPress-compatible
+- [x] Hero content inset + spacing đồng bộ với article (`--skvn-single-gap`, `--skvn-single-inset-inline`) — human verified 2026-06-19
+
+**Trục A — Editor UX:**
+- [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
+- [ ] Slider và Accordion có empty state placeholder với action button
+- [ ] Collection skeleton grid match responsive preset khi editor đang load
+- [ ] Block icons và descriptions không còn blank trong inserter
+- [ ] Inspector panel refactor không invalidate content hiện có
+
+**Slider bottom-center flank controls (Trục D — planning 031 v2.0, source IMPLEMENTED — pending QA):**
+- Planning: `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
+- Onsite: `docs/testing/onsite-slider-flank-controls-1.3.6.md`
+- Umbrella: `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` §4.6
+- [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)
+- [ ] `pill` + cluster giữ order mặc định `arrows | pagination`
+- [ ] `bottom-left` / `bottom-right` / `side-center` không regression
+- [ ] Editor preview khớp frontend flank layout
+- [ ] `tests/slider-block.test.mjs` flank regression pass
+- [ ] Human onsite PASS per flank test doc
+- [ ] Mobile timed pagination width — tune deferred tới 1.3.9 QA
+
+**Chung:**
+- [ ] Plugin build pass, PHP lint pass
+- [ ] Human approves milestone completion
+
+Next milestone:
+
+- V1 / 1.3.7 — Collection Block UI & Card Styles.

@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/typography-scope-and-font-loading.md
+> Onsite QA defer: docs/testing/typography-scope-isolation-1.3.6.md
+
 # SKVN Marine — Typography Scope Isolation & Vietnamese Font Loading
 
 **Phiên bản:** 1.0  
@@ -185,7 +189,7 @@ Tạo `docs/testing/typography-scope-isolation-1.3.6.md` với checklist onsite/
 | `docs/decisions/skvn-1.3.x-architecture-and-decisions.md` | §5 update |
 | `docs/testing/typography-scope-isolation-1.3.6.md` | **NEW** |
 | `.context/modules/THEME_SKVN_MARINE.md` | [manual] invariant |
-| `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` | This file — mark IMPLEMENTED when done |
+| `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` | This file — mark IMPLEMENTED when done |
 
 **Forbidden:** `themes/generatepress/**`, plugin `typography-settings.php` (unless bug found — hiện không cần).
 

@@ -17,6 +17,7 @@ const sliderEdit = read('src/slider/edit.tsx');
 const sliderDeprecated = read('src/slider/deprecated.tsx');
 const sliderSave = read('src/slider/save.tsx');
 const sliderView = read('src/slider/view.ts');
+const autoplayShared = read('src/shared/autoplay.ts');
 const sliderStyle = read('src/slider/style.css');
 const slideEdit = read('src/slide/edit.tsx');
 const slideSave = read('src/slide/save.tsx');
@@ -89,7 +90,11 @@ assert.match(sliderView, /disableOnInteraction:\s*false/);
 assert.match(sliderView, /keyboard:\s*\{\s*enabled:\s*true\s*\}/);
 assert.match(sliderView, /querySelectorAll<\s*SliderElement\s*>\(\s*'\[data-skvn-slider\]'\s*\)/);
 assert.match(sliderView, /try\s*\{[\s\S]*JSON\.parse/, 'frontend config parsing must be guarded');
-assert.match(sliderView, /new Set<\s*PauseReason\s*>\(\)/);
+assert.match(
+	sliderView,
+	/createAutoplayPauseCoordinator/,
+	'slider view must use shared autoplay pause coordinator',
+);
 assert.match(sliderView, /autoplayTimeLeft/);
 assert.match(sliderView, /swiper\.realIndex \+ 1/);
 assert.match(sliderView, /renderSegments\(\s*config\.slideCount\s*\)/);
@@ -99,7 +104,16 @@ assert.match(sliderView, /navigationNext/);
 assert.match(sliderView, /navigationPrev/);
 assert.doesNotMatch(sliderView, /setInterval\s*\(/, 'Swiper must remain the only Slider timer');
 assert.doesNotMatch(sliderView, /setAttributes\s*\(/, 'frontend progress must not write Gutenberg state');
-assert.match(sliderView, /removeEventListener\(\s*'visibilitychange'/);
+assert.match(
+	sliderView,
+	/pauseCoordinator\?\.cleanup\(\)/,
+	'slider cleanup must tear down shared autoplay coordinator',
+);
+assert.match(
+	autoplayShared,
+	/removeEventListener\(\s*'visibilitychange'/,
+	'shared autoplay coordinator must unbind visibilitychange',
+);
 assert.match(sliderView, /swiper\.on\(\s*'destroy',\s*cleanup\s*\)/);
 assert.match(sliderView, /slider\.swiper\?\.destroyed/);
 assert.match(sliderView, /classList\.remove\(\s*'skvn-slider--initialized'/);
@@ -134,6 +148,16 @@ assert.match(
 	sliderStyle,
 	/\.skvn-slider--hero \.skvn-slide\s*\{[\s\S]*align-items:\s*center/,
 	'hero slide content column must center on the cross axis',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider--hero \.skvn-slide__content > \.wp-block-buttons\s*\{[\s\S]*width:\s*fit-content/,
+	'hero buttons must shrink-wrap and center without forced full-width auto margins',
+);
+assert.match(
+	sliderStyle,
+	/\.skvn-slide__content > :where\(\.wp-block-paragraph, p\):empty/,
+	'empty slide paragraphs must not reserve layout space',
 );
 assert.match(
 	sliderStyle,
@@ -186,9 +210,32 @@ assert.match(sliderRenderer, /\$show_pagination\s*=\s*\$show_pagination && \$has
 assert.match(sliderRenderer, /skvn-slider__controls--cluster/);
 assert.match(
 	sliderRenderer,
-	/skvn_marine_blocks_render_slider_arrows[\s\S]*skvn-slider__controls-separator[\s\S]*skvn_marine_blocks_render_slider_pagination/,
-	'cluster markup order must be arrows, separator, pagination',
+	/skvn_marine_blocks_slider_controls_use_flank/,
+	'PHP must expose flank predicate helper',
 );
+assert.match(
+	sliderRenderer,
+	/skvn-slider__controls--cluster-flank/,
+	'PHP must emit flank cluster modifier',
+);
+assert.match(
+	sliderRenderer,
+	/skvn_marine_blocks_render_slider_arrow_button[\s\S]*skvn_marine_blocks_render_slider_pagination[\s\S]*skvn_marine_blocks_render_slider_arrow_button/,
+	'flank markup order must be prev, pagination, next',
+);
+assert.match(
+	sliderRenderer,
+	/if\s*\(\s*\$use_flank\s*\)[\s\S]*skvn_marine_blocks_render_slider_arrows[\s\S]*skvn-slider__controls-separator/,
+	'default cluster branch must keep arrows wrapper and separator',
+);
+assert.match(sliderStyle, /skvn-slider__controls--cluster-flank/);
+assert.match(
+	sliderStyle,
+	/\.skvn-slider:not\(\.skvn-slider--editor\)[\s\S]*skvn-slider__controls--cluster\.skvn-slider__controls--bottom-center[\s\S]*justify-content:\s*center[\s\S]*width:\s*100%/,
+	'frontend bottom-center cluster must span slider width and center inline',
+);
+assert.match(sliderEdit, /controlsFlank/);
+assert.match(sliderView, /useFlankCluster/);
 assert.match(sliderRenderer, /array_key_exists\(\s*'delay',\s*\$raw_attributes\s*\)/);
 assert.match(sliderRenderer, /\$attributes\['autoplayDelay'\]\s*=\s*5000/);
 

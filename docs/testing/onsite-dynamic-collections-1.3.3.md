@@ -137,6 +137,29 @@ Autoplay pause works on focus? yes/no
 Console errors? paste notes
 ```
 
+## Hover / CTA Interaction Tests (new in 1.3.7 card styles + button hover compatibility)
+
+See dedicated deep DevTools guide: `docs/testing/onsite-button-hover-1.3.7.md` (covers Core feature, specificity audit per gutenberg-block-extension-css-contract.md, slider nesting case, reduced-motion, editor preview).
+
+Quick on-page checks for the new CTAs (quote CTA, catalog CTA, read-more, archive, pdf):
+
+- Hover each CTA: background/color or underline changes as planned in 028 (navy→teal for CTAs, underline for links).
+- Force `:hover` in DevTools on the CTA element → computed style matches 028 spec (e.g. `.skvn-collection-card__cta:hover { background: #0D9488; }`).
+- Check transition animates (0.15s).
+- Emulate reduced-motion → hover should be instant (no transition).
+- `:focus-visible` (Tab or force) should show visible focus state.
+- Inside Carousel: hover a CTA while auto-paused on container hover — CTA hover should still work independently.
+- For any core/button placed inside a collection card or Slider slide on the page: if Core Button Hover feature enabled with custom colors, the custom hover must apply (vars + class) and win specificity over any slider hero or theme button rules. See DevTools Styles on forced hover: feature rule active, no strikethrough, computed color matches config. Compare to standalone button outside.
+
+Evidence to report (add to main template):
+
+```text
+CTA hover matches 028 plan? (describe colors/transitions)
+Reduced-motion on CTAs? yes/no
+Core button inside slider/collection: custom hover applies? yes/no + winning rule note
+DevTools screenshots for hover states attached?
+```
+
 ## Responsive Tests
 
 Desktop:

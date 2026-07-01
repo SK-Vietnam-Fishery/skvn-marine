@@ -236,7 +236,7 @@ Sanitize HTML trong **docs** ≠ thay thế escape trong **PHP**.
 
 | Loại | File | Agent được làm gì |
 |------|------|---------------------|
-| Fix tức thời | `.context/planning/030_...` | Implement đúng plan |
+| Fix tức thời | `.context/planning/archives/030_...` | Implement đúng plan |
 | Future customize | `docs/workflows/ideation-end-user-deep-customization.md` | Chỉ brainstorm, link — **không** implement |
 | Decisions đã chốt | `docs/decisions/single-post-layout-and-mobile-surfaces.md` | Tổng hợp sau khi xong |
 

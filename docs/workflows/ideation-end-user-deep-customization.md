@@ -6,9 +6,9 @@ Owner: Human (product direction)
 Related:
 
 - **Decisions đã chốt (hero + mobile surfaces):** `docs/decisions/single-post-layout-and-mobile-surfaces.md`
-- Bug/fix tức thời: `.context/planning/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md`
+- Bug/fix tức thời: `.context/planning/archives/030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md`
 - UI debug evidence: `docs/testing/single-post-hero-layout-review-1.3.6.md`
-- Editor governance: `.context/planning/004_VERSION_0_8_0_EDITOR_CONTROLS_PLANNING.md`
+- Editor governance: `.context/planning/archives/004_VERSION_0_8_0_EDITOR_CONTROLS_PLANNING.md`
 - Surface presets: `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md`
 - Inspiration workflow mẫu: `docs/workflows/ideation-chom-revslider-theme-tra-phi-to-gutenberg.md`
 

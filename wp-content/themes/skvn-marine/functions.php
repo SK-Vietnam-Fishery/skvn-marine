@@ -20,6 +20,7 @@ $skvn_marine_includes = array(
 	'inc/windpress.php',
 	'inc/typography.php',
 	'inc/customizer.php',
+	'inc/preloader.php',
 );
 
 // B2B context: hide comment section on all single posts.

@@ -1,7 +1,7 @@
 # Typography Scope & Font Loading Contract
 
 **Date:** 2026-06-19  
-**Status:** APPROVED — planning in `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`  
+**Status:** APPROVED — planning in `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`  
 **Milestone:** V1 / 1.3.6 hardening follow-up  
 **Supersedes:** Partial guidance in `typography-and-gp-exit-report.md` §4 (selector scope only; palette/Settings API rules unchanged)
 
@@ -179,4 +179,4 @@ Pass criteria tóm tắt:
 | `typography-and-gp-exit-report.md` | Palette + Settings API + GP exit — **không** duplicate scope rules |
 | `skvn-1.3.x-architecture-and-decisions.md` §5 | Font preset flow diagram |
 | `brand-profile-theme-tokens.md` | Token naming `--skvn-font-*` |
-| `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` | Implementation checklist |
+| `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` | Implementation checklist |

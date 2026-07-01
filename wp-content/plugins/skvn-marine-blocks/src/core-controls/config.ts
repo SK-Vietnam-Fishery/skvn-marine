@@ -9,6 +9,7 @@ declare global {
 const DEFAULTS: CoreControlsConfig = {
 	block_clipboard: false,
 	button_hover: false,
+	post_heading_numbers: false,
 };
 
 export function getCoreControlsConfig(): CoreControlsConfig {

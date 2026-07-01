@@ -138,7 +138,7 @@ Plugin và component CSS dùng alias này — không reference `--wp--preset--*`
 ## 5. Font Preset System (1.3.5)
 
 > **Scope contract (2026-06-19):** `docs/decisions/typography-scope-and-font-loading.md`  
-> Planning fix: `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
+> Planning fix: `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
 
 ### 5.1 Flow
 

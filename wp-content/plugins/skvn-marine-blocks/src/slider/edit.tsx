@@ -6,7 +6,9 @@ import {
 } from '@wordpress/block-editor';
 import { createBlock } from '@wordpress/blocks';
 import {
+	BaseControl,
 	Button,
+	ButtonGroup,
 	Notice,
 	PanelBody,
 	RangeControl,
@@ -51,6 +53,8 @@ type SliderAttributes = {
 	slidesPerView: number;
 	preset: string;
 	responsiveSlides: string;
+	enableParallax: boolean;
+	parallaxIntensity: 'subtle' | 'medium' | 'strong';
 };
 
 type SliderEditProps = {
@@ -111,14 +115,52 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 	const blockProps = useBlockProps({
 		className: `skvn-slider skvn-slider--editor skvn-slider--height-${ attributes.heightPreset }${ presetClass }`,
 	});
+	const controlsFlank =
+		attributes.showArrows &&
+		attributes.showPagination &&
+		slideCount > 1 &&
+		attributes.arrowPosition === 'bottom-center' &&
+		attributes.paginationPosition === 'bottom-center' &&
+		attributes.arrowStyle !== 'pill';
 	const controlsCluster =
 		attributes.showArrows &&
 		attributes.showPagination &&
 		attributes.arrowPosition !== 'side-center' &&
-		attributes.arrowPosition === attributes.paginationPosition;
-	const staticControlsClass = controlsCluster
-		? `skvn-slider__controls skvn-slider__controls--editor-preview skvn-slider__controls--cluster skvn-slider__controls--${ attributes.arrowPosition }`
-		: 'skvn-slider__controls skvn-slider__controls--editor-preview';
+		attributes.arrowPosition === attributes.paginationPosition &&
+		! controlsFlank;
+	let staticControlsClass =
+		'skvn-slider__controls skvn-slider__controls--editor-preview';
+	if ( controlsFlank ) {
+		staticControlsClass += ` skvn-slider__controls--cluster skvn-slider__controls--bottom-center skvn-slider__controls--cluster-flank skvn-slider__controls--arrows-${ attributes.arrowStyle }`;
+	} else if ( controlsCluster ) {
+		staticControlsClass += ` skvn-slider__controls--cluster skvn-slider__controls--${ attributes.arrowPosition }`;
+	}
+	const paginationPreview = attributes.showPagination ? (
+		<div
+			className={ `skvn-slider__pagination skvn-slider__pagination--${ attributes.paginationStyle } skvn-slider__pagination--${ attributes.paginationPosition }` }
+		>
+			{ attributes.paginationStyle.includes( 'fraction' ) ? (
+				<>
+					<span>01</span>
+					{ attributes.paginationStyle === 'timed-fraction' && (
+						<span
+							aria-hidden="true"
+							className="skvn-slider__timer"
+						/>
+					) }
+					<span>{ String( slideCount ).padStart( 2, '0' ) }</span>
+				</>
+			) : (
+				Array.from( { length: slideCount }, ( _, index ) => (
+					<span
+						aria-current={ index === 0 ? 'true' : undefined }
+						className="skvn-slider__static-bullet"
+						key={ index }
+					/>
+				) )
+			) }
+		</div>
+	) : null;
 
 	return (
 		<div {...blockProps}>
@@ -358,6 +400,46 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 						/>
 					)}
 				</PanelBody>
+				<PanelBody
+					initialOpen={false}
+					title={__('Motion', 'skvn-marine-blocks')}
+				>
+					<ToggleControl
+						checked={attributes.enableParallax}
+						help={__(
+							'Background image moves at a different speed than the slide, creating a sense of depth. Has no effect in the editor.',
+							'skvn-marine-blocks'
+						)}
+						label={__('Enable parallax', 'skvn-marine-blocks')}
+						onChange={(enableParallax) => setAttributes({ enableParallax })}
+					/>
+					{ attributes.enableParallax && (
+						<BaseControl
+							help={__(
+								'Controls how far the background travels and how much it scales during the transition.',
+								'skvn-marine-blocks'
+							)}
+							label={__('Intensity', 'skvn-marine-blocks')}
+						>
+							<ButtonGroup>
+								{ ( [ 'subtle', 'medium', 'strong' ] as const ).map( ( value ) => (
+									<Button
+										key={ value }
+										isPressed={ attributes.parallaxIntensity === value }
+										onClick={ () => setAttributes( { parallaxIntensity: value } ) }
+										variant="secondary"
+									>
+										{ value === 'subtle'
+											? __( 'Subtle', 'skvn-marine-blocks' )
+											: value === 'medium'
+											? __( 'Medium', 'skvn-marine-blocks' )
+											: __( 'Strong', 'skvn-marine-blocks' ) }
+									</Button>
+								) ) }
+							</ButtonGroup>
+						</BaseControl>
+					) }
+				</PanelBody>
 			</InspectorControls>
 			<div className="skvn-slider__editor-toolbar">
 				<Button
@@ -379,6 +461,11 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 						? __( 'Slide limit reached', 'skvn-marine-blocks' )
 						: __( 'Add slide', 'skvn-marine-blocks' ) }
 				</Button>
+				{ attributes.enableParallax && (
+					<span className="skvn-slider__parallax-badge">
+						{ `Parallax ON · ${ attributes.parallaxIntensity }` }
+					</span>
+				) }
 			</div>
 			<div className="skvn-slider__editor-stack">
 				<InnerBlocks
@@ -399,75 +486,59 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 				)}
 				className={ staticControlsClass }
 			>
-						{attributes.showArrows && (
+				{ controlsFlank ? (
+					<>
+						<button
+							aria-label={ __(
+								'Previous slide',
+								'skvn-marine-blocks'
+							) }
+							className="skvn-slider__arrow skvn-slider__arrow--prev"
+							type="button"
+						/>
+						{ paginationPreview }
+						<button
+							aria-label={ __(
+								'Next slide',
+								'skvn-marine-blocks'
+							) }
+							className="skvn-slider__arrow skvn-slider__arrow--next"
+							type="button"
+						/>
+					</>
+				) : (
+					<>
+						{ attributes.showArrows && (
 							<div
-								className={`skvn-slider__arrows skvn-slider__arrows--${ attributes.arrowStyle } skvn-slider__arrows--${ attributes.arrowPosition }`}
+								className={ `skvn-slider__arrows skvn-slider__arrows--${ attributes.arrowStyle } skvn-slider__arrows--${ attributes.arrowPosition }` }
 							>
 								<button
-									aria-label={__(
+									aria-label={ __(
 										'Previous slide',
 										'skvn-marine-blocks'
-									)}
+									) }
 									className="skvn-slider__arrow skvn-slider__arrow--prev"
 									type="button"
 								/>
 								<button
-									aria-label={__(
+									aria-label={ __(
 										'Next slide',
 										'skvn-marine-blocks'
-									)}
+									) }
 									className="skvn-slider__arrow skvn-slider__arrow--next"
 									type="button"
 								/>
 							</div>
-						)}
-						{controlsCluster && (
+						) }
+						{ controlsCluster && (
 							<span
 								aria-hidden="true"
 								className="skvn-slider__controls-separator"
 							/>
-						)}
-						{attributes.showPagination && (
-							<div
-								className={`skvn-slider__pagination skvn-slider__pagination--${ attributes.paginationStyle } skvn-slider__pagination--${ attributes.paginationPosition }`}
-							>
-								{attributes.paginationStyle.includes(
-									'fraction'
-								) ? (
-									<>
-										<span>01</span>
-										{attributes.paginationStyle ===
-											'timed-fraction' && (
-											<span
-												aria-hidden="true"
-												className="skvn-slider__timer"
-											/>
-										)}
-										<span>
-											{String( slideCount ).padStart(
-												2,
-												'0'
-											)}
-										</span>
-									</>
-								) : (
-									Array.from(
-										{ length: slideCount },
-										( _, index ) => (
-											<span
-												aria-current={
-													index === 0
-														? 'true'
-														: undefined
-												}
-												className="skvn-slider__static-bullet"
-												key={index}
-											/>
-										)
-									)
-								)}
-							</div>
-						)}
+						) }
+						{ paginationPreview }
+					</>
+				) }
 			</div>
 		</div>
 	);

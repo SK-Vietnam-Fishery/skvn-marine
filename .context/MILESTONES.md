@@ -8,9 +8,9 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix**
+Current: **V1 / 1.3.7 — Collection Block UI & Card Styles**
 Status: **IN PROGRESS**
-Started: **2026-06-17**
+Started: **2026-06-23**
 
 AGENTS.md current milestone phải match file này.
 
@@ -162,7 +162,7 @@ Decision:
 
 Planning:
 
-- `.context/planning/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`
+- `.context/planning/archives/024_VERSION_1_3_3_DYNAMIC_COLLECTIONS_PLANNING.md`
 
 Testing:
 
@@ -263,7 +263,7 @@ Purpose:
 
 Planning:
 
-- `.context/planning/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md`
+- `.context/planning/archives/025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md`
 
 Design artifacts:
 
@@ -298,58 +298,53 @@ Acceptance draft:
 - [ ] Desktop + Mobile QA pass cho cả 3 page types
 - [ ] Human approves milestone completion
 
-### 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix
+### 1.3.8 — Slider Parallax
 
-Status: **IN PROGRESS**
-Started: **2026-06-17**
+Status: **PENDING**
+Started: **not yet**
 
 Purpose:
 
-- Nâng cấp Inspector panel UX cho tất cả SKVN blocks (Content/Style/Layout/Advanced).
-- Thêm Slider Parallax effect dùng Swiper built-in Parallax Module.
-- Fix single post hero width, heading font, và thumbnail aspect-ratio (1.3.5 visual debt).
-- ThumbPress-compatible: dùng CSS `aspect-ratio` + `object-fit: cover`, không `add_image_size()`.
+- Add Slider Parallax effect using Swiper 11 built-in Parallax Module.
+- Implement both translate + scale depth on background image layer.
+- Governed intensity presets (subtle/medium/strong) with coupled inset to prevent edge-reveal.
+- Support all three transitions (wipe/fade/zoom-out) without auto-disable.
 
-Planning:
+Decision:
 
-- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md`
+- `docs/decisions/slider-parallax-both-1.3.8.md`
+
+Dependencies:
+
+- V1 / 1.3.6 Trục C (single post fix) completed; Trục A → **1.3.7** impl; Trục D onsite QA → **1.3.11**.
+- V1 / 1.3.1 controls and dynamic rendering foundation stable.
 
 Acceptance draft:
 
-**Trục C — Single Post Fix:**
-- [x] Hero `.skvn-post-hero` render full-width trong GP content area
-- [x] Heading trong hero dùng `font-family: var(--skvn-font-heading)`
-- [x] Thumbnail hero dùng `aspect-ratio: 16/9` + `object-fit: cover`
-- [x] Card thumbnail (archive, related) dùng `aspect-ratio: 3/2` + `object-fit: cover`
-- [x] Không có `add_image_size()` mới — ThumbPress-compatible
-- [x] Hero content inset + spacing đồng bộ với article (`--skvn-single-gap`, `--skvn-single-inset-inline`) — human verified 2026-06-19
-
-**Trục A — Editor UX:**
-- [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
-- [ ] Slider và Accordion có empty state placeholder với action button
-- [ ] Collection skeleton grid match responsive preset khi editor đang load
-- [ ] Block icons và descriptions không còn blank trong inserter
-- [ ] Inspector panel refactor không invalidate content hiện có
-
-**Slider bottom-center flank controls (layout — planning 031):**
-- [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)
-- [ ] `pill` + cluster giữ order mặc định `arrows | pagination`
-- [ ] `bottom-left` / `bottom-right` / `side-center` không regression
-- [ ] Editor preview khớp frontend flank layout
-- [ ] Mobile timed pagination width — tune deferred tới 1.3.9 QA
-
-**Trục B — Slider Parallax (motion — planning 026, artifact transition):**
-- [ ] `enableParallax` attribute tồn tại trong Slider block.json
-- [ ] Parallax chạy đúng trên desktop với intensity preset (subtle/medium/strong)
-- [ ] `prefers-reduced-motion` tắt parallax hoàn toàn
-- [ ] Parallax tắt khi `slidesPerView > 1`
-- [ ] Editor không chạy parallax — chỉ hiện badge "Parallax ON"
-
-**Chung:**
-- [ ] Plugin build pass, PHP lint pass
+- [ ] `enableParallax` + `parallaxIntensity` attributes in Slider `block.json`
+- [ ] `.skvn-slide__bg` wrapper added to PHP render, editor, and saved markup
+- [ ] Inspector toggle + intensity presets (subtle/medium/strong) visible when enabled
+- [ ] Runtime parallax (translate + scale) applies only when enabled and `slidesPerView === 1`
+- [ ] Inset CSS var couples with intensity: subtle -20%, medium -35%, strong -50%
+- [ ] `prefers-reduced-motion` disables parallax completely (no inline transform)
+- [ ] Card carousel / multi-view: parallax disabled via `slidesPerView > 1` guard
+- [ ] Editor badge "Parallax ON · {intensity}" shows when enabled; no parallax motion in editor
+- [ ] Wipe + parallax: translate background while content wipes — no edge-reveal
+- [ ] Fade + parallax: fade transitions with background depth — working
+- [ ] Zoom-out + parallax: compounded scale (media zoom-out + bg scale) intentional, no artifact
+- [ ] Loop, autoplay, keyboard, touch: no regression
+- [ ] Old slider content (pre-parallax) renders without fatal error
+- [ ] Plugin build, PHP lint, deploy artifact audit pass
 - [ ] Human approves milestone completion
 
----
+### 1.3.9 — Custom Icon Upload
+
+Status: **PARKING / Future Candidate**
+
+Purpose:
+
+- Upload custom icon asset for SKVN Marine branding (block inserter, admin menu).
+- Defer until icon design finalized.
 
 ### 1.3.4 — Core Control Foundation & Core Button Hover
 
@@ -372,7 +367,7 @@ Decision:
 
 Planning:
 
-- `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
+- `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
 
 Dependencies:
 
@@ -433,50 +428,119 @@ Acceptance draft:
 - [ ] PHP lint, plugin build, deploy artifact audit, and onsite QA pass
 - [ ] Human approves milestone completion
 
-### 1.3.8 Custom Icon made by WhySchools
-
-- [ ] Upload custom icon
-
-### 1.3.9 — Slider Dynamic Rendering & Controls Onsite QA
+### 1.3.10 — Fullscreen Step Slider
 
 Status: **PENDING**
 
 Purpose:
 
-- Run the Slider, Accordion, Card motion, and B2B Feature Showcase checks that
-  were not completed before starting the 1.3.0 dynamic rendering migration.
-- Test Slider frontend behavior against the 1.3.0 server-rendered contract,
-  instead of approving the superseded static frontend architecture.
-- Verify the V1 / 1.3.1 navigation, pagination, timed-progress, responsive, and
-  accessibility controls on the corrected rendering foundation.
-- Repeat image editing, Slider controls, and Full Width Canvas checks because
-  the 1.3.0 renderer and 1.3.1 controls UX changed those surfaces.
-- Keep unrelated previously passed evidence only where the implementation did
-  not change the tested surface.
+- Add a dedicated fullscreen process/timeline Slider block for urgent landing
+  page storytelling needs.
+- Build it on top of the V1 / 1.3.0 dynamic Slider rendering foundation instead
+  of creating a second Slider engine.
+- Provide bottom tab navigation with per-step progress, media/content layers,
+  and motion presets suitable for sequential process narratives.
+- Keep Gutenberg-native editing with InnerBlocks and child step blocks; do not
+  switch to a `slides` array or custom slide repeater.
+- Inherit parallax foundation from V1 / 1.3.8 and adapt as needed.
+
+Planning:
+
+- `.context/planning/018_VERSION_1_3_10_FULLSCREEN_STEP_SLIDER_PLANNING.md`
+
+Decision:
+
+- `docs/decisions/fullscreen-step-slider-1.3.10.md`
+
+Dependencies:
+
+- V1 / 1.3.0 dynamic Slider render architecture.
+- V1 / 1.3.8 Slider Parallax foundation (optional inheritance).
+
+Acceptance draft:
+
+- [ ] Architecture contract is approved before source implementation
+- [ ] `skvn-marine/step-slider` and `skvn-marine/step-slide` ownership is documented
+- [ ] Step Slider uses dynamic PHP render and shared Slider foundation
+- [ ] Editor uses Gutenberg-native InnerBlocks/List View operations
+- [ ] Bottom tab navigation reflects slide order and active state
+- [ ] Progress bar synchronizes with Swiper autoplay, click, hover/focus pause, and reduced motion
+- [ ] Wipe/text motion uses governed presets and has reduced-motion fallback
+- [ ] Mobile tab UI remains readable without overflow
+- [ ] No custom slide manager, `slides` array, or second runtime is introduced
+- [ ] Plugin build, PHP syntax checks, deploy artifact audit, and onsite QA pass
+- [ ] Human approves milestone completion
+
+### 1.3.11 — Comprehensive Onsite QA (Slider, Collections & Controls)
+
+Status: **PENDING**
+
+Purpose:
+
+- Consolidated **onsite QA** for Slider family: Hero, Product Showcase, Card Carousel, Parallax effect, Step Slider.
+- Test V1 / 1.3.0 dynamic rendering + 1.3.1 controls + 1.3.8 parallax + 1.3.10 step slider on live site.
+- Verify Accordion, Card motion, and B2B Feature Showcase checks that were deferred from earlier milestones.
+- Verify 1.3.3 dynamic collections + **1.3.7** collection polish and button-hover work onsite.
+- Verify **1.3.6** carry-in: slider bottom-center flank controls (source shipped).
+- Run comprehensive memory, accessibility, responsive, and reduced-motion validation.
+
+Product launch **deferred** → post **V1 / 1.5.x** as **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace). Decision: `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
 
 Testing:
 
 - `docs/testing/onsite-slider-motion-1.3.2.md`
 - `docs/testing/onsite-feature-showcase-1.2.3.md`
+- `docs/testing/onsite-dynamic-collections-1.3.3.md`
+- `docs/testing/onsite-button-hover-1.3.7.md`
+- `docs/testing/onsite-slider-flank-controls-1.3.6.md`
 
 Acceptance draft:
 
+**Slider Dynamic Rendering & Controls (1.3.1):**
 - [ ] Human verifies all three Slider presets insert useful sample content
 - [ ] Human verifies existing Slider content opens without invalid-block recovery
-- [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts through the dynamic render path
+- [ ] Human verifies Hero, Product Showcase, and Card Carousel frontend layouts through dynamic render
 - [ ] Human verifies V1 / 1.3.1 arrow and pagination controls across desktop and mobile
-- [ ] Human verifies timed pagination, pause/resume, reduced-motion fallback, and real-Slide numbering
-- [ ] Human verifies idle and repeated-interaction memory use settles without continuous growth
+- [ ] Human verifies timed pagination, pause/resume, reduced-motion fallback, real-Slide numbering
+
+**Slider Parallax (1.3.8):**
+- [ ] Parallax effect enabled/disabled in editor and frontend works correctly
+- [ ] Subtle/medium/strong intensity presets show expected depth
+- [ ] No edge-reveal artifacts (image mismatch) at viewport edges
+- [ ] Wipe + parallax: coordinate without conflicts
+- [ ] Fade + parallax: coordinate without conflicts
+- [ ] Zoom-out + parallax: compounded scale is intentional, not artifact
+- [ ] Parallax disabled correctly with `prefers-reduced-motion` and `slidesPerView > 1`
+
+**Step Slider (1.3.10):**
+- [ ] Bottom tab navigation renders and sync correctly
+- [ ] Progress bar updates during autoplay and user interaction
+- [ ] Step content loads without invalid-block errors
+- [ ] Mobile tab UI remains readable and touchable
+
+**Accordion, Card Motion, Feature Showcase:**
 - [ ] Human verifies Accordion interaction and accessibility
 - [ ] Human verifies Card motion device targeting and no-JS/reduced-motion fallbacks
 - [ ] Human verifies the B2B Seafood Feature Showcase pattern editor/frontend layout
-- [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
-- [ ] Any source defects are fixed and re-tested
-- [ ] Human approves closing Slider Dynamic Rendering onsite QA
 
-**Deferred from 1.3.3 — Collections onsite QA (run at end of 1.3.9):**
+**Slider bottom-center flank controls (carry-in 1.3.6 Trục D — source shipped):**
+- [ ] `bottom-center` arrows + `bottom-center` pagination → `‹ pagination ›` (all pagination styles)
+- [ ] `pill` + cluster giữ order mặc định `arrows | pagination`
+- [ ] `bottom-left` / `bottom-right` / `side-center` không regression
+- [ ] Editor preview khớp frontend flank layout
+- [ ] Human onsite PASS per `docs/testing/onsite-slider-flank-controls-1.3.6.md`
+- [ ] Mobile timed pagination width — tune deferred (evidence in QA notes)
 
-- [ ] Product Grid renders correctly onsite with WooCommerce products (real data, not editor preview)
+**Button hover & collection CTAs (carry-in 1.3.7 — onsite QA):**
+- [ ] Buttons (core/button with feature) inside SKVN Slider slides receive configured custom hover on :hover/:focus-visible onsite (no strikethrough in DevTools; computed colors match vars); falls back to preset when no custom hover or feature off
+- [ ] Base Gutenberg hover (`a:hover, a:focus, a:active { color: var(--contrast); }` or equivalent) không bị break cho links/buttons trong slider vs ngoài slider
+- [ ] Specificity audit passed per contract onsite: hover rule (feature or collection) ≥ strongest theme/slider rule
+- [ ] Onsite + DevTools evidence per `docs/testing/onsite-button-hover-1.3.7.md`
+- [ ] New collection CTAs hovers match 028 spec onsite (bg/underline, reduced-motion, :focus-visible)
+- [ ] No regression on existing button visuals, slider layouts, or collection card hovers
+
+**Collections (1.3.3 + 1.3.7 polish) onsite QA:**
+- [ ] Product Grid renders correctly onsite with WooCommerce products (real data)
 - [ ] Post Grid renders correctly onsite with real posts
 - [ ] Product Carousel renders and Swiper initializes without errors
 - [ ] Post Carousel renders and Swiper initializes without errors
@@ -485,13 +549,22 @@ Acceptance draft:
 - [ ] Post card read action links to the correct post URL
 - [ ] Image fallback (product placeholder / SKVN fallback) works when no image is set
 - [ ] WooCommerce inactive state shows graceful fallback, no fatal
-- [ ] Browser console is clean for all four collection layouts
-- [ ] Human approves collections onsite QA pass
+
+**General:**
+- [ ] Human verifies idle and repeated-interaction memory use settles without continuous growth
+- [ ] Invalid-block, console, layout, and cache issues are recorded or confirmed clean
+- [ ] Any source defects are fixed and re-tested
+- [ ] Browser console is clean across all tested surfaces
+- [ ] Human approves closing Slider & Collections comprehensive QA
+
 ### 1.3.7 — Collection Block UI & Card Styles
 
-Status: **BRAINSTORM / PLANNING IN PROGRESS**
+Status: **IN PROGRESS**
+Started: **2026-06-23**
 
-> ⚠️ Planning chưa hoàn tất. Milestone này cần một session brainstorm riêng trước khi bắt đầu implementation.
+Human confirmed (Option A + added scope 2026-06-22): Dedicated 1.3.7 slot for collection UI/card styles polish + "hover button" work (fix stuck case of buttons inside Slider not receiving hover like Gutenberg `a:hover { color: var(--contrast); }` mechanism, plus polish hovers on new collection CTAs). See `docs/testing/onsite-button-hover-1.3.7.md` for DevTools verification steps. Planning source 028 finalized; button hover compatibility pulled from 1.3.8 plans per user request. Human moved current milestone to 1.3.7 on 2026-06-23.
+
+Human routing (2026-06-23): Implementation + build gate thuộc **1.3.7**; onsite/human/DevTools QA thuộc **1.3.11**.
 
 Purpose:
 
@@ -500,10 +573,15 @@ Purpose:
 - Thêm các block attribute mới để kiểm soát heading, spacing, archive CTA.
 - Triển khai card style variants dựa trên design artifact `.local/Seafood Export Carousels Tailwind.html`.
 - **Không bao gồm** các feature yêu cầu data model chưa tồn tại (MOQ, Lead Time, certifications) — đó là scope 1.5.0.
+- Resolve "hover button" for action elements: ensure new collection CTAs (quote, catalog, read-more...) have proper hovers per 028 spec + reduced-motion; make buttons/links inside Slider respect base Gutenberg hover (`a:hover, a:focus, a:active { color: var(--contrast); }`) or Core Button Hover feature when configured (without being overridden by hero preset hard-codes). DevTools tests per contract (specificity, class/vars, computed styles on :hover).
 
 Planning:
 
 - `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md`
+- `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` (Trục A — carry-in)
+- `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` (Trục D — carry-in, source shipped)
+
+Onsite QA: deferred to **1.3.11** (`onsite-button-hover-1.3.7.md`, `onsite-dynamic-collections-1.3.3.md`, `onsite-slider-flank-controls-1.3.6.md`).
 
 Design artifact:
 
@@ -524,6 +602,8 @@ Phase 1 scope (data có sẵn — làm được ngay):
 - Card styles: ít nhất 1 style variant từ design artifact (product card + post card)
 - Category badge overlay trên ảnh (thay vì bên dưới title như hiện tại)
 - 4-column preset: thêm option `4-2-1` vào SelectControl editor và CSS
+- Hover polish for new CTAs (catalog-cta, cta, read-more, archive, pdf per 028 CSS) + reduced-motion guard.
+- Slider button hover compatibility (buttons inside slides use custom hover from Core feature or base --contrast when expected; hero hard-codes use var fallback).
 
 Các feature CHƯA planning xong (cần brainstorm tiếp):
 
@@ -537,114 +617,40 @@ Constraints:
 - Không implement MOQ, Lead Time, certifications, spec sheet PDF — scope 1.5.0.
 - Card styles phải work với dữ liệu WooCommerce/WP có sẵn, không cần custom meta.
 - Plugin-owned CSS; không phụ thuộc vào theme class.
+- Hover work must follow gutenberg-block-extension-css-contract.md (specificity check in DevTools first, editor.BlockListBlock for preview, scoped class+vars, behavior test not source grep, reduced-motion for all hovers). Slider case limited to making preset hovers respect feature vars (no change to core-control itself).
+
+Acceptance draft:
+
+**Carry-in 1.3.6 — Editor UX (Trục A):**
+- [ ] Tất cả Inspector panels dùng 4-section Content/Style/Layout/Advanced
+- [ ] Slider và Accordion có empty state placeholder với action button
+- [ ] Collection skeleton grid match responsive preset khi editor đang load
+- [ ] Block icons và descriptions không còn blank trong inserter
+- [ ] Inspector panel refactor không invalidate content hiện có
+
+**Collection UI & card styles (1.3.7 Phase 1):**
+- [ ] `imageRatio` tạo class `skvn-collection--ratio-*` và áp dụng đúng trên frontend + editor
+- [ ] Carousel nav arrows nằm section header (không bị clip bởi Swiper overflow)
+- [ ] Spacing margin-top/bottom + heading → grid/carousel gap hoạt động
+- [ ] `showHeading`, `eyebrow`, `intro` render và style đúng
+- [ ] Archive CTA (`archiveUrl` + `archiveLabel`) render đúng section footer
+- [ ] Catalog CTA toggle + URL + label hoạt động (product + post collection)
+- [ ] Card style variant (product + post) khớp design artifact baseline
+- [ ] Category badge overlay trên ảnh
+- [ ] Preset `4-2-1` có trong editor SelectControl và CSS responsive
+
+**Button hover & collection CTAs (implementation):**
+- [ ] New collection CTAs hovers implemented per 028 §4 (bg/underline changes, transitions); reduced-motion guard in CSS; :focus-visible styles present
+- [ ] Core Button Hover + slider preset CSS shipped: custom hover vars apply when feature on; preset fallbacks when off
+- [ ] Editor preview hover works (BlockListBlock wrapper + vars visible in editor iframe DevTools)
+
+**Chung:**
+- [ ] `tests/slider-block.test.mjs` flank regression pass (automated guard for 1.3.6 Trục D source)
+- [ ] Plugin build + PHP lint pass
+- [ ] Human approves milestone completion (implementation scope; onsite QA closes in 1.3.11)
 
 ---
 
-### 1.3.8 — Fullscreen Step Slider
-
-Status: **PENDING**
-
-Purpose:
-
-- Add a dedicated fullscreen process/timeline Slider block for urgent landing
-  page storytelling needs.
-- Build it on top of the V1 / 1.3.0 dynamic Slider rendering foundation instead
-  of creating a second Slider engine.
-- Provide bottom tab navigation with per-step progress, media/content layers,
-  and motion presets suitable for sequential process narratives.
-- Keep Gutenberg-native editing with InnerBlocks and child step blocks; do not
-  switch to a `slides` array or custom slide repeater.
-
-Planning:
-
-- `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`
-- `docs/decisions/fullscreen-step-slider-1.5.0.md`
-- External research input: `fullscreen-step-slider-report.md`
-
-Dependencies:
-
-- V1 / 1.3.0 dynamic Slider render architecture must be complete enough to
-  provide shared render, media/content, Swiper, reduced-motion, and deploy
-  artifact conventions.
-- Reconcile whether V1 / 1.3.1 Slider migration QA runs before or alongside
-  this milestone.
-
-Constraints:
-
-- Implement as separate blocks such as `skvn-marine/step-slider` and
-  `skvn-marine/step-slide`, not as a fourth variation of `skvn-marine/slider`.
-- Reuse Swiper; do not introduce a custom autoplay timer/controller that
-  competes with Swiper.
-- Use governed presets for height, overlay, motion, CTA, and tab styling instead
-  of raw arbitrary color, pixel, timing, or class inputs.
-- Preserve keyboard navigation, touch behavior, reduced-motion fallback, and
-  no-JS readability.
-- Do not include video support unless the milestone explicitly budgets media
-  performance, inactive-slide pause, poster, and mobile autoplay behavior.
-
-Acceptance draft:
-
-- [ ] Architecture contract is approved before source implementation
-- [ ] `skvn-marine/step-slider` and `skvn-marine/step-slide` ownership is documented
-- [ ] Step Slider uses dynamic PHP render and shared Slider foundation
-- [ ] Editor uses Gutenberg-native InnerBlocks/List View operations
-- [ ] Bottom tab navigation reflects slide order and active state
-- [ ] Progress bar synchronizes with Swiper autoplay, click, hover/focus pause, and reduced motion
-- [ ] Wipe/text motion uses governed presets and has reduced-motion fallback
-- [ ] Mobile tab UI remains readable without overflow
-- [ ] No custom slide manager, `slides` array, or second runtime is introduced
-- [ ] Plugin build, PHP syntax checks, deploy artifact audit, and onsite QA pass
-- [ ] Human approves milestone completion
-
-### 1.3.10 — SKVN Team Credits Easter Egg
-
-Status: **PENDING**
-
-Purpose:
-
-- Close the Slider milestone sequence with a private wp-admin tribute to SKVN
-  employees who contributed to the project.
-- Keep the tribute discoverable as an Easter egg without adding public
-  frontend output or changing normal admin navigation.
-
-Decision:
-
-- `docs/decisions/skvn-team-credits-easter-egg-1.3.9.md`
-
-Dependencies:
-
-- Complete the planned Slider sequence before starting 1.3.9.
-- Human must approve the final tribute copy and any employee names or
-  nicknames.
-
-Scope:
-
-- Add `Built with care by the SKVN team.` to the plugin header comment.
-- Add `/* To the people who built SKVN, thank you. */` to the authored and
-  production admin Easter egg asset.
-- Trigger an accessible credits dialog/panel after five clicks on the existing
-  top-level `SKVN Marine` wp-admin menu.
-- Preserve normal menu navigation and count clicks across reloads with
-  `sessionStorage`.
-
-Constraints:
-
-- Admin only; no frontend asset, HTML, or console message.
-- No database write, tracking, AJAX, or external request.
-- Do not change the menu slug, capability, plugin slug, or text domain.
-- Do not publish employee names without explicit human confirmation.
-
-Acceptance draft:
-
-- [ ] Plugin header and admin asset contain the approved credit messages
-- [ ] Normal menu clicks continue to navigate normally
-- [ ] Five clicks within the governed interval open the credits experience
-- [ ] Counter survives navigation in the same admin session and resets safely
-- [ ] Credits UI is accessible and dismissible
-- [ ] No frontend output, database write, tracking, or network request is added
-- [ ] Human approves final tribute copy and any names
-- [ ] PHP lint, plugin build, and wp-admin smoke test pass
-- [ ] Human approves milestone completion
 
 ### 1.4.0 — SKVN Theme Init Setup UI
 
@@ -728,12 +734,103 @@ Acceptance draft:
 
 
 
+### 1.3.12 — SKVN Team Credits Easter Egg
+
+Status: **PENDING**
+
+Purpose:
+
+- Close the Slider milestone sequence with a private wp-admin tribute to SKVN
+  employees who contributed to the project.
+- Keep the tribute discoverable as an Easter egg without adding public
+  frontend output or changing normal admin navigation.
+
+Decision:
+
+- `docs/decisions/skvn-team-credits-easter-egg-1.3.12.md`
+
+Scope:
+
+- Add `Built with care by the SKVN team.` to the plugin header comment.
+- Trigger an accessible credits dialog/panel after five clicks on the existing
+  top-level `SKVN Marine` wp-admin menu.
+- Preserve normal menu navigation and count clicks across reloads with
+  `sessionStorage`.
+
+Acceptance draft:
+
+- [ ] Plugin header and admin asset contain the approved credit messages
+- [ ] Normal menu clicks continue to navigate normally
+- [ ] Five clicks within the governed interval open the credits experience
+- [ ] Counter survives navigation in the same admin session and resets safely
+- [ ] Credits UI is accessible and dismissible
+- [ ] No frontend output, database write, tracking, or network request is added
+- [ ] Human approves final tribute copy and any names
+- [ ] PHP lint, plugin build, and wp-admin smoke test pass
+- [ ] Human approves milestone completion
+
+### 1.3.16 — Comprehensive Testing (1.3.x Feature QA)
+
+Status: **PENDING**
+
+Purpose:
+
+- Consolidated testing phase for all 1.3.x feature milestones after implementation.
+- Verify Collection UI (1.3.7), Slider Parallax (1.3.8), Step Slider (1.3.10), and Team Credits (1.3.12) onsite.
+- Test button hover compatibility, collection CTAs, editor UX polish.
+- Defer all untested acceptance items from earlier milestones to this comprehensive QA pass.
+
+Acceptance draft:
+
+**From 1.3.7 — Collection UI & Button Hover:**
+- [ ] `imageRatio` class renders and applies correctly onsite
+- [ ] Carousel arrows visible + not clipped by Swiper overflow
+- [ ] Spacing (margin-top/bottom, heading gap) works onsite
+- [ ] `showHeading`, `eyebrow`, `intro` render and style correctly
+- [ ] Archive CTA works and links correct
+- [ ] Catalog CTA toggle, URL, label functional onsite
+- [ ] Card style variants match design artifact
+- [ ] Category badge overlay displays correctly
+- [ ] Preset `4-2-1` responsive works mobile/desktop
+- [ ] New collection CTAs hovers work onsite per 028 spec
+- [ ] Core Button Hover feature + slider preset hovers work onsite
+- [ ] Editor preview hover visible in DevTools
+- [ ] Slider block regression test pass (`tests/slider-block.test.mjs`)
+
+**From 1.3.8 — Slider Parallax:**
+- [ ] Parallax enable/disable works frontend
+- [ ] Subtle/medium/strong intensity presets show expected depth
+- [ ] No edge-reveal artifacts (image mismatch at viewport edges)
+- [ ] Wipe + parallax coordinate without conflicts
+- [ ] Fade + parallax coordinate without conflicts
+- [ ] Zoom-out + parallax compounded scale intentional
+- [ ] Parallax disabled with `prefers-reduced-motion` and `slidesPerView > 1`
+
+**From 1.3.10 — Step Slider (if implemented):**
+- [ ] Bottom tab navigation renders and syncs correctly
+- [ ] Progress bar updates during autoplay and user interaction
+- [ ] Step content loads without invalid-block errors
+- [ ] Mobile tab UI readable and touchable
+
+**From 1.3.12 — Team Credits:**
+- [ ] Easter egg trigger (5 clicks) opens credits UI
+- [ ] Credits UI accessible and dismissible
+- [ ] No frontend output or database writes
+
+**General:**
+- [ ] Plugin build + PHP lint pass
+- [ ] Browser console clean across all surfaces
+- [ ] Memory use settles without growth
+- [ ] No invalid-block warnings on existing content
+- [ ] Human approves milestone completion
+
 ### 1.5.0 — Woo Catalog Plugin (`woo-catalog`)
 
 Status: **BRAINSTORM / PLANNING IN PROGRESS**
 
 > ⚠️ Planning chưa hoàn tất. Cần session brainstorm riêng về data model trước khi bắt đầu.
 > Milestone này phụ thuộc vào 1.3.7 (Collection UI) đã pass onsite QA.
+> Step Slider foundation from 1.3.10 available for inheritance if needed.
 
 Planning:
 
@@ -800,6 +897,50 @@ Acceptance draft (sơ bộ, cần hoàn thiện):
 - [ ] Collection product card hiển thị đủ certifications, MOQ, Lead Time, spec sheet link
 - [ ] Human approves data model schema và field formats trước khi code
 - [ ] Human approves milestone completion
+
+---
+
+### Post 1.5.x — GU Supercharger 0.0.1 Product Launch
+
+Status: **PENDING**
+
+Human decision (2026-06-23): Launch product plugin **sau khi V1 / 1.5.x ổn định** (woo-catalog + blocks integration + confidence trên nhiều site production). Không launch tại 1.3.11.
+
+Decision + name research: `docs/decisions/gu-supercharger-launch-post-1.5x.md`
+
+Identity (locked):
+
+```text
+Display name:    Gutenberg Supercharger (marketing / admin)
+Plugin slug:     gu-supercharger
+Text domain:     gu-supercharger
+Block namespace: gu-supercharger/*
+Product version: 0.0.1
+```
+
+Name research summary (2026-06-23):
+
+- wp.org slug `gu-supercharger` — **available** (0 plugins)
+- wp.org slug `supercharger` — **taken** (Supercharger AI — khác product; tránh slug trùng)
+- Block namespace `gu-supercharger` — no public conflict found; migration từ `skvn-marine/*` bắt buộc
+
+Dependencies:
+
+- V1 / 1.5.x milestones DONE (woo-catalog + `skvn-marine-blocks` optional-read + onsite)
+- 1.3.11 comprehensive QA DONE (hoặc defects từ QA đã fix trước launch)
+- Multi-site migration tool + pilot evidence
+
+Acceptance draft:
+
+- [ ] Human approves launch identity: **GU Supercharger** / **Gutenberg Supercharger** `0.0.1`
+- [ ] wp.org slug `gu-supercharger` reserved or submitted (nếu distribute qua directory)
+- [ ] Plugin folder/zip `gu-supercharger`; block namespace `gu-supercharger/*` registered
+- [ ] Migration tool converts saved `skvn-marine/*` blocks → `gu-supercharger/*` (pilot site PASS)
+- [ ] Option keys: map hoặc shim documented; không mất footer/core-control settings sau migrate
+- [ ] Release metadata `0.0.1` + deploy artifact audit pass
+- [ ] Runbook: deactivate `skvn-marine-blocks` → migrate → activate `gu-supercharger` (per site)
+- [ ] Onsite smoke trên ≥1 pilot site: Slider + Collection + Core Control — no fatal, no invalid-block
+- [ ] Human approves public launch **GU Supercharger 0.0.1**
 
 ---
 

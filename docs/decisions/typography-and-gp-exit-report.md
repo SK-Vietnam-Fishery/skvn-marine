@@ -450,7 +450,7 @@ grep -n "var(--wp--preset--color" /mnt/d/Github/skvn-marine/wp-content/themes/sk
 
 **Source of truth mới:** `docs/decisions/typography-scope-and-font-loading.md`
 
-**Planning implement:** `.context/planning/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
+**Planning implement:** `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md`
 
 **Không thay đổi từ §4–§6 của report này:**
 

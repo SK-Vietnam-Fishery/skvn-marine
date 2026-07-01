@@ -1,6 +1,10 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/slider-completion-spec-1.3.0.md (Feature Showcase section)
+> Onsite QA defer: 1.3.11
+
 # V1 / 1.3.2 — Feature Showcase Autoplay And Panel Links Planning
 
-Status: IN_PROGRESS
+Status: DONE — milestone 1.3.2 complete
 Created: 2026-06-11
 Started: 2026-06-12
 Human direction: begin after V1 / 1.3.1 Slider controls were fully approved.

@@ -6,6 +6,7 @@ import {
 	Keyboard,
 	Navigation,
 	Pagination,
+	Parallax,
 } from 'swiper/modules';
 import { __, sprintf } from '@wordpress/i18n';
 import {
@@ -55,6 +56,8 @@ type SliderConfig = {
 	slidesPerView?: number;
 	responsiveSlides?: string;
 	slideCount?: number;
+	enableParallax?: boolean;
+	parallaxIntensity?: string;
 };
 
 type NormalizedSliderConfig = {
@@ -78,6 +81,8 @@ type NormalizedSliderConfig = {
 	slidesPerView: number;
 	responsiveSlides: '3-2-1' | 'uniform';
 	slideCount: number;
+	enableParallax: boolean;
+	parallaxIntensity: 'subtle' | 'medium' | 'strong';
 };
 
 type SliderElement = HTMLElement & {
@@ -209,6 +214,12 @@ function parseSliderConfig(
 		responsiveSlides:
 			parsed.responsiveSlides === '3-2-1' ? '3-2-1' : 'uniform',
 		slideCount,
+		enableParallax: typeof parsed.enableParallax === 'boolean' ? parsed.enableParallax : false,
+		parallaxIntensity: normalizeChoice(
+			parsed.parallaxIntensity,
+			[ 'subtle', 'medium', 'strong' ] as const,
+			'medium'
+		),
 	};
 }
 
@@ -314,6 +325,13 @@ function initSlider( slider: SliderElement ): void {
 				`skvn-slider__pagination--${ config.paginationPosition }`
 			);
 		}
+		const useFlankCluster =
+			config.showArrows &&
+			config.showPagination &&
+			config.slideCount > 1 &&
+			config.arrowPosition === 'bottom-center' &&
+			config.paginationPosition === 'bottom-center' &&
+			config.arrowStyle !== 'pill';
 		const controlsCluster =
 			config.showArrows &&
 			config.showPagination &&
@@ -324,7 +342,12 @@ function initSlider( slider: SliderElement ): void {
 				'skvn-slider__controls--cluster',
 				`skvn-slider__controls--${ config.arrowPosition }`
 			);
-			if (
+			if ( useFlankCluster ) {
+				controlsEl.classList.add(
+					'skvn-slider__controls--cluster-flank',
+					`skvn-slider__controls--arrows-${ config.arrowStyle }`
+				);
+			} else if (
 				arrowsEl &&
 				paginEl &&
 				! controlsEl.querySelector( '.skvn-slider__controls-separator' )
@@ -338,6 +361,7 @@ function initSlider( slider: SliderElement ): void {
 
 		const usesCardBreakpoints = config.responsiveSlides === '3-2-1';
 		const reducedMotion = prefersReducedMotion();
+		const shouldParallax = config.enableParallax && ! reducedMotion && config.slidesPerView === 1;
 		const transitionStyle = reducedMotion
 			? 'fade'
 			: config.transitionStyle;
@@ -395,6 +419,18 @@ function initSlider( slider: SliderElement ): void {
 
 		window.addEventListener( 'resize', syncViewportHeight );
 
+		if ( shouldParallax ) {
+			const translateMap = { subtle: '-15%', medium: '-30%', strong: '-50%' } as const;
+			const scaleMap = { subtle: 1.06, medium: 1.12, strong: 1.20 } as const;
+			const insetMap = { subtle: '-20%', medium: '-35%', strong: '-50%' } as const;
+			const intensity = config.parallaxIntensity;
+			slider.querySelectorAll< HTMLElement >( '.skvn-slide__bg' ).forEach( ( bg ) => {
+				bg.setAttribute( 'data-swiper-parallax', translateMap[ intensity ] );
+				bg.setAttribute( 'data-swiper-parallax-scale', String( scaleMap[ intensity ] ) );
+			} );
+			slider.style.setProperty( '--skvn-parallax-inset', insetMap[ intensity ] );
+		}
+
 		try {
 			const pagination =
 				config.showPagination && paginationElement
@@ -428,6 +464,7 @@ function initSlider( slider: SliderElement ): void {
 					Keyboard,
 					Navigation,
 					Pagination,
+					Parallax,
 				],
 				a11y: {
 					containerRoleDescriptionMessage: __(
@@ -464,6 +501,7 @@ function initSlider( slider: SliderElement ): void {
 				fadeEffect: {
 					crossFade: true,
 				},
+				parallax: shouldParallax,
 				speed: config.transitionDuration,
 				keyboard: { enabled: true },
 				loop: config.loop,
@@ -677,6 +715,7 @@ function initSlider( slider: SliderElement ): void {
 				slider.style.removeProperty(
 					'--skvn-slider-viewport-offset'
 				);
+				slider.style.removeProperty( '--skvn-parallax-inset' );
 				delete slider.dataset.skvnDirection;
 
 				if ( slider.swiper?.destroyed ) {

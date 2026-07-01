@@ -131,7 +131,7 @@ does not change flank eligibility. Pagination **position** must still be
 `pill` always keeps the default cluster order from §5 because both controls
 live inside one capsule surface.
 
-Planning: `.context/planning/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
+Planning: `.context/planning/archives/031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md`
 
 When the positions differ, arrows and pagination retain their independent
 positions. The implementation may use one stable controls wrapper and

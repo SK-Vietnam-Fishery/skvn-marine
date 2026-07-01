@@ -393,22 +393,24 @@ export function CollectionEdit( {
 				tagName="p"
 				value={ attributes.intro }
 			/>
-			<div className="skvn-collection__notice">
-				{ contentType === 'post'
-					? __(
-							'Live post grid renders on the frontend.',
-							'skvn-marine-blocks'
-					  )
-					: __(
-							'Product collection is guarded for WooCommerce availability.',
-							'skvn-marine-blocks'
-					  ) }
+			<div className="skvn-collection__editor-body">
+				<PlaceholderCard
+					attributes={ attributes }
+					contentType={ contentType }
+				/>
+				<EditorInfoPanel
+					attributes={ attributes }
+					contentType={ contentType }
+					categoryTerms={ categoryTerms }
+					tagTerms={ tagTerms }
+				/>
 			</div>
 		</section>
 	);
 }
 
 type TermRecord = {
+	id: number;
 	name: string;
 	slug: string;
 };
@@ -455,6 +457,274 @@ function normalizeSelectedTerms(
 
 function sanitizeClassPart( value: string ) {
 	return value.replace( /[^a-z0-9-]/gi, '-' ).toLowerCase();
+}
+
+// ── Editor preview components ────────────────────────────────────────────────
+
+type PostRecord = {
+	id: number;
+	title: { rendered: string };
+};
+
+function useQueryPreview(
+	contentType: 'post' | 'product',
+	attributes: CollectionAttributes,
+	categoryTerms: TermRecord[],
+	tagTerms: TermRecord[]
+): PostRecord[] | null {
+	const catIds = ( attributes.categories || [] )
+		.map( ( slug ) => categoryTerms.find( ( t ) => t.slug === slug )?.id )
+		.filter( ( id ): id is number => id !== undefined );
+	const tagIds = ( attributes.tags || [] )
+		.map( ( slug ) => tagTerms.find( ( t ) => t.slug === slug )?.id )
+		.filter( ( id ): id is number => id !== undefined );
+
+	const orderMap: Record< string, { orderby: string; order: string } > = {
+		newest:             { orderby: 'date',       order: 'desc' },
+		featured:           { orderby: 'menu_order', order: 'asc' },
+		manual:             { orderby: 'menu_order', order: 'asc' },
+		'shuffle-balanced': { orderby: 'rand',       order: 'desc' },
+	};
+	const { orderby, order } =
+		orderMap[ attributes.orderMode || 'newest' ] ||
+		{ orderby: 'date', order: 'desc' };
+
+	const queryParams: Record< string, unknown > = {
+		per_page: Math.min( attributes.itemsToShow || 3, 5 ),
+		status:   'publish',
+		orderby,
+		order,
+	};
+
+	if ( contentType === 'product' ) {
+		if ( catIds.length > 0 ) queryParams.product_cat = catIds.join( ',' );
+		if ( tagIds.length > 0 ) queryParams.product_tag = tagIds.join( ',' );
+	} else {
+		if ( catIds.length > 0 ) queryParams.categories = catIds;
+		if ( tagIds.length > 0 ) queryParams.tags = tagIds;
+	}
+
+	const queryKey = contentType + JSON.stringify( queryParams );
+
+	return useSelect(
+		( select ) =>
+			( select( 'core' ).getEntityRecords(
+				'postType',
+				contentType === 'product' ? 'product' : 'post',
+				queryParams
+			) as PostRecord[] | null ),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ queryKey ]
+	);
+}
+
+const DUMMY_SPECS = [ 'Product attribute', 'Loin', 'Vacuum Pack' ];
+
+function PlaceholderCard( {
+	attributes,
+	contentType,
+}: {
+	attributes: CollectionAttributes;
+	contentType: 'post' | 'product';
+} ) {
+	const chipClass = attributes.chipStyle
+		? `skvn-collection-card--chip-${ attributes.chipStyle }`
+		: '';
+	const chipColorClass = attributes.chipColorScheme
+		? `skvn-chips--${ attributes.chipColorScheme }`
+		: '';
+	const cardClass = [ 'skvn-collection-card', chipClass, chipColorClass ]
+		.filter( Boolean )
+		.join( ' ' );
+
+	if ( contentType === 'post' ) {
+		const showCategories = attributes.showPostCategories !== false;
+		const showExcerpt    = attributes.showExcerpt !== false;
+		const showDate       = attributes.showDate !== false;
+		const readMoreText   = ( attributes.readMoreLabel || '' ).trim() || __( 'Read more →', 'skvn-marine-blocks' );
+
+		return (
+			<div className={ cardClass }>
+				<div className="skvn-collection-card__media">
+					{ showCategories && (
+						<div className="skvn-collection-card__badges">
+							<span className="skvn-collection-card__badge">Category</span>
+						</div>
+					) }
+					<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" />
+				</div>
+				<div className="skvn-collection-card__body">
+					<h3 className="skvn-collection-card__title">
+						{ __( 'Post title', 'skvn-marine-blocks' ) }
+					</h3>
+					{ showDate && (
+						<span className="skvn-collection-card__date">Jan 1, 2025</span>
+					) }
+					{ showExcerpt && (
+						<p className="skvn-collection-card__excerpt">
+							{ __( 'Post excerpt preview…', 'skvn-marine-blocks' ) }
+						</p>
+					) }
+					<span className="skvn-collection-card__read-more">{ readMoreText }</span>
+				</div>
+			</div>
+		);
+	}
+
+	// product
+	const showTags  = attributes.showProductTags !== false;
+	const showSpecs = attributes.showSpecChips !== false;
+	const actionMode = attributes.productActionMode || 'quote';
+	const ctaText =
+		actionMode === 'quote' ? __( 'Request quote', 'skvn-marine-blocks' ) :
+		actionMode === 'none'  ? null :
+		__( 'View details', 'skvn-marine-blocks' );
+
+	return (
+		<div className={ cardClass }>
+			<div className="skvn-collection-card__media">
+				{ showTags && (
+					<div className="skvn-collection-card__badges">
+						<span className="skvn-collection-card__badge">Product tag</span>
+					</div>
+				) }
+				<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" />
+			</div>
+			<div className="skvn-collection-card__body">
+				<h3 className="skvn-collection-card__title">
+					{ __( 'Product name', 'skvn-marine-blocks' ) }
+				</h3>
+				{ showSpecs && (
+					<div className="skvn-collection-card__specs">
+						{ DUMMY_SPECS.map( ( s ) => (
+							<span key={ s } className="skvn-collection-card__spec-tag">
+								{ s }
+							</span>
+						) ) }
+					</div>
+				) }
+				<div className="skvn-collection-card__catalog skvn-collection-card__catalog--placeholder">
+					<span className="skvn-collection-card__catalog-label">
+						Catalog data — woo-catalog 1.5.0
+					</span>
+				</div>
+				{ ctaText && (
+					<span className="skvn-collection-card__cta">{ ctaText }</span>
+				) }
+			</div>
+		</div>
+	);
+}
+
+function EditorInfoPanel( {
+	attributes,
+	contentType,
+	categoryTerms,
+	tagTerms,
+}: {
+	attributes: CollectionAttributes;
+	contentType: 'post' | 'product';
+	categoryTerms: TermRecord[];
+	tagTerms: TermRecord[];
+} ) {
+	const items = useQueryPreview( contentType, attributes, categoryTerms, tagTerms );
+	const isProduct = contentType === 'product';
+
+	const fields = [
+		{ label: 'Image',        active: attributes.showImage !== false },
+		...( isProduct
+			? [
+				{ label: 'Spec chips', active: attributes.showSpecChips !== false },
+				{ label: 'Tags badge', active: attributes.showProductTags !== false },
+			  ]
+			: [
+				{ label: 'Excerpt',    active: attributes.showExcerpt !== false },
+				{ label: 'Date',       active: attributes.showDate !== false },
+				{ label: 'Author',     active: attributes.showAuthor === true },
+			  ]
+		),
+		isProduct
+			? { label: `CTA: ${ actionModeLabel( attributes.productActionMode || 'quote' ) }`, active: ( attributes.productActionMode || 'quote' ) !== 'none' }
+			: { label: `CTA: ${ actionModeLabel( attributes.postActionMode || 'read' ) }`,    active: true },
+		{ label: 'Equal height', active: attributes.equalHeight !== false },
+	];
+
+	const catalogFields = [ 'Certifications', 'MOQ / Lead time', 'PDF link' ];
+
+	return (
+		<div className="skvn-collection__editor-info">
+			<p className="skvn-collection__editor-info-heading">
+				{ __( 'Card data:', 'skvn-marine-blocks' ) }
+			</p>
+			<ul className="skvn-collection__editor-field-list">
+				{ fields.map( ( f ) => (
+					<li
+						key={ f.label }
+						className={ `skvn-collection__editor-field${ f.active ? ' is-active' : '' }` }
+					>
+						<span className="skvn-collection__editor-field-icon">
+							{ f.active ? '✓' : '✗' }
+						</span>
+						{ f.label }
+					</li>
+				) ) }
+			</ul>
+			{ isProduct && (
+				<>
+					<p className="skvn-collection__editor-info-subheading">
+						— woo-catalog 1.5.0 —
+					</p>
+					<ul className="skvn-collection__editor-field-list skvn-collection__editor-field-list--deferred">
+						{ catalogFields.map( ( f ) => (
+							<li key={ f } className="skvn-collection__editor-field">
+								<span className="skvn-collection__editor-field-icon">·</span>
+								{ f }
+							</li>
+						) ) }
+					</ul>
+				</>
+			) }
+			<p className="skvn-collection__editor-info-heading skvn-collection__editor-info-heading--products">
+				{ isProduct
+					? __( 'Products in query:', 'skvn-marine-blocks' )
+					: __( 'Posts in query:', 'skvn-marine-blocks' ) }
+			</p>
+			{ items === null ? (
+				<p className="skvn-collection__editor-product-status">
+					{ __( 'Loading...', 'skvn-marine-blocks' ) }
+				</p>
+			) : items.length === 0 ? (
+				<p className="skvn-collection__editor-product-status">
+					{ isProduct
+						? __( 'No products match.', 'skvn-marine-blocks' )
+						: __( 'No posts match.', 'skvn-marine-blocks' ) }
+				</p>
+			) : (
+				<>
+					<ol className="skvn-collection__editor-product-list">
+						{ items.map( ( p ) => (
+							<li key={ p.id }>{ p.title.rendered }</li>
+						) ) }
+					</ol>
+					<p className="skvn-collection__editor-product-note">
+						{ __( '* Approximate list', 'skvn-marine-blocks' ) }
+					</p>
+				</>
+			) }
+		</div>
+	);
+}
+
+function actionModeLabel( mode: string ): string {
+	const map: Record< string, string > = {
+		quote:  'Quote',
+		view:   'View',
+		both:   'Quote + View',
+		custom: 'Custom',
+		none:   'Hidden',
+		read:   'Read more',
+	};
+	return map[ mode ] || mode;
 }
 
 function PostCardControls( {

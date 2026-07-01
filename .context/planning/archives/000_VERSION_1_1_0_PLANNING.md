@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/design-direction.md, docs/decisions/architecture.md (foundational V1 direction)
+> Onsite QA defer: none
+
 # Version 0.1.0 Planning Summary — SKVN Marine
 
 > Planning snapshot for the current V1 direction.

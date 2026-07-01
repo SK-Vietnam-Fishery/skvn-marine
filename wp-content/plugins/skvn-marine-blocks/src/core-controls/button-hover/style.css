@@ -1,13 +1,30 @@
-/* Editor-only hover preview via CSS custom properties injected inline on the block wrapper. */
-.wp-block-button .wp-block-button__link:hover,
-.wp-block-button .wp-block-button__link:focus-visible {
-	color: var( --skvn-btn-hover-text, inherit );
-	background-color: var( --skvn-btn-hover-bg, inherit );
-	transition: color 0.2s ease, background-color 0.2s ease;
+/*
+ * Editor-only: frontend hover rules are emitted via PHP wp_add_inline_style.
+ *
+ * In the editor, BlockListBlock injects has-skvn-button-hover on the OUTER
+ * wrapper div, not on .wp-block-button itself. Selector must traverse down:
+ *   .has-skvn-button-hover (BlockListBlock wrapper)
+ *     └─ .wp-block-button (block content)
+ *          └─ .wp-block-button__link
+ *
+ * Specificity 0,2,1 is safe here — no theme rules conflict inside editor iframe.
+ */
+.has-skvn-btn-hover-text .wp-block-button .wp-block-button__link:hover,
+.has-skvn-btn-hover-text .wp-block-button .wp-block-button__link:focus-visible {
+	color: var( --skvn-btn-hover-text );
+}
+
+.has-skvn-btn-hover-bg .wp-block-button .wp-block-button__link:hover,
+.has-skvn-btn-hover-bg .wp-block-button .wp-block-button__link:focus-visible {
+	background: var( --skvn-btn-hover-bg );
+}
+
+.has-skvn-button-hover .wp-block-button .wp-block-button__link {
+	transition: color 0.15s ease, background 0.15s ease;
 }
 
 @media ( prefers-reduced-motion: reduce ) {
-	.wp-block-button .wp-block-button__link {
+	.has-skvn-button-hover .wp-block-button .wp-block-button__link {
 		transition: none;
 	}
 }

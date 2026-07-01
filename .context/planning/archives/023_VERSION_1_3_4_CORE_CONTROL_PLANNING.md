@@ -1,3 +1,7 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/core-control-core-button-hover.md
+> Onsite QA defer: 1.3.11 (button hover); Block Copy/Paste chưa implement — registry only
+
 # V1 / 1.3.4 — Core Control Planning
 
 Status: PLANNED, implementation not started

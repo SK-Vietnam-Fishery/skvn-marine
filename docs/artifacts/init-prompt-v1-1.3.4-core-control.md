@@ -66,7 +66,7 @@ Do not implement the complete feature during the first pass.
 First:
 
 1. Create
-   `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
+   `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`.
 2. Inspect the existing plugin bootstrap, editor build entries, admin menu
    ownership, deploy packaging, and supported WordPress APIs.
 3. Produce a concise checkpoint containing:
@@ -325,7 +325,7 @@ Before editing, tell the human exactly which files will change.
 - `tools/build-deploy-artifact.mjs`
 - `docs/workflows/deploy-artifact-workflow.md` when packaging assertions change
 - `docs/testing/onsite-core-control-1.3.4.md`
-- `.context/planning/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
+- `.context/planning/archives/023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md`
 - `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md`
 - `.context/MILESTONES.md`
 - `.context/TENSIONS_OPEN.md` only when a real conflict is found

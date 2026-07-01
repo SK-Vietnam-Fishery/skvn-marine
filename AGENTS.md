@@ -7,7 +7,7 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.6 — Block Editor UX, Slider Parallax & Single Post Fix**
+Current milestone: **V1 / 1.3.7 — Collection Block UI & Card Styles**
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
@@ -58,6 +58,26 @@ Trước mọi task thêm/sửa CSS layout (`width`, alignment, margin âm, view
 unit, overflow, grid/flex, absolute positioning, header/footer), agent PHẢI đọc:
 
 `docs/standards/css-layout-safety-contract.md`
+
+### CSS block extension safety — Bắt buộc
+
+Trước mọi task viết CSS cho **Gutenberg block extension** (PHP filter `render_block_*`
++ `editor.BlockEdit` / `editor.BlockListBlock`), agent PHẢI đọc:
+
+`docs/standards/gutenberg-block-extension-css-contract.md`
+
+Quy tắc tóm tắt (không thay thế việc đọc doc):
+
+- **Specificity trước, CSS sau**: check theme rule mạnh nhất cho element trước khi viết
+  consuming rule. Plugin rule phải ≥ specificity đó — dùng scoped class trên wrapper.
+- **Editor DOM ≠ Frontend DOM**: `editor.BlockListBlock` inject class vào outer wrapper,
+  không phải vào `.wp-block-button`. Selector editor CSS phải dùng cấu trúc
+  `.has-scoped-class .wp-block-button .link:hover`, không phải `.wp-block-button.has-scoped-class`.
+- **Bundle boundary**: không enqueue plugin bundle cho feature CSS nhỏ — dùng
+  `wp_add_inline_style` với handle riêng có dependency vào theme stylesheet.
+- **`editor.BlockEdit` ≠ `editor.BlockListBlock`**: `BlockEdit` chỉ inject Inspector panel;
+  `wrapperStyle` build trong `BlockEdit` là dead code — gắn vars qua `BlockListBlock`.
+- **Pivot phải atomic**: bỏ cơ chế specificity cũ phải kèm replacement trong cùng commit.
 
 Quy tắc tóm tắt:
 
@@ -426,8 +446,9 @@ if (!prefersReduced) { /* run animation */ }
 ### Footer Page Settings
 
 - 0.9.0 scope: plugin settings page stores `skvn_footer_page_id`; theme renders the selected footer page through GeneratePress' `generate_footer` surface.
-- Implement 0.9.0 footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin; do not create or rename to a `gutenberg-supercharger` or `gutenberg-turbo` plugin in V1.
-- The future umbrella plugin concept `Gutenberg Supercharger` is documented as a possible V4 / 4.0.0 direction and standard/core product name, not current scope. `Gutenberg Supercharger Stage 2` is the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
+- Implement 0.9.0 footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin until the **post-1.5.x product launch**.
+- **Human locked (2026-06-23):** first public plugin launch = **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace) **after V1 / 1.5.x** stabilizes — not at 1.3.11. Until launch, keep dev slug `skvn-marine-blocks` and block namespace `skvn-marine/*` for all production sites. See `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
+- `Gutenberg Supercharger Stage 2` remains the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
 - Footer settings may use a module-shaped folder such as `modules/footer-settings/` or `includes/modules/footer-settings/` inside `wp-content/plugins/skvn-marine-blocks/`.
 - Keep current plugin slug, text domain, and option key: `skvn-marine-blocks`, `skvn-marine-blocks`, and `skvn_footer_page_id`.
 - Do not rename namespaces, option keys, plugin headers, build entrypoints, or activation path for 0.9.0.
@@ -499,6 +520,13 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 [ ] Layout width có một owner; không duplicate GP/Gutenberg/SKVN full-width calculation
 [ ] Viewport units/margin âm mới có rationale và geometry test với scrollbar dọc
 [ ] `overflow-x` không được dùng để che bounding box sai
+[ ] Block extension CSS task đã đọc `docs/standards/gutenberg-block-extension-css-contract.md`
+[ ] Specificity plugin rule ≥ theme rule mạnh nhất cho element target (check DevTools trước khi viết)
+[ ] Scoped class thêm đúng element (PHP: cùng element với vars; Editor: outer wrapper)
+[ ] Editor CSS selector dùng `.has-class .wp-block-* .link` (không phải `.wp-block-*.has-class`)
+[ ] Feature CSS dùng handle riêng + `wp_add_inline_style`, không enqueue bundle chung
+[ ] `editor.BlockListBlock` cho wrapperProps — không build wrapperStyle trong `editor.BlockEdit`
+[ ] Test block extension: mockRenderFunction assert HTML output, không chỉ grep PHP source
 [ ] Image ALT: chỉ fill khi empty, không overwrite
 [ ] Dependency mới có rationale
 [ ] Files sửa ≤ 5 (hoặc có lý do nếu hơn)
@@ -542,13 +570,19 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.3 | Dynamic Product And Post Collections |
 | 1.3.4 | Core Control Foundation & Core Button Hover |
 | 1.3.5 | Post, Product & Archive Page Improvements |
-| 1.3.9 | Slider Dynamic Rendering & Controls Onsite QA |
-| 1.3.10 | SKVN Team Credits Easter Egg |
+| 1.3.7 | Collection Block UI & Card Styles |
+| 1.3.8 | Slider Parallax |
+| 1.3.9 | Custom Icon Upload |
+| 1.3.10 | Fullscreen Step Slider |
+| 1.3.11 | Comprehensive Onsite QA (Slider, Collections & Controls) |
+| 1.3.12 | SKVN Team Credits Easter Egg |
+| 1.3.16 | Comprehensive Testing (1.3.x Feature QA) |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.4.1 | Layout Blocks Validation & Quote Evaluation |
-| 1.5.0 | Fullscreen Step Slider |
+| 1.5.0 | Woo Catalog Plugin |
 | 1.6.0 | SKVN Surface Presets |
 | 1.7.0 | Front page trang Chuyển đổi số |
+| Post 1.5.x | GU Supercharger 0.0.1 Product Launch |
 
 ### Version naming rules
 

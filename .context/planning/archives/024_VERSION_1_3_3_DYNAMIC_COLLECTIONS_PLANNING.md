@@ -1,6 +1,10 @@
+> Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
+> Decision: docs/decisions/skvn-dynamic-collections-1.3.3.md
+> Onsite QA defer: 1.3.11
+
 # VERSION 1.3.3 — Dynamic Product And Post Collections Planning
 
-Status: future planning.
+Status: DONE — milestone 1.3.3 complete
 Decision source: `docs/decisions/skvn-dynamic-collections-1.3.3.md`.
 Testing source: `docs/testing/onsite-dynamic-collections-1.3.3.md`.
 

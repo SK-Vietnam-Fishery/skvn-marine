@@ -105,6 +105,55 @@ function skvn_marine_blocks_get_slider_attributes( $attributes, $block ) {
 }
 
 /**
+ * Whether bottom-center flank layout applies (V1 / 1.3.6 §5.1).
+ *
+ * @param bool   $show_arrows         Arrows enabled.
+ * @param bool   $show_pagination     Pagination enabled.
+ * @param int    $slide_count         Number of slides.
+ * @param string $arrow_style         Arrow style slug.
+ * @param string $arrow_position      Arrow position slug.
+ * @param string $pagination_position Pagination position slug.
+ * @return bool
+ */
+function skvn_marine_blocks_slider_controls_use_flank(
+	bool $show_arrows,
+	bool $show_pagination,
+	int $slide_count,
+	string $arrow_style,
+	string $arrow_position,
+	string $pagination_position
+): bool {
+	return $show_arrows
+		&& $show_pagination
+		&& $slide_count > 1
+		&& 'bottom-center' === $arrow_position
+		&& 'bottom-center' === $pagination_position
+		&& 'pill' !== $arrow_style;
+}
+
+/**
+ * Render a single prev/next arrow button for flank cluster layout.
+ *
+ * @param string $direction Arrow direction: prev or next.
+ * @return string
+ */
+function skvn_marine_blocks_render_slider_arrow_button( string $direction ): string {
+	$is_next       = 'next' === $direction;
+	$arrow_class   = $is_next ? 'skvn-slider__arrow--next' : 'skvn-slider__arrow--prev';
+	$swiper_class  = $is_next ? 'swiper-button-next' : 'swiper-button-prev';
+	$aria_label    = $is_next
+		? esc_attr__( 'Next slide', 'skvn-marine-blocks' )
+		: esc_attr__( 'Previous slide', 'skvn-marine-blocks' );
+
+	return sprintf(
+		'<button class="skvn-slider__arrow %1$s %2$s" type="button" aria-label="%3$s"></button>',
+		esc_attr( $arrow_class ),
+		esc_attr( $swiper_class ),
+		$aria_label
+	);
+}
+
+/**
  * Render one arrow control family.
  *
  * @param string $style    Arrow style.
@@ -259,6 +308,14 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 	$loop            = isset( $attributes['loop'] ) ? (bool) $attributes['loop'] : true;
 	$autoplay        = $autoplay && $has_multiple_slides;
 	$loop            = $loop && $has_multiple_slides;
+	$use_flank = skvn_marine_blocks_slider_controls_use_flank(
+		$show_arrows,
+		$show_pagination,
+		$slide_count,
+		$arrow_style,
+		$arrow_position,
+		$pagination_position
+	);
 	$cluster_position = $show_arrows &&
 		$show_pagination &&
 		'side-center' !== $arrow_position &&
@@ -286,6 +343,12 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		'heightPreset'      => $height_preset,
 		'slidesPerView'     => $slides_per_view,
 		'slideCount'        => $slide_count,
+		'enableParallax'    => isset( $attributes['enableParallax'] ) ? (bool) $attributes['enableParallax'] : false,
+		'parallaxIntensity' => skvn_marine_blocks_normalize_slider_choice(
+			$attributes['parallaxIntensity'] ?? 'medium',
+			array( 'subtle', 'medium', 'strong' ),
+			'medium'
+		),
 	);
 
 	if ( '3-2-1' === $responsive_slides ) {
@@ -331,18 +394,29 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 			$controls_class .= ' skvn-slider__controls--' . $cluster_position;
 		}
 
+		if ( $use_flank ) {
+			$controls_class .= ' skvn-slider__controls--cluster-flank';
+			$controls_class .= ' skvn-slider__controls--arrows-' . $arrow_style;
+		}
+
 		$output .= '<div class="' . esc_attr( $controls_class ) . '">';
 
-		if ( $show_arrows ) {
-			$output .= skvn_marine_blocks_render_slider_arrows( $arrow_style, $arrow_position );
-		}
-
-		if ( $cluster_position ) {
-			$output .= '<span aria-hidden="true" class="skvn-slider__controls-separator"></span>';
-		}
-
-		if ( $show_pagination ) {
+		if ( $use_flank ) {
+			$output .= skvn_marine_blocks_render_slider_arrow_button( 'prev' );
 			$output .= skvn_marine_blocks_render_slider_pagination( $pagination_style, $pagination_position );
+			$output .= skvn_marine_blocks_render_slider_arrow_button( 'next' );
+		} else {
+			if ( $show_arrows ) {
+				$output .= skvn_marine_blocks_render_slider_arrows( $arrow_style, $arrow_position );
+			}
+
+			if ( $cluster_position ) {
+				$output .= '<span aria-hidden="true" class="skvn-slider__controls-separator"></span>';
+			}
+
+			if ( $show_pagination ) {
+				$output .= skvn_marine_blocks_render_slider_pagination( $pagination_style, $pagination_position );
+			}
 		}
 
 		$output .= '</div>';
@@ -401,11 +475,13 @@ function skvn_marine_blocks_render_slide( $attributes, $content, $block ) {
 	$output            .= '<div class="skvn-slide__media">';
 
 	if ( $has_image ) {
+		$output .= '<div class="skvn-slide__bg">';
 		$output .= sprintf(
 			'<img alt="%1$s" class="skvn-slide__background-image" src="%2$s" />',
 			esc_attr( $image_alt ),
 			esc_url( $image_url )
 		);
+		$output .= '</div>';
 		$output .= sprintf(
 			'<span aria-hidden="true" class="skvn-slide__overlay" style="opacity:%s"></span>',
 			esc_attr( number_format( $overlay_opacity / 100, 2, '.', '' ) )
