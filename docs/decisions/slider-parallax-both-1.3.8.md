@@ -195,6 +195,60 @@ Values injected at runtime in `view.ts` per intensity preset (user never sees th
 | medium | `-30%` | `1.12` |
 | strong | `-50%` | `1.20` |
 
+### Rev 1.1 — Advanced Controls Contract (2026-07-01)
+
+**New attributes in `block.json`:**
+
+```json
+{
+  "parallaxAdvanced":   { "type": "boolean", "default": false },
+  "parallaxDepth":      { "type": "string",  "enum": ["both", "translate", "scale"], "default": "both" },
+  "parallaxDirection":  { "type": "string",  "enum": ["horizontal", "vertical"],     "default": "horizontal" },
+  "parallaxTranslate":  { "type": "number",  "default": 30 },
+  "parallaxScale":      { "type": "number",  "default": 1.12 },
+  "parallaxInset":      { "type": "number",  "default": 35 }
+}
+```
+
+**UI flow (Inspector > Motion panel):**
+
+```
+Enable Parallax  [toggle]
+│
+├─ Advanced OFF (default):
+│    Intensity: (Subtle)(Medium)(Strong)     ← preset quick-pick
+│    Advanced  [toggle off]
+│
+└─ Advanced ON:
+     Advanced  [toggle on]
+     Depth mechanism: [Both ▾]              ← Both / Translate only / Scale only
+     │
+     ├─ depth !== "scale":
+     │    Direction:   [Horizontal ▾]        ← Horizontal / Vertical
+     │    Translate:   ───●──  30%           ← 0–80% slider
+     │    Edge guard:  ───●──  35%           ← 0–80% slider (prevent edge-reveal)
+     │
+     └─ depth !== "translate":
+          Scale:       ──●───  1.12          ← 1.00–1.50 slider, step 0.01
+
+Badge: "Parallax ON · custom"  (vs "Parallax ON · medium" in preset mode)
+```
+
+**Runtime resolution in `view.ts`:**
+
+| Mode | translate value | scale value | inset value | axis |
+|------|----------------|-------------|-------------|------|
+| Preset — Subtle | `-15%` | `1.06` | `-20%` | horizontal |
+| Preset — Medium | `-30%` | `1.12` | `-35%` | horizontal |
+| Preset — Strong | `-50%` | `1.20` | `-50%` | horizontal |
+| Advanced | `-{parallaxTranslate}%` | `parallaxScale` | `-{parallaxInset}%` | per `parallaxDirection` |
+
+**Key rules:**
+- `inset` only applies when depth includes translate (scale-only → inset = 0, edge guard hidden in UI)
+- `direction` maps to `data-swiper-parallax-x` (horizontal) or `data-swiper-parallax-y` (vertical)
+- Each init removes all existing parallax data attributes before re-setting (prevents stale attributes on toggle change)
+- Advanced overrides preset entirely — the two modes are mutually exclusive at runtime
+
 ### Auto-disable (no UI)
 
 Parallax disabled when:
