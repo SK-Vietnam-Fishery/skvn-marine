@@ -571,15 +571,18 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.4 | Core Control Foundation & Core Button Hover |
 | 1.3.5 | Post, Product & Archive Page Improvements |
 | 1.3.7 | Collection Block UI & Card Styles |
+| 1.3.8 | Slider Parallax |
+| 1.3.9 | Custom Icon Upload |
+| 1.3.10 | Fullscreen Step Slider |
 | 1.3.11 | Comprehensive Onsite QA (Slider, Collections & Controls) |
-| Post 1.5.x | GU Supercharger 0.0.1 Product Launch |
-| 1.3.9 | Slider Dynamic Rendering & Controls Onsite QA |
-| 1.3.10 | SKVN Team Credits Easter Egg |
+| 1.3.12 | SKVN Team Credits Easter Egg |
+| 1.3.16 | Comprehensive Testing (1.3.x Feature QA) |
 | 1.4.0 | SKVN Theme Init Setup UI |
 | 1.4.1 | Layout Blocks Validation & Quote Evaluation |
-| 1.5.0 | Fullscreen Step Slider |
+| 1.5.0 | Woo Catalog Plugin |
 | 1.6.0 | SKVN Surface Presets |
 | 1.7.0 | Front page trang Chuyển đổi số |
+| Post 1.5.x | GU Supercharger 0.0.1 Product Launch |
 
 ### Version naming rules
 

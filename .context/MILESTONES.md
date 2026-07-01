@@ -769,6 +769,61 @@ Acceptance draft:
 - [ ] PHP lint, plugin build, and wp-admin smoke test pass
 - [ ] Human approves milestone completion
 
+### 1.3.16 — Comprehensive Testing (1.3.x Feature QA)
+
+Status: **PENDING**
+
+Purpose:
+
+- Consolidated testing phase for all 1.3.x feature milestones after implementation.
+- Verify Collection UI (1.3.7), Slider Parallax (1.3.8), Step Slider (1.3.10), and Team Credits (1.3.12) onsite.
+- Test button hover compatibility, collection CTAs, editor UX polish.
+- Defer all untested acceptance items from earlier milestones to this comprehensive QA pass.
+
+Acceptance draft:
+
+**From 1.3.7 — Collection UI & Button Hover:**
+- [ ] `imageRatio` class renders and applies correctly onsite
+- [ ] Carousel arrows visible + not clipped by Swiper overflow
+- [ ] Spacing (margin-top/bottom, heading gap) works onsite
+- [ ] `showHeading`, `eyebrow`, `intro` render and style correctly
+- [ ] Archive CTA works and links correct
+- [ ] Catalog CTA toggle, URL, label functional onsite
+- [ ] Card style variants match design artifact
+- [ ] Category badge overlay displays correctly
+- [ ] Preset `4-2-1` responsive works mobile/desktop
+- [ ] New collection CTAs hovers work onsite per 028 spec
+- [ ] Core Button Hover feature + slider preset hovers work onsite
+- [ ] Editor preview hover visible in DevTools
+- [ ] Slider block regression test pass (`tests/slider-block.test.mjs`)
+
+**From 1.3.8 — Slider Parallax:**
+- [ ] Parallax enable/disable works frontend
+- [ ] Subtle/medium/strong intensity presets show expected depth
+- [ ] No edge-reveal artifacts (image mismatch at viewport edges)
+- [ ] Wipe + parallax coordinate without conflicts
+- [ ] Fade + parallax coordinate without conflicts
+- [ ] Zoom-out + parallax compounded scale intentional
+- [ ] Parallax disabled with `prefers-reduced-motion` and `slidesPerView > 1`
+
+**From 1.3.10 — Step Slider (if implemented):**
+- [ ] Bottom tab navigation renders and syncs correctly
+- [ ] Progress bar updates during autoplay and user interaction
+- [ ] Step content loads without invalid-block errors
+- [ ] Mobile tab UI readable and touchable
+
+**From 1.3.12 — Team Credits:**
+- [ ] Easter egg trigger (5 clicks) opens credits UI
+- [ ] Credits UI accessible and dismissible
+- [ ] No frontend output or database writes
+
+**General:**
+- [ ] Plugin build + PHP lint pass
+- [ ] Browser console clean across all surfaces
+- [ ] Memory use settles without growth
+- [ ] No invalid-block warnings on existing content
+- [ ] Human approves milestone completion
+
 ### 1.5.0 — Woo Catalog Plugin (`woo-catalog`)
 
 Status: **BRAINSTORM / PLANNING IN PROGRESS**
