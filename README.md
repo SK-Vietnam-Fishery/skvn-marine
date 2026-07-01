@@ -7,7 +7,7 @@ AI context files, and development documentation used to build the site.
 
 This repository is **not** a full WordPress runtime installation.
 
-Build with Codex, Grok Build and Claude
+Build with Codex, Grok Build and Claude using [context-mapping](https://github.com/WhySchools/context-mapping)
 
 ---
 
