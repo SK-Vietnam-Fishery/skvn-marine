@@ -459,6 +459,8 @@ function initSlider( slider: SliderElement ): void {
 
 		window.addEventListener( 'resize', syncViewportHeight );
 
+		let injectParallaxAttrs: ( () => void ) | null = null;
+
 		if ( shouldParallax ) {
 			// Preset baseline (magnitudes in %). Advanced mode overrides these
 			// with the raw per-attribute values from the inspector.
@@ -485,31 +487,38 @@ function initSlider( slider: SliderElement ): void {
 			const effectiveInset = includeTranslate ? insetMag : 0;
 			const axis = direction === 'vertical' ? 'y' : 'x';
 
-			slider
-				.querySelectorAll< HTMLElement >( '.skvn-slide__bg' )
-				.forEach( ( bg ) => {
-					bg.removeAttribute( 'data-swiper-parallax-x' );
-					bg.removeAttribute( 'data-swiper-parallax-y' );
-					bg.removeAttribute( 'data-swiper-parallax-scale' );
+			// Defer injection until after new Swiper() so loop clones (created
+			// by Swiper's init) are also captured, and the parallax module can
+			// compute correct initial transforms (active slide = scale 1, not
+			// the parallax scale value).
+			injectParallaxAttrs = () => {
+				slider
+					.querySelectorAll< HTMLElement >( '.skvn-slide__bg' )
+					.forEach( ( bg ) => {
+						bg.removeAttribute( 'data-swiper-parallax' );
+						bg.removeAttribute( 'data-swiper-parallax-x' );
+						bg.removeAttribute( 'data-swiper-parallax-y' );
+						bg.removeAttribute( 'data-swiper-parallax-scale' );
 
-					if ( includeTranslate ) {
-						bg.setAttribute(
-							`data-swiper-parallax-${ axis }`,
-							`-${ translateMag }%`
-						);
-					}
+						if ( includeTranslate ) {
+							bg.setAttribute(
+								`data-swiper-parallax-${ axis }`,
+								`-${ translateMag }%`
+							);
+						}
 
-					if ( includeScale ) {
-						bg.setAttribute(
-							'data-swiper-parallax-scale',
-							String( scaleVal )
-						);
-					}
-				} );
-			slider.style.setProperty(
-				'--skvn-parallax-inset',
-				`-${ effectiveInset }%`
-			);
+						if ( includeScale ) {
+							bg.setAttribute(
+								'data-swiper-parallax-scale',
+								String( scaleVal )
+							);
+						}
+					} );
+				slider.style.setProperty(
+					'--skvn-parallax-inset',
+					`-${ effectiveInset }%`
+				);
+			};
 		}
 
 		try {
@@ -608,6 +617,13 @@ function initSlider( slider: SliderElement ): void {
 					: config.slidesPerView,
 			} );
 			syncViewportHeight( swiper );
+
+			// Inject parallax attrs after Swiper init: loop clones now exist and
+			// the module recalculates transforms correctly via swiper.update().
+			if ( injectParallaxAttrs ) {
+				injectParallaxAttrs();
+				swiper.update();
+			}
 
 			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;
