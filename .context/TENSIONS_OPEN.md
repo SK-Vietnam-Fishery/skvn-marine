@@ -63,6 +63,42 @@ Status:     OPEN
 Resolved:
 Decision:   Conservative implementation: Slider-only Inter; human review whether to retain, self-host, or promote it into the 1.6.0 typography system.
 
+## [2026-07-12] | slider, milestone
+Tension:    (T-DEMO-1) 1.3.8 mang Status DONE (approved 2026-07-01) nhưng toàn bộ acceptance checklist chưa tick, và 2 bug parallax (stutter slide 2/3, ảnh scale khi load) vẫn còn sau 2 hotfix ngoài-milestone (ba03f08, 406d42d) — human confirm 2026-07-12.
+Context:    Demo prep review. Công việc stabilize parallax không có milestone chứa nên fix phải đi dạng hotfix ngoài sổ; MILESTONES.md đang nói dối người đọc.
+Proposal:   Mở milestone 1.3.15 — Parallax Stabilization (patch scope) chứa debug theo docs/demo-prep/04-parallax-debug-protocol.md + fix + Dev onsite verify. 1.3.8 giữ DONE cho phần implementation, ghi chú rõ "stabilization → 1.3.15". Chi tiết: docs/demo-prep/06-expanded-perspective.md §P1.
+Constraint: MILESTONES.md Transition Rule: "Chỉ chuyển milestone khi tất cả acceptance checklist của milestone hiện tại đã DONE" — 1.3.8 được đóng khi checklist chưa tick.
+Severity:   low
+Tags:       slider, milestone
+Milestone:  V1 / 1.3.x demo prep
+Status:     OPEN
+Resolved:
+Decision:   OPEN
+
+## [2026-07-12] | milestone, planning
+Tension:    (T-DEMO-2) 1.3.11 (Comprehensive Onsite QA) và 1.3.16 (Comprehensive Testing 1.3.x) có scope gần trùng nhau — cùng cover 1.3.7 collection UI, 1.3.8 parallax, 1.3.10 step slider, button hover, console/memory. Hai checklist song song = không cái nào là source of truth.
+Context:    Demo prep review; cần một QA gate duy nhất trước demo.
+Proposal:   Merge thành một Pre-Demo QA Gate giữ số 1.3.11 (absorb nội dung 1.3.16, đánh dấu 1.3.16 merged/ARCHIVED); item ngoài demo scope tách thành section post-demo trong cùng file. Chi tiết: docs/demo-prep/02-milestone-critique.md §C2, 06-expanded-perspective.md §P2.
+Constraint: MILESTONES.md là "planning/scope source of truth" — hai milestone trùng scope phá vỡ tính source-of-truth.
+Severity:   low
+Tags:       milestone, planning
+Milestone:  V1 / 1.3.x demo prep
+Status:     OPEN
+Resolved:
+Decision:   OPEN
+
+## [2026-07-12] | slider, editor-governance
+Tension:    (T-DEMO-3) Đề xuất demo chỉ dùng parallax Preset (Subtle/Medium/Strong), không dùng/không show Advanced controls (depth/direction/translate/scale/inset) — đi ngược decision reversal 2026-07-01 của human (expose Advanced toggle).
+Context:    Parallax còn bug chưa có root cause; Advanced controls nhân test matrix ~8× trong khi thời gian QA trước demo có hạn. Người xem demo không cần thấy Advanced.
+Proposal:   Mức tối thiểu (zero code): demo pages chỉ config Preset, demo script không mở Advanced panel. Mức chắc hơn (cần approve riêng): constant tạm ẩn Advanced panel, gỡ sau demo. Không thay đổi decision Rev 1.1 cho product — chỉ giới hạn phạm vi demo. Chi tiết: docs/demo-prep/06-expanded-perspective.md §P3b.
+Constraint: Human decision 2026-07-01 (memory: parallax Advanced toggle reversal): "exposed via Advanced toggle" — đề xuất này thu hẹp tạm thời điều human đã chọn.
+Severity:   low
+Tags:       slider, editor-governance
+Milestone:  V1 / 1.3.x demo prep
+Status:     OPEN
+Resolved:
+Decision:   OPEN
+
 ## [2026-06-12 15:30] | editor-governance
 Tension:    Tiện ích copy/paste block là editor-governance dùng chung, trong khi milestone hiện tại tập trung vào Feature Showcase autoplay và panel links.
 Context:    Human yêu cầu hai nút copy block và paste block để giữ nguyên Gutenberg block markup khi chuyển nội dung giữa các trang.
