@@ -59,3 +59,11 @@ không có tác dụng. Toàn bộ được đúc lại thành contract.
 - [ ] Chỉ ra đúng filter nào cho việc nào: Inspector panel / editor wrapper / frontend output
 - [ ] Đo được specificity bằng DevTools trước khi viết CSS
 - [ ] Giải thích vì sao `!important` là cấm mặc định trong contract dự án
+
+## Tài liệu nguồn (chính thức)
+
+- Block Filters (editor.BlockEdit, editor.BlockListBlock, blocks.registerBlockType): https://developer.wordpress.org/block-editor/reference-guides/filters/block-filters/
+- `render_block` filter (PHP, frontend output): https://developer.wordpress.org/reference/hooks/render_block/
+- `wp_add_inline_style`: https://developer.wordpress.org/reference/functions/wp_add_inline_style/
+- CSS Specificity (MDN — cách tính điểm): https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity
+- The block in the Editor (editor DOM khác gì): https://developer.wordpress.org/block-editor/explanations/architecture/styles/

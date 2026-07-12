@@ -69,3 +69,12 @@ store → getter → render.)
 - [ ] Sanitize callback vứt được key lạ (test bằng cách POST thêm field giả)
 - [ ] Thêm feature thứ 3 vào registry chỉ mất ~5 dòng
 - [ ] Consumer nào của getter cũng có guard + fallback
+
+## Tài liệu nguồn (chính thức)
+
+- Settings API (Plugin Handbook — đọc trọn chương): https://developer.wordpress.org/plugins/settings/settings-api/
+- `register_setting()`: https://developer.wordpress.org/reference/functions/register_setting/
+- Administration Menus (`add_menu_page`, capability): https://developer.wordpress.org/plugins/administration-menus/
+- Options API (`get_option` defaults): https://developer.wordpress.org/plugins/settings/options-api/
+- Roles & Capabilities: https://developer.wordpress.org/plugins/users/roles-and-capabilities/
+- Nonces (khi nào Settings API lo hộ, khi nào tự lo): https://developer.wordpress.org/apis/security/nonces/

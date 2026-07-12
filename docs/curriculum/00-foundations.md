@@ -57,3 +57,11 @@ load ở thế giới nào (`editorScript`, `viewScript`, `style`, `editorStyle`
 
 - `AGENTS.md` §2 (Architecture) — boundary theme/plugin.
 - `docs/decisions/architecture.md` — vì sao dự án chọn child theme + plugin tách riêng.
+
+## Tài liệu nguồn (chính thức)
+
+- Getting Started — Block Development: https://developer.wordpress.org/block-editor/getting-started/
+- `block.json` Metadata reference (đọc kỹ bảng asset fields): https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/
+- `@wordpress/scripts` package: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-scripts/
+- Plugin Basics (header, activation): https://developer.wordpress.org/plugins/plugin-basics/
+- `register_block_type()`: https://developer.wordpress.org/reference/functions/register_block_type/

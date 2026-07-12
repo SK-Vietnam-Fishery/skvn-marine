@@ -58,3 +58,11 @@ Block `simple-showcase/quote-card`:
 - Sửa save() "chỉ một tí" rồi ship — nguồn invalid block hàng loạt. Dự án SKVN có
   nguyên checklist "existing content opens without invalid-block recovery" trong mọi
   milestone slider vì bài học này.
+
+## Tài liệu nguồn (chính thức)
+
+- Attributes reference (source: html/attribute/text...): https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/
+- Edit and Save: https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/
+- Deprecation (đọc trước khi làm bài kiểm tra invalid block): https://developer.wordpress.org/block-editor/reference-guides/block-api/block-deprecation/
+- RichText component: https://developer.wordpress.org/block-editor/reference-guides/richtext/
+- Block Supports (những gì WP cho miễn phí trước khi tự viết attribute): https://developer.wordpress.org/block-editor/reference-guides/block-api/block-supports/

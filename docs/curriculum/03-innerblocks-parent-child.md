@@ -57,3 +57,11 @@ xem slider presets của dự án (1.2.1).
 
 - Chạy carousel/autoplay thật trong editor → editing painful + memory leak (case study
   module 09). Editor luôn là preview tĩnh hoặc simplified.
+
+## Tài liệu nguồn (chính thức)
+
+- Nested Blocks — InnerBlocks (tutorial gốc): https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/nested-blocks-inner-blocks/
+- InnerBlocks reference (allowedBlocks, template, templateLock): https://github.com/WordPress/gutenberg/blob/trunk/packages/block-editor/src/components/inner-blocks/README.md
+- Block Templates: https://developer.wordpress.org/block-editor/reference-guides/block-api/block-templates/
+- `parent` / `ancestor` trong block.json: https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#parent
+- `useInnerBlocksProps`: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useinnerblocksprops

@@ -71,6 +71,8 @@ Constraint: MILESTONES.md Transition Rule: "Chỉ chuyển milestone khi tất c
 Severity:   low
 Tags:       slider, milestone
 Milestone:  V1 / 1.3.x demo prep
+Evidence:   MILESTONES.md §1.3.8: Status DONE nhưng acceptance toàn [ ]; git log: ba03f08 + 406d42d không thuộc milestone nào; human confirm bug còn 2026-07-12. Tự kiểm chứng ≤3 phút: mở MILESTONES.md §1.3.8 + `git log --oneline -5`.
+Default:    Nếu chưa quyết trước khi bắt đầu fix parallax: track công việc fix trong docs/demo-prep/ (không đổi MILESTONES.md), fix vẫn tiến hành — không chờ.
 Status:     OPEN
 Resolved:
 Decision:   OPEN
@@ -83,6 +85,8 @@ Constraint: MILESTONES.md là "planning/scope source of truth" — hai milestone
 Severity:   low
 Tags:       milestone, planning
 Milestone:  V1 / 1.3.x demo prep
+Evidence:   So sánh MILESTONES.md §1.3.11 vs §1.3.16: cùng cover 1.3.7/1.3.8/1.3.10/button-hover/console-memory. Tự kiểm chứng ≤5 phút: mở 2 section cạnh nhau, đếm item trùng.
+Default:    Nếu chưa quyết trước tuần 2 demo plan: không sửa MILESTONES.md; QA chạy theo checklist trong docs/demo-prep/ (gate doc); 1.3.11/1.3.16 giữ nguyên chờ human.
 Status:     OPEN
 Resolved:
 Decision:   OPEN
@@ -95,6 +99,8 @@ Constraint: Human decision 2026-07-01 (memory: parallax Advanced toggle reversal
 Severity:   low
 Tags:       slider, editor-governance
 Milestone:  V1 / 1.3.x demo prep
+Evidence:   Advanced controls = 5 biến tự do (depth/direction/translate/scale/inset) → test matrix nở ~8× so với 3 preset; bug parallax chưa có root cause (human confirm 2026-07-12). Tự kiểm chứng ≤3 phút: mở Inspector slider bật Advanced, đếm số control; đối chiếu docs/demo-prep/04 §3 test matrix.
+Default:    Nếu chưa quyết trước khi dựng demo pages: demo content chỉ config Preset, không đụng Advanced panel (zero code change — mức không cần approve); KHÔNG ẩn panel bằng code.
 Status:     OPEN
 Resolved:
 Decision:   OPEN

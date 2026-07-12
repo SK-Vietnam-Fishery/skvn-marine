@@ -91,3 +91,13 @@ overflow pass nhưng ghép thì clip; attribute pass + CSS pass nhưng chuỗi �
 fix pass build nhưng premise sai. Người thay thế AI agent chính là người giữ **cái
 nhìn xuyên chuỗi**: mỗi thay đổi, tự hỏi "đi từ chỗ user bấm đến chỗ user nhìn thấy,
 qua những mắt xích nào, mắt nào chưa được chứng minh bằng hành vi thật?"
+
+## Tài liệu nguồn (chính thức)
+
+- Swiper migration guide v9 (loop mode bỏ clones — nguồn gốc case 2): https://swiperjs.com/migration-guide-v9
+- Swiper changelog: https://github.com/nolimits4web/swiper/blob/master/CHANGELOG.md
+- MutationObserver (case 1): https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+- Chrome DevTools memory debugging (case 1): https://developer.chrome.com/docs/devtools/memory-problems
+- CSS `overflow` và clipping (case 4): https://developer.mozilla.org/en-US/docs/Web/CSS/overflow
+- CSS units — em/rem/px (case 5): https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
+- Host header attacks (case 6, PortSwigger academy): https://portswigger.net/web-security/host-header

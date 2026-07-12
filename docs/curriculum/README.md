@@ -70,3 +70,19 @@ Tổng: ~4–6 tuần part-time. Module 09 nên đọc song song — mỗi khi h
 5. **Mọi listener/observer phải có đường tháo** (cleanup) — xem case study memory leak.
 6. **Verify behavior thư viện theo đúng version đang dùng** — xem case study parallax.
 7. **Attribute mới phải trace đủ chuỗi**: block.json → edit → save/render → CSS.
+
+## Tài liệu nguồn (chính thức) — các hub chính
+
+Mỗi module có mục "Tài liệu nguồn" riêng trỏ trang cụ thể. Đây là 5 hub gốc:
+
+| Nguồn | URL | Dùng cho |
+|---|---|---|
+| Block Editor Handbook | https://developer.wordpress.org/block-editor/ | Toàn bộ block dev (module 00–06) |
+| Plugin Handbook | https://developer.wordpress.org/plugins/ | Plugin basics, security, settings (00, 02, 07, 08) |
+| WordPress Code Reference | https://developer.wordpress.org/reference/ | Tra cứu từng function/hook PHP |
+| Swiper Docs | https://swiperjs.com/swiper-api | Runtime slider (05, 09) |
+| MDN Web Docs | https://developer.mozilla.org/ | CSS/DOM/API nền tảng (04, 05) |
+
+Quy tắc dùng nguồn (rút từ case study 09-2): khi tra behavior thư viện, đối chiếu
+**đúng major version** trong `package.json` — đọc thêm changelog/migration guide,
+không dừng ở trang docs mới nhất.

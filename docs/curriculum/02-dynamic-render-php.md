@@ -74,3 +74,12 @@ bằng Code editor. Không tin attribute chỉ vì "editor của mình nhập".
 
 - Escape lúc save option nhưng quên escape lúc **đọc ra** — audit 2026 của dự án bắt
   đúng lỗi này (sanitize-at-read trong AGENTS.md self-check).
+
+## Tài liệu nguồn (chính thức)
+
+- Creating Dynamic Blocks (tutorial gốc): https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/creating-dynamic-blocks/
+- Securing Input (sanitize): https://developer.wordpress.org/apis/security/sanitizing/
+- Securing Output (escape, bảng hàm theo ngữ cảnh): https://developer.wordpress.org/apis/security/escaping/
+- `WP_Query`: https://developer.wordpress.org/reference/classes/wp_query/
+- `render_callback` trong register_block_type args: https://developer.wordpress.org/reference/classes/wp_block_type/
+- WooCommerce dev docs (khi query product): https://developer.woocommerce.com/docs/

@@ -232,6 +232,32 @@ một trong ba mode:
 - Các bước cần credential, quyết định sản phẩm, onsite visual judgment, hoặc
   terminal tương tác ưu tiên phối hợp với human thay vì agent tự suy đoán.
 
+### Decision Memo — Bắt buộc khi xin human quyết định
+
+Human quyết định trên bằng chứng, không quyết trên lời khai. Mọi lần agent cần human
+quyết (tension, `ASK_ARCHITECTURE`, milestone approval, scope change, dependency mới),
+agent phải trình theo format 7 mục — bản đầy đủ + ví dụ:
+`docs/standards/decision-memo-format.md`.
+
+```text
+1. Vấn đề (1 câu)
+2. Phương án (2–3, mỗi cái kèm trade-off)
+3. Khuyến nghị + lý do
+4. Bằng chứng (artifact nhìn được: commit/file:line/screenshot/số đo)
+5. Tự kiểm chứng (nguồn + file + xem gì — human research độc lập ≤10 phút)
+6. Đảo ngược (2 chiều → quyết nhanh | 1 chiều → cần evidence dày)
+7. Default nếu human không quyết trước [mốc] (conservative; quyết định chặn/HIGH → DỪNG)
+```
+
+Quy tắc kèm theo:
+
+- Không điền được mục 4–5 = chưa đủ tư cách hỏi; quay lại research.
+- Khẳng định về behavior thư viện ngoài phải cite docs/changelog **đúng major version**
+  trong `package.json`; kiến thức tổng quát không đủ điều kiện làm premise cho
+  invariant/decision doc.
+- Fix nào lật đổ premise trong decision doc thì update doc đó **trong cùng đợt fix** —
+  docs sai dẫn đường sai cho mọi agent load context sau.
+
 ### Onsite-first UX/runtime testing
 
 Current operational rule:
@@ -269,12 +295,16 @@ Constraint: [manual] rule nào conflict (quote lại)
 Severity:   low | high
 Tags:       tag-one, tag-two
 Milestone:  V1 / 0.x.0
+Evidence:   [artifact nhìn được chứng minh tension có thật — optional nhưng nên có]
+Default:    [severity low: phương án conservative + mốc nếu human không quyết. Severity high: luôn ghi "DỪNG chờ human"]
 Status:     OPEN
 Resolved:
 Decision:   OPEN
 ```
 
 Agent không được parse `Decision` để suy ra state. Chỉ dùng `Status`.
+`Evidence` và `Default` là field mở rộng (2026-07-12, theo Decision Memo format —
+`docs/standards/decision-memo-format.md`); entry cũ thiếu 2 field này vẫn hợp lệ.
 
 Allowed `Status`: `OPEN`, `RESOLVED_ACTIVE`, `ARCHIVED`.
 

@@ -69,3 +69,13 @@ swiper-adapter chung vì lý do này).
 - [ ] Kể được 4 việc của cleanup và vì sao editor cần nó hơn frontend
 - [ ] Reduced-motion: chứng minh bằng emulation trong DevTools (Rendering tab)
 - [ ] Heap snapshot trước/sau thao tác editor không tăng instance
+
+## Tài liệu nguồn (chính thức)
+
+- `viewScript` trong block.json: https://developer.wordpress.org/block-editor/reference-guides/block-api/block-metadata/#view-script
+- Swiper API (init options, methods, events): https://swiperjs.com/swiper-api
+- Swiper changelog (đối chiếu đúng version — bài học case 09-2): https://github.com/nolimits4web/swiper/blob/master/CHANGELOG.md
+- `prefers-reduced-motion` (MDN): https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion
+- MutationObserver (MDN): https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+- Page Visibility API (pause khi tab ẩn): https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+- Chrome DevTools — Memory / heap snapshots: https://developer.chrome.com/docs/devtools/memory-problems

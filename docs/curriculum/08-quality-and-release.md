@@ -69,3 +69,12 @@ kiểm thử của bạn.
 - [ ] Zip cài trên site sạch không fatal, không thiếu file
 - [ ] Version khớp ở mọi vị trí sau một lần chạy script
 - [ ] Có 2 file test .md với evidence thật
+
+## Tài liệu nguồn (chính thức)
+
+- WordPress PHP Coding Standards: https://developer.wordpress.org/coding-standards/wordpress-coding-standards/php/
+- Plugin Security (chương tổng): https://developer.wordpress.org/plugins/security/
+- Detailed Plugin Guidelines (wp.org — đọc kể cả khi không submit, đây là chuẩn chất lượng): https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/
+- Accessibility Handbook: https://make.wordpress.org/accessibility/handbook/
+- Semantic Versioning: https://semver.org/
+- Internationalization (text domain — dự án prepare multilingual từ V1): https://developer.wordpress.org/plugins/internationalization/

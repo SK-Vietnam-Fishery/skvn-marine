@@ -54,3 +54,10 @@ default. Không định nghĩa = invalid block hoặc hành vi ngẫu nhiên.
 - [ ] Không còn control nào nhận raw hex/px/class trong capstone
 - [ ] Có legacy policy viết ra cho một lần đổi enum
 - [ ] Spec một trang: người khác đọc là code được không cần hỏi lại
+
+## Tài liệu nguồn (chính thức)
+
+- `@wordpress/components` reference (SelectControl, ToggleControl, PanelBody...): https://developer.wordpress.org/block-editor/reference-guides/components/
+- InspectorControls SlotFill: https://developer.wordpress.org/block-editor/reference-guides/slotfills/inspector-controls/
+- `enum` trong attributes (validation): https://developer.wordpress.org/block-editor/reference-guides/block-api/block-attributes/#enum-validation
+- Storybook chính thức của WP components (xem control nào có sẵn trước khi tự chế): https://wordpress.github.io/gutenberg/
