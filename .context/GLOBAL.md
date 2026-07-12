@@ -85,6 +85,7 @@ Project docs under `docs/` are grouped by reading purpose:
 - `docs/testing/` — test methods, test prompts, manual verification notes.
 - `docs/explain/` — simplified explanations for human review.
 - `docs/artifacts/` — visual/static artifacts such as HTML mockups; useful for review, not source of truth.
+- `docs/curriculum/` — giáo trình tự học cho human: xây plugin blocks tương tự từ chính code dự án (index: `docs/curriculum/README.md`). Không phải agent protocol; agent không cần load khi làm task.
 
 Current active docs:
 
