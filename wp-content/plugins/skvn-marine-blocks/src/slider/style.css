@@ -46,7 +46,23 @@
 .skvn-slide__bg {
 	inset: var(--skvn-parallax-inset, 0%);
 	position: absolute;
+}
+
+/* Promote compositor layer only when parallax is active (avoids GPU cost on
+   every slider). Inset var is painted by PHP for first-frame edge-guard. */
+.skvn-slider--parallax .skvn-slide__bg {
 	will-change: transform;
+}
+
+/* Server cannot know prefers-reduced-motion; force flat bg when reduced. */
+@media (prefers-reduced-motion: reduce) {
+	.skvn-slider {
+		--skvn-parallax-inset: 0% !important;
+	}
+
+	.skvn-slider--parallax .skvn-slide__bg {
+		will-change: auto;
+	}
 }
 
 .skvn-slide__bg img {

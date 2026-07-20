@@ -459,66 +459,93 @@ function initSlider( slider: SliderElement ): void {
 
 		window.addEventListener( 'resize', syncViewportHeight );
 
-		let injectParallaxAttrs: ( () => void ) | null = null;
-
-		if ( shouldParallax ) {
-			// Preset baseline (magnitudes in %). Advanced mode overrides these
-			// with the raw per-attribute values from the inspector.
-			const presetTranslate = { subtle: 15, medium: 30, strong: 50 } as const;
-			const presetScale = { subtle: 1.06, medium: 1.12, strong: 1.2 } as const;
-			const presetInset = { subtle: 20, medium: 35, strong: 50 } as const;
+		// Swiper 11 loop mode does not create DOM clones (rearrangement /
+		// loopFix only). Inject data attrs BEFORE new Swiper() so the Parallax
+		// module reads them on init. Inset CSS var is owned by PHP first paint
+		// (see slider-render.php) — do not set it here (avoids load-time jump).
+		if ( reducedMotion ) {
+			slider.style.removeProperty( '--skvn-parallax-inset' );
+			slider.classList.remove( 'skvn-slider--parallax' );
+		} else if ( shouldParallax ) {
+			const presetTranslate = {
+				subtle: 15,
+				medium: 30,
+				strong: 50,
+			} as const;
+			const presetScale = {
+				subtle: 1.06,
+				medium: 1.12,
+				strong: 1.2,
+			} as const;
 			const intensity = config.parallaxIntensity;
 			const advanced = config.parallaxAdvanced;
 			const depth = advanced ? config.parallaxDepth : 'both';
-			const direction = advanced ? config.parallaxDirection : 'horizontal';
+			const direction = advanced
+				? config.parallaxDirection
+				: 'horizontal';
 			const translateMag = advanced
 				? config.parallaxTranslate
 				: presetTranslate[ intensity ];
 			const scaleVal = advanced
 				? config.parallaxScale
 				: presetScale[ intensity ];
-			const insetMag = advanced
-				? config.parallaxInset
-				: presetInset[ intensity ];
 			const includeTranslate = depth !== 'scale';
 			const includeScale = depth !== 'translate';
-			// Inset (edge-guard) only matters when the layer translates; scale
-			// alone stays centred and needs no offset.
-			const effectiveInset = includeTranslate ? insetMag : 0;
 			const axis = direction === 'vertical' ? 'y' : 'x';
+			const durationMs = String( config.transitionDuration );
 
-			// Defer injection until after new Swiper() so loop clones (created
-			// by Swiper's init) are also captured, and the parallax module can
-			// compute correct initial transforms (active slide = scale 1, not
-			// the parallax scale value).
-			injectParallaxAttrs = () => {
-				slider
-					.querySelectorAll< HTMLElement >( '.skvn-slide__bg' )
-					.forEach( ( bg ) => {
-						bg.removeAttribute( 'data-swiper-parallax' );
-						bg.removeAttribute( 'data-swiper-parallax-x' );
-						bg.removeAttribute( 'data-swiper-parallax-y' );
-						bg.removeAttribute( 'data-swiper-parallax-scale' );
+			slider
+				.querySelectorAll< HTMLElement >( '.skvn-slide__bg' )
+				.forEach( ( bg ) => {
+					bg.removeAttribute( 'data-swiper-parallax' );
+					bg.removeAttribute( 'data-swiper-parallax-x' );
+					bg.removeAttribute( 'data-swiper-parallax-y' );
+					bg.removeAttribute( 'data-swiper-parallax-scale' );
+					bg.removeAttribute( 'data-swiper-parallax-duration' );
 
-						if ( includeTranslate ) {
-							bg.setAttribute(
-								`data-swiper-parallax-${ axis }`,
-								`-${ translateMag }%`
-							);
-						}
+					if ( includeTranslate ) {
+						bg.setAttribute(
+							`data-swiper-parallax-${ axis }`,
+							`-${ translateMag }%`
+						);
+					}
 
-						if ( includeScale ) {
-							bg.setAttribute(
-								'data-swiper-parallax-scale',
-								String( scaleVal )
-							);
-						}
-					} );
-				slider.style.setProperty(
-					'--skvn-parallax-inset',
-					`-${ effectiveInset }%`
-				);
-			};
+					if ( includeScale ) {
+						bg.setAttribute(
+							'data-swiper-parallax-scale',
+							String( scaleVal )
+						);
+					}
+
+					// Keep parallax transition in phase with slide speed
+					// (avoids desync / stutter on loopFix and manual nav).
+					bg.setAttribute(
+						'data-swiper-parallax-duration',
+						durationMs
+					);
+				} );
+
+			// Legacy markup fallback: if PHP did not paint inset, set once
+			// before Swiper so the first transition still has edge-guard.
+			if ( ! slider.style.getPropertyValue( '--skvn-parallax-inset' ) ) {
+				const presetInset = {
+					subtle: 20,
+					medium: 35,
+					strong: 50,
+				} as const;
+				const insetMag = advanced
+					? config.parallaxInset
+					: presetInset[ intensity ];
+				const effectiveInset = includeTranslate ? insetMag : 0;
+				if ( effectiveInset > 0 ) {
+					slider.style.setProperty(
+						'--skvn-parallax-inset',
+						`-${ effectiveInset }%`
+					);
+				}
+			}
+
+			slider.classList.add( 'skvn-slider--parallax' );
 		}
 
 		try {
@@ -617,13 +644,6 @@ function initSlider( slider: SliderElement ): void {
 					: config.slidesPerView,
 			} );
 			syncViewportHeight( swiper );
-
-			// Inject parallax attrs after Swiper init: loop clones now exist and
-			// the module recalculates transforms correctly via swiper.update().
-			if ( injectParallaxAttrs ) {
-				injectParallaxAttrs();
-				swiper.update();
-			}
 
 			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;
@@ -813,6 +833,7 @@ function initSlider( slider: SliderElement ): void {
 					'--skvn-slider-viewport-offset'
 				);
 				slider.style.removeProperty( '--skvn-parallax-inset' );
+				slider.classList.remove( 'skvn-slider--parallax' );
 				delete slider.dataset.skvnDirection;
 
 				if ( slider.swiper?.destroyed ) {

@@ -33,38 +33,42 @@ Phần **thực sự dùng chung** giữa 3 block đã được extract vào `sr
 
 ---
 
-## Parallax Timing Contract (Rev 1.2 — 2026-07-02)
+## Parallax Timing Contract (Rev 1.3 — 2026-07-20)
 
-Liên quan: `src/slider/view.ts`, `docs/decisions/slider-parallax-both-1.3.8.md`.
+Liên quan: `src/slider/view.ts`, `modules/slider-render/slider-render.php`, `docs/decisions/slider-parallax-both-1.3.8.md`, `docs/demo-prep/04-parallax-debug-protocol.md`.
 
-### Bug gốc (trước fix)
+**Swiper version:** `^11.1.15` (package.json). Từ Swiper 9+, **loop mode không tạo DOM clones** — dùng slide rearrangement / `loopFix`. Premise “inject sau init để clone nhận attrs” (Rev 1.2) **sai cho major này** và đã bị thay.
 
-`data-swiper-parallax-*` và `--skvn-parallax-inset` được inject **trước** `new Swiper()`:
+### Bug còn lại sau Rev 1.2 hotfixes (`ba03f08`, `406d42d`)
 
-```
-inject attrs → new Swiper() → (Swiper tạo loop clones) → parallax module init
-```
+- **B1 — “scale/phình khi load”:** `--skvn-parallax-inset` set bằng JS **sau first paint** → box `inset` nhảy `0%` → `-N%` → `object-fit: cover` trông như zoom. Không phải (hoặc không chỉ) Swiper `scale` attr.
+- **B2 — stutter slide 2/3:** transition parallax lệch pha `speed` / `loopFix` (thiếu `data-swiper-parallax-duration`), cộng inset lớn + will-change toàn cục.
 
-Hệ quả:
-- **Pre-scale:** active slide bị `scale(parallaxScale)` ngay khi load vì parallax module chưa set progress=0→scale=1 kịp.
-- **Clone stutter:** Swiper tạo loop clones bên trong `new Swiper()` — clones được tạo SAU khi inject → clone không có attrs → stutter khi cycle tới slide 2/3.
-
-### Fix (commit sau `9ddcdde`)
-
-Wrap injection vào closure `injectParallaxAttrs`, gọi SAU `new Swiper()`:
+### Fix Rev 1.3 (ranked F1–F3)
 
 ```
-new Swiper() → (clones tạo xong) → injectParallaxAttrs() → swiper.update()
+PHP first paint:
+  class skvn-slider--parallax + style="--skvn-parallax-inset:-N%"
+  (N từ preset/advanced; 0 khi depth=scale-only hoặc parallax off)
+
+JS (view.ts), trước new Swiper():
+  data-swiper-parallax-{x|y}, data-swiper-parallax-scale
+  data-swiper-parallax-duration = transitionDuration (ms)
+  clear generic data-swiper-parallax
+  legacy fallback: set inset var only if PHP did not paint it
+  reduced-motion: remove inset var + class; parallax: false
+
+CSS:
+  @media (prefers-reduced-motion: reduce) { --skvn-parallax-inset: 0% !important }
+  will-change: transform only under .skvn-slider--parallax
 ```
-
-`swiper.update()` ép parallax module recalculate transforms đúng cho tất cả slides (original + clones).
-
-Thêm `removeAttribute('data-swiper-parallax')` (generic form) vào cleanup block — guard stale attr từ code cũ.
 
 ### Invariant
 
-> **Parallax attrs phải luôn được inject SAU `new Swiper()` và kết thúc bằng `swiper.update()`.**  
-> Bất kỳ future code nào muốn set `data-swiper-parallax-*` trên `view.ts` đều phải theo pattern này.
+> **`--skvn-parallax-inset` is server-owned (PHP inline style) for first paint.**  
+> **`data-swiper-parallax-*` are injected in JS before `new Swiper()` on Swiper 11.**  
+> **Do not reintroduce post-init inject + `swiper.update()` solely for “loop clones” — that premise is invalid on this major.**  
+> **Set `data-swiper-parallax-duration` to match `speed` / `transitionDuration`.**
 
 ---
 

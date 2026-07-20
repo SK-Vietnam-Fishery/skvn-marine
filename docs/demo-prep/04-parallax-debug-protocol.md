@@ -6,28 +6,25 @@
 
 ---
 
-## 0. Behavior chain hiện tại (đọc trước khi debug)
+## 0. Behavior chain (Rev 1.3 — 2026-07-20 source fix)
 
 ```
-PHP render (.skvn-slide__bg trong markup, KHÔNG có inset inline)
-  → view.ts parse config (enableParallax, intensity/advanced values)
-  → shouldParallax = enable && !reducedMotion && slidesPerView===1   [view.ts:404]
-  → new Swiper({ parallax: true, ... })                              [view.ts:549]
-  → injectParallaxAttrs():                                           [view.ts:494]
-      - set data-swiper-parallax-{x|y} = -{translate}%
-      - set data-swiper-parallax-scale = {scale}
-      - set --skvn-parallax-inset = -{inset}% trên slider root
-  → swiper.update()                                                  [view.ts:625]
+PHP render:
+  .skvn-slide__bg in markup
+  class skvn-slider--parallax when enable && slidesPerView===1
+  style="--skvn-parallax-inset:-N%" on first paint (F1)
+  → view.ts parse config
+  → shouldParallax = enable && !reducedMotion && slidesPerView===1
+  → BEFORE new Swiper (F2+F3):
+      data-swiper-parallax-{x|y}, -scale, -duration(=transitionDuration)
+      inset only if PHP missing (legacy fallback)
+  → new Swiper({ parallax: true, speed: transitionDuration, ... })
 ```
 
-CSS: `.skvn-slide__bg { inset: var(--skvn-parallax-inset, 0%); will-change: transform }`
-([style.css:46](../../wp-content/plugins/skvn-marine-blocks/src/slider/style.css)).
+CSS: inset var; `will-change` only under `.skvn-slider--parallax`; reduced-motion forces
+inset `0%` ([style.css](../../wp-content/plugins/skvn-marine-blocks/src/slider/style.css)).
 
-**Premise sai cần bỏ:** chẩn đoán Rev 1.2 trong `docs/decisions/swiper-architecture.md`
-dựa trên "Swiper tạo loop clones khi init". Project dùng **Swiper `^11.1.15`** — từ v9,
-loop mode KHÔNG tạo DOM clones nữa (dùng slide rearrangement / `loopFix`). Tức là mọi
-`.skvn-slide__bg` đều tồn tại trong DOM **trước** init; inject trước hay sau init không
-thay đổi việc element nào nhận attrs. Fix trước đây đổi timing mà không đổi kết quả.
+Contract: `docs/decisions/swiper-architecture.md` Rev 1.3.
 
 ---
 
