@@ -1,7 +1,10 @@
 # B2B Seafood Editorial Typography — 1.2.3 Note
 
 Date: 2026-06-08
-Status: preserve for reuse
+Status: ACTIVE
+Milestone: V1 / 1.2.3
+Lifecycle: evergreen
+Notes: visual-language note được giữ lại để tái sử dụng; không phải quyết định scope của 1.2.3.
 Source: Feature Showcase draft before panel-group refactor
 
 ## Decision

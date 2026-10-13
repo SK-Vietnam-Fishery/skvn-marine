@@ -1,6 +1,8 @@
 # Canvas Alignment And GeneratePress Exit
 
-Status: Approved working decision  
+Status: ACTIVE
+Milestone: none
+Lifecycle: active
 Date: 2026-06-11  
 Owners: `skvn-marine` theme layout and GeneratePress compatibility adapter
 

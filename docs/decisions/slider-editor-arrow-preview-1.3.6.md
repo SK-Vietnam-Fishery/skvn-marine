@@ -1,11 +1,9 @@
 # Slider Editor Arrow Preview — Decision & Reference (V1 / 1.3.6)
 
-Status:
-
-```text
-APPROVED — implemented 2026-06-20 (source)
-Onsite verification: PENDING
-```
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.6
+Lifecycle: active
+Notes: approved + implemented 2026-06-20 (source); onsite verification PENDING. Tham chiếu CASE-006 trong `docs/debug-casebook/`.
 
 Audience:
 

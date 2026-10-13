@@ -1,10 +1,9 @@
 # Gutenberg Editor Chrome Contract — SKVN Marine Blocks
 
-Status:
-
-```text
-APPROVED — implemented 2026-06-19 (V1 / 1.3.6); onsite verify pending
-```
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.6
+Lifecycle: active
+Notes: approved + implemented 2026-06-19; onsite verify pending.
 
 Purpose:
 

@@ -1,7 +1,10 @@
 # Footer Appearance Settings — 0.11.0 Contract
 
 Date: 2026-06-04
-Status: Planned for V1 / 0.11.0.
+Status: IMPLEMENTED
+Milestone: V1 / 0.11.0
+Lifecycle: active
+Notes: milestone 0.11.0 archived as DONE; contract vẫn hiệu lực cho footer appearance surface.
 
 ## Scope
 

@@ -1,8 +1,12 @@
-# Blog Sidebar Content Settings (bản tạm) — 1.3.12
+# Blog Sidebar Content Settings (bản tạm)
+
+Status: IMPLEMENTED
+Milestone: none
+Lifecycle: archived
+Notes: code xong 3 phase, chờ Dev onsite test. Hậu tố version đã bỏ (human xác nhận 2026-10-13) vì `1.3.12` trong `AGENTS.md` §9 thuộc SKVN Team Credits Easter Egg. Tên file cũ: `docs/decisions/blog-sidebar-content-settings-1.3.12.md`.
 
 ```
 Date:     2026-06-27
-Status:   IMPLEMENTED (code xong 3 phase — chờ Dev onsite test)
 Scope:    BẢN TẠM — milestone đúng (1.4–1.6.x) refactor thành block-config + drag-drop, bỏ module này
 Planning: .context/planning/archives/034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNING.md
 Ideation: docs/ideations/blog-sidebar-content-settings.md

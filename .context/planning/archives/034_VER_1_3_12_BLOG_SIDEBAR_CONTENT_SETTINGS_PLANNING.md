@@ -1,5 +1,5 @@
 > Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
-> Decision: docs/decisions/blog-sidebar-content-settings-1.3.12.md
+> Decision: docs/decisions/archives/blog-sidebar-content-settings.md
 > Onsite QA defer: onsite test pending
 
 # 034 — Blog Sidebar Content Settings (bản tạm)
@@ -8,7 +8,7 @@
 Version:   1.3.12
 Date:      2026-06-26
 Status:    IMPLEMENTED (2026-06-27, 3 phase — chờ Dev onsite test)
-Decision:  docs/decisions/blog-sidebar-content-settings-1.3.12.md
+Decision:  docs/decisions/archives/blog-sidebar-content-settings.md
 Feature:   Single post sidebar — content editable qua plugin setting page
 Ideation:  docs/ideations/blog-sidebar-content-settings.md
 Scope:     BẢN TẠM — milestone đúng (1.4–1.6.x) refactor thành block-config + drag-drop

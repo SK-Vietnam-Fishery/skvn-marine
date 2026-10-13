@@ -1,7 +1,11 @@
 # Decision — Swiper Architecture
 
 **Version:** 1.0  
-**Status:** DECIDED  
+
+Status: ACTIVE
+Milestone: none
+Lifecycle: active
+Notes: source of truth cho Swiper runtime usage map (2 consumer), shared layer, và loopFix invariant.
 **Date:** 2026-07-02  
 
 ---

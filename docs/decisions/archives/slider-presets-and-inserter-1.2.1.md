@@ -1,8 +1,10 @@
 # Slider Presets And Inserter — 1.2.1 Decision
 
 Date: 2026-06-07
-Status: implemented; onsite QA deferred to V1 / 1.2.9
+Status: IMPLEMENTED
 Milestone: V1 / 1.2.1
+Lifecycle: archived
+Notes: implemented; onsite QA deferred to V1 / 1.2.9 (đã archive từ trước 2026-10-13).
 
 ## Decision
 

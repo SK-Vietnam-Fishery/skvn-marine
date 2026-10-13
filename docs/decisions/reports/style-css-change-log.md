@@ -1,8 +1,12 @@
 # SKVN Marine — style.css: Tổng hợp thay đổi CSS
 
+Status: ACTIVE
+Milestone: V1 / 0.5.1
+Lifecycle: active
+Notes: change log kỹ thuật, không phải decision scope mới. Tên file cũ: `docs/decisions/css-change-logs.md`.
+
 **File:** `wp-content/themes/skvn-marine/style.css`
 **Scope:** Debug session — responsive layout fixes từ html-2-gutenberg output
-**Milestone:** V1 / 0.5.1 — Page Display & Sidebar Controls
 **Decision source:** Human-approved exception outside normal translation workflow, based on generating test data from real Tailwind web artifacts.
 
 ---

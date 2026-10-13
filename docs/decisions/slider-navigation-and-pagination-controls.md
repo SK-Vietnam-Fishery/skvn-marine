@@ -1,7 +1,9 @@
 # Slider Navigation And Pagination Controls
 
-Status: APPROVED UX DIRECTION
-Target: V1 / 1.3.1 — Slider Navigation & Pagination Controls UX
+Status: ACTIVE
+Milestone: V1 / 1.3.1
+Lifecycle: active
+Notes: approved UX direction; contract vẫn hiệu lực cho slider/collection controls.
 Decision date: 2026-06-11
 
 ## 1. Goal

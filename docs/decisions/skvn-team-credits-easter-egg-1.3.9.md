@@ -1,8 +1,10 @@
 # SKVN Team Credits Easter Egg - 1.3.9
 
 Date: 2026-06-11
-Status: approved requirement; implementation deferred
+Status: ACTIVE
 Milestone: V1 / 1.3.9
+Lifecycle: active
+Notes: requirement đã được human approve; implementation deferred. MISMATCH CHƯA XỬ LÝ: `AGENTS.md` §9 và `.context/MILESTONES.md` liệt kê scope này dưới **1.3.12 — SKVN Team Credits Easter Egg**, còn hậu tố filename/header là `1.3.9`. Human chưa quyết định rename/gán lại version — xem `docs/decisions/README.md`.
 
 ## Purpose
 

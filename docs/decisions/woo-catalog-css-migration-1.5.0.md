@@ -1,13 +1,16 @@
 ---
 name: woo-catalog-css-migration-1.5.0
 description: CSS và PHP render cần move sang woo-catalog plugin khi 1.5.0 implement
+status: ACTIVE
+milestone: V1 / 1.5.0
+lifecycle: active
 metadata:
   type: project
 ---
 
 # Woo-Catalog CSS Migration — 1.5.0
 
-**Status:** Pending — CSS tạm giữ trong `skvn-marine-blocks` cho đến khi woo-catalog plugin được tạo.
+Notes: PENDING — CSS tạm giữ trong `skvn-marine-blocks` cho đến khi woo-catalog plugin được tạo (milestone 1.5.0 chưa bắt đầu).
 
 **Why:** Các classes này render dữ liệu từ custom product meta (`_skvn_certifications`, `_skvn_moq`, `_skvn_lead_time`, `_skvn_spec_sheet_url`) được owned bởi woo-catalog plugin. Khi woo-catalog ra, CSS nên đi cùng plugin đó thay vì để dead-weight trong collection block.
 

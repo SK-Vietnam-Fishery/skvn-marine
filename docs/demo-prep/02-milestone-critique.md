@@ -50,7 +50,7 @@ milestone có runtime output."*
 | 1.3.12 double-booked | MILESTONES.md: Team Credits Easter Egg. Thực tế code: module sidebar-blog-content cũng nhận nhãn 1.3.12 | Human chọn: sidebar-blog-content nhận số mới (1.3.13-series?) hoặc Team Credits dời số |
 | 1.3.13 / 1.3.14 không có trong MILESTONES.md | Preloader settings (1.3.13) + heading numbering (1.3.14) đã ship trong code nhưng ledger không ghi | Thêm entry retro vào MILESTONES.md với status thực |
 | Planning 018 header sai | File ghi "V1 / 1.5.0 — Fullscreen Step Slider" nhưng milestone là 1.3.10 | Sửa header + dòng "Current milestone remains: 1.2.1" (stale) |
-| Decision file tên sai | MILESTONES.md reference `fullscreen-step-slider-1.3.10.md` (không tồn tại); file thật là `fullscreen-step-slider-1.5.0.md` | Rename file → update reference |
+| Decision file tên sai | MILESTONES.md reference `fullscreen-step-slider-1.3.10.md` (không tồn tại); file thật là `fullscreen-step-slider-1.5.0.md` | ~~Rename file → update reference~~ — **xong 2026-10-13** |
 
 Việc này nhỏ nhưng nên làm **trước** khi bắt đầu 1.3.10, vì AI agent load các file này
 làm context — ledger sai thì agent lạc đường.

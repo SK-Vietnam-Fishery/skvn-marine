@@ -1,5 +1,5 @@
 > Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
-> Decision: docs/decisions/loading-screen-settings-1.3.13.md
+> Decision: docs/decisions/archives/loading-screen-settings-1.3.13.md
 > Onsite QA defer: onsite test pending
 
 # 035 — Loading Screen Settings (preloader/splash/brand-bar)
@@ -8,7 +8,7 @@
 Version:   1.3.13
 Date:      2026-06-28
 Status:    IMPLEMENTED (2 phase — chờ Dev onsite test)
-Decision:  docs/decisions/loading-screen-settings-1.3.13.md
+Decision:  docs/decisions/archives/loading-screen-settings-1.3.13.md
 ```
 
 ---

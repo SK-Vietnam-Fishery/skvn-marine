@@ -1,7 +1,9 @@
 # SKVN Dynamic Collections 1.3.3
 
-Status: working decision.
-Milestone: V1 / 1.3.3.
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.3
+Lifecycle: active
+Notes: contract vẫn hiệu lực cho `product-collection` + `post-collection`; milestone 1.3.3 DONE.
 Owner layer: `skvn-marine-blocks` plugin.
 
 ## Goal

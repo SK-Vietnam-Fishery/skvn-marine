@@ -1,5 +1,9 @@
 # Caching Strategy
 
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+
 ## V1
 
 Local/dev:

@@ -58,12 +58,15 @@ Planning snapshots live in `.context/planning/` and use a three-digit ordering p
 
 Active planning (root — load when task liên quan):
 
+- `.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md` — Roadmap C milestone stack; M1 → V1 / 1.3.17 — Product/Post Carousel Stability & QA, IN PROGRESS từ 2026-10-13. 1.3.10 deferred sang M5; mapping mở vẫn cần review từng mục.
+
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — layout blocks validation pending 1.4.1.
 
 - `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` — umbrella 1.3.6; Trục A carry-in → 1.3.7.
-- `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` — **current milestone** collection UI + card styles.
+- `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` — collection UI + card styles (implemented; visual lock follow-up = 038).
+- `.context/planning/038_VER_1_3_7_COLLECTION_CAROUSEL_VISUAL_LOCK_PLANNING.md` — Product/Post Collection carousel visual lock: Path B Swiper + Path C scroll-snap plan-B. Carousel scope activated as V1 / 1.3.17 on 2026-10-13; use roadmap 039 and POC-03 for current acceptance.
 - `.context/planning/032_VER_1_3_8_SLIDER_PARALLAX_IMPLEMENTATION_PLANNING.md` — Slider Parallax (1.3.8 PENDING).
-- `.context/planning/018_VERSION_1_3_10_FULLSCREEN_STEP_SLIDER_PLANNING.md` — Step Slider (1.3.10 PENDING).
+- `.context/planning/018_VERSION_1_3_10_FULLSCREEN_STEP_SLIDER_PLANNING.md` — Step Slider (1.3.10 DEFERRED → stack M5; not completed).
 - `.context/planning/027_VERSION_1_5_0_WOO_CATALOG_PLUGIN_PLANNING.md` — woo-catalog brainstorm (1.5.0).
 - `.context/planning/037_VER_1_5_3_TOC_BLOCK_AND_SHORTCODE_PLANNING.md` — native TOC + heading convergence (1.5.3 PLANNED).
 - `.context/planning/009_VERSION_1_6_0_SKVN_SURFACE_PRESETS_PLANNING.md` — surface presets (1.6.0).
@@ -79,7 +82,7 @@ Proposal files under `.context/proposals/` are not active protocol and are ignor
 
 Project docs under `docs/` are grouped by reading purpose:
 
-- `docs/decisions/` — approved or working decisions that should be easy to audit.
+- `docs/decisions/` — approved or working decisions that should be easy to audit. Index + quy ước: `docs/decisions/README.md`. Tài liệu tham chiếu kỹ thuật ở `docs/decisions/reports/`, decision đã superseded/closed ở `docs/decisions/archives/` (không load mặc định).
 - `docs/standards/` — coding, AI, and security standards for human-readable reference.
 - `docs/workflows/` — development and context-management workflows.
 - `docs/testing/` — test methods, test prompts, manual verification notes.
@@ -89,9 +92,15 @@ Project docs under `docs/` are grouped by reading purpose:
 
 Current active docs:
 
+- `docs/decisions/project-goals-and-roadmap-reset.md` — bản ghi planning tiếp tục: mục tiêu toolkit B2B, ưu tiên Product/Post Carousel, hướng settings cơ bản trong Block và nâng cao ở sidebar riêng. Cập nhật cùng file khi human yêu cầu; M1 → 1.3.17 đã được human kích hoạt 2026-10-13; carousel stability hiện là ưu tiên, 1.3.10 deferred.
+
+- `docs/decisions/README.md` — index + quy ước của toàn bộ decision tree (Status/Milestone/Lifecycle, đường dẫn `reports/`, `archives/`). Nạp file này thay vì đọc tuần tự thư mục.
+
+Hot-path decisions (đọc trực tiếp khi task chạm domain):
+
 - `docs/decisions/architecture.md`
-- `docs/decisions/caching-strategy.md`
 - `docs/decisions/design-direction.md`
+- `docs/decisions/caching-strategy.md`
 - `docs/decisions/product-data-model.md`
 - `docs/decisions/quote-flow.md`
 - `docs/decisions/footer-page-settings-0.9.0.md`
@@ -102,9 +111,13 @@ Current active docs:
 - `docs/decisions/product-card-grid-layout-contract.md`
 - `docs/decisions/block-animation-strategy.md`
 - `docs/decisions/skvn-editor-controls-0.8.0.md`
-- `docs/decisions/slider-completion-spec-1.3.0.md`
 - `docs/decisions/feature-showcase-1.2.3.md`
-- `docs/decisions/typography-and-gp-exit-report.md` — typography settings 1.5.0: token architecture, Settings API pattern, GP coupling audit, WooCommerce layer, 2.0.0 exit plan.
+
+Technical reports (không phải decision scope):
+
+- `docs/decisions/reports/typography-and-gp-exit-report.md` — typography token architecture, Settings API pattern, GP coupling audit, WooCommerce layer, 2.0.0 exit plan. LƯU Ý: header gốc ghi milestone `1.5.0 — Typography Settings` nhưng `1.5.0` hiện là Woo Catalog Plugin; contract hiệu hành là `docs/decisions/typography-scope-and-font-loading.md`.
+- `docs/decisions/reports/collection-card-system-1.3.7.md`
+- `docs/decisions/reports/style-css-change-log.md`
 - `docs/standards/ai-rules.md`
 - `docs/standards/security-guidelines.md`
 - `docs/standards/memory-leak-prevention-rules.md` — quy tắc phòng chống memory leak cho Gutenberg plugin (event listener cleanup, observer teardown, block edit lifecycle).

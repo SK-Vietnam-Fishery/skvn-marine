@@ -307,7 +307,7 @@ HTML-2-Gutenberg brand-mapping contract for 0.5.1:
 
 0.5.1 Tailwind artifact CSS hardening decision:
 
-- `docs/decisions/css-change-logs.md` records human-approved CSS hardening discovered while generating test data from real Tailwind web artifacts.
+- `docs/decisions/reports/style-css-change-log.md` records human-approved CSS hardening discovered while generating test data from real Tailwind web artifacts.
 - This is allowed inside 0.5.1 only as visual contract hardening for existing theme CSS/classes; it does not move HTML-2-Gutenberg tooling, publisher UI, brand profile, or token-system implementation into the theme.
 - Before marking a class as missing or adding CSS, scan `wp-content/themes/skvn-marine/style.css` first and reuse existing `skvn-*` families.
 

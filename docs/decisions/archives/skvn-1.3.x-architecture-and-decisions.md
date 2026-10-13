@@ -1,7 +1,10 @@
 # SKVN Marine — 1.3.x Architecture & Decisions
 
-Status: living document — updated through 1.3.5.  
-Milestone series: V1 / 1.3.0 → 1.3.5.  
+Status: ARCHIVED
+Milestone: none
+Lifecycle: archived
+Notes: living document đóng băng ở 1.3.5 (2026-06-17); chuyển vào `archives/` 2026-10-13 vì milestone đã đi tới 1.3.10+. Từ 1.3.6 trở đi dùng decision doc riêng theo milestone — xem `docs/decisions/README.md`.
+Milestone series covered: V1 / 1.3.0 → 1.3.5.  
 Date: 2026-06-17.
 
 ---

@@ -1,14 +1,18 @@
 # Loading Screen Settings (preloader/splash/brand-bar) — 1.3.13
 
+Status: IMPLEMENTED
+Milestone: none
+Lifecycle: archived
+Notes: code xong 2 phase, chờ Dev onsite test. MAPPING CHƯA ĐƯỢC XÁC NHẬN: hậu tố `1.3.13` là số planning lịch sử (`035_VER_1_3_13_...`), không có mục 1.3.13 trong `AGENTS.md` §9; human yêu cầu giữ hậu tố, không gán milestone. Xem `docs/decisions/README.md`.
+
 ```
 Date:     2026-06-28
-Status:   IMPLEMENTED (code xong 2 phase — chờ Dev onsite test)
 Planning: .context/planning/archives/035_VER_1_3_13_LOADING_SCREEN_PLANNING.md
 ```
 
 ## Bối cảnh — vì sao có feature này
 
-User báo trang chủ "flash" lúc vào: thấy **nền + text trước, ảnh hero vào sau**. Chẩn đoán (xem mục dưới) cho thấy **không phải lỗi code theme**, mà do **ThumbPress Lazy Load lazy-load ảnh hero LCP** — đã fix riêng bằng cách loại hero khỏi lazy. Tuy vậy user **vẫn muốn có preloader** như một feature thương hiệu, và yêu cầu nó **editable** (chọn loại + sửa nội dung) cho nhất quán với hướng settings-driven của dự án ([blog-sidebar](blog-sidebar-content-settings-1.3.13.md) cùng pattern).
+User báo trang chủ "flash" lúc vào: thấy **nền + text trước, ảnh hero vào sau**. Chẩn đoán (xem mục dưới) cho thấy **không phải lỗi code theme**, mà do **ThumbPress Lazy Load lazy-load ảnh hero LCP** — đã fix riêng bằng cách loại hero khỏi lazy. Tuy vậy user **vẫn muốn có preloader** như một feature thương hiệu, và yêu cầu nó **editable** (chọn loại + sửa nội dung) cho nhất quán với hướng settings-driven của dự án ([blog-sidebar](blog-sidebar-content-settings.md) cùng pattern).
 
 ## Chẩn đoán flash (đã xác nhận, lưu lại)
 

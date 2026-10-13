@@ -1,10 +1,12 @@
 # Collection Card System — Technical Reference (1.3.7)
 
-**Milestone:** 1.3.7 — Collection Block UI & Card Styles
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.7
+Lifecycle: active
+Notes: technical reference, không phải decision scope mới. Tên file cũ: `docs/decisions/collection-card-system-1.3.7.md`.
 **Plugin:** `skvn-marine-blocks`
 **Blocks:** `skvn-marine/product-collection`, `skvn-marine/post-collection`
 **Date:** 2026-06-19
-**Status:** Implemented
 
 ---
 
@@ -291,7 +293,7 @@ Query `container.querySelector(...)` tìm đệ quy bên trong → vẫn tìm đ
 
 Các meta fields placeholder hiện chỉ render nếu data có sẵn trong database. Real data + admin UI sẽ vào 1.5.0:
 
-- `_skvn_certifications` (array)
-- `_skvn_moq` (string)
-- `_skvn_lead_time` (string)
-- `_skvn_spec_sheet_url` (string)
+- `_skvn_certifications` (array | CSV string — human 2026-10-07: nhập text cách nhau bằng dấu phẩy được, render tách thành nhiều cert)
+- `_skvn_moq` (string, text tự do — human 2026-10-07: nhiều giá trị cách nhau bằng dấu phẩy, vd `"5 MT, 10 MT"`; render mỗi giá trị một dòng trong ô stat, cap 3, không ghép cặp với lead time)
+- `_skvn_lead_time` (string, text tự do — human 2026-10-07: như MOQ, vd `"15-20 ngày, 20-30 ngày"`)
+- `_skvn_spec_sheet_url` (string URL — sanitize-at-read bằng `esc_url_raw`, đóng audit P2)

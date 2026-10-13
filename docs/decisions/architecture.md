@@ -1,5 +1,9 @@
 # SKVN Marine Architecture
 
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+
 ## Project Goal
 
 V1 is a single B2B marine/fishery website with WooCommerce catalog, blog content, and a Request a Quote flow.
@@ -25,7 +29,7 @@ V3 may evolve into a reusable base theme for multiple websites.
 
 ## Hybrid Theme Direction Review
 
-Status: **accepted for V1**
+Hybrid status: **accepted for V1**
 
 V1 keeps the hybrid architecture:
 

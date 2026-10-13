@@ -7,7 +7,7 @@
 
 ## Bookkeeping phải sửa TRƯỚC khi code (từ critique C4)
 
-- [ ] Rename `docs/decisions/fullscreen-step-slider-1.5.0.md` → `fullscreen-step-slider-1.3.10.md`
+- [x] Rename `docs/decisions/fullscreen-step-slider-1.5.0.md` → `fullscreen-step-slider-1.3.10.md` — **xong 2026-10-13** (cleanup tài liệu đã human phê duyệt; header cũng đã đổi `Milestone: V1 / 1.5.0` → `V1 / 1.3.10`)
 - [ ] Sửa header planning 018: "V1 / 1.5.0" → "V1 / 1.3.10"; xoá dòng stale "Current milestone remains: V1 / 1.2.1"
 
 ## IN — MVP demo (ước lượng 4–6 ngày, 3 slice)

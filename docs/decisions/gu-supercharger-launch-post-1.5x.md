@@ -1,8 +1,11 @@
 # Decision: GU Supercharger Launch (post V1 / 1.5.x)
 
-**Status:** LOCKED  
+Status: ACTIVE
+Milestone: none
+Lifecycle: active
+Notes: quyết định LOCKED 2026-06-23; launch boundary = sau khi V1 / 1.5.x ổn định.
 **Date:** 2026-06-23 (revised — supersedes 1.3.11 launch timing)  
-**Prior decision:** `docs/decisions/gutenberg-supercharger-launch-1.3.11.md` — **SUPERSEDED**  
+**Prior decision:** `docs/decisions/archives/gutenberg-supercharger-launch-1.3.11.md` — **SUPERSEDED**  
 **Milestone boundary:** After **V1 / 1.5.x** stabilizes (woo-catalog integration + multi-site confidence)
 
 ---

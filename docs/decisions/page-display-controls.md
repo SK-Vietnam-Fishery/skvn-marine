@@ -1,7 +1,9 @@
 # Page Display Controls
 
-Status: working decision.
-Milestone: V1 / 0.5.1.
+Status: ACTIVE
+Milestone: V1 / 0.5.1
+Lifecycle: evergreen
+Notes: preset contract in force; milestone 0.5.1 archived as DONE.
 Layer: `skvn-marine` theme.
 
 ## Decision

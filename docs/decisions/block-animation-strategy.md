@@ -1,7 +1,10 @@
 # Block Animation Strategy
 
 Date: 2026-06-04
-Status: active for V1 / 1.2.0 — promoted 2026-06-07
+Status: ACTIVE
+Milestone: V1 / 1.2.0
+Lifecycle: active
+Notes: promoted from planning to active decision on 2026-06-07.
 
 ## Summary
 

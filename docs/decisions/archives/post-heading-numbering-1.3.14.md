@@ -1,8 +1,12 @@
 # Post Heading Auto-Numbering — 1.3.14 (design)
 
+Status: IMPLEMENTED
+Milestone: none
+Lifecycle: archived
+Notes: implemented 2026-06-28, chờ Dev build + onsite test. MAPPING CHƯA ĐƯỢC XÁC NHẬN: hậu tố `1.3.14` là số planning lịch sử (`036_VER_1_3_14_...`), không có mục 1.3.14 trong `AGENTS.md` §9; human yêu cầu giữ hậu tố, không gán milestone. Xem `docs/decisions/README.md`.
+
 ```
 Date:     2026-06-28
-Status:   IMPLEMENTED (2026-06-28 — chờ Dev build + onsite test)
 Home:     Core Control feature (modules/core-control)
 Planning: .context/planning/archives/036_VER_1_3_14_POST_HEADING_NUMBERING_PLANNING.md
 ```

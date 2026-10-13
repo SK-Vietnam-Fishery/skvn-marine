@@ -1,8 +1,12 @@
 # Decision — Slider Parallax (Both Depth) 1.3.8
 
 **Version:** 1.1  
-**Milestone:** V1 / 1.3.8 — Slider Parallax  
-**Status:** DECIDED  
+
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.8
+Lifecycle: active
+Notes: contract (Rev 1.1) hiệu lực; `new Swiper()` loopFix invariant thuộc `swiper-architecture.md`. Milestone 1.3.8 DONE nhưng 2 bug parallax còn OPEN trong `.context/TENSIONS_OPEN.md` (T-DEMO-1).
+**Scope:** V1 / 1.3.8 — Slider Parallax  
 **Date:** 2026-06-22 (rev. 2026-07-01)  
 
 > **Revision 1.1 (2026-07-01)** — Reverses the "governed / hidden" stance below.

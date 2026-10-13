@@ -1,8 +1,12 @@
 # Typography Controls & GeneratePress Exit Plan
+
+Status: IMPLEMENTED
+Milestone: none
+Lifecycle: active
+Notes: report/implementation log, không phải decision scope mới. Tên file cũ: `docs/decisions/typography-and-gp-exit-report.md`. LƯU Ý: header gốc ghi milestone `1.5.0 — Typography Settings`, nhưng `1.5.0` hiện là Woo Catalog Plugin — chưa có quyết định renumber. Scope contract mới hơn: `docs/decisions/typography-scope-and-font-loading.md`.
 **Report date**: 2026-06-10
-**Milestone**: V1 / 1.5.0 — Typography Settings
 **Author**: Session log — AI-assisted planning
-**Status**: Implemented (typography-settings.php, inc/typography.php). GP exit planning documented.
+**Implemented in**: `typography-settings.php`, `inc/typography.php`. GP exit planning documented.
 
 ---
 

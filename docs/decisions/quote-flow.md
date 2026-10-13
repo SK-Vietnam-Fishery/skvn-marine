@@ -1,5 +1,9 @@
 # Request a Quote Flow
 
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+
 ## Decision
 
 The Request a Quote flow stays on the same website.

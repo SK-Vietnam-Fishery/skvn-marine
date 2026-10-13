@@ -1,6 +1,9 @@
 # Product Card Grid Layout Contract
 
-Status: working contract.
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+Notes: current use = theme CSS classes; future enhancement target = V1 / 1.1.0 layout block controls.
 Current use: theme CSS classes for benchmark/manual Gutenberg output.
 Future enhancement target: V1 / 1.1.0 layout block controls.
 

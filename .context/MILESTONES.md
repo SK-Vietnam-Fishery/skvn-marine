@@ -8,21 +8,45 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.10 — Fullscreen Step Slider**
-Status: **PENDING**
-Started: **not yet**
+Current: **V1 / 1.3.17 — Product/Post Carousel Stability & QA**
+Status: **IN PROGRESS**
+Started: **2026-10-13**
+Stack ref: **M1** — roadmap 039; human explicitly promoted carousel stability in planning chat.
 
 AGENTS.md current milestone phải match file này.
 
 ---
 
+### Milestone stack → SemVer — bắt buộc trước khi triển khai
+
+Human decision (2026-10-13): roadmap 039 là **milestone stack**. Các nhãn M1–M6 chỉ định danh scope trong stack, không phải version và không thay current milestone.
+
+- Audit, review và planning được dùng nhãn stack khi mục còn chưa có version.
+- Trước khi đưa một mục vào triển khai, agent phải xác định scope, đề xuất SemVer cụ thể theo Version Naming Rule, nêu lý do chọn MAJOR/MINOR/PATCH, đối chiếu version hiện tại và các version đã dùng/đã dự kiến trong MILESTONES.md. Không tái dùng hoặc đè scope của một version khác nếu chưa có quyết định human rõ ràng.
+- Human phải xác nhận SemVer và việc bắt đầu/chuyển milestone trước implementation. Nếu đã xác nhận trong session hoặc tài liệu quyết định thì dùng quyết định đó, không hỏi lại. Chọn ưu tiên/scope trong stack không tự là phê duyệt version hay chuyển mốc.
+- Chưa có SemVer được xác nhận: tiếp tục audit/planning; không implement mục mới, đổi current milestone, bump metadata hoặc archive milestone/tension.
+- Khi được xác nhận, ghi mapping nhãn stack → SemVer vào roadmap 039, đồng bộ current milestone trong AGENTS.md và MILESTONES.md theo Transition Rule. Định dạng current: `V<phase> / <MAJOR.MINOR.PATCH> — <tên scope>`; M1–M6 chỉ được ghi thêm như tham chiếu stack.
+- Prompt handoff triển khai phải có version đã xác nhận, scope/acceptance và tham chiếu stack. Không ghi `Current: M1` hoặc dùng M1 thay cho `1.3.x`. Nếu mapping và current milestone không khớp, dừng implementation và báo chênh lệch.
+- Sync metadata chỉ sau khi bắt đầu milestone đã được human xác nhận; milestone development build vẫn khác release approved. Chat chỉ planning/Markdown không chạy bump/build.
+
+Quy tắc này không chọn version cho mục nào và không chuyển current milestone hiện tại.
+
+### Chuyển ưu tiên (defer/reprioritize) — chỉ human quyết
+
+- Phân biệt **hoàn thành milestone bình thường** (đủ acceptance DONE + smoke test + human approve theo Transition Rule) với **human quyết định hoãn/thay ưu tiên** khi milestone hiện tại chưa bắt đầu hoặc chưa hoàn thành.
+- Khi human xác nhận chuyển ưu tiên, milestone cũ có thể ở trạng thái deferred dù checklist chưa DONE: giữ nguyên checklist, acceptance chưa giải quyết và mọi truy vết planning/decision; không bao giờ đánh dấu completed cho milestone bị dời và không làm mất acceptance nào.
+- SemVer của scope mới và lệnh bắt đầu/chuyển mốc có thể được human xác nhận cùng lúc; nếu đã xác nhận trong session hoặc tài liệu quyết định thì dùng quyết định đó, không hỏi lại.
+- Lượt chỉ sửa quy tắc không đổi Current, không archive milestone/tension, không bump metadata.
+
 ## Transition Rule
 
-Chỉ chuyển milestone khi:
+Chuyển theo nhánh hoàn thành bình thường khi:
 
 - Tất cả acceptance checklist của milestone hiện tại đã DONE.
 - Runtime smoke test liên quan đã chạy.
 - Human explicitly approve chuyển milestone.
+
+Nếu human đổi ưu tiên khi mốc cũ chưa hoàn thành, áp dụng nhánh defer/reprioritize ở trên; không yêu cầu tick DONE giả. Giữ scope/checklist deferred ở checkpoint để tiếp tục sau, ghi sự kiện chuyển ưu tiên trong history.
 
 Khi chuyển milestone:
 
@@ -432,7 +456,9 @@ Acceptance draft:
 
 ### 1.3.10 — Fullscreen Step Slider
 
-Status: **PENDING**
+Status: **DEFERRED**
+Deferred: **2026-10-13**, human chuyển ưu tiên sang 1.3.17 carousel stability.
+Nơi nhận: **M5 — Slider** trong roadmap 039, SemVer khi kích hoạt lại cần human xác nhận. Chưa bắt đầu, chưa hoàn thành; giữ nguyên acceptance và planning/decision links.
 
 Purpose:
 
@@ -751,7 +777,9 @@ Purpose:
 
 Decision:
 
-- `docs/decisions/skvn-team-credits-easter-egg-1.3.12.md`
+- `docs/decisions/skvn-team-credits-easter-egg-1.3.9.md`
+
+> Mismatch chưa xử lý (human chưa quyết): milestone này là `1.3.12` nhưng file decision có hậu tố `1.3.9`. Giữ nguyên tên file; xem `docs/decisions/README.md` §5.
 
 Scope:
 
@@ -827,6 +855,27 @@ Acceptance draft:
 - [ ] Memory use settles without growth
 - [ ] No invalid-block warnings on existing content
 - [ ] Human approves milestone completion
+
+### 1.3.17 — Product/Post Carousel Stability & QA (stack: M1)
+
+Status: **IN PROGRESS**
+Started: **2026-10-13** (human: bắt đầu promote milestone để carousel chạy ổn định)
+Confirmed: **2026-10-13** (human, chat planning — SemVer `1.3.17` cho scope M1)
+
+Stack ref (ngắn — chi tiết ở roadmap 039, không sao chép bảng stack vào đây):
+`.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md`
+
+Scope:
+
+- Visual + motion lock Product/Post Carousel theo POC-03 trên Swiper hiện có.
+- Hardening và QA trên nền collection 1.3.3/1.3.7; dữ liệu Woo/WP mặc định.
+- Không hệ thống settings nâng cao; không đổi slug/namespace.
+
+Acceptance: xem 039 §4 (acceptance 1.3.17) + §4a (nơi nhận QA từ 1.3.11/1.3.16).
+
+Goal: Product/Post Carousel chạy ổn định trên dữ liệu thật, khớp visual baseline, responsive tốt (kể cả resize/orientation trên máy gập), interaction/a11y đạt và không regression Grid/editor.
+
+Human đã phê duyệt kích hoạt milestone. Muse thực thi và chuẩn bị docs/testing; human chạy build/lint + onsite tests, báo evidence; PM review. Chưa có QA PASS, chưa phê duyệt release. Metadata development 1.3.17 chưa được sync trong chat planning; thực hiện theo workflow khi Muse bắt đầu. Quote Flow chỉ sau human PASS giao diện carousel; slider mở rộng và header/footer mới không vào scope.
 
 ### 1.5.0 — Woo Catalog Plugin (`woo-catalog`)
 

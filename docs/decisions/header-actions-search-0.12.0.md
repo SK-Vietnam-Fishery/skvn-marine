@@ -1,7 +1,10 @@
 # Header Actions And B2B Search — 0.12.0 Planning Contract
 
 Date: 2026-06-04
-Status: Implemented for onsite testing in V1 / 0.12.0.
+Status: IMPLEMENTED
+Milestone: V1 / 0.12.0
+Lifecycle: active
+Notes: implemented for onsite testing; milestone 0.12.0 archived.
 
 ## Scope
 

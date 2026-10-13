@@ -1,8 +1,10 @@
-# Fullscreen Step Slider — 1.5.0 Architecture Decision
+# Fullscreen Step Slider — 1.3.10 Architecture Decision
 
 Date: 2026-06-08
-Status: planned
-Milestone: V1 / 1.5.0
+Status: ACTIVE
+Milestone: V1 / 1.3.10
+Lifecycle: active
+Notes: milestone hiện tại (PENDING, chưa bắt đầu). Filename + hậu tố đã đổi từ `fullscreen-step-slider-1.5.0.md` vì milestone này là 1.3.10; 1.5.0 là Woo Catalog Plugin.
 
 ## Decision
 
@@ -82,7 +84,7 @@ Tab style: line / compact / numbers
 ```
 
 Do not expose raw class input, raw color values, raw transition milliseconds, or
-raw pixel typography controls in V1 / 1.5.0.
+raw pixel typography controls in V1 / 1.3.10.
 
 ## Dependency
 

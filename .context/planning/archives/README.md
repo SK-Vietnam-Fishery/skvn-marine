@@ -21,11 +21,11 @@
 | 030 | `030_VER_1_3_7_SINGLE-POST-HERO-LAYOUT.md` | 1.3.6 Trục C | IMPLEMENTED | `docs/decisions/single-post-layout-and-mobile-surfaces.md` |
 | 031 | `031_VER_1_3_6_SLIDER_BOTTOM_CENTER_FLANK_CONTROLS_PLANNING.md` | 1.3.6 Trục D | IMPLEMENTED | `docs/decisions/slider-navigation-and-pagination-controls.md` |
 | 033 | `033_VER_1_3_8_CORE_BUTTON_HOVER_FIX_PLAN.md` | 1.3.8 | IMPLEMENTED | `docs/decisions/core-control-core-button-hover.md` |
-| 034 | `034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNING.md` | 1.3.12 | IMPLEMENTED | `docs/decisions/blog-sidebar-content-settings-1.3.12.md` |
-| 035 | `035_VER_1_3_13_LOADING_SCREEN_PLANNING.md` | 1.3.13 | IMPLEMENTED | `docs/decisions/loading-screen-settings-1.3.13.md` |
-| 036 | `036_VER_1_3_14_POST_HEADING_NUMBERING_PLANNING.md` | 1.3.14 | IMPLEMENTED | `docs/decisions/post-heading-numbering-1.3.14.md` |
+| 034 | `034_VER_1_3_12_BLOG_SIDEBAR_CONTENT_SETTINGS_PLANNING.md` | 1.3.12 | IMPLEMENTED | `docs/decisions/archives/blog-sidebar-content-settings.md` |
+| 035 | `035_VER_1_3_13_LOADING_SCREEN_PLANNING.md` | 1.3.13 | IMPLEMENTED | `docs/decisions/archives/loading-screen-settings-1.3.13.md` |
+| 036 | `036_VER_1_3_14_POST_HEADING_NUMBERING_PLANNING.md` | 1.3.14 | IMPLEMENTED | `docs/decisions/archives/post-heading-numbering-1.3.14.md` |
 | 023 | `023_VERSION_1_3_4_CORE_CONTROL_PLANNING.md` | 1.3.4 | IMPLEMENTED (partial) | `docs/decisions/core-control-core-button-hover.md` — Block Copy/Paste chưa ship |
-| 025 | `025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md` | 1.3.5 | IMPLEMENTED | `docs/decisions/skvn-1.3.x-architecture-and-decisions.md` |
+| 025 | `025_VER_1_3_5_POST_PRODUCT_ARCHIVE_IMPROVEMENTS.md` | 1.3.5 | IMPLEMENTED | `docs/decisions/archives/skvn-1.3.x-architecture-and-decisions.md` |
 
 Onsite QA defer cho nhiều mục trên: **1.3.11** (slider, collections, button hover) hoặc ghi trong header từng file.
 

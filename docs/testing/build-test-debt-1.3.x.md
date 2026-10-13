@@ -34,7 +34,7 @@ Quick gate:
 
 ## 2. Blog sidebar content (1.3.12)
 
-Refs: `docs/decisions/blog-sidebar-content-settings-1.3.12.md`
+Refs: `docs/decisions/archives/blog-sidebar-content-settings.md`
 
 - [ ] Admin: SKVN Marine → Blog sidebar settings loads
 - [ ] Single post: CTA + related/category surface per settings order
@@ -46,7 +46,7 @@ Refs: `docs/decisions/blog-sidebar-content-settings-1.3.12.md`
 
 ## 3. Loading screen (1.3.13)
 
-Refs: `docs/decisions/loading-screen-settings-1.3.13.md`
+Refs: `docs/decisions/archives/loading-screen-settings-1.3.13.md`
 
 - [ ] Each type: preloader / splash / skeleton / brandbar / off
 - [ ] Dismiss: hero/window/time + min-display + safety ~3.5s
@@ -57,7 +57,7 @@ Refs: `docs/decisions/loading-screen-settings-1.3.13.md`
 
 ## 4. Heading numbering (1.3.14)
 
-Refs: `docs/decisions/post-heading-numbering-1.3.14.md`  
+Refs: `docs/decisions/archives/post-heading-numbering-1.3.14.md`  
 **Requires** `npm run build` (TS core-controls).
 
 - [ ] Core Control: Post heading numbers toggle on

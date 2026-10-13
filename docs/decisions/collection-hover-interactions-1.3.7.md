@@ -1,14 +1,18 @@
 ---
-name: collection-hover-interactions-1.3.8
+name: collection-hover-interactions-1.3.7
 description: Hover/interaction behaviors cho collection card và carousel controls — sourced từ design artifact
+status: IMPLEMENTED
+milestone: V1 / 1.3.7
+lifecycle: active
 metadata:
   type: project
 ---
 
-# Collection Hover Interactions — 1.3.8
+# Collection Hover Interactions — 1.3.7
 
+Notes: file/hậu tố đổi từ `1.3.8` → `1.3.7` (human xác nhận 2026-10-13). `1.3.8` đã thuộc milestone Slider Parallax; scope card hover nằm trong Collection UI & Card Styles 1.3.7.
 **Source:** `.local/test-artifacts/Seafood Export Carousels Tailwind.htm`
-**Status:** Implemented — `src/collection/style.css`
+**Implemented in:** `src/collection/style.css`
 
 ---
 
