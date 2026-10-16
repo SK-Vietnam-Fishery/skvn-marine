@@ -193,7 +193,7 @@ export function CollectionEdit( {
 					/>
 					<RangeControl
 						label={ __( 'Items to show', 'skvn-marine-blocks' ) }
-						max={ attributes.layout === 'carousel' ? 10 : 9 }
+						max={ contentType === 'product' ? 20 : attributes.layout === 'carousel' ? 10 : 9 }
 						min={ 1 }
 						onChange={ ( itemsToShow ) =>
 							setAttributes( { itemsToShow: itemsToShow || 3 } )
@@ -490,7 +490,7 @@ function useQueryPreview(
 		{ orderby: 'date', order: 'desc' };
 
 	const queryParams: Record< string, unknown > = {
-		per_page: Math.min( attributes.itemsToShow || 3, 5 ),
+		per_page: Math.min( attributes.itemsToShow || 3, contentType === 'product' ? 20 : 5 ),
 		status:   'publish',
 		orderby,
 		order,
