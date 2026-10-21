@@ -2,7 +2,7 @@
 Theme Name: SKVN Marine
 Template: generatepress
 Text Domain: skvn-marine
-Version: 1.3.8
+Version: 1.3.17
 Requires at least: 6.5
 Requires PHP: 7.4
 Update URI: false
@@ -965,6 +965,22 @@ body.skvn-has-footer-page .site {
 	max-width: none;
 	padding: 0;
 	width: 100%;
+}
+
+/* TEMP — neutralize margin mặc định của GeneratePress trên canvas full-width.
+   Gốc: GP .separate-containers .site-main{margin:20px} → dải 20px trên hero slider và trên footer.
+   TODO: gỡ block này sau khi migrate khỏi GeneratePress (theme standalone không còn rule đó).
+   Scope theo .skvn-full-width-canvas: không áp trang có sidebar, giữ margin 20px GP của chúng. */
+.skvn-full-width-canvas .site-main {
+	margin: 0;
+}
+
+/* TEMP — block Paragraph trống cuối footer.skvn-footer-page mang margin-bottom 1.5em
+   của GeneratePress (p{margin-bottom:1.5em} = 25.5px) collapse ra ngoài footer,
+   tạo dải trắng ~25px cuối trang (đã xác nhận bằng DevTools 2026-10-21:
+   tắt margin → document 2779px → 2754px). Xóa block rỗng trong template footer thì gỡ rule này. */
+.skvn-footer-page > .wp-block-paragraph:last-child {
+	margin-bottom: 0;
 }
 
 .skvn-full-width-canvas .site-content {
