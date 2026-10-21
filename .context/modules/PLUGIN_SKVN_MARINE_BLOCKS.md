@@ -91,6 +91,8 @@ src/
 
 ## [manual] Product And Post Collections
 
+Current collection follow-up: **V1 / 1.3.17 — Product/Post Carousel Block UI & Visual QA**; **1.3.18 Editor UX & Technical PLANNED, chưa start** (human split 2026-10-14, stack M1). 040 §11 owns version mapping; full UX/TECH Deferred to 1.3.18, current only visual plus minimum UI regression. Settings are inventory only; detailed UX/architecture later. Load `.context/planning/040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md` for Block UI / Editor UX / Technical baseline, full QA mapping and human decisions/rationale (§10, 2026-10-14). Apply `docs/standards/block-ui-editor-ux-technical-review-contract.md`. Product square/contain/full title/mobile arrows are design decisions, not proof of source or onsite PASS; legacy ratio mechanism and Post visual remain separate. No new advanced settings architecture is approved by this plan.
+
 Earlier V1 product surfaces used WooCommerce native blocks/patterns first. That
 0.4.0 deferral is superseded for the human-approved future milestone
 V1 / 1.3.3.
@@ -119,6 +121,10 @@ V1 / 1.3.3 planned direction:
   navigation, product attribute query, faceted filters, archive builder, and
   universal CPT collection remain deferred to 2.x.x or later unless human
   explicitly changes scope.
+- Carousel engine decision (2026-10-07): keep Swiper 11 for collection carousel
+  (`docs/decisions/collection-carousel-engine-keep-swiper.md`); scroll-snap (B)
+  and hybrid (C) stay under deliberation in the ideation workflow and open only
+  on onsite measurement.
 
 ## [manual] Future Layout Blocks
 
@@ -487,6 +493,44 @@ Completed V1 / 1.3.2 Feature Showcase autoplay and panel links:
 - Map visual cues to theme-owned SKVN tokens/classes when producing Gutenberg output.
 - If a required token/class does not exist, report it in `token_changes_needed` or `missing_theme_classes`; do not inject raw color CSS into content.
 - Leave brand profile/theme token implementation for V1 / 0.7.0.
+
+## [manual] Collection Carousel Runtime State Contract
+
+Áp dụng cho `src/collection-view.ts` + `src/collection/style.css` + `modules/collection-render/`.
+
+**State owner duy nhất:** phần tử `<section class="skvn-collection …">`. JS **không** được gắn `skvn-is-initializing` / `skvn-is-ready` / `skvn-is-fallback` vào `.skvn-collection__carousel-outer`.
+
+DOM thực tế:
+
+```text
+<section class="skvn-collection skvn-collection--{product|post} skvn-collection--{grid|carousel} …">   ← state owner
+  <header> … .skvn-collection__arrow--prev/next (NGOÀI carousel-outer) … </header>
+  <div class="skvn-collection__carousel-outer" data-skvn-collection-carousel>   ← JS đọc dataset ở đây
+    <div class="skvn-collection__carousel swiper">
+      <div class="swiper-wrapper">…real slides…</div>
+      <div class="skvn-collection__skeleton" aria-hidden="true">…</div>          ← nằm trong carousel
+    </div>
+  </div>
+</section>
+```
+
+**Bài học đã mắc 1 lần (regression scrollbar ngang, 1.3.17 gói C/D, 2026-10-19):**
+CSS state selector và JS class mutation **phải trỏ cùng một phần tử**. Đã có class trong source, hoặc build thành công, **không** chứng minh selector match DOM runtime.
+
+Triệu chứng: carousel vẫn cuộn ngang sau khi Swiper init, arrows luôn ẩn, skeleton không bao giờ hiện. Nguyên nhân: JS gắn class vào `carousel-outer` trong khi CSS viết `.skvn-collection--carousel.skvn-is-ready` (class nằm trên `section`) → `:not(.skvn-is-ready)` luôn đúng → `overflow-x: auto` + gap fallback **luôn bật** ở Ready; rule `visibility:hidden` cho arrows/skeleton cũng không bao giờ match.
+
+Vì sao self-review bỏ sót: đã đọc lại từng hunk JS và CSS riêng lẻ và thấy "đúng cú pháp", nhưng **không** đối chiếu phần tử mà mỗi bên nhắm tới; cũng không có bước nào bắt buộc kiểm selector có match DOM thật trước khi coi là xong.
+
+**Check bắt buộc trước khi coi là xong (áp cho mọi thay đổi lifecycle):**
+
+1. Xác định state owner bằng `grep` ra chỗ render class ở PHP, viết ra `file:line`, rồi viết selector CSS cùng phần tử đó.
+2. Đối chiếu DOM thật: state class phải nằm trên **một** phần tử; không selector nào dựa trên việc class "chắc là sẽ match".
+3. Kiểm đủ 4 state trên **cùng một build**: SSR (không JS), `initializing`, `ready`, `fallback`/destroy.
+4. Element nào bị `visibility: hidden` chỉ được chứa nội dung thật — không được nuốt skeleton/con trợ giúp nằm chung.
+5. Evidence bắt buộc khi nghiệm thu: class list **của section** + class list của `carousel-outer` (phải sạch state class), computed `overflow-x` và `gap`, rect carousel so với page, screenshot.
+6. Phân biệt overflow nội bộ của track dài (bình thường ở SSR/fallback) với tràn ngang toàn trang (lỗi). Không dùng `overflow: hidden` ở body/page để che.
+
+**Sửa test đã từng sai:** `docs/testing/carousel-skeleton-loading-1.3.17.md` case D-01 ban đầu yêu cầu chặn `collection-view.ts` rồi kỳ vọng skeleton hiện — mâu thuẫn với chính cơ chế (runtime chạy mới gắn `initializing`). Đã đổi D-01 thành kiểm SSR/fallback và thêm D-04 mô phỏng có kiểm soát bằng cách ép class `skvn-is-initializing`, ghi rõ là mô phỏng chứ không phải cold-load thật. Không thêm delay production chỉ để nhìn thấy skeleton.
 
 ## [manual] Rules
 

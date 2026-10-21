@@ -1,5 +1,21 @@
 # Onsite collection carousel — V1 / 1.3.17
 
+## Product manual-only — human decision 2026-10-19
+
+Status: **Đã có source / Chờ kiểm chứng**. Product Carousel không autoplay, không Play/Pause. Post Carousel/Hero Slider không đổi. Attributes autoplay/autoplayDelay vẫn registered để block cũ mở lại được, nhưng không có hiệu lực cho Product. Đây là thay đổi source; build/ZIP trước ngày này không bao phủ.
+
+Target: Product/Post URLs trong Target/setup bên dưới; thêm Hero test URL do human điền. Sau build/deploy thử trên trang kiểm, có ≥6 Product/6 Post, arrows/dots on, desktop4-2-1 và mobile. Dùng một Product cũ lưu autoplay=true, delay3000 và một Product mới; tắt reduced-motion cho case so Post.
+
+| ID | Steps | Expected / PASS | Evidence |
+|---|---|---|---|
+| AUTO-P | Mở Product mới và legacy true; inspect config/DOM; chờ15s; tab away/back, hover/focus rồi rời | Config autoplay=false; không Play/Pause; không tự chuyển card hoặc tự resume | URL/attrs, DOM config, video/index trước-sau, console |
+| AUTO-M | Bấm arrows/dots và swipe mobile ở cả hai Product | Manual navigation còn hoạt động, sau thao tác vẫn không tự chạy | Video desktop/mobile |
+| AUTO-E | Mở Product legacy trong editor, save/reload, đổi Grid rồi Carousel | Không có Autoplay/delay control ở Product; không invalid block; frontend vẫn manual-only | Editor ảnh/attrs trước-sau |
+| AUTO-C | Fixture HTML cache cũ có Product class + config autoplay=true + Pause, dùng JS build mới | Runtime không bật Autoplay/coordinator và gỡ nút cũ khi init; cần purge cache để SSR cũng cập nhật | DOM sau init, video/index15s |
+| AUTO-REG | Post bật/tắt autoplay và Hero hiện có trên cùng trang với Product | Post controls/delay/Pause và autoplay giữ hành vi cũ; Hero không đổi; Product vẫn đứng yên | Settings, video, console |
+
+Human gửi build output và evidence từng case. Chưa có runtime PASS; agent không chạy build/lint lượt này. Cache HTML/JS cần được refresh sau deploy; không coi source mới đã xuất hiện onsite trước khi kiểm build.
+
 Ngày chuẩn bị: 2026-10-15. Status: **Chờ kiểm chứng**. Scope đợt source đầu: Product full-title wrapping và reduced-motion CSS; G5 native query → cards → carousel basic smoke. Không phải full technical QA1.3.18.
 
 ## Target/setup

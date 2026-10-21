@@ -180,11 +180,12 @@
 
 **Spec chips:** `$product->get_attributes()` → filter `get_visible() === true` → taxonomy dùng `get_terms()`, local attribute dùng `get_options()`.
 
-**Placeholder meta fields** (render nếu có, ẩn nếu rỗng — data thật sẽ vào ở 1.5.0):
-- `_skvn_certifications` — `array|''` → render `.skvn-collection-card__certs`
-- `_skvn_moq` — `string|''` → render `.skvn-collection-card__stats`
-- `_skvn_lead_time` — `string|''` → render `.skvn-collection-card__stats`
-- `_skvn_spec_sheet_url` — `string|''` → render `.skvn-collection-card__pdf`
+**Placeholder meta fields** (render nếu có, ẩn nếu rỗng — data thật sẽ vào ở 1.5.0).
+Human 2026-10-07: MOQ/lead time/certs đều là text tự do, nhiều giá trị cách nhau bằng dấu phẩy:
+- `_skvn_certifications` — `array|CSV string|''` → render `.skvn-collection-card__certs` (tách phẩy, trim, bỏ rỗng)
+- `_skvn_moq` — `string|''` → render `.skvn-collection-card__stats` (vd `"5 MT, 10 MT"` → mỗi giá trị một dòng, cap 3, không ghép cặp với lead time)
+- `_skvn_lead_time` — `string|''` → render `.skvn-collection-card__stats` (như MOQ)
+- `_skvn_spec_sheet_url` — `string|''` → render `.skvn-collection-card__pdf` (sanitize-at-read `esc_url_raw`)
 
 ---
 

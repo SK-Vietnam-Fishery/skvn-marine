@@ -7,9 +7,32 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.10 — Fullscreen Step Slider**
+Current milestone: **V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical**
 
 Milestone source of truth: `.context/MILESTONES.md`.
+
+Human chuyển current 2026-10-19 sau khi approve 1.3.17 onsite. 1.3.17 → `MILESTONES_HISTORY.md` với `DONE_WITH_CARRY_OVER`: gói A (width) và B (grouped attributes + `+N`) PASS; gói C PASS về chức năng nhưng **bản sửa regression state owner ngày 2026-10-19 chưa kiểm chứng lại**; gói D skeleton **có source, chưa test**. Sáu mục carry sang 1.3.18: xác minh lại C, test D, Post visual riêng, controls hide/disabled, G-MEDIA, editor preview 040 §13. Editor preview chưa được code dù milestone đã mở. Plan `045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` đã tồn tại; §9–13 cập nhật planning chi tiết ngày 2026-10-20. Human yêu cầu không sửa skeleton trong đợt này; không triển khai skeleton toàn trang, giữ debt D và hiện tượng chớp chưa giải quyết. Arrow centering đã có source riêng, chờ onsite. Lượt planning không bump metadata hoặc bắt đầu implementation Editor UX.
+
+### Milestone stack → SemVer — bắt buộc trước khi triển khai
+
+Human decision (2026-10-13): roadmap 039 là **milestone stack**. Các nhãn M1–M6 chỉ định danh scope trong stack, không phải version và không thay current milestone.
+
+- Audit, review và planning được dùng nhãn stack khi mục còn chưa có version.
+- Trước khi đưa một mục vào triển khai, agent phải xác định scope, đề xuất SemVer cụ thể theo Version Naming Rule, nêu lý do chọn MAJOR/MINOR/PATCH, đối chiếu version hiện tại và các version đã dùng/đã dự kiến trong MILESTONES.md. Không tái dùng hoặc đè scope của một version khác nếu chưa có quyết định human rõ ràng.
+- Human phải xác nhận SemVer và việc bắt đầu/chuyển milestone trước implementation. Nếu đã xác nhận trong session hoặc tài liệu quyết định thì dùng quyết định đó, không hỏi lại. Chọn ưu tiên/scope trong stack không tự là phê duyệt version hay chuyển mốc.
+- Chưa có SemVer được xác nhận: tiếp tục audit/planning; không implement mục mới, đổi current milestone, bump metadata hoặc archive milestone/tension.
+- Khi được xác nhận, ghi mapping nhãn stack → SemVer vào roadmap 039, đồng bộ current milestone trong AGENTS.md và MILESTONES.md theo Transition Rule. Định dạng current: `V<phase> / <MAJOR.MINOR.PATCH> — <tên scope>`; M1–M6 chỉ được ghi thêm như tham chiếu stack.
+- Prompt handoff triển khai phải có version đã xác nhận, scope/acceptance và tham chiếu stack. Không ghi `Current: M1` hoặc dùng M1 thay cho `1.3.x`. Nếu mapping và current milestone không khớp, dừng implementation và báo chênh lệch.
+- Sync metadata chỉ sau khi bắt đầu milestone đã được human xác nhận; milestone development build vẫn khác release approved. Chat chỉ planning/Markdown không chạy bump/build.
+
+Quy tắc này không chọn version cho mục nào và không chuyển current milestone hiện tại.
+
+### Chuyển ưu tiên (defer/reprioritize) — chỉ human quyết
+
+- Phân biệt **hoàn thành milestone bình thường** (đủ acceptance DONE + smoke test + human approve theo Transition Rule) với **human quyết định hoãn/thay ưu tiên** khi milestone hiện tại chưa bắt đầu hoặc chưa hoàn thành.
+- Khi human xác nhận chuyển ưu tiên, milestone cũ có thể ở trạng thái deferred dù checklist chưa DONE: giữ nguyên checklist, acceptance chưa giải quyết và mọi truy vết planning/decision; không bao giờ đánh dấu completed cho milestone bị dời và không làm mất acceptance nào.
+- SemVer của scope mới và lệnh bắt đầu/chuyển mốc có thể được human xác nhận cùng lúc; nếu đã xác nhận trong session hoặc tài liệu quyết định thì dùng quyết định đó, không hỏi lại.
+- Lượt chỉ sửa quy tắc không đổi Current, không archive milestone/tension, không bump metadata.
 
 Quy tắc quản lý tension theo milestone:
 
@@ -208,6 +231,19 @@ một trong ba mode:
 
 `CLAUDE.md` Work Plan Rule: coi là đã satisfy khi (a) human đã approve hướng trong cùng thread, hoặc (b) routing = `CODE_NOW` với chỉ thị implement rõ. Plan dài + chờ approve chỉ khi routing = `ASK_ARCHITECTURE` hoặc scope còn mơ hồ.
 
+### Block/UI review — ba nhóm và hai lớp xuyên suốt
+
+Human chốt phương pháp 2026-10-14. Trước audit/review/planning hoặc implementation block/UI liên quan frontend, editor hoặc runtime, đọc:
+
+`docs/standards/block-ui-editor-ux-technical-review-contract.md`
+
+- Xem xét riêng **Block UI (frontend UI/UX), Editor UX, Technical**.
+- Mỗi yêu cầu có **Content & States** (dữ liệu/trạng thái) và **Acceptance & Evidence** (cách kiểm/bằng chứng). Accessibility, responsive, performance áp vào từng nhóm/surface liên quan.
+- Ghi theo mẫu: `ID → Nhóm → Hành vi mong đợi → Hiện trạng → Việc cần sửa → Cách kiểm → Evidence`.
+- Trạng thái yêu cầu: **Chưa làm / Đã có source / Chờ kiểm chứng / PASS / FAIL / Deferred**. Có source hoặc design approval không đồng nghĩa runtime PASS; không dùng DONE chung cho triển khai và nghiệm thu.
+- Task hẹp được ghi ngắn, nhóm không liên quan ghi N/A kèm lý do; không mở scope mới chỉ để đủ bảng. Không bỏ acceptance cũ vì đổi format.
+- Khi lưu planning/giải thích cho human, giữ rationale, giới hạn, proposal còn mở/superseded để tài liệu tự đọc được, không phụ thuộc chat.
+- Transition Rule giữ hiệu lực: acceptance DONE phải có kiểm chứng/approval cần thiết, smoke và human approve chuyển mốc; không tự thay status lịch sử hoặc taxonomy tensions.
 ### Agent + Human collaboration — Bắt buộc
 
 - Workflow của project này là **agent phối hợp với human**, không phải agent tự

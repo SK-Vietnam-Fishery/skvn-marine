@@ -57,8 +57,10 @@ Current module context files:
 Planning snapshots live in `.context/planning/` and use a three-digit ordering prefix, starting at `000_`. Implemented or completed plans move to `.context/planning/archives/` (prefix giữ nguyên) — index: `.context/planning/archives/README.md`.
 
 Active planning (root — load when task liên quan):
+- `.context/planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` — §9–13 planning chi tiết 2026-10-20: 7 hệ thống preview/query/Inspector/colors/typography/media/technical, gói P0–P6 và evidence. Current 1.3.18 đã mở ngày 19/10; implementation Editor UX chưa bắt đầu. Không sửa skeleton đợt này; giữ carry-in chưa nghiệm thu. Các dòng lịch sử 040/039 bên dưới không thay current trong MILESTONES.md.
+- `.context/planning/040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md` — planning tích lũy; §11 split human 2026-10-14: 1.3.17 Block UI & Visual QA IN PROGRESS; 1.3.18 Editor UX & Technical PLANNED chưa start. §10 rationale, §11 mapping acceptance/setting inventory; chưa thiết kế UX/technical, chưa PASS.
 
-- `.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md` — Roadmap C milestone stack; M1 → V1 / 1.3.17 — Product/Post Carousel Stability & QA, IN PROGRESS từ 2026-10-13. 1.3.10 deferred sang M5; mapping mở vẫn cần review từng mục.
+- `.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md` — Roadmap C milestone stack; M1 → 1.3.17 Block UI & Visual QA IN PROGRESS + 1.3.18 Editor UX & Technical PLANNED (split 2026-10-14). 1.3.10 deferred sang M5; mapping mở vẫn cần review từng mục.
 
 - `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — layout blocks validation pending 1.4.1.
 
@@ -91,6 +93,7 @@ Project docs under `docs/` are grouped by reading purpose:
 - `docs/curriculum/` — giáo trình tự học cho human: xây plugin blocks tương tự từ chính code dự án (index: `docs/curriculum/README.md`). Không phải agent protocol; agent không cần load khi làm task.
 
 Current active docs:
+- `docs/standards/block-ui-editor-ux-technical-review-contract.md` — protocol ba nhóm + Content & States / Acceptance & Evidence, áp dụng theo AGENTS cho block/UI review/planning/implementation.
 
 - `docs/decisions/project-goals-and-roadmap-reset.md` — bản ghi planning tiếp tục: mục tiêu toolkit B2B, ưu tiên Product/Post Carousel, hướng settings cơ bản trong Block và nâng cao ở sidebar riêng. Cập nhật cùng file khi human yêu cầu; M1 → 1.3.17 đã được human kích hoạt 2026-10-13; carousel stability hiện là ưu tiên, 1.3.10 deferred.
 

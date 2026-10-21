@@ -6,6 +6,43 @@
 
 ---
 
+## V1 / 1.3.17 — Product/Post Carousel Block UI & Visual QA (stack: M1)
+
+Status: **DONE_WITH_CARRY_OVER**
+Started: **2026-10-13**
+Scope refined: **2026-10-14** (human tách giao diện vs Editor UX/Technical sang 1.3.18)
+Closed: **2026-10-19**, human approve chuyển milestone sau onsite test.
+
+Planning: `.context/planning/040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md` §11 (mapping version), §13 (Editor preview — **chưa triển khai**, chuyển 1.3.18); roadmap `.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md` §4–§4a; repair plan `.context/planning/043_VER_1_3_17_CAROUSEL_ONSITE_REPAIR_PLAN.md` (gói A/B/C/D + §7a regression).
+
+Test docs: `docs/testing/carousel-repair-acceptance-1.3.17.md` (A), `carousel-attributes-summary-1.3.17.md` (B), `carousel-preinit-fallback-1.3.17.md` (C), `carousel-skeleton-loading-1.3.17.md` (D).
+
+### Kết quả theo gói (human xác nhận onsite 2026-10-19)
+
+| Gói | Nội dung | Trạng thái |
+|---|---|---|
+| A | Width Normal/Wide/Full (P2 Wide-cho-mới) | **PASS** — human test onsite + approve |
+| B | Grouped attributes + `+N`, `specValuesLimit` 2/3/4, default 3 | **PASS** — human test onsite + approve |
+| C | Pre-init geometry, ready/fallback, isolation | **PASS** về chức năng; **sửa regression** ngày 2026-10-19 (state owner) → xác minh sau sửa **Chờ kiểm chứng** |
+| D | Local skeleton (watchdog 5s) | **Đã có source, CHƯA test onsite** → carry sang 1.3.18 |
+
+### Regression đã phát hiện và sửa
+
+Scrollbar ngang tồn tại sau khi Swiper init; arrows luôn ẩn; skeleton không hiện. Root cause: JS gắn state class lên `.skvn-collection__carousel-outer` trong khi CSS state selector viết theo `.skvn-collection--carousel` trên `<section>` → selector không bao giờ match. Sửa tại `src/collection-view.ts` (`resolveStateElement()`) + `src/collection/style.css` (chỉ ẩn `.swiper-wrapper`, không ẩn cha chứa skeleton). Bài học + check bắt buộc: `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md` → "Collection Carousel Runtime State Contract". Chi tiết: 043 §7a.
+
+### Acceptance carry sang 1.3.18 (human chốt 2026-10-19)
+
+- Xác minh lại sau bản sửa state owner (gói C).
+- Gói D — skeleton: source có, cần build/lint + onsite D-01…D-08.
+- Post Carousel visual — human duyệt riêng.
+- Controls: quyết định hide/disabled và placement.
+- G-MEDIA — chọn/lưu ba media layouts + cơ chế legacy.
+- Editor preview theo 040 §13 (UX-09/10/11, TECH-12).
+
+Tên/scope trước split (truy vết): "Product/Post Carousel Stability & QA" gộp cả ba nhóm; tổng acceptance ở 039 §4–§4a và 040 §7/§11. M1 chưa hoàn tất: M1 = 1.3.17 + 1.3.18.
+
+---
+
 ## V1 / 0.1.0 — Child Theme Skeleton + Local Runtime Baseline
 
 Status: **DONE**
@@ -908,3 +945,15 @@ Acceptance draft:
 Next milestone:
 
 - V1 / 1.3.7 — Collection Block UI & Card Styles.
+
+---
+
+## 2026-10-13 — Reprioritize V1 / 1.3.10 → V1 / 1.3.17
+
+Human decision: bắt đầu promote milestone hiện tại để carousel chạy ổn định.
+
+- Mốc mới: **V1 / 1.3.17 — Product/Post Carousel Stability & QA**, IN PROGRESS; stack ref M1, roadmap 039.
+- Mốc cũ **1.3.10 — Fullscreen Step Slider: DEFERRED**, chưa bắt đầu/chưa hoàn thành. Đây là lịch sử đổi ưu tiên, không phải completed milestone.
+- Scope/checklist 1.3.10 giữ nguyên tại `.context/MILESTONES.md` §1.3.10; planning 018 và decision fullscreen-step-slider-1.3.10 vẫn giữ truy vết. Nơi nhận tương lai: stack M5, chưa gán version mới.
+- Không có RESOLVED_ACTIVE tension nào mang milestone 1.3.10; không move tension thuộc milestone khác. OPEN tensions giữ nguyên, không tự resolve QA debt.
+- Không QA PASS, release approval hay metadata bump trong chat planning này. Muse thực thi, human kiểm chứng onsite.

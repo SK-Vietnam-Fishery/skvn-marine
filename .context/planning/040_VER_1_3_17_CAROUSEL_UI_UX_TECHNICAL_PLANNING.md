@@ -6,6 +6,10 @@
 
 ## 1. Authority và scope
 
+**Planning tiếp nối 2026-10-19:** [045 — kế hoạch 1.3.18 trình human duyệt](045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md) cụ thể hóa editor preview, Style/Action button, title link appearance, font/size theo vai trò và giữ đầy đủ UX/TECH carry-in. Mũi tên lệch tâm xử lý nhỏ trong 1.3.17. Human sẽ duyệt move riêng; chưa transition hoặc mở implementation 1.3.18.
+
+**Override human 2026-10-19 — Product Carousel manual-only:** tắt autoplay và bỏ Play/Pause cho Product Carousel, kể cả block cũ lưu `autoplay=true`. Editor Product không hiện Autoplay/Autoplay delay; giữ attributes để tương thích, không bulk migrate. Post Carousel và Hero Slider giữ hành vi cũ. Quyết định này thay các yêu cầu autoplay/Pause Product trong baseline dưới đây (TECH-04/05 và mapping039); phần Post, reduced motion cho hover và manual navigation vẫn cần kiểm. Source PHP/runtime/editor đã sửa; chưa build/lint/onsite PASS. Test: `docs/testing/onsite-collection-carousel-m1.md`, mục Product manual-only. Không mở milestone1.3.18 hoặc đổi current1.3.17.
+
 - MILESTONES.md giữ quyền quyết định milestone/transition. [Roadmap 039](039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md) §4–§4a giữ acceptance đã nhận; 040 phân rã và truy vết, không thay hoặc bỏ acceptance cũ.
 - Product theo `.local/product-carousel-swiper-poc-03.html` (POC-03 đã chốt), cùng các delta human chốt 2026-10-14 tại §10 (mobile arrows, full title, square media/contain). Post cần visual baseline/acceptance riêng. Nếu artifact local thiếu ở checkout khác, lấy lại artifact trước khi kết luận visual, không đoán từ số đo.
 - Giữ Swiper 11 và custom dynamic Product/Post blocks tự own query/render bằng Woo/WP native APIs. Không đổi namespace/slug/option keys.
@@ -362,6 +366,53 @@ Media layout là cách bố trí ảnh, không tự thành full-card preset. Leg
 
 ## 12. Kế hoạch chi tiết trước handoff
 
+Editor preview direction được human chốt ngày 2026-10-19 tại §13 bên dưới; target 1.3.18, chỉ thử artifact độc lập trước implementation.
+
 **Human bổ sung 2026-10-16:** chốt tóm tắt Product theo từng nhóm thuộc tính, một setting2/3/4 giá trị mỗi nhóm và chỉ báo+N; skeleton tĩnh riêng vùng carousel dùng chung preset/geometry với nội dung thật và có fallback; alignment Normal/Wide/Full **default Wide** cho carousel. Đặc tả, rationale, giới hạn và acceptance tại [042 §11](042_VER_1_3_17_CAROUSEL_VISUAL_SPEC.md#11-human-lock-2026-10-16--attribute-summary-local-skeleton-alignment). Inventory: Content → giới hạn giá trị; Layout → alignment. Chưa chọn default2/3/4 hoặc cơ chế legacy thiếu alignment; không bulk migrate, chưa implement các mục này, chưa mở milestone1.3.18. Các điểm này là quyết định bổ sung cụ thể, không approval toàn bộ Editor UX/Technical.
 
 [041 — Kế hoạch thực hiện Block UI 1.3.17](041_VER_1_3_17_CAROUSEL_BLOCK_UI_EXECUTION_PLAN.md): W0–W6, gates G1–G5, file boundaries, test cases V01–V10 và mẫu handoff. Human yêu cầu lập kế hoạch 2026-10-14; chưa dispatch implementation. Không thay scope split §11 hoặc tự phê duyệt chi tiết còn mở.
+
+## 13. Editor preview: khung width và danh sách tự xuống dòng — human lock 2026-10-19
+
+**Authority:** Human đồng ý các đề xuất sau khi review screenshot editor ngày 2026-10-19, yêu cầu lưu và chuẩn bị prompt cho agent tạo artifact thử. Đây là phê duyệt hướng và prototype, không bắt đầu milestone 1.3.18 hoặc cho phép sửa plugin. Current vẫn 1.3.17. Phần này bổ sung chi tiết được yêu cầu vào inventory §11; không mở toàn bộ thiết kế Editor UX/Technical.
+
+### 13.1 Vấn đề và evidence
+
+- Screenshot cho thấy card mẫu bên trái có khoảng trắng lớn, bên phải xếp liên tiếp cấu hình, roadmap woo-catalog và danh sách tên dài. Thông tin ít nhưng block cao, khó rà đọc.
+- Source đọc ngày 2026-10-19: `src/collection/style.css` selector `.skvn-collection--editor-preview .skvn-collection__editor-body` dùng `260px 1fr`; `src/collection/controls.tsx` chứa `PlaceholderCard`, `EditorInfoPanel`, `useQueryPreview`. Đây là source evidence, chưa đo DOM để chứng minh cơ chế stretch onsite.
+- Screenshot còn chip mẫu cũ; source đã có nhóm mẫu Size/Pack/Freezing cho carousel. Chưa xác nhận build/layout của screenshot; không quy kết phần giới hạn thuộc tính mới FAIL.
+
+### 13.2 Hướng đã chốt và rationale
+
+1. Vùng minh họa card gọn căn giữa, chiều cao theo nội dung; cấu hình hiển thị gọn bên dưới. Không kéo card cao theo danh sách query. Nhãn rõ “Dữ liệu mẫu”; không khiến người dùng tưởng card đang dùng dữ liệu sản phẩm thật.
+2. “Sản phẩm trong truy vấn” là một vùng riêng bên dưới, sử dụng toàn bộ chiều rộng khả dụng. Tên căn trái, thứ tự trái sang phải rồi xuống dòng. Cloud ở đây nghĩa là danh sách wrap, không phải tag cloud có chữ lớn nhỏ/vị trí ngẫu nhiên.
+3. Tên đầy đủ, cùng cỡ chữ, có số thứ tự nhỏ. Mục tĩnh không tạo hình thức nút/tag có thể bấm. Tên dài được wrap bên trong mục; không cắt tên, giảm chữ hoặc ép khoảng cách khi hẹp. Khi thiếu chiều ngang, cho phép vùng cao lên.
+4. Danh sách dài: grid responsive đọc theo hàng, hiện trước tối đa 3 hàng: 3/2/1 cột tương ứng 9/6/3 tên; số còn lại qua nút “Xem thêm … sản phẩm”, có thu gọn. Human xác nhận đồng bộ hướng này ngày 2026-10-19 sau khi agent artifact ghi nhận quyết định grid. Thay thế phương án ban đầu luôn hiện 5 tên: grid tận dụng chiều ngang nhưng giữ tổng chiều cao vừa phải khi hẹp. Đây là tương tác editor, không thay `+N` thuộc tính frontend (chỉ thông tin, không tương tác). Breakpoint prototype 380/700px theo content-box container chỉ là giá trị thử, chưa khóa token production.
+5. Cấu hình dùng nhãn–giá trị/Bật–Tắt, không đưa mọi thứ thành cloud. Nhãn “Cấu hình hiển thị” thay “Card data”; bật Image không đồng nghĩa sản phẩm có ảnh. Equal height thuộc bố cục: artifact chỉ hiển thị “Bật (mẫu)” và giải thích một card không minh họa được căn đều nhiều card, không tạo switch vô tác dụng. Chỉ control ảnh thực sự đổi preview; các giá trị còn lại là tóm tắt minh họa, không khóa thiết kế control production. Bỏ roadmap `woo-catalog 1.5.0` và các trường tương lai khỏi vùng làm việc chính.
+6. Viền nhẹ bao quanh ranh giới thực của block, nhãn `Width: Normal / Wide / Full`. Nhãn biểu thị lựa chọn; khung biểu thị không gian thực có trong editor. Khi canvas hẹp, các chế độ có thể cùng chiều rộng; không vẽ rộng giả hoặc ép tràn. Full là hết vùng chứa cho phép, không mặc định hết màn hình. Default Wide theo quyết định trước.
+7. Viền/nhãn chỉ editor, không xuất frontend; phân biệt với viền chọn block Gutenberg. Responsive dựa vào chiều rộng thực của vùng chứa, gồm trường hợp sidebar mở hoặc block nằm trong Group/Columns.
+8. Query preview phải nói rõ giới hạn nếu chỉ gần đúng; phân biệt loading, empty và error. Prototype dùng fixture có nhãn mô phỏng, không coi danh sách mẫu là query thật.
+
+**Phương án không chọn:** ba cột luôn cố định; cloud căn giữa từng dòng; tag cloud đổi cỡ chữ; card stretch theo danh sách; khung Normal/Wide/Full giả tạo vượt container. Ba cột trước đó chỉ là đề xuất, được thay bằng hướng vùng minh họa căn giữa + vùng query full-width này.
+
+### 13.3 Acceptance và trạng thái
+
+| ID | Nhóm | Hành vi mong đợi | Hiện trạng | Việc cần sửa/thử | Cách kiểm | Evidence |
+|---|---|---|---|---|---|---|
+| UX-09 | Editor UX | Card mẫu gọn, không stretch theo query; cấu hình rõ nghĩa | Production Deferred → 1.3.18; artifact đã có source | Human review độ gọn/nhãn | Toggle ảnh; so card trước/sau mở danh sách | §13.5: selftest card-height-stable, equal-height-summary-only; ảnh Wide |
+| UX-10 | Editor UX | Grid có thứ tự, đủ tên, hiện 9/6/3, xem thêm/thu gọn | Production Deferred → 1.3.18; artifact automated checks PASS | Keyboard thật/screen reader chờ kiểm chứng | 20 tên dài, 3/2/1 cột, toggle và focus | §13.5: grid/toggle tests và ảnh narrow |
+| UX-11 | Editor UX | Khung đúng geometry, nhãn width đúng lựa chọn | Production Deferred → 1.3.18; artifact geometry PASS trong phạm vi mô phỏng | Gutenberg/Group/Columns cần kiểm riêng | 1600/1200/800/480/320px; 320 khóa sidebar cạnh nội dung | §13.5: Normal 760/Wide 1200/Full 1566px ở canvas 1600 |
+| TECH-12 | Technical | State/semantics trung thực, không fetch theo từng sản phẩm chỉ để làm mockup | Production Deferred → 1.3.18; artifact state tests PASS | Keyboard thật/screen reader chờ kiểm chứng | Fixture loading/empty/error/results, console error listener | §13.5; không thay evidence WordPress/runtime |
+| UI-09 | Block UI | N/A — prototype editor không đổi frontend | N/A cho artifact | Không sửa frontend/width đã nghiệm thu | Kiểm file scope | Chỉ planning hiện tại; artifact độc lập ở bước sau |
+
+### 13.4 Phạm vi artifact được phép
+
+Tạo HTML/CSS/JS độc lập để human thử; không sửa plugin/theme, không deploy, không bump/build hoặc chuyển milestone. Mô phỏng canvas/sidebar và lựa chọn width; hiển thị riêng các control thử nghiệm ngoài khung editor. Giá trị kích thước Normal/Wide trong mockup chỉ mô phỏng và phải ghi rõ, chưa chốt token production. Kiểm container 1200/800/480/320px, danh sách 0/1/5/20, tên dài, bật/tắt ảnh, loading/error, keyboard và console. Báo PASS/FAIL/Chờ kiểm chứng đúng phần thực sự chạy; prototype PASS không phải Gutenberg/onsite PASS. Chưa chốt breakpoint, token spacing, màu viền hoặc kiến trúc query thực tế; dùng artifact để đánh giá trước.
+
+### 13.5 Artifact revision và evidence — 2026-10-19
+
+- Artifact: `docs/artifacts/editor-ui/carousel-editor-preview-prototype.html`; báo cáo cùng thư mục `.md`; test protocol: `docs/testing/carousel-editor-preview-prototype.md`.
+- Human giao hoàn thiện ba việc: đồng bộ grid, làm rõ control minh họa, bổ sung evidence và canvas lớn. Thêm canvas 1600px để Wide/Full khác nhau thực sự.
+- Canvas 320px không hỗ trợ sidebar cạnh nội dung rộng 280px trong prototype: đóng và khóa control, có giải thích. Thay cách miễn trừ overflow cũ; không suy ra Gutenberg mobile cũng xử lý như vậy.
+- Chạy Chrome headless ngày 2026-10-19: **172 graded / 172 PASS / 0 FAIL**; log `docs/artifacts/editor-ui/evidence/selftest.txt`, ảnh `wide-1600.png`, `full-1600.png`, `narrow-320.png` cùng thư mục. Đây là automated artifact evidence, không phải approval mỹ thuật, kiểm keyboard thật hoặc WordPress onsite.
+- Báo cáo cũ được tạo trong môi trường không có planning 040 theo lời agent trước; điều đó không mô tả workspace hiện tại. Các số 131/144 và screenshot thiếu chỉ giữ làm lịch sử, không dùng làm evidence hiện hành.

@@ -8,10 +8,10 @@
 
 ## Current Milestone
 
-Current: **V1 / 1.3.17 — Product/Post Carousel Stability & QA**
+Current: **V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical**
 Status: **IN PROGRESS**
-Started: **2026-10-13**
-Stack ref: **M1** — roadmap 039; human explicitly promoted carousel stability in planning chat.
+Started: **2026-10-19**
+Stack ref: **M1** — roadmap 039; 1.3.17 archived 2026-10-19 (DONE_WITH_CARRY_OVER), 6 mục carry sang đây.
 
 AGENTS.md current milestone phải match file này.
 
@@ -39,6 +39,8 @@ Quy tắc này không chọn version cho mục nào và không chuyển current 
 - Lượt chỉ sửa quy tắc không đổi Current, không archive milestone/tension, không bump metadata.
 
 ## Transition Rule
+
+Với yêu cầu block/UI, acceptance DONE ở rule này nghĩa là đã kiểm chứng đạt và có approval cần thiết; không đồng nghĩa chỉ có source. Dùng trạng thái yêu cầu/evidence theo `docs/standards/block-ui-editor-ux-technical-review-contract.md`; không tự đổi status lịch sử hoặc bỏ acceptance.
 
 Chuyển theo nhánh hoàn thành bình thường khi:
 
@@ -856,26 +858,78 @@ Acceptance draft:
 - [ ] No invalid-block warnings on existing content
 - [ ] Human approves milestone completion
 
-### 1.3.17 — Product/Post Carousel Stability & QA (stack: M1)
+### 1.3.17 — Product/Post Carousel Block UI & Visual QA (stack: M1)
+
+Đã archive 2026-10-19 → `.context/MILESTONES_HISTORY.md` (DONE_WITH_CARRY_OVER; A+B+C PASS theo human onsite, sửa regression state owner + gói D skeleton chưa kiểm chứng; 6 mục carry sang 1.3.18).
+
+### 1.3.18 — Product/Post Carousel Editor UX & Technical (stack: M1 follow-up)
 
 Status: **IN PROGRESS**
-Started: **2026-10-13** (human: bắt đầu promote milestone để carousel chạy ổn định)
-Confirmed: **2026-10-13** (human, chat planning — SemVer `1.3.17` cho scope M1)
+Started: **2026-10-19**, human chuyển current từ 1.3.17 sau khi approve 1.3.17 onsite.
+Confirmed: **2026-10-14**, human xác nhận "semver + 1" sau current 1.3.17, dành Editor UX và Technical.
+Version check: không thấy 1.3.18 được dùng/reserved trong AGENTS/.context/docs trước khi ghi.
+SemVer rationale: PATCH tiếp thep cho sửa/hardening collection hiện có cùng minor 1.3; không phê duyệt feature architecture mới.
+Planning reference: `planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` — file đã tồn tại; human yêu cầu lập chi tiết ngày 2026-10-20, §9–13 chia 7 hệ thống và gói P0–P6, requirement/evidence giữ ID cũ. Runbook: `docs/testing/carousel-editor-ux-technical-1.3.18.md`. Đây là planning, chưa bắt đầu implementation Editor UX.
 
-Stack ref (ngắn — chi tiết ở roadmap 039, không sao chép bảng stack vào đây):
-`.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md`
+Override human 2026-10-20: không sửa skeleton trong đợt Editor UX này, không triển khai skeleton toàn trang. Giữ debt test D dưới đây và báo cáo chớp khi load là chưa giải quyết, không tự PASS/xóa acceptance. Arrow centering đã sửa source riêng, chờ onsite theo `docs/testing/carousel-arrow-centering-1.3.18.md`.
+
+Scope: nhận **Deferred UX-01–08, UX-02a, TECH-01–11, TECH-08a** theo 040 §11.1; TECH-10/11 chia verification theo từng version. Giữ toàn bộ source defects và acceptance cũ trong mapping.
+
+Carry-in từ 1.3.17 (human chốt 2026-10-19):
+- **Xác minh lại gói C** sau bản sửa state owner (regression scrollbar ngang) — hiện **Chờ kiểm chứng**.
+- **Gói D skeleton** — source đã có 2026-10-19, chưa build/lint/onsite; cần test D-01…D-08.
+- **Post Carousel visual** — human duyệt riêng.
+- **Controls** — quyết định hide/disabled và placement.
+- **G-MEDIA** — chọn/lưu ba media layouts + cơ chế legacy.
+- **Editor preview theo 040 §13** (UX-09/10/11, TECH-12); artifact prototype 172/172 PASS không phải nghiệm thu editor thật.
+
+Acceptance carry-in:
+- [ ] Controls có tác dụng, labels/defaults/query/preview/save-reload parity (UX IDs).
+- [ ] Preset + bounded controls + reset rõ; truthful preview/help, không Swiper/autoplay editor.
+- [ ] Query/render/actions/context, valid markup/security, keyboard, pause/autoplay/reduced-motion, loop/count/resize đúng (TECH IDs).
+- [ ] Legacy ratio mechanism/tương thích old/new Product/Post được quyết và kiểm; không tự ép content cũ.
+- [ ] Grid/editor compatibility, lifecycle/memory/assets/build và full evidence theo 040 §11.1.
+- [ ] Editor preview 040 §13: card mẫu gọn, cấu hình label–value, grid query 3/2/1 + Xem thêm/Thu gọn, khung width editor-only.
+- [ ] Xác minh lại C + D onsite (bằng chứng có trong repo).
+- [ ] Human nghiệm thu sau kiểm chứng.
+
+Metadata: bump **1.3.17** đã chạy cho release boundary; bump sang 1.3.18 chỉ khi human ra lệnh bắt đầu implementation 1.3.18. M1 gồm 1.3.17 + 1.3.18; UI PASS không phải toàn bộ Technical PASS. Quote Flow vẫn sau visual gate, bắt đầu M2 cần quyết định riêng.
+
+### 1.3.19 — Hero Slider Contrast Repair (stack: M5 — HOTFIX, KHÔNG phải current)
+
+Status: **IN PROGRESS (source) — chờ human build + kiểm chứng runtime**
+Confirmed: **2026-10-19** — human chọn SemVer `1.3.19` và dạng **hotfix ngoài current milestone**.
+Current milestone: **không đổi**. 1.3.17 vẫn IN PROGRESS; không chuyển ưu tiên, không archive milestone/tension.
+SemVer rationale: PATCH — sửa cascade/default của Slider đã tồn tại, không thêm feature, schema, attribute hay dependency. 1.3.13/1.3.14 đã code, 1.3.15 mới là đề xuất của T-DEMO-1, 1.3.16–1.3.18 đã có nên 1.3.19 là PATCH trống duy nhất.
+
+> **Không bump metadata cho 1.3.19.** Bump `node tools/bump-project-version.mjs` chỉ áp dụng khi milestone được bắt đầu làm current. Milestone này là hotfix ngoài current nên WordPress version headers giữ nguyên cho tới khi human quyết định khác.
 
 Scope:
+- Sửa contrast mặc định của preset Hero trong `wp-content/plugins/skvn-marine-blocks/src/slider/style.css`: carrier `color` trên `.skvn-slide__content` + `color: inherit` ở specificity đủ thắng rule heading của theme (0,3,0 vs 0,2,1).
+- CTA Hero: white-pill + navy `#073b5a`, hover/focus `#eaf7ff`, có guard `:not(.has-background)` để không đụng background/gradient chọn tay; custom hover vẫn theo marker `has-skvn-btn-hover-*`.
+- Editor dùng chung selector với frontend (một CSS handle cho hai surface); giữ stacked preview, không chạy Swiper/autoplay.
 
-- Visual + motion lock Product/Post Carousel theo POC-03 trên Swiper hiện có.
-- Hardening và QA trên nền collection 1.3.3/1.3.7; dữ liệu Woo/WP mặc định.
-- Không hệ thống settings nâng cao; không đổi slug/namespace.
+Ngoài scope:
+- Không đổi renderer/schema/save markup/`variations.ts`; không thêm class `has-background` giả.
+- Không sửa theme. Không đổi effect/duration/autoplay/loop/parallax/text-shadow.
+- Hiện tượng chớp có outcome riêng, chưa xác định root cause; contrast PASS không đồng nghĩa chớp đã sửa.
 
-Acceptance: xem 039 §4 (acceptance 1.3.17) + §4a (nơi nhận QA từ 1.3.11/1.3.16).
+Planning: `.context/planning/044_HERO_SLIDER_CONTRAST_AND_FLICKER_REPAIR_PLAN.md`
+Testing: `docs/testing/hero-slider-contrast-and-flicker-repair.md`
+Roadmap mapping: 039 §"M5 → 1.3.19".
 
-Goal: Product/Post Carousel chạy ổn định trên dữ liệu thật, khớp visual baseline, responsive tốt (kể cả resize/orientation trên máy gập), interaction/a11y đạt và không regression Grid/editor.
+Acceptance (điểm tương ứng HERO-* trong 044 §7):
+- [ ] Source: selector matrix đúng — default thắng theme fallback, explicit color thắng default, Group color tới được heading, custom hover thắng hover fallback, preset Product Showcase/Card Carousel không đổi.
+- [ ] Human chạy build + PHP lint, báo output.
+- [ ] HERO-UI-01 PASS runtime: default text sáng trên gradient, có và không có ảnh.
+- [ ] HERO-UI-02 PASS runtime: palette/inline/Group/reset đúng, save-reopen không mất dữ liệu.
+- [ ] HERO-UI-03 PASS runtime: CTA normal/hover/focus, gradient và custom hover được giữ.
+- [ ] HERO-UX-01 PASS runtime: editor preview khớp frontend, stacked preview không Swiper.
+- [ ] HERO-TECH-01/02: diff review, không invalid-block, regression Product Showcase/Card Carousel/core button ngoài Hero sạch.
+- [ ] HERO-TECH-03: kết luận chớp — tái hiện / không tái hiện trong môi trường đã ghi / chưa kiểm được.
+- [ ] Human approve kết quả visual.
 
-Human đã phê duyệt kích hoạt milestone. Muse thực thi và chuẩn bị docs/testing; human chạy build/lint + onsite tests, báo evidence; PM review. Chưa có QA PASS, chưa phê duyệt release. Metadata development 1.3.17 chưa được sync trong chat planning; thực hiện theo workflow khi Muse bắt đầu. Quote Flow chỉ sau human PASS giao diện carousel; slider mở rộng và header/footer mới không vào scope.
+Không tự đánh dấu milestone hoàn thành, không runtime PASS và không release approved khi thiếu evidence.
 
 ### 1.5.0 — Woo Catalog Plugin (`woo-catalog`)
 
