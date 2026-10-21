@@ -21,6 +21,7 @@ export function registerPostCollectionVariations() {
 		attributes: {
 			layout: 'carousel',
 			responsivePreset: '3-2-1',
+			contentWidth: 'wide',
 		},
 		isActive: [ 'layout' ],
 		scope: [ 'inserter' ],
