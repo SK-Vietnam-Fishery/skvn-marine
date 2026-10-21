@@ -733,6 +733,27 @@ export function CollectionEdit( {
 							options={ COLOR_PALETTE_OPTIONS }
 							value={ attributes.actionTextColor || '' }
 						/>
+						<SelectControl
+							label={ __( 'Action hover background', 'skvn-marine-blocks' ) }
+							onChange={ ( actionHoverBackgroundColor ) =>
+								setAttributes( {
+									actionHoverBackgroundColor:
+										actionHoverBackgroundColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.actionHoverBackgroundColor || '' }
+						/>
+						<SelectControl
+							label={ __( 'Action hover text', 'skvn-marine-blocks' ) }
+							onChange={ ( actionHoverTextColor ) =>
+								setAttributes( {
+									actionHoverTextColor: actionHoverTextColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.actionHoverTextColor || '' }
+						/>
 				</PanelBody>
 				<PanelBody title={ __( 'Advanced', 'skvn-marine-blocks' ) }>
 					<TextControl
@@ -1035,7 +1056,9 @@ function PlaceholderCard( {
 		( attributes.actionFontFamily ? ` skvn-font-family-${ attributes.actionFontFamily }` : '' ) +
 		( attributes.actionFontSize ? ` skvn-font-size-${ attributes.actionFontSize }` : '' ) +
 		( attributes.actionBackgroundColor ? ` skvn-collection-card__cta--bg-${ attributes.actionBackgroundColor }` : '' ) +
-		( attributes.actionTextColor ? ` skvn-collection-card__cta--text-${ attributes.actionTextColor }` : '' );
+		( attributes.actionTextColor ? ` skvn-collection-card__cta--text-${ attributes.actionTextColor }` : '' ) +
+		( attributes.actionHoverBackgroundColor ? ` skvn-collection-card__cta--hover-bg-${ attributes.actionHoverBackgroundColor }` : '' ) +
+		( attributes.actionHoverTextColor ? ` skvn-collection-card__cta--hover-text-${ attributes.actionHoverTextColor }` : '' );
 
 	if ( contentType === 'post' ) {
 		const showCategories = attributes.showPostCategories !== false;

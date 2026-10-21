@@ -81,6 +81,8 @@ export type CollectionAttributes = {
 	actionFontSize?: CardRoleSize;
 	actionBackgroundColor?: ColorSlug;
 	actionTextColor?: ColorSlug;
+	actionHoverBackgroundColor?: ColorSlug;
+	actionHoverTextColor?: ColorSlug;
 	// Media presets (S6 / P4, Product only). Default undefined → 'flush' in
 	// PHP/JS so legacy blocks keep identical output. Post does not use these.
 	mediaLayout?: MediaLayout;

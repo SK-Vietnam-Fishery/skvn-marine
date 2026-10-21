@@ -372,6 +372,20 @@ function skvn_marine_blocks_render_collection_product_card( $product, $attribute
 	if ( '' !== $action_text_color ) {
 		$action_classes .= ' skvn-collection-card__cta--text-' . $action_text_color;
 	}
+	$action_hover_bg_color = skvn_marine_blocks_collection_allowlist(
+		isset( $attributes['actionHoverBackgroundColor'] ) ? $attributes['actionHoverBackgroundColor'] : '',
+		$color_allowed
+	);
+	$action_hover_text_color = skvn_marine_blocks_collection_allowlist(
+		isset( $attributes['actionHoverTextColor'] ) ? $attributes['actionHoverTextColor'] : '',
+		$color_allowed
+	);
+	if ( '' !== $action_hover_bg_color ) {
+		$action_classes .= ' skvn-collection-card__cta--hover-bg-' . $action_hover_bg_color;
+	}
+	if ( '' !== $action_hover_text_color ) {
+		$action_classes .= ' skvn-collection-card__cta--hover-text-' . $action_hover_text_color;
+	}
 
 	// Placeholder meta — render if present, hide if empty.
 	// MOQ / lead time / certs accept comma-separated text (human 2026-10-07).

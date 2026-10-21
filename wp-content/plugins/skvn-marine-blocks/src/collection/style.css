@@ -687,15 +687,48 @@ a.skvn-collection-card__badge:hover {
 	content: ' / ';
 }
 
-/* chipColorScheme — teal + navy (add more when new palette slugs needed) */
-.skvn-chips--teal .skvn-collection-card__spec-tag {
-	border-color: var(--wp--preset--color--teal);
-	color: var(--wp--preset--color--teal);
+/* chipColorScheme — áp màu palette cho mọi slug có trong COLOR_PALETTE_OPTIONS.
+ * Thêm rule này thay vì chỉ hardcode teal/navy, để editor chọn màu chip thực sự
+ * có hiệu lực (gap E10 / UX-05.a). */
+.skvn-chips--skvn-blue-950 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-blue-950);
+	color: var(--wp--preset--color--skvn-blue-950);
 }
-
-.skvn-chips--navy .skvn-collection-card__spec-tag {
-	border-color: var(--wp--preset--color--navy);
-	color: var(--wp--preset--color--navy);
+.skvn-chips--skvn-blue-900 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-blue-900);
+	color: var(--wp--preset--color--skvn-blue-900);
+}
+.skvn-chips--skvn-blue-700 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-blue-700);
+	color: var(--wp--preset--color--skvn-blue-700);
+}
+.skvn-chips--skvn-mint-100 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-mint-100);
+	color: var(--wp--preset--color--skvn-mint-100);
+}
+.skvn-chips--skvn-gold-300 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-gold-300);
+	color: var(--wp--preset--color--skvn-gold-300);
+}
+.skvn-chips--skvn-teal-600 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-teal-600);
+	color: var(--wp--preset--color--skvn-teal-600);
+}
+.skvn-chips--skvn-sky-50 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-sky-50);
+	color: var(--wp--preset--color--skvn-sky-50);
+}
+.skvn-chips--skvn-slate-700 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-slate-700);
+	color: var(--wp--preset--color--skvn-slate-700);
+}
+.skvn-chips--skvn-slate-900 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-slate-900);
+	color: var(--wp--preset--color--skvn-slate-900);
+}
+.skvn-chips--skvn-white .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-white);
+	color: var(--wp--preset--color--skvn-white);
 }
 
 /* Catalog slot — woo-catalog (1.5.0) sẽ own nội dung này. See woo-catalog-css-migration-1.5.0.md */
@@ -761,6 +794,70 @@ a.skvn-collection-card__badge:hover {
 
 .skvn-collection-card__cta:hover {
 	background: #0D9488;
+}
+
+/* CTA hover màu theo palette (gap E07 / UX-12.a). Chỉ áp khi editor chọn
+ * actionHoverBackgroundColor / actionHoverTextColor; block cũ thiếu key giữ
+ * hardcode hover trên. */
+.skvn-collection-card__cta--hover-bg-skvn-blue-950.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-blue-950);
+}
+.skvn-collection-card__cta--hover-text-skvn-blue-950.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-blue-950);
+}
+.skvn-collection-card__cta--hover-bg-skvn-blue-900.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-blue-900);
+}
+.skvn-collection-card__cta--hover-text-skvn-blue-900.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-blue-900);
+}
+.skvn-collection-card__cta--hover-bg-skvn-blue-700.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-blue-700);
+}
+.skvn-collection-card__cta--hover-text-skvn-blue-700.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-blue-700);
+}
+.skvn-collection-card__cta--hover-bg-skvn-mint-100.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-mint-100);
+}
+.skvn-collection-card__cta--hover-text-skvn-mint-100.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-mint-100);
+}
+.skvn-collection-card__cta--hover-bg-skvn-gold-300.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-gold-300);
+}
+.skvn-collection-card__cta--hover-text-skvn-gold-300.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-gold-300);
+}
+.skvn-collection-card__cta--hover-bg-skvn-teal-600.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-teal-600);
+}
+.skvn-collection-card__cta--hover-text-skvn-teal-600.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-teal-600);
+}
+.skvn-collection-card__cta--hover-bg-skvn-sky-50.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-sky-50);
+}
+.skvn-collection-card__cta--hover-text-skvn-sky-50.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-sky-50);
+}
+.skvn-collection-card__cta--hover-bg-skvn-slate-700.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-slate-700);
+}
+.skvn-collection-card__cta--hover-text-skvn-slate-700.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-slate-700);
+}
+.skvn-collection-card__cta--hover-bg-skvn-slate-900.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-slate-900);
+}
+.skvn-collection-card__cta--hover-text-skvn-slate-900.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-slate-900);
+}
+.skvn-collection-card__cta--hover-bg-skvn-white.skvn-collection-card__cta:hover {
+	background-color: var(--wp--preset--color--skvn-white);
+}
+.skvn-collection-card__cta--hover-text-skvn-white.skvn-collection-card__cta:hover {
+	color: var(--wp--preset--color--skvn-white);
 }
 
 .skvn-collection-card__cta:active {
