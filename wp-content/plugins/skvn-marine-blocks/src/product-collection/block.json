@@ -155,7 +155,7 @@
     },
     "catalogCtaLabel": {
       "type": "string",
-      "default": "Tải catalog"
+      "default": "Download catalog"
     },
     "showSpecChips": {
       "type": "boolean",

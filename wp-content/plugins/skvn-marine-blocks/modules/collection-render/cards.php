@@ -40,7 +40,7 @@ function skvn_marine_blocks_render_collection_post_card( $post, $attributes = ar
 	$show_excerpt   = skvn_marine_blocks_collection_bool( $attributes, 'showExcerpt', true );
 	$read_more = isset( $attributes['readMoreLabel'] ) && '' !== $attributes['readMoreLabel']
 		? sanitize_text_field( $attributes['readMoreLabel'] )
-		: __( 'Đọc thêm →', 'skvn-marine-blocks' );
+		: __( 'Read more →', 'skvn-marine-blocks' );
 
 	// Style panel: typography & màu theo vai trò (S4/S5). Post cũng dùng chung
 	// bộ token/allowlist với Product; không bulk migrate giá trị cũ.
@@ -527,7 +527,7 @@ function skvn_marine_blocks_render_collection_footer( $attributes, $context = 'g
 	$catalog_cta_url  = isset( $attributes['catalogCtaUrl'] ) ? esc_url_raw( $attributes['catalogCtaUrl'] ) : '';
 	$catalog_cta_label = isset( $attributes['catalogCtaLabel'] ) && '' !== $attributes['catalogCtaLabel']
 		? sanitize_text_field( $attributes['catalogCtaLabel'] )
-		: __( 'Tải catalog', 'skvn-marine-blocks' );
+		: __( 'Download catalog', 'skvn-marine-blocks' );
 	$archive_url      = isset( $attributes['archiveUrl'] ) ? esc_url_raw( $attributes['archiveUrl'] ) : '';
 	$archive_label    = isset( $attributes['archiveLabel'] ) && '' !== $attributes['archiveLabel']
 		? sanitize_text_field( $attributes['archiveLabel'] )
@@ -995,7 +995,7 @@ function skvn_marine_blocks_render_collection_spec_groups( $groups ) {
 								echo esc_html(
 									sprintf(
 										/* translators: %d: number of hidden attribute values. */
-										__( 'còn %d giá trị', 'skvn-marine-blocks' ),
+										__( '%d more values', 'skvn-marine-blocks' ),
 										(int) $group['remaining']
 									)
 								);
