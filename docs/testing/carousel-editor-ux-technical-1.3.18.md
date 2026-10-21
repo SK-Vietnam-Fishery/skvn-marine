@@ -1,0 +1,60 @@
+# Carousel Editor UX & Technical — onsite runbook 1.3.18
+
+Ngày lập: 2026-10-20. **Chờ kiểm chứng**. Lượt planning không có runtime PASS mới.
+Plan: `.context/planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` §9–13.
+
+## Target và setup
+
+- Product: trang onsite **Test product carousel**; URL editor/frontend chính xác chưa được ghi nhận, executor/human điền trước chạy.
+- Post: trang Post Carousel thử, URL chưa xác nhận. Nested Group/Columns và Grid dùng trang test được human cho phép.
+- Ghi WP/plugin/theme version, source commit hoặc dirty changes, build/deployed artifact, browser/OS, viewport và container width.
+- Fixture Product 20 items với tên dài, có/không ảnh, nhiều thuộc tính, limit 2/3/4; Post có date/author/excerpt, tên dài/không ảnh. Có query 0/1/ít/nhiều kết quả và các filter/order hiện hành.
+- Giữ serialized block cũ trước sửa; tạo bản mới, hai carousel khác style và Grid đối chứng.
+- Woo inactive, request error và invalid attrs chỉ kiểm trên môi trường thử/mô phỏng được phép; không tắt Woo production.
+- Prototype HTML không thay evidence Gutenberg. Không thêm delay runtime chỉ để thấy loading.
+
+## Cases và pass criteria
+
+Mỗi case ghi actual + status PASS/FAIL/Chờ kiểm chứng, liên kết evidence. Chuỗi mọi setting: control → attr → preview → save/reopen → frontend.
+
+| Evidence / IDs | Steps | Expected / PASS criteria |
+|---|---|---|
+| E01 / UX-09.a | Bật/tắt ảnh; query 20 items; expand/collapse; lặp Product/Post | Card không stretch theo danh sách, summary đúng attrs, nhãn mẫu rõ, không roadmap |
+| E02 / UX-11.a | Normal/Wide/Full; sidebar mở/đóng; Group/Columns; 1600/1200/800/480/320px | Viền đúng container, không tràn ngang canvas/page; modes có thể bằng nhau khi hẹp. Lưu rect + scrollWidth/clientWidth |
+| E03 / UX-10.a | 20 tên dài; container 3/2/1 cột; Tab/Enter/Space mở/thu; resize lúc expanded | 9/6/3 trước mở; tên đầy đủ, đọc theo hàng, focus không mất, itemsToShow không đổi |
+| E04 / TECH-12.a | Results→empty; request chậm/lỗi; query A→B nhanh; Woo unavailable trên test env | States phân biệt, kết quả cuối của B; không stale như mới hoặc retry vô hạn; network evidence |
+| E05 / UX-04.a | So IDs preview/frontend từng category/tag/relation/order/count | Mode hỗ trợ khớp; approximation có help cụ thể. Shuffle không yêu cầu thứ tự giống giữa requests; Post cap 5 nói rõ |
+| E06 / UX-01.a | Từng inventory control: đổi/save/reopen; đổi Product/Post/Grid | Control có consumer; hide/disabled đúng lý do, không panel rỗng/mất saved query/action |
+| E07 / UX-12.a | Đổi 4 màu CTA; hover/focus; hai blocks khác màu; reset | Computed colors đúng và scoped; focus rõ; reset không xóa URL/query/mode/layout; footer không bị đổi ngoài scope |
+| E08 / UI-18-TITLE.a | Title dài; click/tab/hover/visited | Anchor đúng URL, đọc rõ, full title, focus thấy được; lưu ảnh/styles |
+| E09 / UX-13.a | Từng role đổi font/size lớn nhất, save/reopen/reset; kiểm admin | Computed fonts/sizes đúng hai surfaces; không leak vào sidebar/admin/block khác |
+| E10 / UX-05.a | Mọi chip color exposed và chipStyle | Mỗi option có output đúng palette, không option giả; lưu bảng màu |
+| E11 / TECH-13.a | Fixture missing/malformed slug, token bị gỡ | Fallback an toàn, không injection/error; editor báo unavailable, không overwrite dữ liệu khi mở |
+| E12a / UX-02a.b | Product 3 presets (flush/padded/floating); ảnh vuông/ngang/dọc/transparent/thiếu; image off; đổi preset→save/reopen | Flush contain không bóp ảnh; padded padding đều + inner radius; floating width % card + translateY lên trên, không clip ảnh/bóng, card/body đứng yên; off không để khoảng trống nhô/bóng; lưu ảnh trước/sau + serialized attrs |
+| E13a / TECH-08a.b | Old/new Product, Post, Grid; explicit legacy ratio; missing mediaLayout key; save/reopen/reset | Không invalid-block, không migration ngầm, không mất data; flush output identical với legacy; Post không nhận floating/padded; Grid dùng chung card CSS |
+| E12 / UX-02a.a | Sau P4: 3 presets, ảnh vuông/ngang/dọc/transparent/thiếu; image off | Contain không bóp ảnh; padding đều/radius đúng; Floating không clip/chồng; off không để lỗ hổng |
+| E13 / TECH-08a.a | Old/new attrs, explicit legacy ratio, Product/Post/Grid; save/reopen | Không invalid-block/migration ngầm/mất data; lưu serialized diff và ảnh |
+| E14 / UI-18-STYLE.a | Mobile/max size/title và CTA dài; hover/focus/touch/reduce | Không tràn/che CTA; focus/contrast đúng tiêu chí a11y project; lưu geometry/contrast thực |
+| E15 / TECH-09.a | Network baseline→10 style edits→10 mount/remove; nhiều instances | Style không fetch query; request/listener/observer không tích lũy sau cleanup; console không lỗi mới; lưu số đo |
+
+## Carry-in và regression
+
+- C: chạy `carousel-preinit-fallback-1.3.17.md` trên build hiện hành, ghi section/carousel-outer classes, overflow/gap, rect.
+- Arrows: `carousel-arrow-centering-1.3.18.md`, source đã sửa, onsite chưa tự coi PASS.
+- D: `carousel-skeleton-loading-1.3.17.md` giữ debt; **không sửa skeleton đợt này**, không full-page skeleton hoặc claim hết chớp.
+- TECH-02–07: keyboard đúng instance/input focus, links không nested, quote URL/context, Product manual-only kể cả autoplay=true cũ, Post pause/reduce, loop/count/resize. Kiểm 0/1/bằng cột/nhiều items.
+- Grid không init carousel; editor không Swiper; Post visual cần human duyệt riêng.
+
+## Build và kết quả
+
+Human chạy khi có thay đổi plugin, theo AGENTS. Lượt planning không cần chạy:
+
+```bash
+source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/wp-content/plugins/skvn-marine-blocks && npm run build && find modules/ -name "*.php" -exec php -l {} \;
+```
+
+Nếu PHP require/include đổi, audit deploy artifact trước zip/upload.
+
+Mỗi evidence ghi: ID, ngày/người kiểm, URL editor/frontend, build/commit/artifact, browser/viewport/container, fixture, steps, expected/actual, status, ảnh/video/DOM/network/log, giới hạn.
+
+Human gửi build output và cases đã chạy; agent cập nhật requirement register, sửa FAIL trong scope được giao. Không suy PASS toàn milestone từ lint, không tự chuyển milestone.
