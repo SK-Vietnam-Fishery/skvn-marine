@@ -20,7 +20,7 @@ Mỗi case ghi actual + status PASS/FAIL/Chờ kiểm chứng, liên kết evide
 | Evidence / IDs | Steps | Expected / PASS criteria |
 |---|---|---|
 | E01 / UX-09.a | Bật/tắt ảnh; query 20 items; expand/collapse; lặp Product/Post | Card không stretch theo danh sách, summary đúng attrs, nhãn mẫu rõ, không roadmap |
-| E02 / UX-11.a | Normal/Wide/Full; sidebar mở/đóng; Group/Columns; 1600/1200/800/480/320px | Viền đúng container, không tràn ngang canvas/page; modes có thể bằng nhau khi hẹp. Lưu rect + scrollWidth/clientWidth |
+| E02 / UX-11.a | Normal/Wide/Full; sidebar mở/đóng; Group/Columns; 1600/1200/800/480/320px | Viền đúng container, không tràn ngang canvas/page; modes có thể bằng nhau khi hẹp. Lưu rect + scrollWidth/clientWidth | **PASS** (2026-10-21, từ hình editor/frontend) |
 | E03 / UX-10.a | 20 tên dài; container 3/2/1 cột; Tab/Enter/Space mở/thu; resize lúc expanded | 9/6/3 trước mở; tên đầy đủ, đọc theo hàng, focus không mất, itemsToShow không đổi |
 | E04 / TECH-12.a | Results→empty; request chậm/lỗi; query A→B nhanh; Woo unavailable trên test env | States phân biệt, kết quả cuối của B; không stale như mới hoặc retry vô hạn; network evidence |
 | E05 / UX-04.a | So IDs preview/frontend từng category/tag/relation/order/count | Mode hỗ trợ khớp; approximation có help cụ thể. Shuffle không yêu cầu thứ tự giống giữa requests; Post cap 5 nói rõ |
@@ -58,3 +58,16 @@ Nếu PHP require/include đổi, audit deploy artifact trước zip/upload.
 Mỗi evidence ghi: ID, ngày/người kiểm, URL editor/frontend, build/commit/artifact, browser/viewport/container, fixture, steps, expected/actual, status, ảnh/video/DOM/network/log, giới hạn.
 
 Human gửi build output và cases đã chạy; agent cập nhật requirement register, sửa FAIL trong scope được giao. Không suy PASS toàn milestone từ lint, không tự chuyển milestone.
+
+## Ghi nhận QA từ hình/onsite (2026-10-21) — chưa sửa code
+
+| ID | Tình trạng | Ghi chú từ hình/onsite |
+|----|-----------|------------------------|
+| E02 / UX-11.a | PASS | Width Normal/Wide/Full kiểm qua hình editor/frontend, viền đúng container, không tràn ngang. |
+| E07 / UX-12.a | **Gap** | Màu CTA chỉ đổi được trạng thái mặc định (bg/text). **Chưa có option đổi màu hover** — hover không phản ánh màu đã chọn. |
+| E10 / UX-05.a | **Gap** | Chip màu **không đổi màu được** khi chọn chipColorScheme/color palette trong editor. |
+
+Việc cần làm sau khi human xác nhận gap trên:
+- Thêm control màu CTA hover (background + text) vào Style panel Product, ánh xạ sang attr mới + render PHP + CSS.
+- Kiểm lại chipColorScheme consumer trong cards.php/controls.tsx và CSS `.skvn-chips--*` có phản ánh chọn màu hay không.
+
