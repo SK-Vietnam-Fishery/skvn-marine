@@ -12,11 +12,13 @@
 
 ## 1. Mục tiêu roadmap C (human đã chốt)
 
+**Cập nhật ưu tiên 2026-10-21:** theo MILESTONES.md, current là **V1 / 1.3.18**. Human chốt **Plugin Design Sidebar là milestone kế tiếp**, trước các đợt Slider/Step Slider/2-side Product để làm nền editor chung. Kiến trúc Selected block / Plugin và phân quyền plugin/theme/block đã chốt trong `docs/workflows/ideation-plugin-design-sidebar.md`; không còn chỉ là hướng thảo luận. Chưa gán SemVer, chưa chuyển current; các trạng thái 1.3.17 IN PROGRESS/1.3.18 chưa start bên dưới là snapshot cũ, không dùng để kích hoạt công việc. Không thay đổi acceptance hoặc tự kích hoạt consumer mới.
+
 - Bộ công cụ cho **nhiều website B2B**, Gutenberg + Tailwind hướng tới, plugin độc lập theme.
 - **Kết quả đầu tiên: Product Carousel + Post Carousel hoàn chỉnh** (giao diện, tương tác, responsive), test giao diện trước.
 - Product dùng **dữ liệu Woo mặc định**; MOQ/lead time/cert chưa bắt buộc. Post dùng dữ liệu WP.
 - Quote Flow **sau** test giao diện carousel. Slider (Hero/Parallax/Step) **dời mốc sau**. Header/footer mới **sau theme độc lập**; tạm giữ GeneratePress.
-- Settings basic trong Block / advanced sidebar riêng: hướng thảo luận, **chưa duyệt kiến trúc**.
+- Settings basic trong Block / advanced sidebar riêng: **đã duyệt cách chia và ưu tiên milestone kế tiếp ngày 2026-10-21**; scope/states/acceptance theo ideation sidebar, SemVer/start chưa xác nhận.
 
 ## 2. Milestone stack M1–M6 (định danh scope, không phải SemVer)
 

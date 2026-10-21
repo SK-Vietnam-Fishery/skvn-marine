@@ -4,6 +4,10 @@
 
 Custom Gutenberg blocks with logic, and future plugin-owned editor/admin tooling.
 
+## [manual] Product Language
+
+Plugin product UI and frontend default copy use English as the source language. Keep user-facing strings translatable with the `skvn-marine-blocks` text domain where applicable; do not translate stored attribute/option keys or enum values. Vietnamese localization follows in a separately scoped phase. Internal documentation may remain in Vietnamese. See `AGENTS.md` §Product language.
+
 ## [manual] Architecture
 
 Architecture: **Block-centric feature modules with minimal shared services**.

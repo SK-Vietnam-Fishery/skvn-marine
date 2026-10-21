@@ -137,6 +137,7 @@ Technical reports (không phải decision scope):
 - `docs/testing/testing-checklist.md`
 - `docs/workflows/context-map-workflow.md`
 - `docs/workflows/ideation-chom-revslider-theme-tra-phi-to-gutenberg.md`
+- `docs/workflows/ideation-plugin-design-sidebar.md` — human chốt 2026-10-21: Selected block / Plugin sidebar triển khai ở milestone kế tiếp sau 1.3.18, làm nền cho Slider, Step Slider, 2-side Product; thay thế đề xuất sau Step Slider. Chưa gán SemVer/chưa bắt đầu, không mở scope 1.3.18.
 - `docs/workflows/deploy-artifact-workflow.md`
 - `docs/workflows/layout-translator-workflow.md`
 - `docs/workflows/onsite-qa-checklist.md`

@@ -15,6 +15,15 @@ Stack ref: **M1** — roadmap 039; 1.3.17 archived 2026-10-19 (DONE_WITH_CARRY_O
 
 AGENTS.md current milestone phải match file này.
 
+### Milestone kế tiếp đã chọn — Plugin Design Sidebar (SemVer TBD)
+
+Human decision 2026-10-21: triển khai sidebar ở milestone kế tiếp sau 1.3.18, làm nền cho Slider, Step Slider và 2-side Product. Thay thế đề xuất “có thể sau Step Slider”. **Ưu tiên/scope đã chốt; implementation Chưa làm; chưa xác nhận SemVer hoặc chuyển current.**
+
+- Scope: Selected block / Plugin tabs; selection và shortcut; component design controls; Theme Design (typography/fonts/brand colors theo capability có thật của SKVN Marine); save/quyền/fallback và QA. Product/Post là consumer đầu tiên; mở rộng các block khác theo milestone riêng.
+- Nguồn scope, rationale, states và acceptance DS-01–DS-07: `docs/workflows/ideation-plugin-design-sidebar.md`. Gói E defaults/linked global styles chưa tự vào scope.
+- Giữ acceptance 1.3.18/plan 045; không tự bắt đầu Slider, Step Slider hoặc 2-side Product, không kéo font delivery governance 1.6.0 vào đây.
+- Trước khi bắt đầu: lập execution plan, đối chiếu ledger và đề xuất SemVer để human xác nhận version/start; không dùng 1.3.19 vì đã dành cho Hero Slider Contrast Repair.
+
 ---
 
 ### Milestone stack → SemVer — bắt buộc trước khi triển khai

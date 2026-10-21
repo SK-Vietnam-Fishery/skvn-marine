@@ -141,6 +141,13 @@ Plugin PHP prefix:  skvn_marine_blocks_
 CSS prefix:         skvn-
 ```
 
+### Product language — Plugin English first
+
+- Giao diện sản phẩm của plugin (tên block, Inspector, admin/settings, nút, nhãn, mô tả, trạng thái, thông báo và văn bản mặc định hiển thị ở frontend) dùng **tiếng Anh** làm ngôn ngữ gốc.
+- Không đưa tiếng Việt vào UI mới như bản dịch tạm hoặc trộn hai ngôn ngữ trong cùng một luồng. Tài liệu nội bộ và trao đổi với human vẫn có thể viết tiếng Việt.
+- Chuỗi hiển thị phải sẵn sàng cho i18n bằng API dịch WordPress và text domain `skvn-marine-blocks` ở nơi áp dụng; khóa attribute, enum, option và dữ liệu đã lưu không dịch theo ngôn ngữ hiển thị.
+- Tiếng Việt là giai đoạn bản địa hóa sau, triển khai bằng bản dịch khi có scope và nghiệm thu riêng; quy tắc này không tự kích hoạt Polylang hoặc đổi milestone hiện tại.
+
 ### PHP security — Không thương lượng
 
 ```php
