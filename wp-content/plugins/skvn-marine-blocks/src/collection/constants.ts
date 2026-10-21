@@ -159,9 +159,9 @@ export function resolveFontSize( value: unknown, allowed: readonly string[] ): s
 
 /** Media layout options. 'flush' keeps existing card/image behavior. */
 export const MEDIA_LAYOUT_OPTIONS = [
-	{ label: __( 'Sát mép', 'skvn-marine-blocks' ), value: 'flush' },
-	{ label: __( 'Có khoảng đệm', 'skvn-marine-blocks' ), value: 'padded' },
-	{ label: __( 'Nổi phía trên', 'skvn-marine-blocks' ), value: 'floating' },
+	{ label: __( 'Flush', 'skvn-marine-blocks' ), value: 'flush' },
+	{ label: __( 'Padded', 'skvn-marine-blocks' ), value: 'padded' },
+	{ label: __( 'Floating', 'skvn-marine-blocks' ), value: 'floating' },
 ] as const;
 export const MEDIA_LAYOUT_DEFAULT: MediaLayout = 'flush';
 
