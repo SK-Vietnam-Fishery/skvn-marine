@@ -982,7 +982,7 @@ function PreviewSpecGroups( {
 									{ `+${ remaining }` }
 									<span className="skvn-collection-card__visually-hidden">
 										{ sprintf(
-											__( 'còn %d giá trị', 'skvn-marine-blocks' ),
+											__( '%d more values', 'skvn-marine-blocks' ),
 											remaining
 										) }
 									</span>

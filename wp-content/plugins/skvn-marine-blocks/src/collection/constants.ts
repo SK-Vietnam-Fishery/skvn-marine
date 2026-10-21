@@ -104,14 +104,14 @@ export const CHIP_STYLE_OPTIONS = [
  * Không expose display/3xl/4xl/5xl cho card trong đợt này.
  */
 export const FONT_FAMILY_OPTIONS = [
-	{ label: __( 'Kế thừa (theme)', 'skvn-marine-blocks' ), value: '' },
+	{ label: __( 'Inherit (theme)', 'skvn-marine-blocks' ), value: '' },
 	{ label: __( 'SKVN System', 'skvn-marine-blocks' ), value: 'skvn-system' },
 	{ label: __( 'SKVN Heading', 'skvn-marine-blocks' ), value: 'skvn-heading' },
 	{ label: __( 'SKVN UI', 'skvn-marine-blocks' ), value: 'skvn-ui' },
 ] as const;
 
 export const TITLE_SIZE_OPTIONS = [
-	{ label: __( 'Kế thừa', 'skvn-marine-blocks' ), value: '' },
+	{ label: __( 'Inherit', 'skvn-marine-blocks' ), value: '' },
 	{ label: __( 'Base', 'skvn-marine-blocks' ), value: 'base' },
 	{ label: __( 'Large', 'skvn-marine-blocks' ), value: 'lg' },
 	{ label: __( 'XL', 'skvn-marine-blocks' ), value: 'xl' },
@@ -119,7 +119,7 @@ export const TITLE_SIZE_OPTIONS = [
 ] as const;
 
 export const DETAILS_SIZE_OPTIONS = [
-	{ label: __( 'Kế thừa', 'skvn-marine-blocks' ), value: '' },
+	{ label: __( 'Inherit', 'skvn-marine-blocks' ), value: '' },
 	{ label: __( 'Small', 'skvn-marine-blocks' ), value: 'sm' },
 	{ label: __( 'Base', 'skvn-marine-blocks' ), value: 'base' },
 	{ label: __( 'Large', 'skvn-marine-blocks' ), value: 'lg' },
@@ -130,7 +130,7 @@ export const DETAILS_SIZE_OPTIONS = [
  * var(--wp--preset--color--{slug}). Không thêm bảng màu riêng.
  */
 export const COLOR_PALETTE_OPTIONS = [
-	{ label: __( 'Kế thừa (mặc định)', 'skvn-marine-blocks' ), value: '' },
+	{ label: __( 'Inherit (default)', 'skvn-marine-blocks' ), value: '' },
 	{ label: __( 'SKVN Blue 950', 'skvn-marine-blocks' ), value: 'skvn-blue-950' },
 	{ label: __( 'SKVN Blue 900', 'skvn-marine-blocks' ), value: 'skvn-blue-900' },
 	{ label: __( 'SKVN Blue 700', 'skvn-marine-blocks' ), value: 'skvn-blue-700' },

@@ -148,11 +148,11 @@
     },
     "catalogCtaLabel": {
       "type": "string",
-      "default": "Tải catalog"
+      "default": "Download catalog"
     },
     "readMoreLabel": {
       "type": "string",
-      "default": "Đọc thêm →"
+      "default": "Read more →"
     },
     "titleFontFamily": {
       "type": "string",
