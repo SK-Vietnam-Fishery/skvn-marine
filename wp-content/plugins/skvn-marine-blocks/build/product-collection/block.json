@@ -209,6 +209,14 @@
       "type": "string",
       "default": ""
     },
+    "actionHoverBackgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "actionHoverTextColor": {
+      "type": "string",
+      "default": ""
+    },
     "mediaLayout": {
       "type": "string"
     },

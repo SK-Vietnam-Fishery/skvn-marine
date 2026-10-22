@@ -216,8 +216,7 @@
     "actionHoverTextColor": {
       "type": "string",
       "default": ""
-    }
-  },
+    },
     "mediaLayout": {
       "type": "string"
     },
