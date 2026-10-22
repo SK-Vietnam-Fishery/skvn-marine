@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ---------------------------------------------------------------------------
 
 /**
- * Return the four governed font presets.
+ * Return the five governed font presets.
  *
  * @return array<string, array{heading: string, body: string, gfonts: string|null, label: string}>
  */
@@ -41,6 +41,12 @@ function skvn_marine_font_presets(): array {
 			'heading' => "'Barlow', system-ui, sans-serif",
 			'body'    => "'Barlow', system-ui, sans-serif",
 			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap',
+		),
+		'be-vietnam-pro' => array(
+			'label'   => 'Be Vietnam Pro',
+			'heading' => "'Be Vietnam Pro', system-ui, sans-serif",
+			'body'    => "'Be Vietnam Pro', system-ui, sans-serif",
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap',
 		),
 		'system'     => array(
 			'label'   => 'System (không cần Google Fonts)',
