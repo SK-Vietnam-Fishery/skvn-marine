@@ -35,6 +35,32 @@
 
 ---
 
+### AP-04 — block.json attribute đặt ngoài khối `"attributes"` (lỗi JSON)
+
+**Xảy ra:** 2026-10-21, session sửa `src/product-collection/block.json` và `build/product-collection/block.json` (gap CTA hover + chip màu).
+**Triệu chứng:** `npm run build` thất bại:
+```
+Module parse failed: Cannot parse JSON: Unexpected non-whitespace character after JSON at position 4905
+```
+**Nguyên nhân:** Khi thêm attribute mới (`mediaLayout`, `mediaWidthPercent`, …, `mediaPaddingUnit`), các key bị đặt **ngoài** khối `"attributes"` — tức sau dấu `}` đóng `"attributes"`. JSON có hai cấp `"attributes"` cùng cấp → không hợp lệ → webpack parse thất bại.
+**Cách phát hiện (trước khi build):**
+```bash
+node -e "JSON.parse(require('fs').readFileSync('wp-content/plugins/skvn-marine-blocks/src/product-collection/block.json','utf8')); console.log('JSON OK')"
+```
+Áp cả cho `build/product-collection/block.json`.
+**Cách khắc phục:** Mở file `block.json`, tìm dấu `}` đóng khối `"attributes"`; đảm bảo mọi attribute mới nằm **trước** dấu đóng đó, cách nhau bởi dấu phẩy. Không để attribute nằm sau khối `"attributes"` hoặc sau `"supports"`; không trailing comma sau attribute cuối cùng.
+**Check trước commit/build:** `src/*.block.json` và `build/*.block.json` phải parse JSON thành công. Nếu edit `src/block.json`, phải sync lại `build/block.json` trước khi onsite.
+
+---
+
+### AP-05 — PowerShell không hỗ trợ `&&`
+
+**Xảy ra:** 2026-10-21, session commit nhiều nhóm file liên tiếp.
+**Triệu chứng:** Lệnh `git add ... && git commit -m "..."` bị lỗi `The token '&&' is not a valid statement separator`.
+**Tránh:** Chạy `git add` và `git commit` thành hai lệnh riêng biệt (không dùng `&&`).
+
+---
+
 ## Dev / Code Pitfalls (lỗi kiến trúc và code)
 
 ### DP-01 — Block attribute thêm vào `block.json` + `edit.tsx` nhưng quên `save.tsx`
