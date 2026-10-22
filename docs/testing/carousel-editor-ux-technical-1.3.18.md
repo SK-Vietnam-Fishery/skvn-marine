@@ -71,3 +71,20 @@ Việc cần làm sau khi human xác nhận gap trên:
 - Thêm control màu CTA hover (background + text) vào Style panel Product, ánh xạ sang attr mới + render PHP + CSS.
 - Kiểm lại chipColorScheme consumer trong cards.php/controls.tsx và CSS `.skvn-chips--*` có phản ánh chọn màu hay không.
 
+## Lỗi đã gặp và lesson learned (tránh mắc lại)
+
+**Lỗi:** `npm run build` thất bại với `Module parse failed: Cannot parse JSON` trên `src/product-collection/block.json` (position ~4905), do webpack import file này vào `src/index.ts`.
+
+**Nguyên nhân:** Khi edit thêm các attribute `mediaLayout`, `mediaWidthPercent`, …, `mediaPaddingUnit` vào `block.json`, agent đã đặt chúng **ngoài khối `"attributes"`** (sau dấu `}` đóng `"attributes"`). Kết quả JSON có hai cấp `"attributes"` cùng cấp, không hợp lệ.
+
+**Cách khắc phục:** Đảm bảo mọi attribute mới nằm **trong** khối `"attributes"`, trước dấu `}` đóng `"attributes"`. Sau khi edit `block.json`, luôn validate:
+
+```bash
+node -e "JSON.parse(require('fs').readFileSync('wp-content/plugins/skvn-marine-blocks/src/product-collection/block.json','utf8')); console.log('JSON OK')"
+```
+
+Áp cả cho `build/product-collection/block.json` (artifact build được sinh từ `src/`, phải đồng bộ).
+
+**Check trước build:** `src/product-collection/block.json` và `build/product-collection/block.json` phải parse JSON thành công.
+
+
