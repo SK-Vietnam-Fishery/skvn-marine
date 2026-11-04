@@ -1,8 +1,10 @@
 # Ideation — Plugin Design Sidebar
 
 Date: 2026-10-21  
-Status: **Human đã chốt triển khai ở milestone kế tiếp; chưa bắt đầu, chưa gán SemVer.**  
-Ưu tiên đã chốt (2026-10-21): sidebar là milestone tiếp theo sau current 1.3.18, làm nền cho Slider, Step Slider và 2-side Product. Thay thế đề xuất cũ “có thể sau Step Slider”.
+Status: **PLANNED — V1 / 1.3.21 Plugin Design Sidebar Foundation; chưa start.**
+Quyết định cập nhật 2026-10-28: Category Grid 1.3.20 trước Sidebar 1.3.21, thay ưu tiên Sidebar ngay sau 1.3.18 ngày 2026-10-21. Current vẫn 1.3.18. Version 1.3.21 là ngoại lệ đánh số do human xác nhận; không bump metadata hoặc kích hoạt implementation. Các ghi chú “kế tiếp/chưa gán version” bên dưới là lịch sử, được cập nhật này thay thế.
+
+Consumers đầu tiên: Product/Post Carousel và Product Category Grid; Slider/Step Slider/2-side Product tích hợp ở milestone riêng. Category details dùng Block Inspector hiện có trong 1.3.20, giữ dữ liệu Woo dùng chung tách khỏi style cục bộ. Execution plan phải giữ DS-01–DS-07 và acceptance 1.3.18; cần human xác nhận start, không hỏi lại SemVer.
 
 ## 1. Bối cảnh và giới hạn quyết định
 

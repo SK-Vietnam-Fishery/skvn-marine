@@ -15,18 +15,24 @@ Stack ref: **M1** — roadmap 039; 1.3.17 archived 2026-10-19 (DONE_WITH_CARRY_O
 
 AGENTS.md current milestone phải match file này.
 
-### Milestone kế tiếp đã chọn — Plugin Design Sidebar (SemVer TBD)
+### UX hotfix bổ sung trong 1.3.18 — 2026-11-03
 
-Human decision 2026-10-21: triển khai sidebar ở milestone kế tiếp sau 1.3.18, làm nền cho Slider, Step Slider và 2-side Product. Thay thế đề xuất “có thể sau Step Slider”. **Ưu tiên/scope đã chốt; implementation Chưa làm; chưa xác nhận SemVer hoặc chuyển current.**
+Human xác nhận đưa initial loading logo và fade chuyển trang vào milestone hiện tại, commit nhãn UX hotfix. **Chỉ planning; chưa duyệt implementation plan, chưa code/commit.** Plan [046](planning/046_VER_1_3_18_SITE_LOADING_NAVIGATION_UX_HOTFIX_PLAN.md), acceptance UXHF-01–10 và runbook `docs/testing/site-loading-navigation-ux-hotfix-1.3.18.md`. Không đổi current/version hoặc scope các mốc 1.3.19–23; không sửa skeleton, không coi hiệu ứng chuyển trang là fix toàn bộ flash cũ. Giữ nguyên acceptance/debt 045; completion hotfix không tự đóng milestone.
 
-- Scope: Selected block / Plugin tabs; selection và shortcut; component design controls; Theme Design (typography/fonts/brand colors theo capability có thật của SKVN Marine); save/quyền/fallback và QA. Product/Post là consumer đầu tiên; mở rộng các block khác theo milestone riêng.
-- Nguồn scope, rationale, states và acceptance DS-01–DS-07: `docs/workflows/ideation-plugin-design-sidebar.md`. Gói E defaults/linked global styles chưa tự vào scope.
-- Giữ acceptance 1.3.18/plan 045; không tự bắt đầu Slider, Step Slider hoặc 2-side Product, không kéo font delivery governance 1.6.0 vào đây.
-- Trước khi bắt đầu: lập execution plan, đối chiếu ledger và đề xuất SemVer để human xác nhận version/start; không dùng 1.3.19 vì đã dành cho Hero Slider Contrast Repair.
+### Thứ tự đã chốt — Category Grid → Plugin Design Sidebar Foundation
+
+Human xác nhận 2026-10-28: **1.3.20 Product Category Grid + Category details → 1.3.21 Plugin Design Sidebar Foundation**. Thay thế ưu tiên 2026-10-21 đưa Sidebar ngay sau 1.3.18. Cả hai PLANNED, chưa start; current vẫn 1.3.18. 1.3.19 giữ nguyên Hero Slider Contrast Repair ngoài current.
+
+- Sidebar: Selected block / Plugin tabs, selection/shortcut, component design controls và Theme Design (typography/fonts/brand colors theo capability SKVN Marine thực hỗ trợ).
+- Consumers đầu tiên: Product/Post Carousel và Product Category Grid. Slider, Step Slider, 2-side Product tích hợp tại milestone riêng.
+- Nguồn scope/states/acceptance DS-01–DS-07: `docs/workflows/ideation-plugin-design-sidebar.md`; section 1.3.21 bên dưới. Giữ acceptance 1.3.18/plan 045.
+- SemVer đã xác nhận; trước implementation cần execution plan và human xác nhận start, không hỏi lại version. Không bump metadata trong lượt planning.
 
 ---
 
 ### Milestone stack → SemVer — bắt buộc trước khi triển khai
+
+Future scopes human xác nhận 2026-10-27: **1.3.20 — Product Category Grid + Category details → Post Category Grid (SemVer TBD)**, hai milestone riêng. Scope/decision/điểm mở/acceptance ở `docs/ideations/category-grid-spec.md`. Không đổi current; cập nhật 2026-10-28: Category 1.3.20 trước Sidebar 1.3.21; thứ tự so với Slider/Step Slider/2-side Product chưa chốt. Đây là planning category cụ thể, không kích hoạt toàn bộ taxonomy collections/admin/filter đang deferred. Implementation Chưa làm; version Product đã xác nhận, cần xác nhận start trước code.
 
 Human decision (2026-10-13): roadmap 039 là **milestone stack**. Các nhãn M1–M6 chỉ định danh scope trong stack, không phải version và không thay current milestone.
 
@@ -957,6 +963,77 @@ Acceptance (điểm tương ứng HERO-* trong 044 §7):
 - [ ] Human approve kết quả visual.
 
 Không tự đánh dấu milestone hoàn thành, không runtime PASS và không release approved khi thiếu evidence.
+
+### 1.3.20 — Product Category Grid + Category details
+
+Design lock **2026-10-28**: human duyệt `docs/artifacts/editor-ui/category-grid-picker-prototype.html`; phạm vi và source delta theo companion `.md`. Giữ UI baseline, không tự redesign; drag desktop/arrow touch là requirement còn phải hiện thực. Không coi design approval là runtime PASS hoặc lệnh start.
+
+Status: **PLANNED — implementation Chưa làm, chưa start**.
+Confirmed: **2026-10-27** — human sửa lựa chọn 1.3.19 thành 1.3.20 để giữ 1.3.19 cho Hero Slider Contrast Repair.
+
+Scope: chọn Product Category thủ công, grid responsive, archive/custom URL, hide-empty, Category details chỉnh thumbnail + description trực tiếp WooCommerce, thiếu thumbnail dùng Woo placeholder, Save category/Page Save và native notices. Spec/acceptance CG-* và các chi tiết còn mở: `docs/ideations/category-grid-spec.md`.
+
+Version rationale: scope thêm feature thường thuộc MINOR; **1.3.20 là lựa chọn đánh số cụ thể của human**, ngoại lệ cho milestone này, không sửa quy tắc chung. Không thay mapping 1.3.19, không chuyển current 1.3.18, không bump metadata. Theo xác nhận 2026-10-28, Category triển khai trước Sidebar 1.3.21; Post Category là milestone riêng sau Product, chưa gán số. Không suy version thành lệnh start hoặc thay đổi thứ tự đã chốt.
+
+### 1.3.21 — Plugin Design Sidebar Foundation
+
+Status: **PLANNED — implementation Chưa làm, chưa start**.
+Confirmed: **2026-10-28** — human xác nhận version và thứ tự sau 1.3.20.
+
+Version rationale: tính năng mới thường tăng MINOR; **1.3.21 là ngoại lệ đánh số cụ thể do human xác nhận**, tương tự 1.3.20, không đổi Version Naming Rule. Không chuyển current, archive milestone/tension hoặc bump metadata.
+
+Scope:
+- Shell Selected block / Plugin; mở từ toolbar/block shortcut, chọn đúng target và quay về Block Inspector.
+- Tích hợp Product/Post Carousel và Product Category Grid; giữ Content/Query/Layout cơ bản tại Inspector, design controls theo thành phần tại sidebar riêng.
+- Theme Design: typography/fonts/brand colors theo capability SKVN Marine; tái sử dụng nguồn settings hiện có, không tạo store/font loader cạnh tranh. Theme khác ẩn integration, giữ dữ liệu và chức năng block độc lập.
+- Category details (thumbnail/description Woo dùng chung) giữ rõ boundary với style cục bộ; 1.3.20 dùng Inspector hiện có, không phụ thuộc shell 1.3.21.
+- Save/Undo block, save settings chung, quyền, loading/error/fallback, responsive và keyboard accessibility.
+
+Không gồm: triển khai Slider/Step Slider/2-side Product, font delivery governance 1.6.0, linked global styles/defaults gói E. Consumers tương lai tích hợp trong milestone riêng.
+
+Acceptance — toàn bộ **Chưa làm**, không có runtime evidence:
+- [ ] Editor UX: DS-01–DS-07 trong ideation được map đầy đủ vào execution plan; selection/no selection/unsupported/multi-selection, delete/duplicate/undo không ghi nhầm target; có video/ảnh kiểm chứng.
+- [ ] Editor UX: controls Carousel và Category Grid có vị trí rõ, không mất chức năng; Category details không bị nhầm với Design; kiểm keyboard và sidebar hẹp.
+- [ ] Block UI: preview → save/reopen → frontend đúng cho inherited token/block override; kiểm Product/Post/Category, nội dung dài/thiếu ảnh và responsive bằng ảnh đối chiếu.
+- [ ] Technical: permissions kiểm phía server, save lỗi giữ dữ liệu; thử SKVN Marine/theme khác/đổi theme quay lại; evidence saved values, network/console.
+- [ ] Technical: không mount runtime/refetch query chỉ vì đổi tab/style; regression các consumer và settings hiện có được kiểm chứng.
+- [ ] Human duyệt onsite trước completion; nguồn scope và chi tiết states: `docs/workflows/ideation-plugin-design-sidebar.md`.
+
+### 1.3.22 — Product Page Basic Design Controls
+
+Status: **PLANNED — implementation Chưa làm, chưa start**.
+Confirmed: **2026-11-03** — human chốt đề xuất Product trước, Post sau; thứ tự **1.3.21 → 1.3.22 → 1.3.23**.
+
+Version rationale: đây là feature mới, thông thường tăng MINOR; **1.3.22 và 1.3.23 là ngoại lệ đánh số do human xác nhận**, như 1.3.20–21. Không đổi Version Naming Rule, không chuyển current 1.3.18, không bump metadata hoặc archive.
+
+Scope: chỉnh thiết kế cơ bản Single Product khi vẫn là child theme GeneratePress: preset gallery/thông tin và tỷ lệ hai cột, độ rộng, bật/tắt thành phần phù hợp, typography/màu/khoảng cách và style thông số/CTA theo token; thiết kế mặc định chung + override giới hạn từng sản phẩm với Use default/Reset. Nội dung và gallery/attributes lấy dữ liệu native WooCommerce. Tận dụng shell/controls 1.3.21; đây là consumer riêng, không mở rộng ngược scope 1.3.21.
+
+Boundary: theme giữ template PHP/hooks và visual output; plugin giữ editor UI/logic phù hợp, không tạo store/font loader cạnh tranh. Chưa làm full template drag/drop, template condition engine, archive builder hoặc data model woo-catalog 1.5.0. Giữ quote flow hiện có, không viết form handler mới. **2.0 bắt đầu migrate từng bước khỏi GeneratePress**, không phải đã độc lập; không chốt mốc hoàn tất ở đây.
+
+Acceptance draft — tất cả **Chưa làm**, chưa có runtime evidence:
+- [ ] PDP-UI-01 — Block UI: preset/style/visibility áp dụng đúng trên desktop/mobile với title dài, có/không ảnh và thiếu/đủ thuộc tính; CTA đọc được, focus/contrast/touch phù hợp; kiểm screenshot, geometry và quote URL giữ product context.
+- [ ] PDP-UX-01 — Editor UX: phân biệt default chung với override sản phẩm; Use default/Reset, save/reopen và save failure không gây ghi nhầm phạm vi; keyboard/sidebar hẹp dùng được; evidence video và giá trị đã lưu.
+- [ ] PDP-TECH-01 — Technical: native Woo data, quyền/sanitize/escape, fallback khi dependency không khả dụng, không sửa GP parent; không tải runtime không cần thiết; kiểm source/network/console và regression quote/gallery trên build ghi rõ.
+- [ ] PDP-TRACE-01 — Trước implementation lập execution plan và đối chiếu từng acceptance liên quan của **1.3.5**: kế thừa phần đã có, chỉ triển khai delta; không xóa acceptance hoặc đánh dấu 1.3.5 completed. Archive scope vẫn ở nơi cũ.
+- [ ] Tạo runbook onsite với URL/fixtures/steps/expected/evidence, human duyệt trước completion. SemVer đã chốt; bắt đầu/chuyển current cần lệnh riêng.
+
+Research/rationale: `docs/research/theme-template-editor-fse-transition-research-2026-11-03.md`; roadmap 039, mục cập nhật 2026-11-03. Liên hệ stack: consumer template thực tế liên quan M6 và nền visual/editor liên quan M3; không kích hoạt toàn bộ M3/M6 hoặc đổi thứ tự các scope khác.
+
+### 1.3.23 — Post Page Basic Design Controls
+
+Status: **PLANNED — implementation Chưa làm, chưa start**.
+Confirmed: **2026-11-03** — sau 1.3.22; cùng ngoại lệ version và boundary ghi ở trên.
+
+Scope: Single Post presets, có/không sidebar, độ rộng nội dung, vị trí ảnh đại diện, bật/tắt metadata/related posts, typography và khoảng cách; default chung + override giới hạn từng bài, Use default/Reset. Dùng native WordPress content/Gutenberg, tái sử dụng nền controls của 1.3.21/1.3.22; theme vẫn render PHP/GeneratePress. Không gộp Post Category Grid (SemVer còn TBD), không tự xây TOC mới hoặc mở template builder đầy đủ.
+
+Acceptance draft — tất cả **Chưa làm**, chưa có runtime evidence:
+- [ ] POST-UI-01 — Block UI: preset/style/visibility đúng với bài ngắn/dài, thiếu/có ảnh và metadata, nội dung Gutenberg đa dạng; desktop/mobile không tràn, typography dễ đọc, links/focus/contrast phù hợp; evidence ảnh/geometry.
+- [ ] POST-UX-01 — Editor UX: phân biệt default/override, controls có tác dụng, reset/save/reopen đúng; lỗi lưu giữ draft; keyboard/sidebar hẹp dùng được; evidence video/saved state.
+- [ ] POST-TECH-01 — Technical: không mất/nhân đôi native content, quyền/sanitize/escape đúng, không sửa GP parent; asset loading phù hợp, regression Product và bài cũ được kiểm; evidence source/network/console/build.
+- [ ] POST-TRACE-01 — Map acceptance liên quan **1.3.5** trước implementation; giữ nguyên status/checklist cũ, không coi version mới là bằng chứng hoàn thành công việc cũ.
+- [ ] Tạo runbook onsite riêng và human duyệt kết quả trước completion; chưa bắt đầu hoặc bump metadata.
+
+Rationale tách mốc: Product cần QA Woo gallery/specs/Request Quote; Post cần QA nội dung Gutenberg và reading UX. Mỗi surface có evidence nghiệm thu độc lập, giảm phạm vi regression của từng lượt.
 
 ### 1.4.3 — Interactive Illustrated Map
 

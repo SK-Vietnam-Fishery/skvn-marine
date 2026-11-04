@@ -78,11 +78,17 @@ function skvn_marine_blocks_get_default_preloader() {
 		'tagline'      => '',
 		'use_logo'     => false,
 		'logo_id'      => 0,
-		'bg_type'      => 'gradient',
-		'bg_solid'     => 'skvn-blue-950',
-		'bg_gradient'  => 'skvn-navy-deep',
-		'text_color'   => 'skvn-white',
-		'accent_color' => 'skvn-gold-300',
+		'bg_type'               => 'gradient',
+		'bg_solid'              => 'skvn-blue-950',
+		'bg_gradient'           => 'skvn-navy-deep',
+		'text_color'            => 'skvn-white',
+		'accent_color'          => 'skvn-gold-300',
+		'smooth_initial_loading'=> false,
+		'page_transition'       => 'none',
+		'frequency'             => 'once',
+		'loading_show_after'    => 150,
+		'loading_fade_duration' => 200,
+		'page_transition_duration'=> 180,
 	);
 }
 
@@ -131,6 +137,7 @@ function skvn_marine_blocks_sanitize_preloader( $value ) {
 	$value     = is_array( $value ) ? wp_unslash( $value ) : array();
 	$palette   = array_keys( skvn_marine_blocks_preloader_palette_options() );
 	$gradients = array_keys( skvn_marine_blocks_preloader_gradient_options() );
+	$saved     = (array) get_option( SKVN_MARINE_BLOCKS_PRELOADER_OPTION, array() );
 
 	$choice = static function ( $raw, $allowed, $fallback ) {
 		$raw = is_string( $raw ) ? sanitize_key( $raw ) : '';
@@ -144,8 +151,8 @@ function skvn_marine_blocks_sanitize_preloader( $value ) {
 	return array(
 		'type'         => $choice( $value['type'] ?? '', array( 'preloader', 'splash', 'skeleton', 'brandbar', 'off' ), $defaults['type'] ),
 		'scope'        => $choice( $value['scope'] ?? '', array( 'front', 'site' ), $defaults['scope'] ),
-		'dismiss'      => $choice( $value['dismiss'] ?? '', array( 'hero', 'window', 'time' ), $defaults['dismiss'] ),
-		'min_display'  => max( 0, min( 5000, isset( $value['min_display'] ) ? absint( $value['min_display'] ) : 0 ) ),
+		'dismiss'      => $choice( isset( $value['dismiss'] ) ? $value['dismiss'] : ( $saved['dismiss'] ?? '' ), array( 'hero', 'window', 'time' ), $defaults['dismiss'] ),
+		'min_display'  => max( 0, min( 5000, isset( $value['min_display'] ) ? absint( $value['min_display'] ) : ( isset( $saved['min_display'] ) ? absint( $saved['min_display'] ) : 0 ) ) ),
 		'mark_text'    => isset( $value['mark_text'] ) ? sanitize_text_field( $value['mark_text'] ) : '',
 		'tagline'      => isset( $value['tagline'] ) ? sanitize_text_field( $value['tagline'] ) : '',
 		'use_logo'     => ! empty( $value['use_logo'] ),
@@ -153,8 +160,14 @@ function skvn_marine_blocks_sanitize_preloader( $value ) {
 		'bg_type'      => $choice( $value['bg_type'] ?? '', array( 'solid', 'gradient' ), $defaults['bg_type'] ),
 		'bg_solid'     => $color( $value['bg_solid'] ?? '', $palette, $defaults['bg_solid'] ),
 		'bg_gradient'  => $color( $value['bg_gradient'] ?? '', $gradients, $defaults['bg_gradient'] ),
-		'text_color'   => $color( $value['text_color'] ?? '', $palette, $defaults['text_color'] ),
-		'accent_color' => $color( $value['accent_color'] ?? '', $palette, $defaults['accent_color'] ),
+		'text_color'               => $color( $value['text_color'] ?? '', $palette, $defaults['text_color'] ),
+		'accent_color'             => $color( $value['accent_color'] ?? '', $palette, $defaults['accent_color'] ),
+		'smooth_initial_loading'   => ! empty( $value['smooth_initial_loading'] ),
+		'page_transition'          => $choice( $value['page_transition'] ?? '', array( 'none', 'fade' ), $defaults['page_transition'] ),
+		'frequency'                => $choice( $value['frequency'] ?? '', array( 'once', 'every' ), $defaults['frequency'] ),
+		'loading_show_after'       => max( 0, min( 500, isset( $value['loading_show_after'] ) ? absint( $value['loading_show_after'] ) : $defaults['loading_show_after'] ) ),
+		'loading_fade_duration'    => max( 100, min( 500, isset( $value['loading_fade_duration'] ) ? absint( $value['loading_fade_duration'] ) : $defaults['loading_fade_duration'] ) ),
+		'page_transition_duration' => max( 100, min( 400, isset( $value['page_transition_duration'] ) ? absint( $value['page_transition_duration'] ) : $defaults['page_transition_duration'] ) ),
 	);
 }
 
@@ -272,6 +285,7 @@ function skvn_marine_blocks_render_preloader_page() {
 						<img id="skvn-preloader-logo-preview" src="<?php echo esc_url( $logo_src ); ?>" alt="" style="max-height:60px;display:<?php echo $logo_src ? 'block' : 'none'; ?>;margin-bottom:8px;">
 						<button type="button" class="button" id="skvn-preloader-logo-pick"><?php esc_html_e( 'Chọn / tải logo', 'skvn-marine-blocks' ); ?></button>
 						<button type="button" class="button" id="skvn-preloader-logo-clear"><?php esc_html_e( 'Xoá', 'skvn-marine-blocks' ); ?></button>
+						<p class="description"><?php esc_html_e( 'Image source: selected attachment → site logo → site name text. A broken image falls back to text; the page is not held waiting for the logo.', 'skvn-marine-blocks' ); ?></p>
 					</td>
 				</tr>
 			</table>
@@ -300,6 +314,52 @@ function skvn_marine_blocks_render_preloader_page() {
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Màu nhấn (spinner / bar)', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[accent_color]", $s['accent_color'], $palette ); ?></td>
+				</tr>
+			</table>
+
+			<h2><?php esc_html_e( 'Initial loading', 'skvn-marine-blocks' ); ?></h2>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Smooth initial loading', 'skvn-marine-blocks' ); ?></th>
+					<td><label><input type="checkbox" name="<?php echo esc_attr( "{$opt}[smooth_initial_loading]" ); ?>" value="1" <?php checked( $s['smooth_initial_loading'] ); ?>> <?php esc_html_e( 'Enable the improved initial loading flow (logo overlay) on the first eligible page visit.', 'skvn-marine-blocks' ); ?></label></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Frequency', 'skvn-marine-blocks' ); ?></th>
+					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[frequency]", $s['frequency'], array(
+						'once'  => esc_html__( 'Once per session', 'skvn-marine-blocks' ),
+						'every' => esc_html__( 'Every page load', 'skvn-marine-blocks' ),
+					) ); ?>
+						<p class="description"><?php esc_html_e( 'Once per session shows the overlay at most once per tab/session. Every page load still applies the "Show loading after" threshold; a fast page may skip the overlay.', 'skvn-marine-blocks' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<h2><?php esc_html_e( 'Page transitions', 'skvn-marine-blocks' ); ?></h2>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Page transition', 'skvn-marine-blocks' ); ?></th>
+					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[page_transition]", $s['page_transition'], array(
+						'none' => esc_html__( 'None', 'skvn-marine-blocks' ),
+						'fade' => esc_html__( 'Fade', 'skvn-marine-blocks' ),
+					) ); ?>
+						<p class="description"><?php esc_html_e( 'Native cross-document fade when navigating between eligible frontend pages. Unsupported browsers and reduced motion use normal navigation.', 'skvn-marine-blocks' ); ?></p>
+					</td>
+				</tr>
+			</table>
+
+			<h2><?php esc_html_e( 'Advanced', 'skvn-marine-blocks' ); ?></h2>
+			<table class="form-table" role="presentation">
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Show loading after (ms)', 'skvn-marine-blocks' ); ?></th>
+					<td><input type="number" min="0" max="500" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[loading_show_after]" ); ?>" value="<?php echo esc_attr( (string) $s['loading_show_after'] ); ?>"></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Loading fade duration (ms)', 'skvn-marine-blocks' ); ?></th>
+					<td><input type="number" min="100" max="500" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[loading_fade_duration]" ); ?>" value="<?php echo esc_attr( (string) $s['loading_fade_duration'] ); ?>"></td>
+				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Page transition duration (ms)', 'skvn-marine-blocks' ); ?></th>
+					<td><input type="number" min="100" max="400" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[page_transition_duration]" ); ?>" value="<?php echo esc_attr( (string) $s['page_transition_duration'] ); ?>"></td>
 				</tr>
 			</table>
 
