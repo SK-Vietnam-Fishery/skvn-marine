@@ -93,6 +93,8 @@ Project docs under `docs/` are grouped by reading purpose:
 - `docs/curriculum/` — giáo trình tự học cho human: xây plugin blocks tương tự từ chính code dự án (index: `docs/curriculum/README.md`). Không phải agent protocol; agent không cần load khi làm task.
 
 Current active docs:
+
+- `docs/ideations/svg-maps/README.md` — V1 / 1.4.3 Interactive Illustrated Map, human chốt 2026-11-04; PLANNED chưa start, sau 1.4.2 trước 1.5.0. Hai bảng, nội dung trong điểm; sidebar plugin, Apply changes/Save map, lưu nguyên khối. Acceptance MAP-* ở MILESTONES.md; current vẫn 1.3.18.
 - `docs/standards/block-ui-editor-ux-technical-review-contract.md` — protocol ba nhóm + Content & States / Acceptance & Evidence, áp dụng theo AGENTS cho block/UI review/planning/implementation.
 
 - `docs/decisions/project-goals-and-roadmap-reset.md` — bản ghi planning tiếp tục: mục tiêu toolkit B2B, ưu tiên Product/Post Carousel, hướng settings cơ bản trong Block và nâng cao ở sidebar riêng. Cập nhật cùng file khi human yêu cầu; M1 → 1.3.17 đã được human kích hoạt 2026-10-13; carousel stability hiện là ưu tiên, 1.3.10 deferred.

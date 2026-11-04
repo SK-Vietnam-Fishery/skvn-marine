@@ -958,6 +958,31 @@ Acceptance (điểm tương ứng HERO-* trong 044 §7):
 
 Không tự đánh dấu milestone hoàn thành, không runtime PASS và không release approved khi thiếu evidence.
 
+### 1.4.3 — Interactive Illustrated Map
+
+Status: **PLANNED — Chưa làm, chưa start**.
+Confirmed: **2026-11-04** — human chốt 1.4.3 sau 1.4.2 và trước 1.5.0; current vẫn V1 / 1.3.18.
+
+Version rationale: đây là feature mới, thông thường tăng MINOR; **1.4.3 là ngoại lệ đánh số cụ thể do human xác nhận**, không đổi Version Naming Rule. Không đổi scope 1.4.0 Migration, 1.4.1 Setup UI, 1.4.2 Layout/Quote Validation, 1.5.0 Woo Catalog, 1.5.3 TOC hoặc 1.6.0 Surface Presets. Xác nhận version/commit tài liệu không phải lệnh start, bump metadata hoặc release.
+
+Scope: block bản đồ minh họa SVG tham chiếu mapId; marker mở thẻ thông tin, tọa độ % neo tâm icon, responsive/zoom có kiểm chứng; sửa nội dung ngay trong thẻ; cấu hình dữ liệu và Save map tại sidebar riêng của plugin. Hai bảng maps/map_points (tiền tố site; tên vật lý hoàn thiện khi execution plan), nội dung chi tiết nằm trong điểm. Không CPT, không markdown parser, không bảng popup riêng, không đưa dữ liệu vào Woo Catalog. Plugin owns data/editor/runtime; tương thích identity Marine Blocks sau 1.4.0. Không yêu cầu chuyển theme sang FSE.
+
+Nguồn thiết kế và truy vết: `docs/ideations/svg-maps/README.md` (quyết định mới ưu tiên hơn source artifact cũ), `docs/ideations/svg-maps/bao-cao-tong-hop-ban-do-tuong-tac.md`. Sidebar là consumer của nền editor chung, tích hợp riêng trong 1.4.3; không mở rộng acceptance consumer của milestone nền. Stack M1–M6: chưa gán; chỉ ghi candidate consumer, không tự kích hoạt M3/M6. Đây là bản đồ minh họa mới, không tự đóng debt OpenStreetMap/contact map cũ ở 1.1.2.
+
+Acceptance — tất cả **Chưa làm**, chưa có runtime evidence:
+
+- [ ] MAP-UI-01 — Giao diện: nền/marker/nhãn/thẻ hiển thị đúng desktop/tablet/mobile; đổi nhãn không lệch tâm icon; các trạng thái thiếu/có nội dung, ảnh và nội dung dài không tràn; kiểm screenshot/geometry và source UI-01–09.
+- [ ] MAP-UI-02 — Giao diện: mọi điểm truy cập được khi zoom hoặc dùng danh sách; click/touch/Enter/Space mở đúng thẻ, đóng và trả focus đúng nguồn; reduced motion, focus/contrast kiểm trên môi trường ghi rõ. Chốt cách xử lý zoom/mobile còn mở trong execution plan.
+- [ ] MAP-UI-03 — Giao diện: nền thiếu/gãy hiện lỗi rõ; không tự thay nền hoặc dời điểm. Kiểm nguồn ảnh bị chặn/xóa, so tọa độ trước/sau chọn lại nền; giữ UI-10.
+- [ ] MAP-ED-01 — Editor UI: cấu hình dữ liệu ở sidebar plugin, gắn rõ map đang sửa và phạm vi dùng chung; block không lặp form cấu hình, nội dung điểm sửa trong thẻ; keyboard/sidebar hẹp dùng được. Kiểm selection, đúng map và preview; ED-12.
+- [ ] MAP-ED-02 — Editor UI: Apply changes chỉ đưa nháp thẻ vào nháp map; Cancel bỏ phần chưa áp dụng; Save map mới lưu bền toàn bộ. Dirty/saving/saved/error rõ; lỗi giữ nháp để thử lại, lưu page không thay Save map. Kiểm Apply/Cancel/Save/reopen và lỗi lưu; ED-11, ED-01–10 giữ truy vết.
+- [ ] MAP-ED-03 — Editor UI: tỷ lệ cố định theo từng map sau khi tạo, khởi đầu 4:3; hiện tỷ lệ yêu cầu/thực tế, kích thước nguồn, mức phù hợp và preview toàn bộ không crop; thay nền giữ tọa độ, nhắc kiểm lại vị trí dù cùng tỷ lệ; nền gãy có chọn lại ảnh. Kiểm fixture sai tỷ lệ/cùng tỷ lệ khác tranh; ED-13.
+- [ ] MAP-BE-01 — Backend kỹ thuật: hai bảng maps/map_points, detail_title/detail_body_html/detail_image_media_id trong điểm; map dùng chung qua mapId, điểm thuộc map. CRUD/schema upgrade/xóa giữ nhất quán, mapping JSON/media đúng, import lỗi không phá dữ liệu; kiểm fresh install/upgrade/export-import/invalid input; BE-01–05/10.
+- [ ] MAP-BE-02 — Backend kỹ thuật: map published giữ bản cũ tới khi Save map thành công toàn bộ; không lộ dữ liệu cập nhật dở. Lưu lỗi giữ published cũ và nháp; retry thành công mới cập nhật các page dùng chung/cache. Kiểm gây lỗi giữa lượt lưu và đọc hai page; BE-06/11. Cơ chế nguyên khối cụ thể cần execution plan.
+- [ ] MAP-BE-03 — Backend kỹ thuật: quyền/validation/sanitize/escape, media/SVG contract, instance IDs không trùng, assets có điều kiện và cleanup, map thiếu/draft/lỗi query có trạng thái rõ; kiểm hai map/cùng map hai lần, quyền thiếu, JS lỗi; BE-06–09. Không coi sanitizer artifact là production boundary.
+- [ ] MAP-TRACE-01 — Execution plan phải giữ toàn bộ UI-*, ED-*, BE-*, DOC-* trong index; chốt hoặc defer rõ các điểm mở: snapshot revision, chỉnh đồng thời, thẻ rỗng/xóa sạch nội dung, zoom/mobile, grab offset, undo/reorder, thêm List/Buttons. Không tự thêm scope hoặc bỏ acceptance.
+- [ ] Tạo runbook `docs/testing/` trước runtime/onsite: URL, setup/fixtures, steps, expected/pass-fail và evidence; human nghiệm thu trước completion. Version đã chốt; start cần lệnh riêng.
+
 ### 1.5.0 — Woo Catalog Plugin (`woo-catalog`)
 
 Status: **BRAINSTORM / PLANNING IN PROGRESS**

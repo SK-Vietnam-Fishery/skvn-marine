@@ -22,6 +22,8 @@
 - Quote Flow **sau** test giao diện carousel. Slider (Hero/Parallax/Step) **dời mốc sau**. Header/footer mới **sau theme độc lập**; tạm giữ GeneratePress.
 - Settings basic trong Block / advanced sidebar riêng: **đã duyệt cách chia và ưu tiên milestone kế tiếp ngày 2026-10-21**; scope/states/acceptance theo ideation sidebar, SemVer/start chưa xác nhận.
 
+**Map milestone 2026-11-04:** human xác nhận **V1 / 1.4.3 — Interactive Illustrated Map**, PLANNED/Chưa làm, sau 1.4.2 và trước 1.5.0; ngoại lệ đánh số cho feature mới, không đổi SemVer rule. Scope/acceptance MAP-* tại MILESTONES.md và `docs/ideations/svg-maps/README.md`. Map là candidate consumer của nền sidebar/plugin; **chưa gán vào M1–M6**, không kích hoạt M3/M6. Giữ scope các mốc hiện có và debt map/contact cũ 1.1.2. Current vẫn 1.3.18, chưa start/bump/build.
+
 ## 2. Milestone stack M1–M6 (định danh scope, không phải SemVer)
 
 | Nhãn | Kết quả | Trạng thái |
