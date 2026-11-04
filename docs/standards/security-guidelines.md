@@ -183,6 +183,6 @@ Before adding a dependency, document:
 |---|---|---|
 | T-1 | Theme typography merged raw option into inline CSS | A+C1: delegate to plugin getter; plugin-off → defaults only |
 | B-1 | Feature Showcase static save with raw URLs | E: PHP `render_callback`, `imageId`, `save()` null |
-| T-2 | `source_url` used `HTTP_HOST` | Source fixed 1.3.6 (`cards.php`); **onsite verify + quote-chain close → milestone 1.4.1** |
+| T-2 | `source_url` used `HTTP_HOST` | Source fixed 1.3.6 (`cards.php`); **onsite verify + quote-chain close → milestone 1.4.2** |
 | D-1 | `translate-layout.mjs` arbitrary file read | Fixed: `assertInsideRoot()` |
 | Q-2 | CF7/n8n production surface | Documented above; quote onsite test deferred |

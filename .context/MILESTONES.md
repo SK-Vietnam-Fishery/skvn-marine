@@ -523,7 +523,7 @@ Purpose:
 - Verify **1.3.6** carry-in: slider bottom-center flank controls (source shipped).
 - Run comprehensive memory, accessibility, responsive, and reduced-motion validation.
 
-Product launch **deferred** → post **V1 / 1.5.x** as **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace). Decision: `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
+Product launch **deferred** → post **V1 / 1.5.x**; identity cập nhật 2026-11-04 thành **Marine Blocks**, migration target 1.4.0 theo plan 047, public version cần xác nhận lại. Decision: `docs/decisions/gu-supercharger-launch-post-1.5x.md` (amended).
 
 Testing:
 
@@ -693,7 +693,25 @@ Acceptance draft:
 ---
 
 
-### 1.4.0 — SKVN Theme Init Setup UI
+### 1.4.0 — Marine Blocks Identity & Compatibility Migration
+
+Status: **PLANNED — Chưa làm**
+
+Human decision **2026-11-04**: chốt **1.4.0** cho migration; Setup UI cũ 1.4.0 → **1.4.1**, Layout/Quote Validation cũ 1.4.1 → **1.4.2**, cả hai PENDING và giữ nguyên acceptance. Chưa start; current 1.3.18 và metadata giữ nguyên. MINOR 1.4.0 dành cho scope chuyển identity/compatibility sản phẩm; không chỉ sửa nhãn PATCH. Migration phải bảo vệ dữ liệu/consumer cũ theo plan 047.
+
+Plan: `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md` — mapping, evidence baseline, P0–P4, MB-01–MB-09.
+
+- Marine Blocks (`marine-blocks`, PHP `marine_blocks_`) thay identity GU Supercharger; theme SKVN Marine giữ nguyên.
+- Bộ block chuyên dụng và patterns để dựng/chỉnh sửa/bàn giao nhanh; không full-FSE supercharger. Plugin styling/runtime độc lập; WindPress enhance core/pattern website.
+- [ ] MB-01/09: Editor naming, saved content, workflow/i18n PASS.
+- [ ] MB-02/03/06: visual/query/runtime và independence PASS.
+- [ ] MB-04/05: settings, theme consumers, idempotent data migration PASS.
+- [ ] MB-07/08: packaging/activation và rollback rehearsal PASS.
+- [ ] Start xác nhận trước implementation (SemVer 1.4.0 đã chốt); pilot onsite và human nghiệm thu trước completion.
+
+Migration không đồng nghĩa public launch; gate sau 1.5.x giữ tới quyết định riêng, không tự reset version 0.0.1 hoặc hủy acceptance cũ.
+
+### 1.4.1 — SKVN Theme Init Setup UI
 
 Status: **PENDING**
 
@@ -729,11 +747,11 @@ Acceptance draft:
 - [ ] Setup actions are previewable or clearly described before running
 - [ ] Setup actions are idempotent where possible
 - [ ] Request A Quote Workflow setup maps to approved CF7/page/docs contract
-- [ ] Setup/docs mention trusted `source_url` contract (no `HTTP_HOST`; WP routing only) — aligns with T-2 in 1.4.1
+- [ ] Setup/docs mention trusted `source_url` contract (no `HTTP_HOST`; WP routing only) — aligns with T-2 in 1.4.2
 - [ ] No n8n webhook is exposed
 - [ ] Human approves milestone completion
 
-### 1.4.1 — Layout Blocks Validation & Quote Evaluation
+### 1.4.2 — Layout Blocks Validation & Quote Evaluation
 
 Status: **PENDING**
 
@@ -750,7 +768,7 @@ Context:
 
 - Finding: building `source_url` from `$_SERVER['HTTP_HOST']` allowed host-header poisoning in quote query params.
 - Source fix (1.3.6): `skvn_marine_blocks_get_current_source_url()` in `modules/collection-render/cards.php` now uses WordPress routing (`get_permalink()`, `home_url()`, archive/term APIs). See `docs/standards/security-guidelines.md`.
-- Remaining work for 1.4.x: prove the value end-to-end in the quote flow (URL → CF7 hidden field → CFDB7), not only in source review.
+- Remaining work for 1.4.2: prove the value end-to-end in the quote flow (URL → CF7 hidden field → CFDB7), not only in source review.
 
 Testing:
 
@@ -1016,7 +1034,9 @@ Acceptance draft (sơ bộ, cần hoàn thiện):
 
 ---
 
-### Post 1.5.x — GU Supercharger 0.0.1 Product Launch
+### Post 1.5.x — Marine Blocks Product Launch
+
+**Update 2026-11-04:** identity đích Marine Blocks (`marine-blocks`, namespace `marine-blocks/*`), migration chuyển sang target 1.4.0 theo plan 047. Public version cần xác nhận lại, không tự reset 0.0.1. Gate launch/QA bên dưới giữ nguyên; các tên GU Supercharger và nghiên cứu tên cũ dưới đây chỉ là baseline lịch sử, không phải identity đã khóa hiện hành. Khi thực hiện checklist dùng tên Marine Blocks; availability tên mới chưa xác minh. Không yêu cầu human duyệt lại identity đã chốt.
 
 Status: **PENDING**
 

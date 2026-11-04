@@ -42,6 +42,8 @@ docs/decisions/.assets/  hình minh hoạ
 
 ## 1. Active — contract/scope đang hiệu lực
 
+- **Marine Blocks direction & migration (2026-11-04):** [plan 047](../../.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md), target 1.4.0, SemVer đã xác nhận, chưa start. Thay identity GU Supercharger/full-FSE; launch gate sau 1.5.x giữ theo amendment trong launch decision. Plugin styling độc lập, WindPress enhance core/pattern website; theme identity giữ nguyên.
+
 ### Slider
 
 | File | Milestone | Note |

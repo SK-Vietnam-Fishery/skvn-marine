@@ -21,6 +21,8 @@ Milestone chính thức vẫn là **V1 / 1.3.10 — Fullscreen Step Slider**, PE
 
 ## Mục tiêu đã xác nhận
 
+**Update 2026-11-04 — ưu tiên hơn hướng sản phẩm cũ:** Human chốt Marine Blocks (`marine-blocks`), bộ block chuyên dụng và patterns giúp dựng/chỉnh sửa/bàn giao website nhanh, không supercharge toàn bộ FSE. Plugin styling/runtime độc lập; website dùng WindPress enhance core blocks/patterns. Theme vẫn SKVN Marine. Migration planned 1.4.0, SemVer đã xác nhận, chưa start; không chuyển current hoặc hủy acceptance cũ. [Plan 047](../../.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md) là source of truth cho mapping/compatibility/acceptance. Những dòng bên dưới nói chưa đổi product identity đã được update này thay thế; source chưa rename.
+
 - Bộ công cụ cho **nhiều website phục vụ kinh doanh B2B**, hướng Gutenberg + Tailwind.
 - Plugin tạm thu gọn trọng tâm advanced slider và carousel, bổ sung khả năng Gutenberg mặc định chưa đáp ứng nhu cầu human; plugin phải độc lập với theme.
 - Theme vẫn có mục tiêu thoát GeneratePress. Human muốn theme dùng plugin cùng WindPress hoặc Ska-block để đưa Tailwind vào; dependency cụ thể chưa chốt.
@@ -107,7 +109,7 @@ M1–M6 là nhãn thảo luận, không phải SemVer/milestone chính thức. C
 - `1.3.3` + `1.3.7` + planning `038`: nền carousel mới; cập nhật artifact chuẩn, phạm vi Product/Post và dữ liệu mặc định. DONE cũ không chứng minh đạt POC mới.
 - `1.3.10`: Step Slider dời sang phần slider sau; không tự đổi milestone cũ thành carousel.
 - `1.3.11` + `1.3.16`: agent đề xuất gộp QA trùng và đưa QA carousel vào acceptance carousel; chưa duyệt cách gộp cụ thể.
-- `1.1.2` + quote/source_url của `1.4.1`: xem xét gom Quote Flow sau test giao diện; map/layout validation xử lý riêng.
+- `1.1.2` + quote/source_url của `1.4.2`: xem xét gom Quote Flow sau test giao diện; map/layout validation xử lý riêng.
 - `1.5.0` Woo Catalog: agent đề xuất hoãn, không chặn carousel dùng dữ liệu mặc định; chưa quyết hủy catalog.
 - Core Control, TOC, credits, custom icon, setup UI, trang Chuyển đổi số, surface presets, launch: đề xuất dời/loại trước đó cần review từng mục; không coi human duyệt toàn bộ.
 - `2.0.0 → 3.0.0`: giữ để truy vết hướng thoát GeneratePress; chưa chốt lại version này.
@@ -209,13 +211,13 @@ Delta chính của implementation hiện tại:
 | 1.3.7 Collection UI & Card Styles | DONE (onsite QA dời 1.3.11) | **Kế thừa** (spacing/heading/CTA/badge) + delta visual lock theo POC-03 ở M1 | M1 | Xem A3 delta list |
 | Planning 038 Visual Lock | PLANNING (Path B/C, artifact cũ) | **Kế thừa** phương pháp (gated B→C, motion gates) nhưng **đổi artifact chuẩn sang POC-03**, engine = Swiper đã chốt | M1 | 038 không thay thế milestone chính thức; engine decision 2026-10-07 supersede tranh luận B/C |
 | 1.1.2 Quote Flow & Map testing | PENDING | **Gộp** phần quote-data-flow vào M2; map block tách riêng **Xem lại** | M2 (+ map xem lại) | Thứ tự human đã chốt: M1 test giao diện xong mới M2 |
-| 1.4.1 T-2 source_url + quote evaluation | PENDING | **Gộp** T-2 verification vào M2 | M2 | Source fix đã có (`cards.php:517-566`); còn thiếu evidence end-to-end |
+| 1.4.2 T-2 source_url + quote evaluation | PENDING | **Gộp** T-2 verification vào M2 | M2 | Source fix đã có (`cards.php:517-566`); còn thiếu evidence end-to-end |
 | 1.3.10 Step Slider | PENDING (current chính thức) | **Dời** sang mốc slider sau | M5 | Không tự đổi milestone chính thức trong lượt này |
 | 1.3.8 Parallax, 1.3.1 controls, slider QA | DONE/PENDING QA | **Dời** sang M5 | M5 | T-DEMO tensions giữ nguyên, không resolve ở đây |
 | Header actions 0.12 / Footer settings 0.9–0.11 | DONE/planned | **Giữ tạm** (dùng GP header/footer hiện có) | — (tạm giữ) | Hệ thống mới sau theme độc lập (M4) — đã chốt thứ tự |
 | 2.0.0→3.0.0 thoát GeneratePress | Planned | **Kế thừa** làm khung M3 | M3 | Chưa chốt lại version |
 | 1.5.0 Woo Catalog (MOQ/cert structured) | BRAINSTORM | **Dời** (không chặn M1); **Xem lại** có hủy hay giữ sau M2 | Sau M2 | M1 dùng dữ liệu mặc định — đã chốt |
-| 1.6.0 Surface presets, 1.4.0 Setup UI, 1.3.4 Core Control, 1.3.12 Credits, 1.3.9 Icon, 1.7.0 CĐS page, TOC 1.5.3, 1.3.16 QA | PENDING/BRAINSTORM | **Dời** hoặc **Xem lại** từng mục (chưa đề xuất loại cụ thể) | M5/M6 hoặc xem lại | Không coi human đã duyệt dời/loại toàn bộ — cần review từng mục với PM/human |
+| 1.6.0 Surface presets, 1.4.1 Setup UI, 1.3.4 Core Control, 1.3.12 Credits, 1.3.9 Icon, 1.7.0 CĐS page, TOC 1.5.3, 1.3.16 QA | PENDING/BRAINSTORM | **Dời** hoặc **Xem lại** từng mục (chưa đề xuất loại cụ thể) | M5/M6 hoặc xem lại | Không coi human đã duyệt dời/loại toàn bộ — cần review từng mục với PM/human |
 | 1.3.11 + 1.3.16 QA trùng | PENDING cả hai | **Gộp** QA carousel vào acceptance M1; phần slider còn lại **Dời** M5 | M1 + M5 | Cách gộp chi tiết chưa duyệt |
 | GU Supercharger launch post-1.5.x | PENDING | **Xem lại** (launch chưa đồng nhất giữa tài liệu) | Chưa đặt | Không đổi slug/namespace trong M1 |
 

@@ -10,7 +10,7 @@
 
 - WordPress + GeneratePress (parent) + `skvn-marine` (child theme)
 - WooCommerce — native products, categories, attributes
-- WindPress (Tailwind integration) — optional/prototyping aid; not the production visual-system source of truth
+- WindPress — được dùng enhance core blocks/patterns website; plugin ship styling/runtime độc lập (human 2026-11-04, plan 047).
 - Plugin: `skvn-marine-blocks` — custom Gutenberg blocks (TypeScript, @wordpress/scripts)
 - Page display/sidebar controls completed in 0.5.1; Quote UI completed in 0.6.0; basic CF7/CFDB7 source/docs contract in 0.7.0; quote-flow runtime verification/handoff in 0.7.1; SKVN Editor Controls in 0.8.0; Footer Page Settings in 0.9.0; onsite UI/test debt closed in 0.10.0; CF7 data-flow and map block/display testing deferred to 1.1.2; n8n after 1.0.0
 - Rank Math — SEO, schema
@@ -62,7 +62,7 @@ Active planning (root — load when task liên quan):
 
 - `.context/planning/039_ROADMAP_C_B2B_TOOLKIT_CAROUSEL_FIRST_PLANNING.md` — Roadmap C milestone stack; M1 → 1.3.17 Block UI & Visual QA IN PROGRESS + 1.3.18 Editor UX & Technical PLANNED (split 2026-10-14). 1.3.10 deferred sang M5; mapping mở vẫn cần review từng mục.
 
-- `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — layout blocks validation pending 1.4.1.
+- `.context/planning/003_VERSION_1_1_0_LAYOUT_BLOCKS_PLANNING.md` — layout blocks validation pending 1.4.2.
 
 - `.context/planning/026_VER_1_3_6_BLOCK_EDITOR_UX_AND_SLIDER_PARALLAX_PLANNING.md` — umbrella 1.3.6; Trục A carry-in → 1.3.7.
 - `.context/planning/028_VER_1_3_7_COLLECTION_UI_CARD_STYLES_PLANNING.md` — collection UI + card styles (implemented; visual lock follow-up = 038).
@@ -157,6 +157,17 @@ Technical reports (không phải decision scope):
 
 [manual] Architecture Decisions — Project-Wide
 
+### Marine Blocks — human decision 2026-11-04
+
+- Định vị: bộ block chuyên dụng và patterns giúp dựng, chỉnh sửa, bàn giao website nhanh; không hướng tới supercharge toàn bộ FSE. Ưu tiên core blocks/patterns, custom block khi cần dữ liệu/tương tác/UX biên tập chuyên dụng. Không tự mở lại query ownership của Collection.
+- Plugin có styling/runtime riêng, hoạt động độc lập với WindPress và theme SKVN. Website được dùng WindPress/Tailwind enhance core blocks/patterns; không coi đây là hai lựa chọn loại trừ nhau. Layout/style trên mỗi surface phải có owner rõ ràng.
+- Identity đích: Marine Blocks; slug/text domain `marine-blocks`, block namespace `marine-blocks/*`, PHP functions `marine_blocks_*`, constants `MARINE_BLOCKS_*`, plugin CSS `marine-blocks-*`, variables `--marine-blocks-*`.
+- Theme giữ identity `skvn-marine`, PHP `skvn_marine_`, CSS/tokens theme. Có thể cập nhật điểm gọi API plugin khi migrate, không đổi thương hiệu theme.
+- Human xác nhận 2026-11-04: **1.4.0 — Marine Blocks Migration**; Setup UI cũ 1.4.0 → 1.4.1, Layout/Quote Validation cũ 1.4.1 → 1.4.2, giữ acceptance. Version đã chốt, chưa start; current vẫn 1.3.18. Trước migration giữ naming source hiện hành.
+- Replace hàng loạt chỉ theo inventory plugin/theme/shared. Hàm nội bộ có thể đổi đồng bộ; wrapper chỉ cần cho consumer chưa chuyển. Saved blocks/markup, option/meta keys phải có compatibility hoặc migration riêng; không global replace `skvn` trong repo/DB.
+- Identity GU Supercharger và mục tiêu full-FSE bị thay thế. Migration sớm hơn không tự thay public-launch gate sau 1.5.x, reset version về 0.0.1, hoặc hủy acceptance/milestone cũ.
+- Source of truth: `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md`.
+
 **A1. Child theme, không fork GeneratePress**
 Lý do: giảm PHP maintenance, tránh AI sửa parent theme, dễ upstream update.
 Invariant: KHÔNG BAO GIỜ sửa file trong `themes/generatepress/`.
@@ -214,7 +225,7 @@ Shared host chỉ hỗ trợ PHP 8.0. `Out of the Block: OpenStreetMap` yêu c�
 
 - KHÔNG sửa `themes/generatepress/` (bất kỳ file nào)
 - KHÔNG đặt custom block logic trong theme
-- KHÔNG rename namespace `skvn-marine`, prefix `skvn_marine_` / `skvn_marine_blocks_`, CSS prefix `skvn-`
+- Theme identity giữ nguyên; plugin chỉ rename theo plan 047 Marine Blocks 1.4.0 khi human xác nhận start; không global replace shared `skvn-`.
 - KHÔNG overwrite manual image ALT
 - KHÔNG auto-generate caption ở V1
 - KHÔNG custom-code quote form handler — 0.7.0 dùng CF7/CFDB7

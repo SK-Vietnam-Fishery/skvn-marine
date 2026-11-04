@@ -14,7 +14,8 @@ Constraint: A2: "Visual/layout → theme. Logic/data → plugin." — plugin ph�
             AGENTS.md: "Mobile: CTA (Request a Quote) luôn visible"
 Severity:   low
 Tags:       theme, php, planning, editor-governance
-Milestone:  V1 / 1.4.0
+Milestone:  V1 / 1.4.1
+Scheduling update 2026-11-04: Setup UI và de-dup header-settings đi cùng scope cũ được dời 1.4.0 → 1.4.1; 1.4.0 dành cho Marine Blocks migration. Các mốc 1.4.0 trong Proposal/Decision bên dưới là bản quyết định lịch sử; implementation dùng 1.4.1. Không đổi Status/Resolved hoặc nội dung quyết định de-dup.
 Status:     RESOLVED_ACTIVE
 Resolved:   2026-07-14
 Decision:   Phương án A (de-dup). Khi 1.4.0 bắt đầu: xóa 3 hàm data trùng trong theme `inc/header-actions.php`, cho theme render gọi plugin getter `skvn_marine_blocks_get_header_actions()` với `function_exists()` guard + fallback graceful; giữ render + search/CTA logic ở theme. KHÔNG làm trong giai đoạn demo. KHÔNG dùng Cấp A full custom header shell. Human resolve 2026-07-14.

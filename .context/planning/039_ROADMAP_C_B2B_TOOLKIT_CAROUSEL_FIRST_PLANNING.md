@@ -12,6 +12,8 @@
 
 ## 1. Mục tiêu roadmap C (human đã chốt)
 
+**Mapping 2026-11-04:** human chốt **1.4.0 — Marine Blocks Identity & Compatibility Migration**, PLANNED chưa start; nền portability phục vụ M6, không kích hoạt toàn bộ M6/M3. [Plan 047](047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md). Setup UI cũ **1.4.0 → 1.4.1**; Layout Blocks Validation & Quote Evaluation/T-2 cũ **1.4.1 → 1.4.2**; giữ acceptance PENDING. Các bảng snapshot cũ bên dưới dùng số trước khi dời, đối chiếu mapping này và MILESTONES.md khi thực thi. Current vẫn 1.3.18, không bump metadata hoặc archive. MINOR mới dành cho scope migration sản phẩm/compatibility; naming đã chốt, start chưa chốt.
+
 **Cập nhật ưu tiên 2026-10-21:** theo MILESTONES.md, current là **V1 / 1.3.18**. Human chốt **Plugin Design Sidebar là milestone kế tiếp**, trước các đợt Slider/Step Slider/2-side Product để làm nền editor chung. Kiến trúc Selected block / Plugin và phân quyền plugin/theme/block đã chốt trong `docs/workflows/ideation-plugin-design-sidebar.md`; không còn chỉ là hướng thảo luận. Chưa gán SemVer, chưa chuyển current; các trạng thái 1.3.17 IN PROGRESS/1.3.18 chưa start bên dưới là snapshot cũ, không dùng để kích hoạt công việc. Không thay đổi acceptance hoặc tự kích hoạt consumer mới.
 
 - Bộ công cụ cho **nhiều website B2B**, Gutenberg + Tailwind hướng tới, plugin độc lập theme.

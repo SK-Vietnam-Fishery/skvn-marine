@@ -128,7 +128,18 @@ Quy tắc tóm tắt:
 
 **Rule quyết định nhanh**: nếu thay theme mà feature bị mất → feature thuộc plugin.
 
-### Naming — Không bao giờ đổi
+### Marine Blocks — human decision 2026-11-04
+
+- Định vị: bộ block chuyên dụng và patterns giúp dựng, chỉnh sửa, bàn giao website nhanh; không hướng tới supercharge toàn bộ FSE. Ưu tiên core blocks/patterns, custom block khi cần dữ liệu/tương tác/UX biên tập chuyên dụng. Không tự mở lại query ownership của Collection.
+- Plugin có styling/runtime riêng, hoạt động độc lập với WindPress và theme SKVN. Website được dùng WindPress/Tailwind enhance core blocks/patterns; không coi đây là hai lựa chọn loại trừ nhau. Layout/style trên mỗi surface phải có owner rõ ràng.
+- Identity đích: Marine Blocks; slug/text domain `marine-blocks`, block namespace `marine-blocks/*`, PHP functions `marine_blocks_*`, constants `MARINE_BLOCKS_*`, plugin CSS `marine-blocks-*`, variables `--marine-blocks-*`.
+- Theme giữ identity `skvn-marine`, PHP `skvn_marine_`, CSS/tokens theme. Có thể cập nhật điểm gọi API plugin khi migrate, không đổi thương hiệu theme.
+- Human xác nhận 2026-11-04: **1.4.0 — Marine Blocks Migration**; Setup UI cũ 1.4.0 → 1.4.1, Layout/Quote Validation cũ 1.4.1 → 1.4.2, giữ acceptance. Version đã chốt, chưa start; current vẫn 1.3.18. Trước migration giữ naming source hiện hành.
+- Replace hàng loạt chỉ theo inventory plugin/theme/shared. Hàm nội bộ có thể đổi đồng bộ; wrapper chỉ cần cho consumer chưa chuyển. Saved blocks/markup, option/meta keys phải có compatibility hoặc migration riêng; không global replace `skvn` trong repo/DB.
+- Identity GU Supercharger và mục tiêu full-FSE bị thay thế. Migration sớm hơn không tự thay public-launch gate sau 1.5.x, reset version về 0.0.1, hoặc hủy acceptance/milestone cũ.
+- Source of truth: `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md`.
+
+### Naming — source hiện hành trước migration 1.4.0
 
 ```
 Theme slug:         skvn-marine
@@ -411,7 +422,7 @@ Milestone checklist và trigger chuyển mốc được quản lý trong `.conte
 | Task muốn custom-code quote form handler thay CF7 | HIGH |
 | Task muốn thêm animation logic riêng trong block, bỏ qua shared runtime | LOW |
 | Task muốn đặt custom block trong theme folder | HIGH |
-| Task muốn rename prefix/namespace | HIGH |
+| Task muốn rename prefix/namespace ngoài migration đã duyệt | HIGH |
 | Task muốn add dependency không có rationale | LOW |
 | Không chắc feature thuộc theme hay plugin | LOW |
 
@@ -520,8 +531,8 @@ if (!prefersReduced) { /* run animation */ }
 
 - 0.9.0 scope: plugin settings page stores `skvn_footer_page_id`; theme renders the selected footer page through GeneratePress' `generate_footer` surface.
 - Implement 0.9.0 footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin until the **post-1.5.x product launch**.
-- **Human locked (2026-06-23):** first public plugin launch = **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace) **after V1 / 1.5.x** stabilizes — not at 1.3.11. Until launch, keep dev slug `skvn-marine-blocks` and block namespace `skvn-marine/*` for all production sites. See `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
-- `Gutenberg Supercharger Stage 2` remains the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
+- **Human updated 2026-11-04:** identity Marine Blocks; migration planned 1.4.0 (SemVer đã xác nhận, chưa start), source giữ tên cũ tới migration. Public launch sau 1.5.x là gate riêng; xem plan 047 và launch decision đã chú thích supersession.
+- GU/Gutenberg Supercharger và Remap là hướng tên lịch sử bị Marine Blocks thay thế; chưa chốt tên commercial stage riêng.
 - Footer settings may use a module-shaped folder such as `modules/footer-settings/` or `includes/modules/footer-settings/` inside `wp-content/plugins/skvn-marine-blocks/`.
 - Keep current plugin slug, text domain, and option key: `skvn-marine-blocks`, `skvn-marine-blocks`, and `skvn_footer_page_id`.
 - Do not rename namespaces, option keys, plugin headers, build entrypoints, or activation path for 0.9.0.
@@ -580,7 +591,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 
 ```
 [ ] Không sửa themes/generatepress/
-[ ] Không rename namespace/prefix
+[ ] Không rename namespace/prefix ngoài migration đã duyệt; theme identity giữ nguyên
 [ ] Không đặt block logic trong theme
 [ ] Input sanitized, output escaped
 [ ] Đã đọc `docs/standards/security-guidelines.md` nếu task chạm output path (option, block attr, URL, inline CSS, tools IO)
@@ -650,12 +661,13 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.11 | Comprehensive Onsite QA (Slider, Collections & Controls) |
 | 1.3.12 | SKVN Team Credits Easter Egg |
 | 1.3.16 | Comprehensive Testing (1.3.x Feature QA) |
-| 1.4.0 | SKVN Theme Init Setup UI |
-| 1.4.1 | Layout Blocks Validation & Quote Evaluation |
+| 1.4.1 | SKVN Theme Init Setup UI |
+| 1.4.2 | Layout Blocks Validation & Quote Evaluation |
 | 1.5.0 | Woo Catalog Plugin |
 | 1.6.0 | SKVN Surface Presets |
 | 1.7.0 | Front page trang Chuyển đổi số |
-| Post 1.5.x | GU Supercharger 0.0.1 Product Launch |
+| 1.4.0 | Marine Blocks Migration — planned, chưa start |
+| Post 1.5.x | Marine Blocks Public Launch — version riêng cần xác nhận |
 
 ### Version naming rules
 

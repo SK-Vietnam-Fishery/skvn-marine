@@ -4,6 +4,8 @@
 
 GeneratePress child theme for SKVN Marine visual system.
 
+Human decision 2026-11-04: theme giữ identity SKVN Marine. Website được dùng WindPress enhance core blocks/patterns; plugin Marine Blocks ship styling/runtime riêng. Trong migration 1.4.0 (SemVer đã xác nhận, chưa start), có thể sửa điểm gọi API plugin hoặc dùng compatibility wrapper, không rename prefix/tokens theme. Quy tắc surface presets độc lập WindPress vẫn áp riêng cho presets. Xem plan `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md`.
+
 ## [manual] Responsibilities
 
 - Theme styles and tokens.

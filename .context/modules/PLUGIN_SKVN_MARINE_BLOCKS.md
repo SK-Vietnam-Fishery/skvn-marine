@@ -4,6 +4,8 @@
 
 Custom Gutenberg blocks with logic, and future plugin-owned editor/admin tooling.
 
+Human decision 2026-11-04: product đích **Marine Blocks** (`marine-blocks`, PHP `marine_blocks_`); bộ block chuyên dụng và patterns để dựng/chỉnh sửa/bàn giao website nhanh, không full-FSE supercharger. Plugin ship styling/runtime độc lập WindPress/theme; website dùng WindPress enhance core blocks/patterns. Migration target **1.4.0**, SemVer đã xác nhận, chưa start; source giữ naming hiện tại tới migration. Theme identity giữ nguyên. Xem `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md` cho mapping, compatibility và acceptance.
+
 ## [manual] Product Language
 
 Plugin product UI and frontend default copy use English as the source language. Keep user-facing strings translatable with the `skvn-marine-blocks` text domain where applicable; do not translate stored attribute/option keys or enum values. Vietnamese localization follows in a separately scoped phase. Internal documentation may remain in Vietnamese. See `AGENTS.md` §Product language.
@@ -200,7 +202,7 @@ Decision doc: `docs/decisions/block-animation-strategy.md`.
 
 This boundary is active for V1 / 1.2.0.
 
-Future scope may rename or migrate this plugin toward `Gutenberg Supercharger`, so plugin-owned block behavior must remain portable.
+Marine Blocks migration trong 1.4.0 thay identity Gutenberg Supercharger; plugin-owned behavior và styling phải portable (plan 047).
 
 Mandatory rule:
 
@@ -208,7 +210,7 @@ Mandatory rule:
 - Required behavior includes attributes, editor controls, frontend JS, CSS classes, keyframes, transitions, reduced-motion fallback, device targeting, and no-JS visible fallback.
 - Theme CSS/JS may skin or override plugin motion, but must not be required for plugin block animation to work.
 - Theme animation remains acceptable for core blocks, page sections, and theme decoration that are not plugin-owned block behavior.
-- Tailwind/WindPress is prototype-only and must not become the production animation contract.
+- Tailwind/WindPress được dùng enhance core blocks/patterns trên website; không là dependency animation/styling bắt buộc của plugin-owned blocks.
 
 Implemented V1 / 1.2.0:
 
