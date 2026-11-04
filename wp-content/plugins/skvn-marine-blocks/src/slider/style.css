@@ -22,6 +22,21 @@
 	width: 100% !important;
 }
 
+/* One-slide Hero fallback: overlap static slides in one reserved frame instead
+   of stacking full viewport heights. CSS works with JS absent or bundle blocked. */
+.skvn-slider--hero:not(.skvn-slider--initialized, .skvn-slider--editor) .skvn-slider__wrapper {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.skvn-slider--hero:not(.skvn-slider--initialized, .skvn-slider--editor) .skvn-slide {
+	grid-area: 1 / 1;
+	min-width: 0;
+}
+
+.skvn-slider--hero:not(.skvn-slider--initialized, .skvn-slider--editor) .skvn-slide:not(:first-child) {
+	visibility: hidden;
+}
+
 .skvn-slider__editor-stack {
 	display: grid;
 	gap: 1rem;

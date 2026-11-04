@@ -165,8 +165,8 @@ function skvn_marine_blocks_sanitize_preloader( $value ) {
 		'smooth_initial_loading'   => ! empty( $value['smooth_initial_loading'] ),
 		'page_transition'          => $choice( $value['page_transition'] ?? '', array( 'none', 'fade' ), $defaults['page_transition'] ),
 		'frequency'                => $choice( $value['frequency'] ?? '', array( 'once', 'every' ), $defaults['frequency'] ),
-		'loading_show_after'       => max( 0, min( 500, isset( $value['loading_show_after'] ) ? absint( $value['loading_show_after'] ) : $defaults['loading_show_after'] ) ),
-		'loading_fade_duration'    => max( 100, min( 500, isset( $value['loading_fade_duration'] ) ? absint( $value['loading_fade_duration'] ) : $defaults['loading_fade_duration'] ) ),
+		'loading_show_after'       => max( 0, min( 500, absint( $value['loading_show_after'] ?? $saved['loading_show_after'] ?? $defaults['loading_show_after'] ) ) ),
+		'loading_fade_duration'    => max( 100, min( 500, absint( $value['loading_fade_duration'] ?? $saved['loading_fade_duration'] ?? $defaults['loading_fade_duration'] ) ) ),
 		'page_transition_duration' => max( 100, min( 400, isset( $value['page_transition_duration'] ) ? absint( $value['page_transition_duration'] ) : $defaults['page_transition_duration'] ) ),
 	);
 }
@@ -221,98 +221,98 @@ function skvn_marine_blocks_render_preloader_page() {
 	?>
 	<div class="wrap">
 		<h1><?php esc_html_e( 'Loading screen', 'skvn-marine-blocks' ); ?></h1>
-		<p class="description"><?php esc_html_e( 'Màn tải trang chủ. Chọn loại + sửa nội dung; chọn "Off" để tắt hẳn.', 'skvn-marine-blocks' ); ?></p>
-		<form action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" method="post">
+		<p class="description"><?php esc_html_e( 'Choose a loading screen and edit its content. Select Off to disable loading screens.', 'skvn-marine-blocks' ); ?></p>
+		<form id="skvn-loading-settings" action="<?php echo esc_url( admin_url( 'options.php' ) ); ?>" method="post">
 			<?php settings_fields( 'skvn_marine_blocks_preloader' ); ?>
 
-			<h2><?php esc_html_e( 'Loại & phạm vi', 'skvn-marine-blocks' ); ?></h2>
+			<h2><?php esc_html_e( 'Type and scope', 'skvn-marine-blocks' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Loại', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Type', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[type]", $s['type'], array(
 						'preloader' => esc_html__( 'Preloader (overlay + spinner)', 'skvn-marine-blocks' ),
-						'splash'    => esc_html__( 'Splash (chỉ 1 lần / phiên)', 'skvn-marine-blocks' ),
-						'skeleton'  => esc_html__( 'Skeleton (khung xám shimmer)', 'skvn-marine-blocks' ),
-						'brandbar'  => esc_html__( 'Brand bar (thanh mỏng, không che)', 'skvn-marine-blocks' ),
-						'off'       => esc_html__( 'Off (tắt)', 'skvn-marine-blocks' ),
+						'splash'    => esc_html__( 'Splash (once per session)', 'skvn-marine-blocks' ),
+						'skeleton'  => esc_html__( 'Skeleton (shimmer placeholders)', 'skvn-marine-blocks' ),
+						'brandbar'  => esc_html__( 'Brand bar (non-blocking)', 'skvn-marine-blocks' ),
+						'off'       => esc_html__( 'Off', 'skvn-marine-blocks' ),
 					) ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Phạm vi', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Scope', 'skvn-marine-blocks' ); ?></th>
 					<td>
 						<?php skvn_marine_blocks_preloader_select( "{$opt}[scope]", $s['scope'], array(
-							'front' => esc_html__( 'Chỉ trang chủ', 'skvn-marine-blocks' ),
-							'site'  => esc_html__( 'Toàn site', 'skvn-marine-blocks' ),
+							'front' => esc_html__( 'Homepage only', 'skvn-marine-blocks' ),
+							'site'  => esc_html__( 'Entire site', 'skvn-marine-blocks' ),
 						) ); ?>
-						<p class="description"><?php esc_html_e( 'Splash luôn chỉ hiện 1 lần/phiên bất kể phạm vi.', 'skvn-marine-blocks' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Splash runs once per session regardless of scope.', 'skvn-marine-blocks' ); ?></p>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Khi nào ẩn (Preloader)', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Dismiss preloader', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[dismiss]", $s['dismiss'], array(
-						'hero'   => esc_html__( 'Khi ảnh hero load xong', 'skvn-marine-blocks' ),
-						'window' => esc_html__( 'Khi trang load xong', 'skvn-marine-blocks' ),
-						'time'   => esc_html__( 'Sau thời gian tối thiểu', 'skvn-marine-blocks' ),
+						'hero'   => esc_html__( 'When the hero image loads', 'skvn-marine-blocks' ),
+						'window' => esc_html__( 'When the page loads', 'skvn-marine-blocks' ),
+						'time'   => esc_html__( 'After the minimum display time', 'skvn-marine-blocks' ),
 					) ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Thời gian hiện tối thiểu (ms)', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Minimum display time (ms)', 'skvn-marine-blocks' ); ?></th>
 					<td><input type="number" min="0" max="5000" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[min_display]" ); ?>" value="<?php echo esc_attr( (string) $s['min_display'] ); ?>"></td>
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Nội dung', 'skvn-marine-blocks' ); ?></h2>
+			<h2><?php esc_html_e( 'Content', 'skvn-marine-blocks' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Chữ hiển thị', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Brand text', 'skvn-marine-blocks' ); ?></th>
 					<td>
 						<input type="text" class="regular-text" name="<?php echo esc_attr( "{$opt}[mark_text]" ); ?>" value="<?php echo esc_attr( $s['mark_text'] ); ?>" placeholder="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-						<p class="description"><?php esc_html_e( 'Trống → dùng tên site.', 'skvn-marine-blocks' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Leave blank to use the site name.', 'skvn-marine-blocks' ); ?></p>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Tagline (phụ)', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Tagline', 'skvn-marine-blocks' ); ?></th>
 					<td><input type="text" class="regular-text" name="<?php echo esc_attr( "{$opt}[tagline]" ); ?>" value="<?php echo esc_attr( $s['tagline'] ); ?>"></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Dùng logo ảnh', 'skvn-marine-blocks' ); ?></th>
-					<td><label><input type="checkbox" name="<?php echo esc_attr( "{$opt}[use_logo]" ); ?>" value="1" <?php checked( $s['use_logo'] ); ?>> <?php esc_html_e( 'Hiện logo ảnh thay cho chữ', 'skvn-marine-blocks' ); ?></label></td>
+					<th scope="row"><?php esc_html_e( 'Use logo image', 'skvn-marine-blocks' ); ?></th>
+					<td><label><input type="checkbox" name="<?php echo esc_attr( "{$opt}[use_logo]" ); ?>" value="1" <?php checked( $s['use_logo'] ); ?>> <?php esc_html_e( 'Show a logo image instead of brand text', 'skvn-marine-blocks' ); ?></label></td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Logo', 'skvn-marine-blocks' ); ?></th>
 					<td>
 						<input type="hidden" id="skvn-preloader-logo-id" name="<?php echo esc_attr( "{$opt}[logo_id]" ); ?>" value="<?php echo esc_attr( (string) $s['logo_id'] ); ?>">
 						<img id="skvn-preloader-logo-preview" src="<?php echo esc_url( $logo_src ); ?>" alt="" style="max-height:60px;display:<?php echo $logo_src ? 'block' : 'none'; ?>;margin-bottom:8px;">
-						<button type="button" class="button" id="skvn-preloader-logo-pick"><?php esc_html_e( 'Chọn / tải logo', 'skvn-marine-blocks' ); ?></button>
-						<button type="button" class="button" id="skvn-preloader-logo-clear"><?php esc_html_e( 'Xoá', 'skvn-marine-blocks' ); ?></button>
+						<button type="button" class="button" id="skvn-preloader-logo-pick"><?php esc_html_e( 'Choose or upload logo', 'skvn-marine-blocks' ); ?></button>
+						<button type="button" class="button" id="skvn-preloader-logo-clear"><?php esc_html_e( 'Remove', 'skvn-marine-blocks' ); ?></button>
 						<p class="description"><?php esc_html_e( 'Image source: selected attachment → site logo → site name text. A broken image falls back to text; the page is not held waiting for the logo.', 'skvn-marine-blocks' ); ?></p>
 					</td>
 				</tr>
 			</table>
 
-			<h2><?php esc_html_e( 'Màu (theme palette)', 'skvn-marine-blocks' ); ?></h2>
+			<h2><?php esc_html_e( 'Colors (theme palette)', 'skvn-marine-blocks' ); ?></h2>
 			<table class="form-table" role="presentation">
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Loại nền', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Background type', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[bg_type]", $s['bg_type'], array(
 						'solid'    => esc_html__( 'Solid', 'skvn-marine-blocks' ),
 						'gradient' => esc_html__( 'Gradient', 'skvn-marine-blocks' ),
 					) ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Nền solid', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Solid background', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[bg_solid]", $s['bg_solid'], $palette ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Nền gradient', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Gradient background', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[bg_gradient]", $s['bg_gradient'], $gradient ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Màu chữ', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Text color', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[text_color]", $s['text_color'], $palette ); ?></td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Màu nhấn (spinner / bar)', 'skvn-marine-blocks' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Accent color (spinner / bar)', 'skvn-marine-blocks' ); ?></th>
 					<td><?php skvn_marine_blocks_preloader_select( "{$opt}[accent_color]", $s['accent_color'], $palette ); ?></td>
 				</tr>
 			</table>
@@ -321,7 +321,7 @@ function skvn_marine_blocks_render_preloader_page() {
 			<table class="form-table" role="presentation">
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Smooth initial loading', 'skvn-marine-blocks' ); ?></th>
-					<td><label><input type="checkbox" name="<?php echo esc_attr( "{$opt}[smooth_initial_loading]" ); ?>" value="1" <?php checked( $s['smooth_initial_loading'] ); ?>> <?php esc_html_e( 'Enable the improved initial loading flow (logo overlay) on the first eligible page visit.', 'skvn-marine-blocks' ); ?></label></td>
+					<td><label><input type="checkbox" name="<?php echo esc_attr( "{$opt}[smooth_initial_loading]" ); ?>" value="1" <?php checked( $s['smooth_initial_loading'] ); ?>> <?php esc_html_e( 'Enable smooth initial loading. On the homepage, reveal the main Hero Slider with a 750ms upward curtain; begin fallback reveal after 1500ms if it is not ready.', 'skvn-marine-blocks' ); ?></label></td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Frequency', 'skvn-marine-blocks' ); ?></th>
@@ -329,7 +329,7 @@ function skvn_marine_blocks_render_preloader_page() {
 						'once'  => esc_html__( 'Once per session', 'skvn-marine-blocks' ),
 						'every' => esc_html__( 'Every page load', 'skvn-marine-blocks' ),
 					) ); ?>
-						<p class="description"><?php esc_html_e( 'Once per session shows the overlay at most once per tab/session. Every page load still applies the "Show loading after" threshold; a fast page may skip the overlay.', 'skvn-marine-blocks' ); ?></p>
+						<p class="description"><?php esc_html_e( 'Once per session runs at most once per tab/session. Every page load runs on every eligible visit. The homepage curtain covers immediately; other pages use the show-after threshold. Smooth loading manages dismissal without a minimum hold.', 'skvn-marine-blocks' ); ?></p>
 					</td>
 				</tr>
 			</table>
@@ -348,18 +348,19 @@ function skvn_marine_blocks_render_preloader_page() {
 			</table>
 
 			<h2><?php esc_html_e( 'Advanced', 'skvn-marine-blocks' ); ?></h2>
+			<p class="description"><?php esc_html_e( 'Times use whole milliseconds. Show-after and loading fade apply outside the homepage curtain. When Smooth loading is enabled for the homepage only, these two fields are managed automatically; saved values are retained. Page transition duration is independent.', 'skvn-marine-blocks' ); ?></p>
 			<table class="form-table" role="presentation">
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Show loading after (ms)', 'skvn-marine-blocks' ); ?></th>
-					<td><input type="number" min="0" max="500" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[loading_show_after]" ); ?>" value="<?php echo esc_attr( (string) $s['loading_show_after'] ); ?>"></td>
+					<td><input type="number" min="0" max="500" step="1" class="small-text" name="<?php echo esc_attr( "{$opt}[loading_show_after]" ); ?>" value="<?php echo esc_attr( (string) $s['loading_show_after'] ); ?>"></td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Loading fade duration (ms)', 'skvn-marine-blocks' ); ?></th>
-					<td><input type="number" min="100" max="500" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[loading_fade_duration]" ); ?>" value="<?php echo esc_attr( (string) $s['loading_fade_duration'] ); ?>"></td>
+					<td><input type="number" min="100" max="500" step="1" class="small-text" name="<?php echo esc_attr( "{$opt}[loading_fade_duration]" ); ?>" value="<?php echo esc_attr( (string) $s['loading_fade_duration'] ); ?>"></td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Page transition duration (ms)', 'skvn-marine-blocks' ); ?></th>
-					<td><input type="number" min="100" max="400" step="100" class="small-text" name="<?php echo esc_attr( "{$opt}[page_transition_duration]" ); ?>" value="<?php echo esc_attr( (string) $s['page_transition_duration'] ); ?>"></td>
+					<td><input type="number" min="100" max="400" step="1" class="small-text" name="<?php echo esc_attr( "{$opt}[page_transition_duration]" ); ?>" value="<?php echo esc_attr( (string) $s['page_transition_duration'] ); ?>"></td>
 				</tr>
 			</table>
 
@@ -368,6 +369,19 @@ function skvn_marine_blocks_render_preloader_page() {
 	</div>
 	<script>
 	( function () {
+		var form = document.getElementById( 'skvn-loading-settings' );
+		var option = <?php echo wp_json_encode( $opt ); ?>;
+		function field( key ) { return form.elements.namedItem( option + '[' + key + ']' ); }
+		function syncControls() {
+			var smooth = field( 'type' ).value === 'preloader' && field( 'smooth_initial_loading' ).checked;
+			field( 'dismiss' ).disabled = smooth;
+			field( 'min_display' ).disabled = smooth;
+			var curtainOnly = smooth && field( 'scope' ).value === 'front';
+			field( 'loading_show_after' ).disabled = curtainOnly;
+			field( 'loading_fade_duration' ).disabled = curtainOnly;
+		}
+		form.addEventListener( 'change', syncControls );
+		syncControls();
 		var pick = document.getElementById( 'skvn-preloader-logo-pick' );
 		var clear = document.getElementById( 'skvn-preloader-logo-clear' );
 		var idField = document.getElementById( 'skvn-preloader-logo-id' );

@@ -1,6 +1,8 @@
 # 046 — 1.3.18 Site Loading & Navigation UX Hotfix
 
-Ngày: 2026-11-03. **APPROVED — human đã duyệt phương án A và controls bổ sung; bắt đầu implementation; không đổi milestone/version.**
+Ngày gốc: 2026-11-03. **Luồng cũ APPROVED, đã có source tại `b9332d3` — Hotfix Site loader; chưa có evidence runtime PASS.**
+
+Cập nhật mới nhất 2026-11-04: **Human đã ra lệnh bắt đầu thực hiện; §11 có source repair, chưa có onsite PASS.** §1–10 giữ làm baseline/quyết định cũ; execution record dưới §11 ghi scope thực tế và phần còn thiếu evidence. Navigation fade vẫn độc lập. Không đổi milestone/version, không bump/build/commit.
 
 Human xác nhận đưa UX loading/logo và fade chuyển trang vào **V1 / 1.3.18** hiện tại, commit theo nhãn **UX hotfix**. Đây là scope bổ sung được human chỉ định; không đổi current/version, không lấy số 1.3.19, không mở 1.3.22/23. Các quyết định mới nhất bên dưới thay thế/bổ sung plan 046 cũ.
 
@@ -139,3 +141,121 @@ Runbook: [site-loading-navigation-ux-hotfix-1.3.18.md](../../docs/testing/site-l
 - [Review contract](../../docs/standards/block-ui-editor-ux-technical-review-contract.md), [CSS safety](../../docs/standards/css-layout-safety-contract.md), [Decision memo](../../docs/standards/decision-memo-format.md).
 
 Đọc nguồn ngày 2026-11-03. Browser API là progressive enhancement; chưa xác nhận browser versions onsite. Plan approval không phải runtime evidence.
+
+## 11. Proposal 2026-11-04 — homepage loader kéo rèm
+
+### Execution record — human start + DOM evidence 2026-11-04
+
+Record này cập nhật authority/status của proposal bên dưới; các câu “chưa code/chưa được phép implementation” ở snapshot planning giữ để truy vết, không còn là gate xin phép lại. Human đã yêu cầu bắt đầu và cung cấp DOM/config của `https://minhhaifishery.com/home/`.
+
+- Main: duy nhất `.skvn-slider--hero[data-skvn-slider]`, 2 slides, slidesPerView=1, viewport-below-header, loop, autoplay 7000ms, fade 800ms, parallax Advanced (horizontal/both, translate42/scale1.14/inset35). Secondary Collection: 4/2/1, gap16, autoplay=false. Không đổi các cấu hình này.
+- Loader snapshot onsite: type=preloader, **smooth_initial_loading=false**, frequency=once, page_transition=fade, show_after=100/fade=100/page_transition=200. Snapshot không chứa scope/palette/logo option đầy đủ hoặc asset version. Không tự sửa option onsite. Để chạy repair cần human bật Smooth.
+- Quy tắc tích hợp đã triển khai: giữ opt-in Smooth + preloader; homepage WordPress và landing page `/home/` human chỉ định dùng curtain; scope front/site và once/every giữ nghĩa trong branch mới. `/home/` cũng đủ điều kiện front khi Smooth bật dù chưa được đặt làm WordPress front page. Outside homepage giữ bootstrap hiện có. Show-after/fade chỉ disable khi Smooth + front, vì site scope còn dùng chúng ở trang khác; dismiss/min-display được Smooth quản lý; sanitizer preserve fields vắng POST.
+- **Đã có source, chờ kiểm chứng onsite:** L1 Hero CSS fallback một khung (overlap slides thay vì xếp chồng viewport); L2 ready sau constructor+size sync+rAF/usable geometry và gate autoplay optional; L3 head lifecycle, transform750, deadline1500, cleanup850 sau reveal khi thiếu event, independent watchdog2500, CSS/no-JS/reduced-motion bypass, history cleanup/transition skip; L4 controls/help/persistence và ba field step1/show-after0. Không sửa Collection/skeleton/query/bundle order; màu nền/logo vẫn dùng cấu hình hiện tại. Không pause decoration chưa định danh; selector/evidence decoration và visual màu/contrast còn thiếu, không coi phần này hoàn thành.
+- Ready contract: đọc lại data-skvn-slider-ready hoặc nhận skvn:slider-ready; chỉ chấp nhận duy nhất Hero có geometry dương. Không dùng class initialized trước constructor làm proof. Loader gate có deadline để theme lỗi không pause plugin vĩnh viễn; chỉ bỏ reason loader, giữ focus/pointer/hidden/interaction. Kiểm tra local Swiper module `node_modules/swiper/modules/autoplay.mjs` cho thấy init chỉ start khi params.autoplay.enabled; gate tắt enabled trước constructor, coordinator start sau release. Deployed version vẫn chưa xác minh.
+- Numeric patch còn sửa lỗi cú pháp baseline: dư dấu `}` trước catch trong sessionStorage check của page-transition bootstrap đã chặn toàn script. Đã sửa cùng đợt; đây khác nguyên nhân stepMismatch. Giữ ranges/defaults/keys, không bump/migration dữ liệu.
+- **Evidence tự động giới hạn:** `node tools/tests/site-loader-curtain.test.mjs` chạy 8/8 PASS trên actual inline lifecycle trong Node VM với mock DOM/clock: ready/late/missing/ambiguous/zero-width, event filtering, timeout, once/storage/reduced-motion, history, keyboard cleanup, exception/watchdog. Không chứng minh paint/geometry/CSS/autoplay Swiper thực. `node --test` bị sandbox EPERM khi spawn; chạy trực tiếp file test thành công. Build/lint do human chạy, chưa chạy onsite, không đánh dấu toàn LDR PASS.
+- L0 còn thiếu geometry trước/sau, pre-init stylesheet timing trên cache thực, palette/contrast, decoration selectors và deployed assets. L5 chưa thực hiện. Agent tiếp tục từ build output và onsite evidence; không đóng milestone hoặc commit tự động.
+
+### 11.1. Authority và phạm vi
+
+Human yêu cầu đọc spec, điều tra commit **`b9332d336edcde207b6ae5bfb53392325b68c9f7` — Hotfix Site loader**, phân tích cải thiện và đề xuất planning; **không code và không tạo commit**. Kiểu kéo rèm lên, 750ms, trigger Swiper ready, pre-init độc lập, fallback 1500ms, reduced-motion bỏ chuyển động là hướng human đã ghi trong spec; không hỏi lại lựa chọn hiệu ứng. Chi tiết tích hợp/settings dưới đây vẫn là proposal cần review trước implementation.
+
+Target đề xuất: sửa tiếp hotfix loading trong **V1 / 1.3.18**, không mở version mới, không lấy 1.3.19 (Hero contrast). Current và acceptance 045 giữ nguyên. Homepage là phạm vi repair; không ép áp dụng kéo rèm toàn site. Không sửa skeleton local/toàn trang, query/content, số slide, cấu hình autoplay/loop/slidesPerView, thứ tự bundle hoặc thêm animation library. Tạm giữ autoplay vì loader là lifecycle gate, không đổi setting autoplay đã lưu.
+
+### 11.2. Baseline đã xác minh và giới hạn kết luận
+
+| Evidence tại b9332d3 | Finding source | Giới hạn |
+|---|---|---|
+| `inc/preloader.php:279–292` | Overlay fade opacity, is-hidden ẩn visibility ngay; no-JS CSS thoát sau 3500ms | Chưa phải kéo rèm hoặc no-JS hiện trang ngay |
+| `inc/preloader.php:409–478` | Smooth release theo document/ảnh hero và watchdog 3500ms; chưa đọc Swiper readiness | Không bảo đảm geometry slider ổn định |
+| `inc/preloader.php:548–569` | Logo nằm trong overlay; Smooth không render spinner | Chưa chứng minh logo có fade độc lập; spinner onsite cần xác minh nhánh/settings/deploy |
+| `src/slider/view.ts:447,576,604,636` | Class skvn-slider--initialized có trước constructor; autoplay chưa có loader gate; card breakpoints 600/1024 | Không dùng class đó làm proof init thành công; config homepage chưa biết |
+| `src/collection-view.ts:26–29,80–117,295–313`; `src/collection/style.css:315–354` | Collection đã có pre-init, geometry check và skvn-is-ready; breakpoints 640/1024 | Audit/reuse trước; không thêm owner hoặc sửa skeleton |
+| Plugin `package.json:11`, `package-lock.json:19863–19865` | Range ^11.1.15, lock Swiper 11.2.10 | Chưa xác nhận bundle/version đang deploy onsite |
+
+Các con trỏ `src/*` thuộc `wp-content/plugins/skvn-marine-blocks/`; `inc/*` thuộc theme. Không suy ra chớp là regression do commit này: commit không sửa runtime/pre-init slider. Không coi màu hiện tại, nguyên nhân glass repaint, hạt/cá hoặc màu thay thế là đã xác minh từ source.
+
+### 11.3. P0 — inventory bắt buộc trước code
+
+| Ô cần điền | Đã biết | Evidence còn thiếu / gate |
+|---|---|---|
+| Target URL và slider chính | Candidates: [data-skvn-slider] hoặc [data-skvn-collection-carousel] với .skvn-collection__carousel | URL staging/Home, saved markup + DOM; xác định duy nhất slider cổng, không lấy first match tùy tiện |
+| Loader/render | #skvn-preloader, theme inc/preloader.php, wp_body_open | Settings thực: type/scope/Smooth/frequency, CSS override/cache và build onsite |
+| Runtime/version | Slider src/slider/view.ts; Collection src/collection-view.ts; lock 11.2.10 | Xác nhận block thật và asset/version thực được tải |
+| Columns/gap/breakpoints/height | Hai runtime khác nhau, Collection có vars/preset sẵn | data attributes, computed CSS, width/height trước/sau init tại từng breakpoint; không dùng preset 4–2–1 giả định |
+| Màu và decoration | Có palette/theme tokens; chưa biết surface homepage thực | Màu trung tính khớp surface + contrast logo; selectors/owner animation nền và rule ảnh hưởng logo |
+| Asset delivery/deploy | Theme inline head/body; plugin @wordpress/scripts; tools/build-deploy-artifact.mjs và tools/package-plugin-zip.sh | Prove CSS pre-init có trước first paint và cache purge path; human chạy build/lint/package khi có code |
+
+Không điền được ô nào từ repo thì dừng phần implementation phụ thuộc ô đó và xin đúng evidence onsite còn thiếu; không tự bịa URL/selector/màu. Planning và review source vẫn thực hiện được. Không giả định credentials hoặc thay production settings.
+
+### 11.4. Contract đề xuất và mapping thay thế
+
+Chỉ áp dụng trong homepage repair đã định danh ở P0; ngoài phạm vi này giữ branch hiện hữu và regression-test. Không đổi dữ liệu cũ để ép scope/frequency. Đề xuất giữ once/every hiện có: first eligible homepage visit trong once, mỗi homepage load trong every; câu “loader hiện từ first paint” chỉ áp dụng lượt đủ điều kiện. Điểm tích hợp này cần được chốt trước code.
+
+| Contract cũ | Proposal cho homepage repair | Mapping acceptance |
+|---|---|---|
+| Show-after 150ms, load nhanh bỏ overlay | Lượt đủ điều kiện có lớp che từ first paint; ready sớm thì thoát ngay, không minimum hold | UXHF-02 → LDR-01,02; fast-skip cũ chỉ bị thay trong homepage repair |
+| Dismiss theo DOM/hero | Đúng slider chính init thành công + geometry dùng được, không đợi ảnh/font/slider phụ; nếu late subscription phải đọc state hiện tại | UXHF-02,05 → LDR-02,05 |
+| Fade duration 100–500ms/ease-out | Panel transform lên khỏi viewport 750ms, easing chậm hai đầu; logo/spinner nếu có đi cùng panel; không opacity/visibility/filter transition trên panel | UXHF-01,02 → LDR-03 |
+| Safety 3500ms | Bắt đầu reveal ở deadline 1500ms từ early bootstrap nếu chưa ready; log warning một lần; 750ms sau mới kết thúc nominal | UXHF-05 → LDR-05 |
+| Giữ control cũ | Trong branch repair, disable/help show-after, fade-duration, dismiss/min-display; preserve values qua save/reopen; 750/1500 là constants, không thêm control | UXHF-04 → LDR-07 |
+| Navigation fade | Giữ nguyên scope độc lập; nếu destination có overlay thì không chồng hai hiệu ứng | UXHF-03,06,07 giữ; bổ sung LDR-08 |
+
+Mốc 1500ms đo từ bootstrap sớm nhất kiểm chứng được, không tuyên bố đo chính xác first paint bằng timer. Nominal fail-open hoàn toàn khoảng **2250ms** cộng scheduling; main thread treo không thể bảo đảm deadline cứng. Cần bounded cleanup dự phòng khi transitionend không tới, không giữ loader vĩnh viễn.
+
+**Pre-init:** ưu tiên geometry khớp config thật và một owner trong plugin. Collection reuse CSS/state hiện hữu; Slider audit fallback riêng. CSS phải có hiệu lực trước lần vẽ đầu, bỏ gap pre-init khi runtime own spacing để tránh gap kép, giữ chiều cao media/pagination theo DOM thật. Nếu không thể khớp config, phương án ẩn track phải có reserved space và đường static-visible cả no-JS lẫn bundle lỗi; không chỉ có noscript. Không thay skeleton state/markup; nếu không tách được phải báo scope conflict trước code. Không dùng overflow-x để che geometry sai.
+
+**Lifecycle:** eligible → covering → revealing → released. Mọi ready/deadline/error/history callback dùng cùng đường reveal/cleanup idempotent. Ready phải có đường đọc lại trạng thái để không bỏ lỡ init sớm; không dựa riêng vào class thêm trước constructor. Deadline thắng thì tiếp tục fallback tĩnh, late init không được replay reveal hoặc để track ẩn. Không trì hoãn slider phụ bằng một scheduler mới.
+
+**Motion/autoplay:** trước reveal chỉ pause các decoration đã inventory và spinner nếu thực có; không animate filter/backdrop-filter/width/height/background. Runtime plugin phối hợp loader bằng gate optional, mặc định hoạt động bình thường nếu theme/loader vắng; không khiến plugin phụ thuộc theme. Gate phải có trước autoplay đầu tiên, áp dụng cả init muộn, và release chỉ bỏ pause reason loader, giữ hidden/focus/user pause. Cleanup khôi phục trạng thái animation trước đó, không bật tất cả animation toàn trang. Không thêm spinner vào Smooth nếu chưa có quyết định thay đổi visual.
+
+**Safety/a11y:** không JS thì overlay không che từ đầu, nội dung static-visible. Early safety độc lập bundle Swiper; nếu JS lỗi sau activation phải giải phóng cả overlay lẫn interaction/scroll state. Ưu tiên không khóa root scroll. Nếu cần inert thì lưu/khôi phục giá trị trước đó; CSS ẩn overlay không tự khôi phục inert, nên không đặt inert khi chưa có đường recovery đã chứng minh. Không autofocus loader; status không spam; cleanup lọc transitionend đúng panel/property, có fallback transitioncancel/missing-event. Reduced-motion từ CSS ban đầu và JS: không rèm/fade, bỏ overlay ngay, giữ slider static/ready dùng được. History restore không replay overlay.
+
+### 11.5. Work packages — thứ tự và gate
+
+| Gói | Công việc đề xuất | Files dự kiến | Gate |
+|---|---|---|---|
+| L0 | Điền inventory P0, baseline cold/warm, chọn scope/frequency/settings và màu thực | Plan + runbook/evidence | Không thiếu input §11.3; review proposal trước code |
+| L1 | Audit/fix đúng pre-init owner, xác nhận CSS đến trước paint; không sửa skeleton | Plugin src/slider/style.css hoặc src/collection/style.css; render/enqueue chỉ nếu evidence cần | No-JS/bundle-blocked dùng được, geometry trước/sau có số đo |
+| L2 | Ready contract + optional autoplay gate, xử lý early/late init | Runtime block chính; shared/autoplay.ts chỉ khi cần invariant chung | Không bỏ lỡ ready, không autoplay dưới overlay, theme vắng vẫn hoạt động |
+| L3 | Cover/reveal/release, pause decoration, independent safety, reduced-motion/history | Theme inc/preloader.php; shared theme runtime chỉ cho decoration thực | Một lần kéo rèm; mọi đường lỗi đều thoát; không động skeleton |
+| L4 | Control applicability/help, preserve saved values, English/i18n; vá bước nhập ms và zero fallback theo §11.8 | Plugin modules/preloader-settings/preloader-settings.php; theme inc/preloader.php | Save/reopen đúng, ms nguyên bất kỳ trong range không stepMismatch, 0 không bị đổi thành 150 |
+| L5 | Human build/lint, onsite QA, rollback rehearsal; ghi evidence theo ID | Runbook dưới đây | Acceptance có evidence, human duyệt visual; không tự đóng milestone |
+
+Không đổi thứ tự bundle nếu chưa có evidence đó là nguyên nhân. Chỉ tách asset/include khi cần; thêm/đổi PHP runtime include phải audit packaging. Rollback source phải là patch riêng được review, không revert mù toàn b9332d3 vì commit chứa cả docs và thay đổi khác. Tắt Smooth chỉ quay về legacy, không có nghĩa legacy đã hết flash. Không commit/push/deploy trong lượt này.
+
+### 11.6. Acceptance & Evidence bổ sung
+
+| ID | Nhóm | Hành vi mong đợi / states | Hiện trạng | Việc cần sửa | Cách kiểm | Evidence |
+|---|---|---|---|---|---|---|
+| LDR-01 | Block UI/Technical | Pre-init khớp ở cold/warm/no-JS, mobile/desktop, ít slide | Collection đã có source; homepage Chờ kiểm chứng | Đúng owner/config/asset timing | Chặn bundle, throttle và đo trước/sau init | URL/DOM/options, filmstrip, slide/track/pagination boxes và delta height px |
+| LDR-02 | Technical | Mở theo slider chính usable; không phụ thuộc ảnh/slider phụ | Chưa làm | Ready contract + đọc state nếu init sớm | Stall main, stall secondary, init trước/sau listener | Timeline init/ready/reveal và geometry |
+| LDR-03 | Block UI | Một rèm 750ms, logo cùng panel; không lớp vô hình chặn | Chưa làm | Transform lifecycle, decoration pause, remove | Cold/warm, CSS transition bị hủy, click/Tab sau reveal | Video, computed transitions, DOM/focus notes |
+| LDR-04 | Technical | Autoplay chỉ sau release, giữ pause khác, plugin không theme | Chưa làm | Optional gate trong runtime, late init | Delay init qua deadline; hover/focus/hidden, theme/loader absent | Slide index/timestamps, pause state, console |
+| LDR-05 | Technical | 1500ms fallback bắt đầu; cleanup bounded; no-JS/bundle lỗi/partial JS đều xem trang được | Chưa làm | Independent recovery + static fallback | Block bundle, throw sau activation, missing transitionend | Timeline, warning, overlay/inert/scroll final state |
+| LDR-06 | Block UI/Technical | Reduced motion không rèm/fade; keyboard/status hợp lý | Chưa làm | CSS-first bypass + focus recovery | Preference trước load và đổi lúc reveal; Tab/screen reader smoke | OS/browser/video, focus/status notes |
+| LDR-07 | Editor UX | Controls đúng applicability, values cũ không mất | Chưa làm | Scoped disable/help + sanitize/preserve | Toggle modes, save/reopen, disabled fields thiếu POST | Screenshots và sanitized option snapshot |
+| LDR-08 | Cả ba | Scope/frequency/history/native navigation không regression; skeleton không đổi | Chờ kiểm chứng baseline | Isolate branch, không chồng animation | Home↔Post, once/every, Back/Forward, legacy modes | Before/after cùng fixtures; UXHF-03,06,07,09,10 |
+| LDR-09 | Editor UX/Technical | Ba field ms nhận số nguyên bất kỳ trong range; save/reopen/runtime giữ đúng, show-after 0 hợp lệ | FAIL source: step=100; runtime dùng zero-falsy fallback; human báo lỗi qua screenshot | L4: step=1, giữ range/default, bỏ fallback bằng truthiness cho show-after | Nhập 150/175/250/180, save/reopen; arrow ±1; show-after 0; kiểm default 150/180 và biên | Screenshot + validity.stepMismatch, options/inline config trước/sau, timeline bootstrap; runtime chưa kiểm |
+
+Không đặt ngưỡng height tùy tiện: L0 ghi delta px và nguyên nhân; L1 phải review mức chấp nhận cụ thể trước nghiệm thu, không ghi PASS bằng “không đáng kể”. IDs UXHF-01–10 vẫn giữ: LDR thay contract homepage được mapping phía trên; acceptance navigation/legacy ngoài phạm vi đó tiếp tục nguyên vẹn. Tất cả runtime tests còn Chưa làm/Chờ kiểm chứng; có source không đồng nghĩa PASS.
+
+### 11.7. Quyết định còn mở trước implementation
+
+Không xin duyệt lại kéo rèm. Cần chốt cách tích hợp homepage với scope/frequency và control cũ sau khi có inventory. Proposal ưu tiên giữ options cũ, scope repair hẹp, không đổi hành vi site-wide; phương án áp mọi homepage load bất kể frequency che tốt hơn nhưng thay nghĩa settings. Màu thay thế chỉ chọn sau khi thấy surface/logo thực. Default trước lệnh bắt đầu implementation: **giữ source hiện tại, chỉ hoàn thiện planning/evidence**; không tự kích hoạt sửa code vì tài liệu đã đủ chi tiết.
+
+### 11.8. Bổ sung bug nhập milliseconds — human report 2026-11-04
+
+**Triệu chứng:** human cung cấp screenshot Advanced (Show loading after, Loading fade duration, Page transition duration), báo chỉ điều chỉnh được theo nấc 100ms. Screenshot ghi nhận UI/giá trị, chưa tự chứng minh browser validation hay dữ liệu đã lưu. Áp dụng ui-debug State Delta: state mong đợi là nhập/lưu 150/175/250/180 trong range; state sai là native spinner nhảy 100 và giá trị giữa nấc có stepMismatch. Layer khác biệt nằm ở HTML control, không phải CSS hay Swiper.
+
+**Evidence source:** `modules/preloader-settings/preloader-settings.php:353–363` khai báo `step="100"` cho cả ba input number. Show-after có min=0, hai duration có min=100 nên các nấc hợp lệ đều là bội 100. Default show-after **150** và page-transition **180** cũng không khớp bước nhập của chính control. Sanitizer cùng file `:168–170` dùng absint + min/max, không làm tròn bội 100; do đó ưu tiên sửa constraint UI, không thêm rounding server. `theme inc/preloader.php:463` dùng `cfg.loading_show_after || 150`, khiến **0 đã lưu vẫn bị dùng như 150ms** trong nhánh hiện tại. Đây là bug runtime liên quan, không phải nguyên nhân stepMismatch.
+
+**Patch đề xuất trong L4, chưa implement:**
+
+1. Đổi **ba input Advanced** sang `step="1"`: nhập số nguyên ms bất kỳ, spinner/ArrowUp/ArrowDown ±1ms. Không dùng step=any vì contract là integer; không sửa mọi field number của trang bằng replace toàn cục.
+2. Giữ range hiện tại: show-after **0–500**, loading fade **100–500**, page transition **100–400**; giữ defaults **150/200/180**. Ví dụ 750 không hợp lệ cho duration cũ; rèm 750ms vẫn là constant riêng của proposal, không mở range để lẫn hai chế độ.
+3. Giữ option keys và dữ liệu cũ, không migration/rounding theo 100; kiểm UI→sanitize→saved option→PHP/JS config. Bỏ fallback truthiness ở show-after, dùng giá trị số đã normalize (hoặc kiểm missing/invalid rõ ràng), để 0 thực sự có nghĩa không trì hoãn quyết định. Giá trị ngoài range vẫn bị chặn/clamp theo contract hiện tại; fractional không thuộc scope integer ms.
+4. Homepage repair có thể disable show-after/fade theo §11.4, nhưng phải vá field khi dùng branch khác; page-transition vẫn độc lập. Không che bug bằng disable toàn bộ Advanced, không thay đổi eligibility hoặc tự bật/tắt settings. Thêm help integer/range nếu cần, English/i18n.
+
+**Acceptance:** LDR-09 kế thừa UXHF-04 và mở rộng LDR-07. Kiểm bằng runbook T9; source finding không đồng nghĩa fix/runtime PASS. Không sửa code/build/commit trong lượt ghi kế hoạch này.

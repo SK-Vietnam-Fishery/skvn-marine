@@ -437,9 +437,28 @@ function initSlider( slider: SliderElement ): void {
 			}
 		};
 		syncViewportHeight();
+		const publishReady = () => {
+			if ( config.slideCount > 1 && ( ! slider.swiper?.initialized || slider.swiper.destroyed ) ) {
+				return;
+			}
+			const box = slider.getBoundingClientRect();
+			const slide = slider.querySelector< HTMLElement >( '.skvn-slide' );
+			if ( box.width <= 0 || box.height <= 0 || ! slide || slide.getBoundingClientRect().width <= 0 ) {
+				return;
+			}
+			slider.dataset.skvnSliderReady = 'true';
+			slider.dispatchEvent( new Event( 'skvn:slider-ready', { bubbles: true } ) );
+		};
+		// Optional document lifecycle gate. No theme/loader means normal autoplay.
+		const loaderActive = () => {
+			const root = document.documentElement;
+			return root.hasAttribute( 'data-skvn-loading' ) &&
+				Number( root.dataset.skvnLoadingUntil ) > Date.now();
+		};
 
 		if ( config.slideCount <= 1 ) {
 			slider.classList.add( 'skvn-slider--static' );
+			window.requestAnimationFrame( publishReady );
 			return;
 		}
 
@@ -604,6 +623,7 @@ function initSlider( slider: SliderElement ): void {
 				autoplay:
 					config.autoplay && ! reducedMotion
 						? {
+								enabled: ! loaderActive(),
 								delay: config.autoplayDelay,
 								disableOnInteraction: false,
 								pauseOnMouseEnter: false,
@@ -648,6 +668,8 @@ function initSlider( slider: SliderElement ): void {
 			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;
 			let previousRealIndex = 0;
+			let loaderTimer: number | undefined;
+			const readyFrame = window.requestAnimationFrame( publishReady );
 
 			const resetProgress = () => {
 				slider.style.setProperty( '--skvn-slider-progress', '0' );
@@ -656,6 +678,7 @@ function initSlider( slider: SliderElement ): void {
 				if (
 					! config.autoplay ||
 					reducedMotion ||
+					loaderActive() ||
 					pauseCoordinator?.isPaused()
 				) {
 					swiper.autoplay?.pause();
@@ -667,6 +690,9 @@ function initSlider( slider: SliderElement ): void {
 					return;
 				}
 
+				if ( typeof swiper.params.autoplay === 'object' ) {
+					swiper.params.autoplay.enabled = true;
+				}
 				if ( swiper.autoplay && ! swiper.autoplay.running ) {
 					swiper.autoplay.start();
 				} else {
@@ -798,6 +824,10 @@ function initSlider( slider: SliderElement ): void {
 				}
 
 				cleaned = true;
+				window.cancelAnimationFrame( readyFrame );
+				window.clearTimeout( loaderTimer );
+				window.removeEventListener( 'skvn:loading-released', releaseLoader );
+				delete slider.dataset.skvnSliderReady;
 				pauseCoordinator?.cleanup();
 				paginationElement?.removeEventListener(
 					'click',
@@ -845,6 +875,18 @@ function initSlider( slider: SliderElement ): void {
 				onPause: syncAutoplay,
 				onResume: syncAutoplay,
 			} );
+			function releaseLoader() {
+				if ( cleaned ) { return; }
+				pauseCoordinator?.setPauseReason( 'loader', false );
+				syncAutoplay();
+			}
+			if ( loaderActive() ) {
+				pauseCoordinator.setPauseReason( 'loader', true );
+				window.addEventListener( 'skvn:loading-released', releaseLoader );
+				// A broken theme script cannot leave the plugin permanently paused.
+				loaderTimer = window.setTimeout( releaseLoader,
+					Math.max( 0, Number( document.documentElement.dataset.skvnLoadingUntil ) - Date.now() ) + 50 );
+			}
 			paginationElement?.addEventListener(
 				'click',
 				handlePaginationClick,

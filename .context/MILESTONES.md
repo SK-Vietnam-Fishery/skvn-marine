@@ -19,6 +19,10 @@ AGENTS.md current milestone phải match file này.
 
 Human xác nhận đưa initial loading logo và fade chuyển trang vào milestone hiện tại, commit nhãn UX hotfix. **Chỉ planning; chưa duyệt implementation plan, chưa code/commit.** Plan [046](planning/046_VER_1_3_18_SITE_LOADING_NAVIGATION_UX_HOTFIX_PLAN.md), acceptance UXHF-01–10 và runbook `docs/testing/site-loading-navigation-ux-hotfix-1.3.18.md`. Không đổi current/version hoặc scope các mốc 1.3.19–23; không sửa skeleton, không coi hiệu ứng chuyển trang là fix toàn bộ flash cũ. Giữ nguyên acceptance/debt 045; completion hotfix không tự đóng milestone.
 
+Cập nhật 2026-11-04: đoạn trên là checkpoint planning cũ; plan 046 đã ghi approval cũ và **đã có source trong b9332d3 — Hotfix Site loader**, chưa có evidence runtime PASS. Human yêu cầu điều tra commit và đề xuất cải thiện, không code/commit. **046 §11: homepage loader kéo rèm là proposal chưa implementation**; mapping UXHF→LDR-01–08 và runbook tương ứng giữ acceptance navigation/legacy, scope/frequency/settings còn cần chốt sau inventory. Không sửa skeleton, không chuyển current/bump version hoặc tự đánh dấu hoàn thành.
+
+Execution update 2026-11-04 (UX hotfix 046): human đã yêu cầu bắt đầu, cung cấp DOM `https://minhhaifishery.com/home/`. §11 execution record có source rèm Smooth opt-in 750ms/main Hero ready/fallback1500, pre-init Hero, gate autoplay và vá step1/show-after0. 8 lifecycle VM tests PASS; build/lint và onsite LDR-01–09 chưa kiểm chứng. Snapshot Smooth onsite=false; không tự đổi options. Giữ skeleton/debt/current/version; chưa commit/deploy. Snapshot planning ở phần UX hotfix phía trên là lịch sử, không còn là gate implementation; không mở scope Editor UX 045.
+
 ### Thứ tự đã chốt — Category Grid → Plugin Design Sidebar Foundation
 
 Human xác nhận 2026-10-28: **1.3.20 Product Category Grid + Category details → 1.3.21 Plugin Design Sidebar Foundation**. Thay thế ưu tiên 2026-10-21 đưa Sidebar ngay sau 1.3.18. Cả hai PLANNED, chưa start; current vẫn 1.3.18. 1.3.19 giữ nguyên Hero Slider Contrast Repair ngoài current.

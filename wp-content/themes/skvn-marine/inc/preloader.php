@@ -63,7 +63,9 @@ function skvn_marine_preloader_config() {
 
 	$run = 'off' !== $cfg['type'] && ! is_admin();
 	if ( $run && 'front' === $cfg['scope'] ) {
-		$run = is_front_page();
+		$run = is_front_page() || (
+			'preloader' === $cfg['type'] && ! empty( $cfg['smooth_initial_loading'] ) && is_page( 'home' )
+		);
 	}
 
 	$resolved = $run ? $cfg : false;
@@ -224,12 +226,124 @@ function skvn_marine_preloader_transition_head() {
 		from { opacity: 1; }
 		to   { opacity: 0; }
 	}
+	@media (prefers-reduced-motion: reduce) {
+		::view-transition-group(root), ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+	}
 	</style>
 	<?php
 }
 
 add_action( 'wp_head', 'skvn_marine_preloader_head', 1 );
 add_action( 'wp_body_open', 'skvn_marine_preloader_markup' );
+
+/** Homepage curtain is opt-in; /home/ is the explicitly supplied landing page. */
+function skvn_marine_preloader_uses_curtain( $cfg ) {
+	return false !== $cfg && 'preloader' === $cfg['type']
+		&& ! empty( $cfg['smooth_initial_loading'] )
+		&& ( is_front_page() || is_page( 'home' ) );
+}
+
+/** Independent early lifecycle: never waits for the plugin bundle to recover. */
+function skvn_marine_preloader_curtain_head( $cfg ) {
+	?>
+	<style id="skvn-curtain-css">
+		/* No JS = no cover. Fixed inset owns the viewport without 100vw/scroll lock. */
+		#skvn-preloader { display: none; animation: none; transition: none; }
+		html[data-skvn-loading] #skvn-preloader {
+			display: flex; opacity: 1; visibility: visible;
+			transform: translateY(0); pointer-events: auto;
+			transition: transform 750ms cubic-bezier(.65, 0, .35, 1);
+			animation: skvn-curtain-recovery 2500ms step-end forwards;
+		}
+		html[data-skvn-loading="revealing"] #skvn-preloader { transform: translateY(-100%); }
+		@keyframes skvn-curtain-recovery { to { visibility: hidden; pointer-events: none; } }
+		@media (prefers-reduced-motion: reduce) {
+			html[data-skvn-loading] #skvn-preloader { display: none; transition: none; }
+		}
+	</style>
+	<script id="skvn-curtain-bootstrap">
+	( function () {
+		var root = document.documentElement;
+		var motion = window.matchMedia( '(prefers-reduced-motion: reduce)' );
+		var once = <?php echo wp_json_encode( 'once' === ( $cfg['frequency'] ?? 'once' ) ); ?>;
+		var state = 'pending';
+		var deadline, watchdog, cleanupTimer;
+		function panel() { return document.getElementById( 'skvn-preloader' ); }
+		function blockTab( event ) {
+			if ( root.hasAttribute( 'data-skvn-loading' ) && event.key === 'Tab' ) { event.preventDefault(); }
+		}
+		function release() {
+			if ( state === 'released' ) { return; }
+			state = 'released';
+			clearTimeout( deadline ); clearTimeout( watchdog ); clearTimeout( cleanupTimer );
+			root.removeAttribute( 'data-skvn-loading' );
+			root.removeAttribute( 'data-skvn-loading-until' );
+			var el = panel();
+			if ( el ) { el.remove(); }
+			document.removeEventListener( 'keydown', blockTab, true );
+			document.removeEventListener( 'skvn:slider-ready', ready );
+			document.removeEventListener( 'DOMContentLoaded', ready );
+			document.removeEventListener( 'transitionend', transitionEnd );
+			document.removeEventListener( 'transitioncancel', transitionEnd );
+			motion.removeEventListener( 'change', motionChanged );
+			window.dispatchEvent( new Event( 'skvn:loading-released' ) );
+		}
+		function reveal( timedOut ) {
+			if ( state !== 'covering' ) { return; }
+			state = 'revealing';
+			clearTimeout( deadline );
+			if ( timedOut ) { console.warn( '[SKVN loader] Main Hero Slider not ready at 1500ms; revealing static fallback.' ); }
+			if ( motion.matches ) { release(); return; }
+			// Commit the initial transform even when a cached bundle initializes before paint.
+			var el = panel();
+			if ( el ) { el.getBoundingClientRect(); }
+			root.setAttribute( 'data-skvn-loading', 'revealing' );
+			cleanupTimer = setTimeout( release, 850 );
+		}
+		function ready() {
+			var heroes = document.querySelectorAll( '.skvn-slider--hero[data-skvn-slider]' );
+			if ( heroes.length !== 1 ) { return; } // Never guess among multiple heroes.
+			var hero = heroes[0];
+			var box = hero.getBoundingClientRect();
+			if ( hero.dataset.skvnSliderReady === 'true' && box.width > 0 && box.height > 0 ) { reveal( false ); }
+		}
+		function transitionEnd( event ) {
+			if ( state === 'revealing' && event.target === panel() && event.propertyName === 'transform' ) { release(); }
+		}
+		function motionChanged() { if ( motion.matches ) { release(); } }
+		window.addEventListener( 'pageshow', function ( event ) { if ( event.persisted ) { release(); } } );
+		window.addEventListener( 'pagehide', release );
+		window.addEventListener( 'pageswap', function ( event ) {
+			if ( state !== 'released' && event.viewTransition ) { event.viewTransition.skipTransition(); }
+			release();
+		} );
+		window.addEventListener( 'pagereveal', function ( event ) {
+			if ( state !== 'released' && event.viewTransition ) { event.viewTransition.skipTransition(); }
+		} );
+		if ( motion.matches ) { release(); return; }
+		if ( once ) {
+			try {
+				if ( sessionStorage.getItem( 'skvnLoadingShown' ) ) { release(); return; }
+				sessionStorage.setItem( 'skvnLoadingShown', '1' );
+			} catch ( error ) { release(); return; }
+		}
+		state = 'covering';
+		// Arm recovery before activating the cover or installing any other listeners.
+		watchdog = setTimeout( release, 2500 );
+		deadline = setTimeout( function () { reveal( true ); }, 1500 );
+		root.setAttribute( 'data-skvn-loading-until', String( Date.now() + 2500 ) );
+		root.setAttribute( 'data-skvn-loading', 'covering' );
+		document.addEventListener( 'keydown', blockTab, true );
+		document.addEventListener( 'skvn:slider-ready', ready );
+		document.addEventListener( 'DOMContentLoaded', ready );
+		document.addEventListener( 'transitionend', transitionEnd );
+		document.addEventListener( 'transitioncancel', transitionEnd );
+		motion.addEventListener( 'change', motionChanged );
+		ready();
+	} )();
+	</script>
+	<?php
+}
 
 /**
  * Print critical CSS + early scroll-lock / session-skip class.
@@ -331,6 +445,12 @@ function skvn_marine_preloader_head() {
 		@keyframes skvn-shimmer { to { transform: translateX(100%); } }
 		@media (prefers-reduced-motion: reduce) { .skvn-skeleton__bar::after { animation: none; } }
 	</style>
+	<?php
+	if ( skvn_marine_preloader_uses_curtain( $cfg ) ) {
+		skvn_marine_preloader_curtain_head( $cfg );
+		return; // No legacy root scroll lock or body bootstrap in this branch.
+	}
+	?>
 	<script id="skvn-preloader-lock">
 		( function () {
 			var r = document.documentElement;
@@ -460,7 +580,7 @@ function skvn_marine_preloader_bootstrap_js( $cfg, $hasOverlay, $transitionEligi
 				}
 				// Overlay stays visible (already painted); wait for readiness then fade.
 				scheduleReadinessRelease();
-			}, cfg.loading_show_after || 150 );
+			}, cfg.loading_show_after ); // PHP normalizes the range; zero is a valid delay.
 		}
 
 		// Safety timeout: fixed 3.5 s cap for the new flow, never extended by min_display.
@@ -482,7 +602,7 @@ function skvn_marine_preloader_bootstrap_js( $cfg, $hasOverlay, $transitionEligi
 				if ( ! event || ! event.viewTransition ) { return; }
 				var shouldShow = cfg.smooth_initial_loading && ! reduced;
 				if ( 'once' === cfg.frequency ) {
-					try { if ( sessionStorage.getItem( 'skvnLoadingShown' ) ) { shouldShow = false; } catch ( e ) {} }
+					try { if ( sessionStorage.getItem( 'skvnLoadingShown' ) ) { shouldShow = false; } } catch ( e ) {}
 				}
 				if ( shouldShow ) {
 					event.viewTransition.skipTransition();
@@ -545,7 +665,7 @@ function skvn_marine_preloader_markup() {
 		}
 	}
 	?>
-	<div id="skvn-preloader" class="skvn-preloader" role="status" aria-label="<?php esc_attr_e( 'Đang tải', 'skvn-marine' ); ?>">
+	<div id="skvn-preloader" class="skvn-preloader" role="status" aria-label="<?php esc_attr_e( 'Loading', 'skvn-marine' ); ?>">
 		<?php if ( $is_skeleton ) : ?>
 		<div class="skvn-skeleton" aria-hidden="true">
 			<span class="skvn-skeleton__bar skvn-skeleton__bar--eyebrow"></span>
@@ -572,7 +692,26 @@ function skvn_marine_preloader_markup() {
 	</div>
 	<?php
 
-	if ( $useNewFlow ) {
+	if ( skvn_marine_preloader_uses_curtain( $cfg ) ) {
+		// Head lifecycle owns this overlay. Keep logo fallback independent of readiness.
+		?>
+		<script id="skvn-curtain-logo">
+		( function () {
+			var el = document.getElementById( 'skvn-preloader' );
+			if ( ! document.documentElement.hasAttribute( 'data-skvn-loading' ) ) { if ( el ) { el.remove(); } return; }
+			var logo = el && el.querySelector( '.skvn-preloader__logo' );
+			function fallback() {
+				if ( ! logo || ! logo.parentNode ) { return; }
+				var text = document.createElement( 'span' );
+				text.className = 'skvn-preloader__mark';
+				text.textContent = <?php echo wp_json_encode( $mark ); ?>;
+				logo.replaceWith( text );
+			}
+			if ( logo ) { logo.addEventListener( 'error', fallback, { once: true } ); if ( logo.complete && ! logo.naturalWidth ) { fallback(); } }
+		} )();
+		</script>
+		<?php
+	} elseif ( $useNewFlow ) {
 		skvn_marine_preloader_bootstrap_js( $cfg, true, $transitionEligible );
 	} else {
 		// Legacy inline dismiss logic (unchanged behavior for non-smooth modes).
