@@ -1,5 +1,17 @@
 # Commit tracking — 2026-11-05 backlog checkpoint
 
+## Follow-up checkpoint — Sidebar visual-controls planning
+
+User requested plan054 and agent commits; no visual Sidebar implementation in this checkpoint. Q1 Category scope, Q2 Media layout owner/reset and Q3 group navigation remain open recommendations, not human approval. Current stays1.3.19.
+
+| Commit | Group | Status |
+|---|---|---|
+| `c70c4ce` | Editor frame CSS extraction correction | Moved unchanged shared frame CSS under `editor-preview-frame/style.css` and updated import to join existing style extraction path. Reference/TS/CSS parse PASS; human rebuild and registered stylesheet inspection pending. |
+| `05b9cef` | Existing frame generated snapshot | Six external build files preserved separately. JS includes frame, but frame rules extracted into new `index.ts.css` that bootstrap does not register; snapshot predates correction above. Not a deploy candidate before rebuild. Provenance in `editor-preview-frame-build-snapshot-2026-11-05.md`. |
+| `3e0124e` | Visual Sidebar plan054 | SVG/CSS/palette/type control plan, capability inventory, Q1–Q3 decision memos and context index; no visual-control source implementation. |
+
+Plan054/context commit can be found with `git log --oneline -- .context/planning/054_DESIGN_SIDEBAR_VISUAL_CONTROLS_PLAN.md`; final ledger commit follows it. Schema audit corrected Q2: Product mediaLayout has no schema default; unset/undefined is distinct from choosing explicit Flush, and existing empty strings are not normalized automatically. No build/PHP lint/deploy/push by agent.
+
 ## Follow-up checkpoint — canvas frames (same date)
 
 Human approved implementation of plan053 P1/P2 and agent commits. New baseline was `b82e546`; the original backlog checkpoint below remains historical.
