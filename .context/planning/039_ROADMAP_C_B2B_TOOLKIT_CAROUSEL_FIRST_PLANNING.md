@@ -14,9 +14,9 @@
 
 **Mapping 2026-11-04:** human chốt **1.4.0 — Marine Blocks Identity & Compatibility Migration**, PLANNED chưa start; nền portability phục vụ M6, không kích hoạt toàn bộ M6/M3. [Plan 047](047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md). Setup UI cũ **1.4.0 → 1.4.1**; Layout Blocks Validation & Quote Evaluation/T-2 cũ **1.4.1 → 1.4.2**; giữ acceptance PENDING. Các bảng snapshot cũ bên dưới dùng số trước khi dời, đối chiếu mapping này và MILESTONES.md khi thực thi. Current vẫn 1.3.18, không bump metadata hoặc archive. MINOR mới dành cho scope migration sản phẩm/compatibility; naming đã chốt, start chưa chốt.
 
-**Cập nhật 2026-11-03:** human chốt **1.3.21 → 1.3.22 Product Page Basic Design Controls → 1.3.23 Post Page Basic Design Controls**. Hai mốc mới PLANNED, chưa start; số PATCH là ngoại lệ human xác nhận cho feature mới, không đổi quy tắc SemVer. Scope và acceptance nằm trong `../MILESTONES.md`. Consumer template liên quan M6, nền visual/editor liên quan M3; không kích hoạt toàn bộ hai stack. Giữ PHP/GeneratePress, default chung và override giới hạn; đối chiếu acceptance 1.3.5 trước implementation, không xóa scope cũ. **2.0 bắt đầu migration từng bước**, không phải đã độc lập. Current vẫn 1.3.18.
+**Cập nhật 2026-11-03:** human chốt **1.3.19 → 1.3.22 Product Page Basic Design Controls → 1.3.23 Post Page Basic Design Controls**. Hai mốc mới PLANNED, chưa start; số PATCH là ngoại lệ human xác nhận cho feature mới, không đổi quy tắc SemVer. Scope và acceptance nằm trong `../MILESTONES.md`. Consumer template liên quan M6, nền visual/editor liên quan M3; không kích hoạt toàn bộ hai stack. Giữ PHP/GeneratePress, default chung và override giới hạn; đối chiếu acceptance 1.3.5 trước implementation, không xóa scope cũ. **2.0 bắt đầu migration từng bước**, không phải đã độc lập. Current vẫn 1.3.18.
 
-**Cập nhật ưu tiên 2026-10-28:** human xác nhận **1.3.20 Product Category Grid + Category details → 1.3.21 Plugin Design Sidebar Foundation**, thay ưu tiên Sidebar kế tiếp ngày 2026-10-21. Current vẫn **V1 / 1.3.18**; hai mốc PLANNED, chưa start. Sidebar là nền editor dùng chung, không đổi nhãn M1–M6; scope/acceptance theo `docs/workflows/ideation-plugin-design-sidebar.md`. Consumers đầu tiên là Product/Post Carousel và Category Grid; Slider/Step Slider/2-side Product tích hợp ở milestone riêng. Các trạng thái cũ bên dưới là snapshot lịch sử, current lấy từ MILESTONES.md.
+**Cập nhật ưu tiên 2026-11-04:** human hoán đổi Sidebar/Hero: **1.3.19 Sidebar Foundation → 1.3.20 Product Category Grid → 1.3.21 Hero Contrast Repair**. Thay thứ tự Category trước Sidebar ngày 28/10. Sidebar nhận Carousel carry-over chưa hoàn tất từ 1.3.18, register tại MILESTONES.md; runtime QA giữ riêng với DS-01–07. Category tích hợp sidebar ở 1.3.20. Current vẫn 1.3.18; Sidebar/Category chưa start. Không kích hoạt toàn bộ M3/M6.
 
 - Bộ công cụ cho **nhiều website B2B**, Gutenberg + Tailwind hướng tới, plugin độc lập theme.
 - **Kết quả đầu tiên: Product Carousel + Post Carousel hoàn chỉnh** (giao diện, tương tác, responsive), test giao diện trước.
@@ -34,7 +34,7 @@
 | M2 | Quote Flow từ carousel (CF7/CFDB7 end-to-end + T-2) | Sau 1.3.17 PASS; SemVer TBD |
 | M3 | Nền theme độc lập + kiến trúc Tailwind, thoát GP | Đề xuất, chưa duyệt chi tiết |
 | M4 | Hệ thống quản lý header/footer mới | Sau M3 (thứ tự đã chốt), đặc tả mở |
-| M5 | Slider trưởng thành + settings hệ thống | Slider sau carousel (đã chốt); vị trí chính xác chưa duyệt. **M5 → 1.3.19 Hero Slider Contrast Repair** (human xác nhận 2026-10-19, hotfix ngoài current milestone — xem dưới) |
+| M5 | Slider trưởng thành + settings hệ thống | Slider sau carousel (đã chốt); vị trí chính xác chưa duyệt. **M5 → 1.3.21 Hero Slider Contrast Repair** (human xác nhận 2026-10-19, hotfix ngoài current milestone — xem dưới) |
 | M6 | Template thực tế + kiểm chứng đa site + chuẩn bị phát hành | Đề xuất, chưa duyệt |
 
 ### Chọn version khi đưa mục stack vào triển khai — human chốt 2026-10-13
@@ -45,15 +45,15 @@ Mapping hiện hành: **M1 → 1.3.17 Block UI IN PROGRESS + 1.3.18 Editor UX/Te
 
 Human đã promote M1 thành current V1 / 1.3.17. Bắt đầu M1 không phê duyệt toàn bộ scope/mapping M2–M6 hoặc tự bắt đầu các mốc sau.
 
-### M5 → 1.3.19 — Hero Slider Contrast Repair (hotfix ngoài current milestone)
+### M5 → 1.3.21 — Hero Slider Contrast Repair (hotfix ngoài current milestone)
 
-Human xác nhận 2026-10-19 trong chat audit plan 044: SemVer **V1 / 1.3.19** (PATCH — sửa CSS block đã có, không thêm feature/schema/attribute/dependency), và chạy theo dạng **hotfix ngoài current milestone**. Current milestone **không đổi**: 1.3.17 vẫn IN PROGRESS, không chuyển ưu tiên, không archive.
+Human xác nhận Hero contrast dạng hotfix ngoài current ngày 2026-10-19 với version cũ 1.3.19. **2026-11-04 dời Hero → 1.3.21**, nhường 1.3.19 cho Sidebar. Giữ source/acceptance/hình thức hotfix; current vẫn 1.3.18, không bump/archive trong lượt đổi planning.
 
 Hệ quả bắt buộc:
 
-- Không bump `style.css` / plugin header / `package.json` cho 1.3.19 — bump metadata chỉ áp dụng khi milestone được bắt đầu làm current theo Transition Rule.
-- Không ghi 1.3.19 vào trường "Current Milestone" của `AGENTS.md` hay `.context/MILESTONES.md`.
-- T-DEMO-1 (đề xuất 1.3.15 cho parallax stabilization) vẫn OPEN và **không bị 1.3.19 xử lý**; 1.3.19 chỉ đụng Hero contrast.
+- Không bump `style.css` / plugin header / `package.json` cho 1.3.21 — bump metadata chỉ áp dụng khi milestone được bắt đầu làm current theo Transition Rule.
+- Không ghi 1.3.21 vào trường "Current Milestone" của `AGENTS.md` hay `.context/MILESTONES.md`.
+- T-DEMO-1 (đề xuất 1.3.15 cho parallax stabilization) vẫn OPEN và **không bị 1.3.21 xử lý**; 1.3.21 chỉ đụng Hero contrast.
 - Đây là tiền lệ hotfix ngoài current milestone; nếu lặp lại nhiều lần thì cân nhắc lại T-DEMO-1 thay vì tiếp tục nhồi version.
 
 Scope/acceptance: `.context/planning/044_HERO_SLIDER_CONTRAST_AND_FLICKER_REPAIR_PLAN.md` (§4.2–§4.3, §7). Kiểm chứng: `docs/testing/hero-slider-contrast-and-flicker-repair.md`.

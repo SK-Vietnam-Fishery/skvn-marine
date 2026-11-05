@@ -27,7 +27,8 @@ Proposal:   Gán PATCH trống **V1 / 1.3.19 — Hero Slider Contrast Repair** v
 Constraint: AGENTS.md §"Milestone stack → SemVer": "Chưa có SemVer được xác nhận: tiếp tục audit/planning; không implement mục mới, đổi current milestone, bump metadata hoặc archive milestone/tension." MILESTONES.md: 1.3.18 đã dành cho Collection Editor UX & Technical; 1.3.13/1.3.14 đã code dù mapping chưa xác nhận; 1.3.15 mới chỉ là đề xuất trong T-DEMO-1.
 Severity:   low
 Tags:       slider, milestone, planning
-Milestone:  V1 / 1.3.19 (hotfix ngoài current; current từ 2026-10-19 là V1 / 1.3.18)
+Milestone:  V1 / 1.3.21 (Hero contrast, hotfix ngoài current V1 / 1.3.18)
+Scheduling update 2026-11-04: human hoán đổi Hero 1.3.19 → 1.3.21 và Sidebar 1.3.21 → 1.3.19. Proposal/Decision dưới đây giữ version lịch sử tại ngày resolve; implementation hiện hành dùng 1.3.21, giữ acceptance/source và không bump/current/archive.
 Evidence:   `src/slider/style.css:699-713` không khai báo color; theme `style.css:98-115` đặt `color` trực tiếp lên `.wp-block-heading` ở (0,2,1) nên thắng mọi rule Hero; bug report 2026-10-16 R1–R3. Plan 044 §1.1/§4.2/§4.3 và §"Version triển khai" đã ghi đầy đủ ledger và specificity. Tự kiểm chứng ≤5 phút: mở `src/slider/style.css` dòng 699, `wp-content/themes/skvn-marine/style.css` dòng 98-115, `.context/planning/044_*.md`.
 Status:     RESOLVED_ACTIVE
 Resolved:   2026-10-19

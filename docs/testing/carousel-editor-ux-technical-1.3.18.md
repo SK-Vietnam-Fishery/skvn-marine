@@ -3,6 +3,12 @@
 Ngày lập: 2026-10-20. **Chờ kiểm chứng**. Lượt planning không có runtime PASS mới.
 Plan: `.context/planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` §9–13.
 
+## Onsite checkpoint — 2026-11-04
+
+Human báo Carousel đã cơ bản có thể sử dụng sau khi test onsite và yêu cầu chuyển các phần chưa kiểm sang milestone kế. Ghi nhận kết quả sử dụng cơ bản; report chưa chỉ rõ Product/Post, URL, build hay từng case đã chạy nên không tự tick PASS cho E01–E15 hoặc xóa các gap đã ghi ngày 21/10.
+
+Giữ PASS E02 theo evidence cũ. Human 2026-11-04 hoán đổi Sidebar/Hero: **Sidebar 1.3.19** nhận toàn bộ phần Carousel chưa hoàn tất/thiếu evidence theo register tại MILESTONES.md; **Deferred → 1.3.19** tại checkpoint 1.3.18. Giữ IDs/cases/gap, không tick PASS thay cho chưa kiểm. CTA hover/chip colors, C/D, Post visual và regression Technical phải được kiểm riêng với DS-01–07. Khi 1.3.19 thành current, nhắc chạy phần deferred trước follow-up không liên quan. Category giữ 1.3.20, Hero contrast dời 1.3.21; current chưa đổi.
+
 ## Target và setup
 
 - Product: trang onsite **Test product carousel**; URL editor/frontend chính xác chưa được ghi nhận, executor/human điền trước chạy.

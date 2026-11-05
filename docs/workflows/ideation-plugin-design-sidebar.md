@@ -1,10 +1,11 @@
 # Ideation — Plugin Design Sidebar
 
 Date: 2026-10-21  
-Status: **PLANNED — V1 / 1.3.21 Plugin Design Sidebar Foundation; chưa start.**
-Quyết định cập nhật 2026-10-28: Category Grid 1.3.20 trước Sidebar 1.3.21, thay ưu tiên Sidebar ngay sau 1.3.18 ngày 2026-10-21. Current vẫn 1.3.18. Version 1.3.21 là ngoại lệ đánh số do human xác nhận; không bump metadata hoặc kích hoạt implementation. Các ghi chú “kế tiếp/chưa gán version” bên dưới là lịch sử, được cập nhật này thay thế.
+Status: **PLANNED — V1 / 1.3.19 Plugin Design Sidebar Foundation; chưa start.**
+Execution override 2026-11-04: human đã giao agent Sol coding theo plan048, current **1.3.19 IN PROGRESS**. Snapshot ideation/chưa-start bên dưới giữ lịch sử; source mới và gates ở plan048 execution ledger/runbook1.3.19. Không runtime PASS hoặc release approval.
+Quyết định **2026-11-04**: hoán đổi Sidebar 1.3.21 ↔ Hero contrast 1.3.19. Mapping mới **Sidebar 1.3.19 → Category Grid 1.3.20 → Hero contrast 1.3.21**, thay thứ tự ngày 2026-10-28. Version Sidebar là ngoại lệ do human xác nhận. Nhận phần Carousel chưa hoàn tất từ 1.3.18 theo register tại MILESTONES.md; chưa start/current/bump metadata.
 
-Consumers đầu tiên: Product/Post Carousel và Product Category Grid; Slider/Step Slider/2-side Product tích hợp ở milestone riêng. Category details dùng Block Inspector hiện có trong 1.3.20, giữ dữ liệu Woo dùng chung tách khỏi style cục bộ. Execution plan phải giữ DS-01–DS-07 và acceptance 1.3.18; cần human xác nhận start, không hỏi lại SemVer.
+Consumers: Product/Post Carousel trong 1.3.19; Category Grid tích hợp khi triển khai 1.3.20 sau nền sidebar. Category details dùng Inspector và Save category riêng, giữ dữ liệu Woo tách style cục bộ. Chuẩn bị adapter trong milestone nền, không xây trước Category. Execution plan giữ DS-01–DS-07 và toàn bộ Carousel carry-over ở ledger/runbook 1.3.18; không hỏi lại version, cần lệnh start riêng.
 
 ## 1. Bối cảnh và giới hạn quyết định
 
@@ -110,6 +111,8 @@ Tất cả yêu cầu dưới đây **Chưa làm** trong phạm vi sidebar mới
 | DS-07 | Technical | Chuyển tab/style không tạo fetch/listener dư | Chưa làm | Subscription/cleanup và lazy rendering hợp lý | Chuyển tab/selection lặp, theo dõi query và runtime | Network/console/lifecycle evidence |
 
 ## 7. Trade-offs, các quyết định còn mở
+
+Execution plan ngày 2026-11-04: [048 — Sidebar 1.3.19](../../.context/planning/048_VER_1_3_19_PLUGIN_DESIGN_SIDEBAR_EXECUTION_PLAN.md). Dùng §3–5 cho control mapping/gói công việc/acceptance và §6 cho decision register hiện hành. Human đã duyệt Q1=A: Fonts chỉnh trực tiếp trong sidebar, tái dùng preset/theme_mod; Q2=A: draft + Save riêng theo nhóm, chỉ áp dụng sau lưu, giữ draft khi chuyển tab/đóng sidebar/lỗi, Discard theo nhóm; Page Save không ghi settings chung, chưa live preview draft. Tên UI đề xuất Marine Blocks theo identity đã chốt; defaults/linked global styles tiếp tục ngoài scope. Inventory/API/capability audit là việc agent thực hiện. Các đoạn ideation dưới giữ rationale, không mở lại version hoặc scope đã chốt; chưa start milestone.
 
 Lợi: giảm độ dài Inspector, phân tách nội dung và thiết kế, có điểm truy cập chung cho các block được hỗ trợ. Giá: thêm bước chuyển panel, dễ nhầm block/global và tăng công việc selection/focus/save lifecycle. Sidebar mới không tự làm controls rộng hơn.
 

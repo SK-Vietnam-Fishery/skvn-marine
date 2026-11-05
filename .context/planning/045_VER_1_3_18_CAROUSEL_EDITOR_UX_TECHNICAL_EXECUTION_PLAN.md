@@ -2,11 +2,15 @@
 
 Ngày: 2026-10-19; cập nhật chi tiết: 2026-10-20; chốt Product media controls: 2026-10-21. **Status: planning chi tiết đã lập; implementation Editor UX chưa bắt đầu.**
 
-Current là **V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical**, human chuyển ngày 2026-10-19; 1.3.17 đã archive với carry-over theo ledger. Stack M1 gồm 1.3.17 + 1.3.18. PATCH theo mapping đã xác nhận để hoàn thiện collection hiện có, không mở hệ thống thiết kế mới. 1.3.19 dành cho Hero contrast hotfix, không đổi phạm vi đó. Lượt 2026-10-20 chỉ lập planning, không bump/build hay cấp lệnh implementation Editor UX.
+Current là **V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical**, human chuyển ngày 2026-10-19; 1.3.17 đã archive với carry-over theo ledger. Stack M1 gồm 1.3.17 + 1.3.18. PATCH theo mapping đã xác nhận để hoàn thiện collection hiện có, không mở hệ thống thiết kế mới. 1.3.21 dành cho Hero contrast hotfix, không đổi phạm vi đó. Lượt 2026-10-20 chỉ lập planning, không bump/build hay cấp lệnh implementation Editor UX.
 
 **Ưu tiên đọc:** §9–13 là đặc tả hệ thống cập nhật ngày 20/10; §2 và §8 giữ làm lịch sử đề xuất trước transition, không còn yêu cầu chuyển lại milestone. Acceptance §4–6 vẫn giữ hiệu lực theo các override mới ở §9.
 
 Authority: [milestone ledger](../MILESTONES.md), [planning 040](040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md) §4–7, §11, §13 và quyết định human ngày 19/10. Tài liệu này bổ sung execution plan, không thay hoặc xóa acceptance gốc.
+
+## Carry-over human chốt 2026-11-04
+
+Carousel onsite cơ bản sử dụng được. Human yêu cầu chuyển phần chưa kiểm sang milestone kế và hoán đổi Sidebar/Hero: **Sidebar 1.3.19 → Category 1.3.20 → Hero contrast 1.3.21**. Toàn bộ acceptance còn thiếu của 045/runbook 1.3.18 **Deferred → 1.3.19**, giữ IDs, PASS và evidence hiện có. Register tại MILESTONES.md §1.3.19 giữ Editor UX/Block UI và Technical/runtime riêng; không coi Sidebar DS-01–07 thay kiểm C/D, Post visual, media legacy, arrows hoặc lifecycle. Override không sửa skeleton giữ nguyên. Current chưa đổi; không bắt đầu implementation/bump metadata qua quyết định planning này.
 
 ## 1. Quyết định và giới hạn
 

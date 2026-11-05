@@ -4,7 +4,7 @@ Ngày gốc: 2026-11-03. **Luồng cũ APPROVED, đã có source tại `b9332d3`
 
 Cập nhật mới nhất 2026-11-04: **Human đã ra lệnh bắt đầu thực hiện; §11 có source repair, chưa có onsite PASS.** §1–10 giữ làm baseline/quyết định cũ; execution record dưới §11 ghi scope thực tế và phần còn thiếu evidence. Navigation fade vẫn độc lập. Không đổi milestone/version, không bump/build/commit.
 
-Human xác nhận đưa UX loading/logo và fade chuyển trang vào **V1 / 1.3.18** hiện tại, commit theo nhãn **UX hotfix**. Đây là scope bổ sung được human chỉ định; không đổi current/version, không lấy số 1.3.19, không mở 1.3.22/23. Các quyết định mới nhất bên dưới thay thế/bổ sung plan 046 cũ.
+Human xác nhận đưa UX loading/logo và fade chuyển trang vào **V1 / 1.3.18** hiện tại, commit theo nhãn **UX hotfix**. Đây là scope bổ sung được human chỉ định; không đổi current/version, không lấy số 1.3.21, không mở 1.3.22/23. Các quyết định mới nhất bên dưới thay thế/bổ sung plan 046 cũ.
 
 ## 1. Authority, mục tiêu và giới hạn
 
@@ -74,7 +74,7 @@ Nguồn lịch sử: [035](archives/035_VER_1_3_13_LOADING_SCREEN_PLANNING.md), 
 
 ## 5. Editor UX và persistence
 
-Tận dụng trang admin Loading screen hiện có; không phụ thuộc Design Sidebar 1.3.21.
+Tận dụng trang admin Loading screen hiện có; không phụ thuộc Design Sidebar 1.3.19.
 
 | Control | Contract đề xuất |
 |---|---|
@@ -161,7 +161,7 @@ Record này cập nhật authority/status của proposal bên dưới; các câu
 
 Human yêu cầu đọc spec, điều tra commit **`b9332d336edcde207b6ae5bfb53392325b68c9f7` — Hotfix Site loader**, phân tích cải thiện và đề xuất planning; **không code và không tạo commit**. Kiểu kéo rèm lên, 750ms, trigger Swiper ready, pre-init độc lập, fallback 1500ms, reduced-motion bỏ chuyển động là hướng human đã ghi trong spec; không hỏi lại lựa chọn hiệu ứng. Chi tiết tích hợp/settings dưới đây vẫn là proposal cần review trước implementation.
 
-Target đề xuất: sửa tiếp hotfix loading trong **V1 / 1.3.18**, không mở version mới, không lấy 1.3.19 (Hero contrast). Current và acceptance 045 giữ nguyên. Homepage là phạm vi repair; không ép áp dụng kéo rèm toàn site. Không sửa skeleton local/toàn trang, query/content, số slide, cấu hình autoplay/loop/slidesPerView, thứ tự bundle hoặc thêm animation library. Tạm giữ autoplay vì loader là lifecycle gate, không đổi setting autoplay đã lưu.
+Target đề xuất: sửa tiếp hotfix loading trong **V1 / 1.3.18**, không mở version mới (mapping mới 2026-11-04: 1.3.19 Sidebar, 1.3.21 Hero contrast). Current và acceptance 045 giữ nguyên. Homepage là phạm vi repair; không ép áp dụng kéo rèm toàn site. Không sửa skeleton local/toàn trang, query/content, số slide, cấu hình autoplay/loop/slidesPerView, thứ tự bundle hoặc thêm animation library. Tạm giữ autoplay vì loader là lifecycle gate, không đổi setting autoplay đã lưu.
 
 ### 11.2. Baseline đã xác minh và giới hạn kết luận
 

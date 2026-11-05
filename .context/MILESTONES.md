@@ -23,9 +23,15 @@ Cập nhật 2026-11-04: đoạn trên là checkpoint planning cũ; plan 046 đ�
 
 Execution update 2026-11-04 (UX hotfix 046): human đã yêu cầu bắt đầu, cung cấp DOM `https://minhhaifishery.com/home/`. §11 execution record có source rèm Smooth opt-in 750ms/main Hero ready/fallback1500, pre-init Hero, gate autoplay và vá step1/show-after0. 8 lifecycle VM tests PASS; build/lint và onsite LDR-01–09 chưa kiểm chứng. Snapshot Smooth onsite=false; không tự đổi options. Giữ skeleton/debt/current/version; chưa commit/deploy. Snapshot planning ở phần UX hotfix phía trên là lịch sử, không còn là gate implementation; không mở scope Editor UX 045.
 
-### Thứ tự đã chốt — Category Grid → Plugin Design Sidebar Foundation
+### Follow-up đã lưu cho 2.0.0 — GP layout dependency (2026-11-04)
 
-Human xác nhận 2026-10-28: **1.3.20 Product Category Grid + Category details → 1.3.21 Plugin Design Sidebar Foundation**. Thay thế ưu tiên 2026-10-21 đưa Sidebar ngay sau 1.3.18. Cả hai PLANNED, chưa start; current vẫn 1.3.18. 1.3.19 giữ nguyên Hero Slider Contrast Repair ngoài current.
+Mục tiêu human bổ sung: **không phải chỉnh sửa thủ công toàn site khi migrate khỏi GeneratePress**. GP-LAYOUT-02 trong plan 013/runbook yêu cầu compatibility/mapping cho content và settings cũ, không cần resave từng page/post; nếu cần data migration phải có dry-run/report, chạy lại an toàn và rollback. Kiểm inventory URL/fixtures trên staging clone; mọi ngoại lệ cần báo trước cutover. Theo dõi từ 2.0.0 tới standalone gate 3.0.0; không tự cho phép rewrite dữ liệu hoặc thay current.
+
+Human yêu cầu hoãn xử lý tới khi bắt đầu tách GeneratePress: không chọn GP Content Container **Contained** thì content tràn, SKVN Full width canvas on/off không giải quyết (human report, chưa đo/root cause chưa xác minh). **Deferred → V2 / 2.0.0**, standalone verification → V3 / 3.0.0; giữ current 1.3.18. Khi 2.0.0 trở thành current, nhắc chạy baseline GP-LAYOUT-01 trước follow-up layout khác. Planning 013 carry-in GP-LAYOUT-01; runbook `docs/testing/gp-content-container-layout-migration.md` có hai ảnh gốc đã lưu, state matrix và acceptance bộ layout/control SKVN. Không vá source hoặc khởi động migration trong lượt ghi nhận này.
+
+### Thứ tự đã chốt — Sidebar 1.3.19 → Category Grid 1.3.20 → Hero contrast 1.3.21
+
+Human xác nhận **2026-11-04**: hoán đổi scope 1.3.21 và 1.3.19 — **1.3.19 Plugin Design Sidebar Foundation → 1.3.20 Product Category Grid + Category details → 1.3.21 Hero Slider Contrast Repair**. Thay thứ tự Category trước Sidebar ngày 2026-10-28. Sidebar/Category chưa start; Hero giữ source đã có và acceptance chưa kiểm. Current vẫn 1.3.18; đây là đổi planning, chưa chuyển mốc/bump metadata.
 
 - Sidebar: Selected block / Plugin tabs, selection/shortcut, component design controls và Theme Design (typography/fonts/brand colors theo capability SKVN Marine thực hỗ trợ).
 - Consumers đầu tiên: Product/Post Carousel và Product Category Grid. Slider, Step Slider, 2-side Product tích hợp tại milestone riêng.

@@ -2,9 +2,9 @@
 
 Ngày: 2026-10-19. Status: **SOURCE IMPLEMENTED — chờ human build + kiểm chứng runtime**. Không có runtime PASS.
 
-Current vẫn là **V1 / 1.3.17 — Product/Post Carousel Block UI & Visual QA**. Slider thuộc stack **M5** theo roadmap 039; tài liệu này là candidate repair slice của M5, không thay đổi ưu tiên đã chốt. Không bắt đầu milestone, không bump metadata, không archive tension/milestone.
+Current là **V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical**. Slider thuộc stack M5; **2026-11-04 human dời Hero contrast 1.3.19 → 1.3.21**, Sidebar từ 1.3.21 → 1.3.19. Giữ source/acceptance/hotfix ngoài current; không bump/archive.
 
-Version triển khai: **V1 / 1.3.19 — Hero Slider Contrast Repair** (human xác nhận 2026-10-19). Current milestone **không đổi** — 1.3.17 vẫn IN PROGRESS; 1.3.19 chạy dạng **hotfix ngoài current milestone**, không bump metadata, không archive milestone/tension. Loại thay đổi là PATCH: sửa default/cascade của Slider hiện có, không thêm block, attribute hay dependency. Đối chiếu ledger `.context/planning/README.md` + `docs/decisions/README.md`:
+Version triển khai hiện hành: **V1 / 1.3.21 — Hero Slider Contrast Repair** (human đổi mapping 2026-11-04; approval gốc 2026-10-19 là 1.3.19). PATCH sửa default/cascade Slider hiện có, không thêm block/attribute/dependency. Current 1.3.18; hotfix ngoài current, không bump metadata. Bảng dưới là baseline audit 19/10 được ghi chú version mới, không phải current ledger.
 
 | Version | Trạng thái | Ghi chú |
 |---|---|---|
@@ -14,9 +14,9 @@ Version triển khai: **V1 / 1.3.19 — Hero Slider Contrast Repair** (human xá
 | 1.3.16 | Milestone PENDING | Không dùng lại |
 | 1.3.17 | Current milestone, IN PROGRESS | Không gán thêm scope |
 | 1.3.18 | PLANNED, chưa bắt đầu (Collection Editor UX & Technical) | Không dùng lại |
-| **1.3.19** | **Đã xác nhận 2026-10-19** | PATCH tiếp theo trong minor 1.3, thuộc stack **M5 — Slider** |
+| **1.3.21** | **Mapping cập nhật 2026-11-04, từ 1.3.19** | Hero contrast stack M5; source và acceptance giữ nguyên |
 
-Mapping M5 → 1.3.19 đã ghi ở roadmap 039 và section milestone không-current trong MILESTONES.md. Quyết định đầy đủ (kèm các phương án bị loại) nằm ở tension đã resolve trong `.context/TENSIONS_ACTIVE.md` ngày 2026-10-19.
+Mapping M5 → 1.3.21 đã ghi ở roadmap 039 và section milestone không-current trong MILESTONES.md. Quyết định đầy đủ (kèm các phương án bị loại) nằm ở tension đã resolve trong `.context/TENSIONS_ACTIVE.md` ngày 2026-10-19.
 
 ## 1. Vấn đề và giới hạn bằng chứng
 
