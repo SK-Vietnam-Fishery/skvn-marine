@@ -58,6 +58,8 @@ Planning snapshots live in `.context/planning/` and use a three-digit ordering p
 
 Active planning (root — load when task liên quan):
 
+UI asset pitfall bắt buộc tham khảo khi đổi visual owner/bundle: `.context/PITFALLS.md` AP-06/AP-07 và `docs/debug-casebook/gutenberg/008_EDITOR_FRAME_CSS_EXTRACTED_NOT_ENQUEUED.md`; CSS tồn tại trong build không chứng minh editor đã nạp. Root frame053 từng mất màu/viền vì extraction/enqueue mismatch, source fix có nhưng onsite chưa xác nhận.
+
 - `.context/planning/054_DESIGN_SIDEBAR_VISUAL_CONTROLS_PLAN.md` — visual SVG/CSS/palette/type controls, per-block capability inventory; đề xuất Q1=A Category existing-only, Q2=A Media layout owner Design/Image + explicit reset semantics, Q3=A group navigation. Chờ human chốt, chưa code visual Sidebar; Theme Design persistence/frame053 riêng.
 
 

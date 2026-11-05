@@ -19,10 +19,13 @@
 | `useSelect` return object mới mỗi keystroke | IME lag, caret nhảy `triênr→tr→triển` khi gõ slide heading | Plugin `slide/edit.tsx` | [CASE-005](slider/005_SLIDER_EDITOR_IME_TYPING_RERENDER_CASCADE.md) |
 | Editor preview arrow reuse Swiper hook + CSS yếu | Circle “rỗng”, chevron xanh to/lệch; `aria-controls` trên preview button | Plugin editor CSS + `view.ts` selector | [CASE-006](slider/006_SLIDER_EDITOR_ARROW_PREVIEW_CSS_CASCADE.md) |
 | CSS vars build nhưng không emit define rule | Có `<style>` + `var(--x, inherit)`; hover không đổi; `--x` rỗng trên wrapper | PHP render_block adapter | [CASE-007](core-control/007_BUTTON_HOVER_CSS_VARS_BUILT_NOT_EMITTED.md) |
+| CSS frame extract sang file chưa enqueue | Root class/label hiện nhưng mất khung và màu nền | Editor asset graph + agent verification | [CASE-008](gutenberg/008_EDITOR_FRAME_CSS_EXTRACTED_NOT_ENQUEUED.md) |
 
 ---
 
 ## Pitfall 1 — Swiper runtime thiếu core CSS
+
+> Xem thêm Pitfall 8 / CASE-008 cho CSS có output nhưng không thuộc stylesheet editor đã đăng ký.
 
 **Triệu chứng:** Trước init thấy slide; sau init slider trắng hoặc slide xếp dọc.
 
@@ -314,6 +317,16 @@ không giữ appender Gutenberg.
 | Button hover CSS var define + consume | `tests/core-control-button-hover.test.mjs` → `button-hover.php` |
 
 Sau `npm run build`, human onsite verify để promote case sang `ONSITE_VERIFIED`.
+
+---
+
+## Pitfall 8 — Root frame có class nhưng CSS bị extract sang file chưa enqueue
+
+**Xảy ra 2026-11-05:** di chuyển khung preview Product Carousel ra root, gỡ màu/viền body; shared CSS lại xuất thành `index.ts.css` trong khi WordPress chỉ đăng ký `style-index.ts.css`. Human thấy mất cả khung và nền đã duyệt. Source correction `c70c4ce`; onsite visual vẫn chưa xác nhận. Chi tiết/evidence: [CASE-008](gutenberg/008_EDITOR_FRAME_CSS_EXTRACTED_NOT_ENQUEUED.md).
+
+**Lỗi agent:** thực hiện phần bỏ style cũ nhưng không hoàn tất/verify đường replacement; kiểm syntax và VM spacing rồi báo triển khai quá sớm. Không thể dùng “đã có source” hoặc “human chưa test” để biện minh cho integration gap.
+
+**Tránh:** kiểm đầy đủ DOM class → selector → import → build output thực tế → registered/enqueued handle → editor document/iframe → matched/computed style. Search đúng file CSS được đăng ký, không chỉ thấy selector ở một nơi bất kỳ trong build. Chuyển owner phải atomic, không xóa cơ chế cũ khi replacement chưa nối đủ; runtime evidence chưa có thì ghi đúng giới hạn. Không đoán cache hoặc thêm `!important` khi chưa biết CSS có được tải không. Existing parse/VM tests không phải asset-loading regression guard.
 
 ---
 
