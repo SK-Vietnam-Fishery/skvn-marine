@@ -1,4 +1,28 @@
-# Prompt review — Sidebar1.3.19 + repair050
+# Prompt review — Sidebar1.3.19 + repair051
+
+## Target hiện hành — repair051 working tree
+
+Human approved G0–G4 ngày2026-11-05. Review **diff so vớie13fa2c**, chưa commit repair051. Scope6source files: `src/design-sidebar/{index,navigation,theme-design}.tsx`, `src/collection/controls.tsx`, `src/product-category-grid/edit.tsx`, `modules/typography-settings/typography-settings.php`; cùng plan051, runbook và `tools/tests/design-sidebar-session.test.mjs`. Những context/build dirty khác không thuộc target.
+
+```text
+Repo D:\Github\skvn-marine. Review read-only repair051 của V1/1.3.19.
+Đọc AGENTS/startup context, plan048/050/051 và runbook Sidebar1.3.19.
+Target: working-tree source diff so với e13fa2c, chỉ6files ghi trên.
+Không sửa file/build/lint/stage/commit/deploy. Có thể chạy direct Node test
+tools/tests/design-sidebar-session.test.mjs; đây là simulated hooks/fetch,
+không chứng minh React DOM, PHP/DB hoặc onsitePASS.
+Kiểm: guard trước edit-post API/hooks; shell vs Inspector fallback đúng một
+surface, reset/Undo/attrs/Category integration; nonce recovery authenticated
+read-only/no nopriv/no settingswrite;403/-1/HTML handling; refresh không thay
+draft/base/conflict hoặc autoSave; export không chứa credential; lazy read,
+retry/abort/unmount/close-reopen và beforeunload listener.
+Không lặp finding “admin-ajax không fire admin_init”; core có fire.
+Không coi persistent=mysqli tất yếu leak vô hạn: xem cleanup thực tế.
+Ghi finding có source/repro/severity/đề xuất; tách risk/evidence gap khỏi defect.
+Onsite version/template-mode/fallback keyboard/render/DB vẫn chờ kiểm chứng.
+```
+
+## Handoff lịch sử — repair050 commit e13fa2c
 
 Ngày: 2026-11-05. Source review độc lập sau repair, chưa runtime approval.
 Commit target: `feat(blocks): implement 1.3.19 design sidebar and repair review findings`.

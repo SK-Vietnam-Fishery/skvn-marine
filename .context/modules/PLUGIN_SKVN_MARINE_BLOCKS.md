@@ -8,6 +8,8 @@ Human decision 2026-11-04: product đích **Marine Blocks** (`marine-blocks`, PH
 
 ## [manual] Product Language
 
+Repair follow-up2026-11-05: human approved plan051 G0–G4 for current1.3.19. Source adds post-editor context/API guard + Inspector design fallback, structured session expiry/manual nonce recovery preserving draft/base, export draft text and lazy ThemeDesign read. Tests/runbook and execution ledger in plan051; no runtime/release approval. Existing owner locks/storage/permissions and Category persistence policy unchanged. Working-tree repair pending human build/lint/onsite evidence.
+
 Plugin product UI and frontend default copy use English as the source language. Keep user-facing strings translatable with the `skvn-marine-blocks` text domain where applicable; do not translate stored attribute/option keys or enum values. Vietnamese localization follows in a separately scoped phase. Internal documentation may remain in Vietnamese. See `AGENTS.md` §Product language.
 
 ## [manual] Architecture

@@ -99,6 +99,8 @@ Phạm vi cần duyệt: **A — F0–F5**, trong đó F3 có Review current / U
 
 ## 5. Execution record — approved repair 2026-11-05
 
+Second review clarification: plan051 (human approved2026-11-05) handles session/editor/lazy-load repairs on top ofe13fa2c. R19-02 premise rejected: admin-ajax fires admin_init, so existing registered sanitizer applies to Sidebar AJAX. Native-semantics statements below concern this registered execution context, not every possible WP/CLI/REST context. Owner-lock design and nonparticipating-writer limits stay unchanged; mysqli persistent cleanup must be considered before asserting exit causes indefinite lock leak.
+
 **Status: Đã có source / Chờ kiểm chứng**, không runtime PASS. Baseline HEAD `7ef45ff300203ecaf61f32195a19780b5a623ce0` + source Sidebar1.3.19 chưa commit; Category source/adapter7ef45ff giữ nguyên, không staging build artifacts trong đợt repair.
 
 - **F1 / S19-01:** Post đăng ký `actionHoverTextColor` string/defaultempty, đối chiếu Product/TS/preview/PHP allowlist hiện có. Không chỉnh compiled schema; human rebuild trước test persistence/hover/focus/reset.

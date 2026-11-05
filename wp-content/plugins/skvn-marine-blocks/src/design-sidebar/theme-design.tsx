@@ -1,5 +1,5 @@
 import { Button, Notice, PanelBody, SelectControl, Spinner, TextControl } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 type Group = 'palette' | 'heading' | 'fonts';
@@ -13,7 +13,7 @@ type Snapshot = {
 	presets?: { label: string; value: string }[];
 	scopes?: { label: string; value: string }[];
 };
-declare global { interface Window { skvnMarineDesign?: { url: string; nonce: string; woocommerceAvailable: boolean } } }
+declare global { interface Window { skvnMarineDesign?: { url: string; nonce: string; woocommerceAvailable: boolean; postEditor: boolean } } }
 
 class DesignRequestError extends Error {
 	code: string;
@@ -27,40 +27,67 @@ class DesignRequestError extends Error {
 	}
 }
 
-async function request< T >( data: Record< string, string >, signal?: AbortSignal ): Promise< T > {
+async function request< T >( data: Record< string, string >, signal?: AbortSignal, session = false ): Promise< T > {
 	const config = window.skvnMarineDesign;
 	if ( ! config ) throw new Error( __( 'Design settings are unavailable. Reload the editor after updating the plugin.', 'skvn-marine-blocks' ) );
 	const response = await fetch( config.url, {
 		method: 'POST', credentials: 'same-origin', signal,
-		body: new URLSearchParams( { action: 'skvn_marine_design_settings', nonce: config.nonce, ...data } ),
+		cache: 'no-store',
+		body: new URLSearchParams( { action: session ? 'skvn_marine_design_session' : 'skvn_marine_design_settings', nonce: config.nonce, ...data } ),
 	} );
 	let json;
 	try { json = await response.json(); } catch {
-		throw new DesignRequestError( __( 'The server response could not be read. Your draft is kept. Check your session before trying again.', 'skvn-marine-blocks' ), 'request_error', undefined, response.status === 403 ? false : undefined );
+		throw new DesignRequestError( __( 'The server response could not be read. Your draft is kept. Refresh your session or check the connection.', 'skvn-marine-blocks' ), 'request_error' );
+	}
+	if ( ! json || typeof json !== 'object' || typeof json.success !== 'boolean' || ! json.data || typeof json.data !== 'object' ) {
+		throw new DesignRequestError( __( 'The server returned an unexpected response. Sign in if needed, then refresh your session. Your draft is kept.', 'skvn-marine-blocks' ), 'request_error' );
 	}
 	if ( ! response.ok || ! json.success ) throw new DesignRequestError(
 		json.data?.message || __( 'Design settings could not be loaded or saved. Your draft is kept. Check your session and permissions.', 'skvn-marine-blocks' ),
 		json.data?.code || 'request_error', json.data?.current || undefined,
-		typeof json.data?.canEdit === 'boolean' ? json.data.canEdit : response.status === 403 ? false : undefined
+		typeof json.data?.canEdit === 'boolean' ? json.data.canEdit : undefined
 	);
 	return json.data;
 }
 
-export function useThemeDesign() {
+export function useThemeDesign( active: boolean ) {
 	const [ snapshot, setSnapshot ] = useState< Snapshot | null >( null );
 	const [ drafts, setDrafts ] = useState< Partial< Record< Group, Values > > >( {} );
 	const [ error, setError ] = useState( '' );
 	const [ statuses, setStatuses ] = useState< Partial< Record< Group, string > > >( {} );
 	const [ pending, setPending ] = useState< Partial< Record< Group, boolean > > >( {} );
 	const [ conflicts, setConflicts ] = useState< Partial< Record< Group, SavedGroup > > >( {} );
+	const [ activated, setActivated ] = useState( false );
+	const [ attempt, setAttempt ] = useState( 0 );
+	const [ sessionError, setSessionError ] = useState( '' );
+	const [ sessionPending, setSessionPending ] = useState( false );
+	const [ readPending, setReadPending ] = useState( false );
+	const lifecycle = useRef( new AbortController() );
+	// Once activated, closing the panel must not cancel a read or discard drafts.
+	useEffect( () => { if ( active ) setActivated( true ); }, [ active ] );
 	useEffect( () => {
+		lifecycle.current = new AbortController();
+		return () => lifecycle.current.abort();
+	}, [] );
+	const recordSessionError = ( failure: unknown ) => {
+		if ( failure instanceof DesignRequestError && [ 'expired_session', 'request_error' ].includes( failure.code ) ) setSessionError( failure.message );
+	};
+	useEffect( () => {
+		if ( ! activated || snapshot ) return;
 		const controller = new AbortController();
+		let live = true;
+		setError( '' );
+		setReadPending( true );
 		request< Snapshot >( { operation: 'read' }, controller.signal ).then( ( result ) => {
+			if ( ! live ) return;
+			setReadPending( false );
+			setSessionError( '' );
 			setSnapshot( result );
 			if ( result.groups ) setDrafts( Object.fromEntries( Object.entries( result.groups ).map( ( [ key, group ] ) => [ key, group.value ] ) ) );
-		} ).catch( ( failure ) => { if ( failure.name !== 'AbortError' ) setError( failure.message ); } );
-		return () => controller.abort();
-	}, [] );
+		} ).catch( ( failure ) => { if ( live ) { setReadPending( false ); if ( failure.name !== 'AbortError' ) { setError( failure.message ); recordSessionError( failure ); } } } );
+		return () => { live = false; controller.abort(); };
+	}, [ activated, attempt, snapshot ] );
+	const retryRead = () => { if ( ! snapshot && ! sessionPending && ! readPending ) setAttempt( ( previous ) => previous + 1 ); };
 	const dirty = ( group: Group ) => JSON.stringify( drafts[ group ] ) !== JSON.stringify( snapshot?.groups?.[ group ].value );
 	const hasDraft = !! snapshot?.groups && ( [ 'palette', 'heading', 'fonts' ] as Group[] ).some( dirty );
 	useEffect( () => {
@@ -74,14 +101,15 @@ export function useThemeDesign() {
 		setStatuses( ( previous ) => ( { ...previous, [ group ]: '' } ) );
 	};
 	const save = async ( group: Group ) => {
-		if ( ! snapshot?.groups?.[ group ].canEdit || conflicts[ group ] || Object.values( pending ).some( Boolean ) ) return;
+		if ( sessionError || sessionPending || ! snapshot?.groups?.[ group ].canEdit || conflicts[ group ] || Object.values( pending ).some( Boolean ) ) return;
 		setPending( ( previous ) => ( { ...previous, [ group ]: true } ) );
 		try {
-			const saved = await request< SavedGroup >( { operation: 'save', group, revision: snapshot.groups[ group ].revision, value: JSON.stringify( drafts[ group ] ) } );
+			const saved = await request< SavedGroup >( { operation: 'save', group, revision: snapshot.groups[ group ].revision, value: JSON.stringify( drafts[ group ] ) }, lifecycle.current.signal );
 			setSnapshot( ( previous ) => previous && ( { ...previous, groups: { ...previous.groups!, [ group ]: saved } } ) );
 			setDrafts( ( previous ) => ( { ...previous, [ group ]: saved.value } ) );
 			setStatuses( ( previous ) => ( { ...previous, [ group ]: __( 'Saved. Reload the editor to see the saved theme design in the canvas. The site uses saved settings.', 'skvn-marine-blocks' ) } ) );
 		} catch ( failure ) {
+			recordSessionError( failure );
 			if ( failure instanceof DesignRequestError ) {
 				if ( failure.code === 'conflict' && failure.current ) setConflicts( ( previous ) => ( { ...previous, [ group ]: failure.current } ) );
 				if ( failure.canEdit === false ) setSnapshot( ( previous ) => previous?.groups ? ( { ...previous, groups: { ...previous.groups, [ group ]: { ...previous.groups[ group ], canEdit: false } } } ) : previous );
@@ -90,15 +118,16 @@ export function useThemeDesign() {
 		} finally { setPending( ( previous ) => ( { ...previous, [ group ]: false } ) ); }
 	};
 	const discard = async ( group: Group ) => {
+		if ( sessionError || sessionPending || Object.values( pending ).some( Boolean ) ) return;
 		setPending( ( previous ) => ( { ...previous, [ group ]: true } ) );
 		try {
-			const current = await request< Snapshot >( { operation: 'read' } );
+			const current = await request< Snapshot >( { operation: 'read' }, lifecycle.current.signal );
 			if ( ! current.groups?.[ group ] ) throw new Error( __( 'The theme integration is no longer available. Your draft is kept.', 'skvn-marine-blocks' ) );
 			setSnapshot( ( previous ) => previous && ( { ...previous, groups: { ...previous.groups!, [ group ]: current.groups![ group ] } } ) );
 			setDrafts( ( previous ) => ( { ...previous, [ group ]: current.groups![ group ].value } ) );
 			setConflicts( ( previous ) => ( { ...previous, [ group ]: undefined } ) );
 			setStatuses( ( previous ) => ( { ...previous, [ group ]: __( 'Draft discarded. Current saved values loaded for this group.', 'skvn-marine-blocks' ) } ) );
-		} catch ( failure ) { setStatuses( ( previous ) => ( { ...previous, [ group ]: failure instanceof Error ? failure.message : __( 'Could not reload this group. Your draft is kept.', 'skvn-marine-blocks' ) } ) ); }
+		} catch ( failure ) { recordSessionError( failure ); setStatuses( ( previous ) => ( { ...previous, [ group ]: failure instanceof Error ? failure.message : __( 'Could not reload this group. Your draft is kept.', 'skvn-marine-blocks' ) } ) ); }
 		finally { setPending( ( previous ) => ( { ...previous, [ group ]: false } ) ); }
 	};
 	const resolveConflict = ( group: Group, useCurrent: boolean ) => {
@@ -112,18 +141,40 @@ export function useThemeDesign() {
 			: __( 'Your draft is kept against the reviewed saved values. Nothing was saved. Choose Save group when ready.', 'skvn-marine-blocks' ) } ) );
 	};
 	const refreshAccess = async ( group: Group ) => {
-		if ( Object.values( pending ).some( Boolean ) ) return;
+		if ( sessionPending || Object.values( pending ).some( Boolean ) ) return;
 		setPending( ( previous ) => ( { ...previous, [ group ]: true } ) );
 		try {
-			const current = await request< Snapshot >( { operation: 'read' } );
+			const current = await request< Snapshot >( { operation: 'read' }, lifecycle.current.signal );
 			if ( ! current.available || ! current.groups?.[ group ] ) throw new Error( __( 'The theme integration is unavailable. Your draft is kept.', 'skvn-marine-blocks' ) );
 			// Re-enable access only. Keep base revision so a later save still detects conflicts.
 			setSnapshot( ( previous ) => previous?.groups ? ( { ...previous, groups: { ...previous.groups, [ group ]: { ...previous.groups[ group ], canEdit: current.groups![ group ].canEdit } } } ) : previous );
 			setStatuses( ( previous ) => ( { ...previous, [ group ]: __( 'Permissions refreshed. Your draft and saved baseline are kept.', 'skvn-marine-blocks' ) } ) );
-		} catch ( failure ) { setStatuses( ( previous ) => ( { ...previous, [ group ]: failure instanceof Error ? failure.message : __( 'Permissions could not be refreshed. Your draft is kept.', 'skvn-marine-blocks' ) } ) ); }
+		} catch ( failure ) { recordSessionError( failure ); setStatuses( ( previous ) => ( { ...previous, [ group ]: failure instanceof Error ? failure.message : __( 'Permissions could not be refreshed. Your draft is kept.', 'skvn-marine-blocks' ) } ) ); }
 		finally { setPending( ( previous ) => ( { ...previous, [ group ]: false } ) ); }
 	};
-	return { snapshot, drafts, error, statuses, pending, conflicts, dirty, change, save, discard, resolveConflict, refreshAccess };
+	const refreshSession = async () => {
+		if ( readPending || sessionPending || Object.values( pending ).some( Boolean ) ) return;
+		setSessionPending( true );
+		try {
+			const token = await request< { nonce: string } >( {}, lifecycle.current.signal, true );
+			if ( typeof token.nonce !== 'string' || ! token.nonce || ! window.skvnMarineDesign ) throw new Error( __( 'The session could not be refreshed. Your draft is kept.', 'skvn-marine-blocks' ) );
+			window.skvnMarineDesign.nonce = token.nonce;
+			const current = await request< Snapshot >( { operation: 'read' }, lifecycle.current.signal );
+			// Access only: never rebase saved revisions or discard drafts/conflicts here.
+			if ( snapshot ) {
+				setSnapshot( ( previous ) => previous && ( { ...previous, available: current.available, incompatible: current.incompatible, settingsUrl: current.settingsUrl, groups: previous.groups && Object.fromEntries( Object.entries( previous.groups ).map( ( [ key, saved ] ) => [ key, { ...saved, canEdit: current.groups?.[ key ]?.canEdit === true } ] ) ) as Snapshot['groups'] } ) );
+			} else {
+				// Initial load failed: there are no editable drafts/base to replace yet.
+				setSnapshot( current );
+				if ( current.groups ) setDrafts( Object.fromEntries( Object.entries( current.groups ).map( ( [ key, saved ] ) => [ key, saved.value ] ) ) );
+			}
+			setSessionError( '' );
+			setError( '' );
+		} catch ( failure ) {
+			setSessionError( failure instanceof Error ? failure.message : __( 'Sign in, then refresh your session. Your draft is kept.', 'skvn-marine-blocks' ) );
+		} finally { setSessionPending( false ); }
+	};
+	return { snapshot, drafts, error, statuses, pending, conflicts, dirty, hasDraft, sessionError, sessionPending, readPending, retryRead, refreshSession, change, save, discard, resolveConflict, refreshAccess };
 }
 
 const labels: Record< Group, string > = {
@@ -136,11 +187,21 @@ const paletteLabels = {
 	surface: __( 'Surface', 'skvn-marine-blocks' ), text: __( 'Text', 'skvn-marine-blocks' ),
 };
 export function ThemeDesign( { model }: { model: ReturnType< typeof useThemeDesign > } ) {
-	const { snapshot, drafts, error, statuses, pending, conflicts, dirty, change, save, discard, resolveConflict, refreshAccess } = model;
-	const busy = Object.values( pending ).some( Boolean );
-	if ( error ) return <PanelBody><Notice status="error" isDismissible={ false }>{ error }</Notice></PanelBody>;
-	if ( ! snapshot ) return <PanelBody><Spinner /><p>{ __( 'Loading plugin settings…', 'skvn-marine-blocks' ) }</p></PanelBody>;
+	const { snapshot, drafts, error, statuses, pending, conflicts, dirty, hasDraft, sessionError, sessionPending, readPending, retryRead, refreshSession, change, save, discard, resolveConflict, refreshAccess } = model;
+	const [ exporting, setExporting ] = useState( false );
+	const busy = readPending || sessionPending || Object.values( pending ).some( Boolean );
+	const recovery = <PanelBody>
+		{ sessionError && <Notice status="warning" isDismissible={ false }>{ sessionError }</Notice> }
+		{ ( sessionError || error ) && <Button variant="secondary" disabled={ busy } onClick={ refreshSession }>{ sessionPending ? __( 'Refreshing session…', 'skvn-marine-blocks' ) : __( 'Refresh session', 'skvn-marine-blocks' ) }</Button> }
+		{ hasDraft && <>
+			<Button variant="tertiary" onClick={ () => setExporting( ! exporting ) }>{ __( 'Export draft', 'skvn-marine-blocks' ) }</Button>
+			{ exporting && <><p>{ __( 'Copy this draft before reloading. Restore these values manually; automatic import is not available. Reloading loses unsaved drafts.', 'skvn-marine-blocks' ) }</p><label>{ __( 'Theme Design draft JSON', 'skvn-marine-blocks' ) }<textarea readOnly rows={ 12 } value={ JSON.stringify( { schemaVersion: 1, groups: Object.fromEntries( Object.entries( drafts ).filter( ( [ key ] ) => dirty( key as Group ) ) ) }, null, 2 ) } onFocus={ ( event ) => event.currentTarget.select() } /></label></> }
+		</> }
+	</PanelBody>;
+	if ( error && ! snapshot ) return <>{ recovery }<PanelBody><Notice status="error" isDismissible={ false }>{ error }</Notice><Button variant="secondary" disabled={ busy } onClick={ retryRead }>{ __( 'Retry read', 'skvn-marine-blocks' ) }</Button></PanelBody></>;
+	if ( ! snapshot ) return <>{ recovery }<PanelBody><Spinner /><p>{ __( 'Loading plugin settings…', 'skvn-marine-blocks' ) }</p></PanelBody></>;
 	return <>
+		{ recovery }
 		<PanelBody>
 			<h2>{ __( 'Plugin settings', 'skvn-marine-blocks' ) }</h2>
 			<p>{ __( 'Selected block styles are saved with the page. Theme Design is saved separately by group and applies across the site where theme tokens are inherited.', 'skvn-marine-blocks' ) }</p>
@@ -160,7 +221,7 @@ export function ThemeDesign( { model }: { model: ReturnType< typeof useThemeDesi
 						<Button variant="secondary" disabled={ busy } onClick={ () => resolveConflict( group, true ) }>{ __( 'Use current values', 'skvn-marine-blocks' ) }</Button>
 						<Button variant="secondary" disabled={ busy || ! canEdit } onClick={ () => resolveConflict( group, false ) }>{ __( 'Keep my draft', 'skvn-marine-blocks' ) }</Button>
 					</Notice> }
-					<fieldset disabled={ ! canEdit || busy || !! conflicts[ group ] } style={ { border: 0, padding: 0, margin: 0, minWidth: 0 } }>
+					<fieldset disabled={ ! canEdit || busy || !! sessionError || !! conflicts[ group ] } style={ { border: 0, padding: 0, margin: 0, minWidth: 0 } }>
 						<legend>{ labels[ group ] }</legend>
 						{ group === 'palette' && Object.entries( paletteLabels ).map( ( [ key, label ] ) => <TextControl key={ key } label={ label } help={ __( 'Hex color, for example #0369a1.', 'skvn-marine-blocks' ) } value={ value[ key ] as string } onChange={ ( color ) => change( group, { ...value, [ key ]: color } ) } /> ) }
 						{ group === 'heading' && [ 'h1', 'h2', 'h3', 'h4' ].map( ( level ) => {

@@ -16,6 +16,7 @@ add_action( 'admin_menu', 'skvn_marine_blocks_typography_menu' );
 add_action( 'admin_init', 'skvn_marine_blocks_register_typography_settings' );
 add_action( 'enqueue_block_editor_assets', 'skvn_marine_blocks_design_bootstrap' );
 add_action( 'wp_ajax_skvn_marine_design_settings', 'skvn_marine_blocks_design_settings_ajax' );
+add_action( 'wp_ajax_skvn_marine_design_session', 'skvn_marine_blocks_design_session_ajax' );
 
 /** Exact active child plus explicit theme contract; parent/name alone is insufficient. */
 function skvn_marine_blocks_design_theme_supported() {
@@ -49,7 +50,7 @@ function skvn_marine_blocks_design_refresh_owner( $owner ) {
 	if ( $wpdb->last_error ) {
 		return new WP_Error( 'storage_error', __( 'Saved settings could not be read. Your draft is kept.', 'skvn-marine-blocks' ) );
 	}
-	return array( 'exists' => is_array( $row ), 'value' => is_array( $row ) ? maybe_unserialize( $row['option_value'] ) : false );
+	return array( 'value' => is_array( $row ) ? maybe_unserialize( $row['option_value'] ) : false );
 }
 
 /** Return errors to AJAX only after finally releases the connection-owned lock. */
@@ -81,7 +82,6 @@ function skvn_marine_blocks_design_save_group( $group, $raw, $revision ) {
 		// get_theme_mods() also preserves WP's deprecated-location migration when
 		// the modern owner is absent. Both font keys are committed in ONE update.
 		$value = 'fonts' === $group ? get_theme_mods() : ( is_array( $persisted['value'] ) ? $persisted['value'] : array() );
-		$value = is_array( $value ) ? $value : array();
 		$value = is_array( $value ) ? $value : array();
 		$current = skvn_marine_blocks_design_snapshot()['groups'][ $group ];
 		if ( ! hash_equals( $current['revision'], $revision ) ) {
@@ -165,11 +165,22 @@ function skvn_marine_blocks_design_snapshot() {
 
 /** Only editor transport configuration; no theme CSS or draft preview in admin chrome. */
 function skvn_marine_blocks_design_bootstrap() {
+	$screen = get_current_screen();
 	wp_localize_script( 'skvn-marine-blocks-editor', 'skvnMarineDesign', array(
 		'url' => admin_url( 'admin-ajax.php' ),
 		'nonce' => wp_create_nonce( 'skvn_marine_design_settings' ),
 		'woocommerceAvailable' => class_exists( 'WooCommerce' ),
+		'postEditor' => $screen && 'post' === $screen->base && $screen->is_block_editor(),
 	) );
+}
+
+/** Authenticated, read-only token recovery. No settings values are returned or written. */
+function skvn_marine_blocks_design_session_ajax() {
+	nocache_headers();
+	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) && ! current_user_can( 'edit_theme_options' ) ) {
+		wp_send_json_error( array( 'code' => 'unavailable', 'canEdit' => false, 'message' => __( 'Sign in with an account that can access design settings.', 'skvn-marine-blocks' ) ), 403 );
+	}
+	wp_send_json_success( array( 'nonce' => wp_create_nonce( 'skvn_marine_design_settings' ) ) );
 }
 
 /**
@@ -177,7 +188,9 @@ function skvn_marine_blocks_design_bootstrap() {
  * Read/save are independent of Page Save. Writes merge only the requested group.
  */
 function skvn_marine_blocks_design_settings_ajax() {
-	check_ajax_referer( 'skvn_marine_design_settings', 'nonce' );
+	if ( false === check_ajax_referer( 'skvn_marine_design_settings', 'nonce', false ) ) {
+		wp_send_json_error( array( 'code' => 'expired_session', 'message' => __( 'Your design session expired. Refresh the session before saving. Your draft is kept.', 'skvn-marine-blocks' ) ), 403 );
+	}
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) && ! current_user_can( 'edit_theme_options' ) ) {
 		wp_send_json_error( array( 'code' => 'unavailable', 'canEdit' => false, 'message' => __( 'You cannot access design settings.', 'skvn-marine-blocks' ) ), 403 );
 	}
@@ -273,7 +286,7 @@ function skvn_marine_blocks_get_typography() {
  * Sanitize the full typography option array.
  *
  * Registered as sanitize_callback with register_setting so WordPress calls
- * this whenever the option is updated from any source.
+ * this for updates after registration on admin_init, including admin AJAX.
  *
  * @param mixed $value Raw option value.
  * @return array<string,mixed>

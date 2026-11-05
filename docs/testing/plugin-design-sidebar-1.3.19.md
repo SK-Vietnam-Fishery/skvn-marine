@@ -63,3 +63,22 @@ source /home/shinkuro/.nvm/nvm.sh && nvm use 20 && cd /mnt/d/Github/skvn-marine/
 ```
 
 No new PHP runtime include is planned. If include paths change, run deploy artifact/zip audit per workflow before upload. Do not deploy implicitly. Send complete build/lint output and per-case actual/status/evidence, URLs/build/browser/fixture. Agent continues with concrete failures and acceptance ledger; completion requires human onsite approval.
+
+## Second review repair — plan051, 2026-11-05
+
+Human approved G0–G4. Source baselinee13fa2c + working-tree repair; **Chờ kiểm chứng**. Record target editor/frontend URLs, authorized environment, WP/Gutenberg/PHP/DB/driver/cache and deployed build before tests. Agent VM tests exercise actual TS transport/hook with simulated hooks/fetch, not React DOM/PHP/DB/Gutenberg integration. Run with Node>=22.13: `node tools/tests/design-sidebar-session.test.mjs`.
+
+Ledger clarification: “all16” above is the report recorded2026-11-04, not a claim for the current artifact. Current source has8blockJSON at1.3.19 and Category at1.3.20; compiled assets remain outside this repair, require human rebuild/verification. This is development metadata, not release approval.
+
+| ID | Setup / exact steps | Expected / PASS criteria / evidence |
+|---|---|---|
+| SR2-EDITOR | Same authorized fixture in post/page editor, template editing inside post editor, and Site Editor with a compatible block theme. Open supported/unsupported/multi-selected blocks; change design, reset, Undo/Redo, Page Save/reopen; try shortcut/Back | Post context uses shell once; outside context Inspector fallback exposes existing component controls/reset. No dead shortcut or edit-post error; only target attrs change. Capture screen/context/version, console, video and attrs. Site Editor availability on another theme is a separate fixture, not an assumed GP feature |
+| SR2-NONCE | Draft palette and fonts; set window.skvnMarineDesign.nonce to invalid; Save palette; Refresh session; inspect requests; click Save manually |403 expired_session keeps drafts/base; token endpoint has no settings write; read updates access only; no autoSave. Manual Save persists or conflicts; raw options + requests/video |
+| SR2-SESSION-STALE | Two sessions same group/base; B saves; A invalid nonce→Save→Refresh session→Save | A keeps old revision through refresh and gets409; Keep/Use current remains explicit; unrelated draft survives. Capture payload/current/raw owner |
+| SR2-AUTH | Authorized staging: logout/login or remove capability; inject403HTML,body-1/0/null and failed network | Only structured permission response revokes access. Session/transport error keeps draft, Refresh session is manual, no retryloop/write. Login is human-controlled; capture actual status/body/UI |
+| SR2-EXPORT | Dirty2groups; simulate failed recovery; Export draft; Tab into textarea/copy; cancel page departure then reload only after copying | JSON contains only dirty group values/schemaVersion, no nonce/auth material; read-only textarea works without clipboard permission. Warning before leaving remains; no autoimport promise. Video/copied JSON |
+| SR2-LAZY | Fresh load; Selected tab first; then open Plugin; close/reopen/switch10times. Slow first read and close/reopen; fail initial read→Retry; unmount while pending |0ThemeDesign requests before first activePlugin;1successful initial read per model mount, no refetch on reopen or extra listeners; draft preserved; explicit retry and abort/live cleanup. Network counts/console |
+| SR2-LOCK-EXIT | Staging only, instrument native update hooks: throw exception separately from exit/wp_die; record nonpersistent/persistent driver settings and object cache. Inspect lock owner immediately and after subsequent request/reuse | Exception must pass finally; exit skips finally. Record release/recovery timing rather than assume persistent=leak. mysqli normally cleans GET_LOCK on reuse; custom cleanup-disabled builds/pools/topology need separate evidence. If lock remains stuck, report as new observed failure before changing protocol |
+| SR2-REGRESSION | Repeat TD-CONFLICT-RECOVER, TD permission/theme cases, E07-POST-PERSIST, UX10-RESIZE-FOCUS, Category design save/reset | Preserve original acceptance; no Post background control added, no Category term/query/persistence changes. Report each ID separately, not a blanketPASS |
+
+Send per-case expected/actual, environment/build, screenshots/video, network payload and raw saved values as applicable. Static tests do not close these onsite cases.

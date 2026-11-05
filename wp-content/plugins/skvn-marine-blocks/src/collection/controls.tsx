@@ -1,4 +1,4 @@
-import { DesignShortcut } from '../design-sidebar/navigation';
+import { canUseDesignSidebar, DesignFallback, DesignShortcut } from '../design-sidebar/navigation';
 import {
 	InspectorControls,
 	RichText,
@@ -459,7 +459,7 @@ export function CollectionEdit( {
 					) }
 				</PanelBody>
 				<PanelBody title={ __( 'Design', 'skvn-marine-blocks' ) }>
-					<DesignShortcut clientId={ clientId } />
+					{ canUseDesignSidebar() ? <DesignShortcut clientId={ clientId } /> : <DesignFallback name={ `skvn-marine/${ contentType }-collection` } update={ setAttributes } imageDisabled={ contentType !== 'product' || attributes.showImage === false || ! [ 'padded', 'floating' ].includes( attributes.mediaLayout || '' ) }>{ ( group ) => <CollectionDesignControls attributes={ attributes } contentType={ contentType } setAttributes={ setAttributes } group={ group } /> }</DesignFallback> }
 				</PanelBody>
 				<PanelBody title={ __( 'Advanced', 'skvn-marine-blocks' ) }>
 					<TextControl

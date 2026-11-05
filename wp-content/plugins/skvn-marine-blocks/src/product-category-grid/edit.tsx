@@ -1,3 +1,5 @@
+import { canUseDesignSidebar, DesignFallback, DesignShortcut } from '../design-sidebar/navigation';
+import { CategoryDesignControls } from './design';
 import {
 	PanelBody,
 	RangeControl,
@@ -59,7 +61,7 @@ function normalizeSelection( raw: unknown ): CategorySelection[] {
 	return items;
 }
 
-export function Edit( { attributes, setAttributes }: EditProps ) {
+export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
 	const selection = useMemo(
 		() => normalizeSelection( attributes.categories ),
 		[ attributes.categories ]
@@ -228,6 +230,9 @@ export function Edit( { attributes, setAttributes }: EditProps ) {
 							value={ attributes.ctaLabel || '' }
 						/>
 					) }
+				</PanelBody>
+				<PanelBody title={ __( 'Design', 'skvn-marine-blocks' ) }>
+					{ canUseDesignSidebar() ? <DesignShortcut clientId={ clientId } /> : <DesignFallback name="skvn-marine/product-category-grid" update={ setAttributes }>{ ( group ) => <CategoryDesignControls attributes={ attributes } setAttributes={ setAttributes } group={ group } /> }</DesignFallback> }
 				</PanelBody>
 			</InspectorControls>
 
