@@ -57,6 +57,11 @@ Current module context files:
 Planning snapshots live in `.context/planning/` and use a three-digit ordering prefix, starting at `000_`. Implemented or completed plans move to `.context/planning/archives/` (prefix giữ nguyên) — index: `.context/planning/archives/README.md`.
 
 Active planning (root — load when task liên quan):
+- `.context/planning/052_PRODUCT_CAROUSEL_CANVAS_PRESENTATION.md` — human approved 2026-11-05: card trái, Content summary + Query preview phải, responsive stacking và giữ thông tin cũ; docs-only, chưa implement/PASS.
+- `.context/planning/051_VER_1_3_19_SECOND_REVIEW_REPAIR_PLAN.md` — human approved G0–G4 ngày2026-11-05; source editor guard/Inspector fallback, session refresh/export và lazy ThemeDesign read. Repair source sau e13fa2c; 12 VM tests PASS, chưa human build/lint/onsite hoặc release approval. Execution record§10/runbook/handoff giữ giới hạn.
+- `.context/planning/050_VER_1_3_19_REVIEW_REPAIR_PLAN.md` — human approve A/F0–F5 ngày2026-11-05, cho coding+commit source1.3.19; conditional owner writes/conflict recovery, Post attr và focus repair. Chưa runtime/release approval. Prompt độc lập: docs/testing/plugin-design-sidebar-1.3.19-review-handoff.md.
+- `.context/planning/049_VER_1_3_20_PRODUCT_CATEGORY_GRID_EXECUTION_PLAN.md` — Category1.3.20: C0–C6, native category data/shared drafts/Page Save, CG-* + DS integration. Human duyệt 2026-11-04 Q1=A count/catalog+descendants, Q2=A card gọn 3/2/1 theo container (image/name bật, description/count/CTA tùy bật), Q3=B rich text native an toàn/excerpt riêng. Picker design lock giữ. Source Category có trong 7ef45ff; follow-up number controls/Wide default đã có source, chưa nghiệm thu và chưa đổi current khỏi 1.3.19.
+- `.context/planning/048_VER_1_3_19_PLUGIN_DESIGN_SIDEBAR_EXECUTION_PLAN.md` — Sidebar 1.3.19: P0–P6, mapping controls, Theme Design hai storage owners, DS/TD + Carousel carry-over. Human duyệt 2026-11-04 Q1=A: Fonts chỉnh trực tiếp, tái dùng theme_mod/presets; Q2=A: draft + Save riêng theo nhóm, áp dụng sau lưu, giữ draft khi chuyển tab/lỗi, chưa live preview. Đã start 2026-11-04; current 1.3.19 IN PROGRESS, runtime/release approval pending.
 - `.context/planning/046_VER_1_3_18_SITE_LOADING_NAVIGATION_UX_HOTFIX_PLAN.md` — loading/logo + navigation fade trong current 1.3.18, baseline b9332d3. Human start 2026-11-04: §11 execution record có source homepage curtain/readiness/Hero pre-init/autoplay gate/ms inputs; 8 lifecycle VM tests PASS, onsite/build chưa kiểm chứng. `/home/` main Hero đã có DOM evidence; Smooth onsite đang off, human bật khi test. Không sửa skeleton/commit/version. Giữ UXHF-01–10 và LDR-01–09/runbook; decoration/geometry/deploy evidence còn thiếu.
 - `.context/planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` — §9–13 planning chi tiết 2026-10-20: 7 hệ thống preview/query/Inspector/colors/typography/media/technical, gói P0–P6 và evidence. Current 1.3.18 đã mở ngày 19/10; implementation Editor UX chưa bắt đầu. Không sửa skeleton đợt này; giữ carry-in chưa nghiệm thu. Các dòng lịch sử 040/039 bên dưới không thay current trong MILESTONES.md.
 - `.context/planning/040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md` — planning tích lũy; §11 split human 2026-10-14: 1.3.17 Block UI & Visual QA IN PROGRESS; 1.3.18 Editor UX & Technical PLANNED chưa start. §10 rationale, §11 mapping acceptance/setting inventory; chưa thiết kế UX/technical, chưa PASS.
@@ -94,6 +99,8 @@ Project docs under `docs/` are grouped by reading purpose:
 - `docs/curriculum/` — giáo trình tự học cho human: xây plugin blocks tương tự từ chính code dự án (index: `docs/curriculum/README.md`). Không phải agent protocol; agent không cần load khi làm task.
 
 Current active docs:
+
+- `docs/testing/commit-tracking-2026-11-05.md` — feature-separated backlog commits, source/build parity caveat, test evidence và follow-up Category responsive/Carousel canvas; không release approval.
 
 - `docs/ideations/svg-maps/README.md` — V1 / 1.4.3 Interactive Illustrated Map, human chốt 2026-11-04; PLANNED chưa start, sau 1.4.2 trước 1.5.0. Hai bảng, nội dung trong điểm; sidebar plugin, Apply changes/Save map, lưu nguyên khối. Acceptance MAP-* ở MILESTONES.md; current vẫn 1.3.18.
 - `docs/standards/block-ui-editor-ux-technical-review-contract.md` — protocol ba nhóm + Content & States / Acceptance & Evidence, áp dụng theo AGENTS cho block/UI review/planning/implementation.
@@ -140,8 +147,8 @@ Technical reports (không phải decision scope):
 - `docs/testing/testing-checklist.md`
 - `docs/workflows/context-map-workflow.md`
 - `docs/workflows/ideation-chom-revslider-theme-tra-phi-to-gutenberg.md`
-- `docs/workflows/ideation-plugin-design-sidebar.md` — human chốt 2026-10-28: 1.3.21 Plugin Design Sidebar Foundation sau Category Grid 1.3.20; thay ưu tiên 2026-10-21. Selected block / Plugin, Theme Design; Carousel và Category Grid là consumers đầu tiên, nền cho Slider/Step Slider/2-side Product sau. PLANNED, chưa start; current 1.3.18.
-- `docs/ideations/category-grid-spec.md` — human xác nhận 2026-10-27: 1.3.20 Product Category Grid + Category details; Post milestone riêng sau, version TBD. Thumbnail/description lưu native Woo, thiếu ảnh dùng Woo placeholder; chọn thủ công, archive/custom URL, hide-empty, native notices, acceptance CG-*. Chưa start; ngày 2026-10-28 chốt Category trước Sidebar 1.3.21; 1.3.19 giữ cho Hero hotfix.
+- `docs/workflows/ideation-plugin-design-sidebar.md` — human 2026-11-04 hoán đổi: **1.3.19 Plugin Design Sidebar Foundation → 1.3.20 Category Grid → 1.3.21 Hero contrast**. Sidebar nhận acceptance Carousel còn thiếu từ 1.3.18; register tại MILESTONES.md. Carousel tích hợp trước, Category tích hợp trong 1.3.20. Giữ Selected block / Plugin, Theme Design; nền cho consumers sau. Sidebar 1.3.19 IN PROGRESS theo execution override; chưa runtime/release approval.
+- `docs/ideations/category-grid-spec.md` — Product Category Grid + Category details giữ 1.3.20, sau Sidebar 1.3.19 theo human 2026-11-04; Hero contrast dời 1.3.21. Post Category riêng, version TBD. Thumbnail/description native Woo, placeholder, manual selection/archive/custom URL/hide-empty/native notices; acceptance CG-* giữ nguyên, chưa start.
 - `docs/workflows/deploy-artifact-workflow.md`
 - `docs/workflows/layout-translator-workflow.md`
 - `docs/workflows/onsite-qa-checklist.md`
