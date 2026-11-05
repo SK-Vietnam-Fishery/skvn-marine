@@ -1,5 +1,5 @@
 import { useEffect, useRef } from '@wordpress/element';
-import './editor-preview-frame.css';
+import './editor-preview-frame/style.css';
 
 /** Editor DOM only: add just the spacing missing between adjacent frames. */
 export function useEditorPreviewFrame() {
