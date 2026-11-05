@@ -41,6 +41,10 @@ import { Edit as ProductCollectionEdit } from './product-collection/edit';
 import { save as productCollectionSave } from './product-collection/save';
 import { registerProductCollectionVariations } from './product-collection/variations';
 
+import productCategoryGridMetadata from './product-category-grid/block.json';
+import { Edit as ProductCategoryGridEdit } from './product-category-grid/edit';
+import './product-category-grid/style.css';
+
 registerBlockType( accordionMetadata.name, {
 	...accordionMetadata,
 	edit: AccordionEdit,
@@ -93,3 +97,10 @@ registerBlockType( productCollectionMetadata.name, {
 	save: productCollectionSave,
 } );
 registerProductCollectionVariations();
+
+registerBlockType( productCategoryGridMetadata.name, {
+	...productCategoryGridMetadata,
+	edit: ProductCategoryGridEdit,
+	// Dynamic block: the front end is rendered by PHP, so nothing is stored.
+	save: () => null,
+} );
