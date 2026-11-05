@@ -1,11 +1,12 @@
+import { DesignShortcut } from '../design-sidebar/navigation';
 import {
 	InspectorControls,
 	RichText,
 	useBlockProps,
-	useSettings,
 } from '@wordpress/block-editor';
 import {
 	CheckboxControl,
+	Button,
 	FormTokenField,
 	NumberControl,
 	PanelBody,
@@ -15,6 +16,8 @@ import {
 	ToggleControl,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import { decodeEntities } from '@wordpress/html-entities';
 import { __, sprintf } from '@wordpress/i18n';
 import {
 	BADGE_BEHAVIOR_OPTIONS,
@@ -26,7 +29,6 @@ import {
 	FONT_FAMILY_OPTIONS,
 	IMAGE_RATIO_OPTIONS,
 	LAYOUT_OPTIONS,
-	MEDIA_LAYOUT_DEFAULT,
 	MEDIA_LAYOUT_OPTIONS,
 	MEDIA_OFFSET_DEFAULT,
 	MEDIA_OFFSET_MAX,
@@ -65,7 +67,6 @@ import {
 	resolveMediaWidthPercent,
 	resolveMediaShadowCSS,
 	resolvePaddingUnit,
-	resolveShadowUnit,
 	ORDER_MODE_OPTIONS,
 	POST_ACTION_OPTIONS,
 	PRODUCT_ACTION_OPTIONS,
@@ -74,6 +75,7 @@ import {
 	SPEC_VALUES_LIMIT_OPTIONS,
 	TITLE_SIZE_OPTIONS,
 	resolveSpecValuesLimit,
+	resolveFontSize,
 } from './constants';
 import type {
 	BadgeBehavior,
@@ -98,6 +100,7 @@ import type {
 } from './types';
 
 type CollectionEditProps = {
+	clientId: string;
 	attributes: CollectionAttributes;
 	contentType: 'post' | 'product';
 	setAttributes: ( attributes: Partial< CollectionAttributes > ) => void;
@@ -107,6 +110,7 @@ export function CollectionEdit( {
 	attributes,
 	contentType,
 	setAttributes,
+	clientId,
 }: CollectionEditProps ) {
 	const categoryTaxonomy =
 		contentType === 'product' ? 'product_cat' : 'category';
@@ -260,14 +264,14 @@ export function CollectionEdit( {
 						label={ __( 'Show image', 'skvn-marine-blocks' ) }
 						onChange={ ( showImage ) => setAttributes( { showImage } ) }
 					/>
-					<SelectControl
-						label={ __( 'Image ratio', 'skvn-marine-blocks' ) }
+					{ attributes.showImage !== false && ( contentType === 'post' || ! [ 'flush', 'padded', 'floating' ].includes( attributes.mediaLayout || '' ) ) && <SelectControl
+						label={ __( 'Image ratio (legacy frame)', 'skvn-marine-blocks' ) }
 						onChange={ ( imageRatio ) =>
 							setAttributes( { imageRatio: imageRatio as ImageRatio } )
 						}
 						options={ IMAGE_RATIO_OPTIONS }
 						value={ attributes.imageRatio || ( contentType === 'product' ? '1:1' : '16:9' ) }
-					/>
+					/> }
 					{ contentType === 'product' && attributes.showImage !== false && (
 						<>
 							<SelectControl
@@ -275,173 +279,9 @@ export function CollectionEdit( {
 								onChange={ ( mediaLayout ) =>
 									setAttributes( { mediaLayout: mediaLayout as MediaLayout } )
 								}
-								options={ MEDIA_LAYOUT_OPTIONS }
-								value={ attributes.mediaLayout ?? MEDIA_LAYOUT_DEFAULT }
+								options={ [ { label: __( 'Legacy (saved ratio)', 'skvn-marine-blocks' ), value: '' }, ...MEDIA_LAYOUT_OPTIONS ] }
+								value={ attributes.mediaLayout || '' }
 							/>
-							{ attributes.mediaLayout === 'floating' && (
-								<>
-									<RangeControl
-										label={ __(
-											'Image width (% of card width)',
-											'skvn-marine-blocks'
-										) }
-										min={ MEDIA_WIDTH_MIN }
-										max={ MEDIA_WIDTH_MAX }
-										step={ MEDIA_WIDTH_STEP }
-										onChange={ ( v ) =>
-											setAttributes( { mediaWidthPercent: v } )
-										}
-										value={
-											attributes.mediaWidthPercent ??
-											MEDIA_WIDTH_DEFAULT
-										}
-									/>
-									<RangeControl
-										label={ __(
-											'Lift up from top edge (px)',
-											'skvn-marine-blocks'
-										) }
-										min={ MEDIA_OFFSET_MIN }
-										max={ MEDIA_OFFSET_MAX }
-										step={ MEDIA_OFFSET_STEP }
-										onChange={ ( v ) =>
-											setAttributes( { mediaOffset: v } )
-										}
-										value={ attributes.mediaOffset ?? MEDIA_OFFSET_DEFAULT }
-									/>
-									<ToggleControl
-										checked={ attributes.mediaShadowToggle === true }
-										label={ __( 'Image shadow', 'skvn-marine-blocks' ) }
-										onChange={ ( mediaShadowToggle ) =>
-											setAttributes( { mediaShadowToggle } )
-										}
-									/>
-									{ attributes.mediaShadowToggle === true && (
-										<>
-											<NumberControl
-												label={ __(
-													'Shadow offset X',
-													'skvn-marine-blocks'
-												) }
-												min={ MEDIA_SHADOW_OFFSET_MIN }
-												max={ MEDIA_SHADOW_OFFSET_MAX }
-												step={ MEDIA_SHADOW_OFFSET_STEP }
-												onChange={ ( v ) =>
-													setAttributes( {
-														mediaShadowOffsetX: v,
-													} )
-												}
-												value={
-													attributes.mediaShadowOffsetX ??
-													MEDIA_SHADOW_OFFSET_DEFAULT
-												}
-											/>
-											<NumberControl
-												label={ __(
-													'Shadow offset Y',
-													'skvn-marine-blocks'
-												) }
-												min={ MEDIA_SHADOW_OFFSET_MIN }
-												max={ MEDIA_SHADOW_OFFSET_MAX }
-												step={ MEDIA_SHADOW_OFFSET_STEP }
-												onChange={ ( v ) =>
-													setAttributes( {
-														mediaShadowOffsetY: v,
-													} )
-												}
-												value={
-													attributes.mediaShadowOffsetY ??
-													MEDIA_SHADOW_OFFSET_DEFAULT
-												}
-											/>
-											<SelectControl
-												label={ __(
-													'Shadow unit',
-													'skvn-marine-blocks'
-												) }
-												onChange={ ( mediaShadowUnit ) =>
-													setAttributes( {
-														mediaShadowUnit: mediaShadowUnit as ShadowUnit,
-													} )
-												}
-												options={ MEDIA_SHADOW_UNIT_OPTIONS }
-												value={
-													attributes.mediaShadowUnit ??
-													MEDIA_SHADOW_UNIT_DEFAULT
-												}
-											/>
-											<RangeControl
-												label={ __(
-													'Shadow blur',
-													'skvn-marine-blocks'
-												) }
-												min={ MEDIA_SHADOW_BLUR_MIN }
-												max={ MEDIA_SHADOW_BLUR_MAX }
-												step={ MEDIA_SHADOW_BLUR_STEP }
-												onChange={ ( v ) =>
-													setAttributes( { mediaShadowBlur: v } )
-												}
-												value={
-													attributes.mediaShadowBlur ??
-													MEDIA_SHADOW_BLUR_DEFAULT
-												}
-											/>
-											<RangeControl
-												label={ __(
-													'Shadow opacity (%)',
-													'skvn-marine-blocks'
-												) }
-												min={ MEDIA_SHADOW_OPACITY_MIN }
-												max={ MEDIA_SHADOW_OPACITY_MAX }
-												step={ MEDIA_SHADOW_OPACITY_STEP }
-												onChange={ ( v ) =>
-													setAttributes( { mediaShadowOpacity: v } )
-												}
-												value={
-													attributes.mediaShadowOpacity ??
-													MEDIA_SHADOW_OPACITY_DEFAULT
-												}
-											/>
-										</>
-									) }
-								</>
-							) }
-							{ attributes.mediaLayout === 'padded' && (
-								<>
-									<NumberControl
-										label={ __(
-											'Frame padding',
-											'skvn-marine-blocks'
-										) }
-										min={ MEDIA_PADDING_MIN }
-										max={ MEDIA_PADDING_MAX }
-										step={ MEDIA_PADDING_STEP }
-										onChange={ ( v ) =>
-											setAttributes( { mediaPadding: v } )
-										}
-										value={
-											attributes.mediaPadding ??
-											MEDIA_PADDING_DEFAULT
-										}
-									/>
-									<SelectControl
-										label={ __(
-											'Padding unit',
-											'skvn-marine-blocks'
-										) }
-										onChange={ ( mediaPaddingUnit ) =>
-											setAttributes( {
-												mediaPaddingUnit: mediaPaddingUnit as PaddingUnit,
-											} )
-										}
-										options={ MEDIA_PADDING_UNIT_OPTIONS }
-										value={
-											attributes.mediaPaddingUnit ??
-											MEDIA_PADDING_UNIT_DEFAULT
-										}
-									/>
-								</>
-							) }
 						</>
 					) }
 					<SelectControl
@@ -618,142 +458,8 @@ export function CollectionEdit( {
 						</>
 					) }
 				</PanelBody>
-				<PanelBody title={ __( 'Style', 'skvn-marine-blocks' ) }>
-					<p className="skvn-collection__editor-section-heading">
-						{ __( 'Typography', 'skvn-marine-blocks' ) }
-					</p>
-					{/* Title role */}
-						<SelectControl
-							label={ __( 'Title font', 'skvn-marine-blocks' ) }
-							onChange={ ( titleFontFamily ) =>
-								setAttributes( {
-									titleFontFamily: titleFontFamily as FontFamily,
-								} )
-							}
-							options={ FONT_FAMILY_OPTIONS }
-							value={ attributes.titleFontFamily || '' }
-						/>
-						<SelectControl
-							label={ __( 'Title size', 'skvn-marine-blocks' ) }
-							onChange={ ( titleFontSize ) =>
-								setAttributes( {
-									titleFontSize: resolveFontSize(
-										titleFontSize,
-										[ 'base', 'lg', 'xl', '2xl' ]
-									),
-								} )
-							}
-							options={ TITLE_SIZE_OPTIONS }
-							value={ attributes.titleFontSize || '' }
-						/>
-						<SelectControl
-							label={ __( 'Title color', 'skvn-marine-blocks' ) }
-							onChange={ ( titleColor ) =>
-								setAttributes( { titleColor: titleColor as ColorSlug } )
-							}
-							options={ COLOR_PALETTE_OPTIONS }
-							value={ attributes.titleColor || '' }
-						/>
-						{/* Details role */}
-						<SelectControl
-							label={ __( 'Details font', 'skvn-marine-blocks' ) }
-							onChange={ ( detailsFontFamily ) =>
-								setAttributes( {
-									detailsFontFamily: detailsFontFamily as FontFamily,
-								} )
-							}
-							options={ FONT_FAMILY_OPTIONS }
-							value={ attributes.detailsFontFamily || '' }
-						/>
-						<SelectControl
-							label={ __( 'Details size', 'skvn-marine-blocks' ) }
-							onChange={ ( detailsFontSize ) =>
-								setAttributes( {
-									detailsFontSize: resolveFontSize(
-										detailsFontSize,
-										[ 'sm', 'base', 'lg' ]
-									),
-								} )
-							}
-							options={ DETAILS_SIZE_OPTIONS }
-							value={ attributes.detailsFontSize || '' }
-						/>
-						<SelectControl
-							label={ __( 'Details color', 'skvn-marine-blocks' ) }
-							onChange={ ( detailsColor ) =>
-								setAttributes( {
-									detailsColor: detailsColor as ColorSlug,
-								} )
-							}
-							options={ COLOR_PALETTE_OPTIONS }
-							value={ attributes.detailsColor || '' }
-						/>
-						{/* Action role */}
-						<SelectControl
-							label={ __( 'Action font', 'skvn-marine-blocks' ) }
-							onChange={ ( actionFontFamily ) =>
-								setAttributes( {
-									actionFontFamily: actionFontFamily as FontFamily,
-								} )
-							}
-							options={ FONT_FAMILY_OPTIONS }
-							value={ attributes.actionFontFamily || '' }
-						/>
-						<SelectControl
-							label={ __( 'Action size', 'skvn-marine-blocks' ) }
-							onChange={ ( actionFontSize ) =>
-								setAttributes( {
-									actionFontSize: resolveFontSize(
-										actionFontSize,
-										[ 'base', 'lg', 'xl', '2xl' ]
-									),
-								} )
-							}
-							options={ TITLE_SIZE_OPTIONS }
-							value={ attributes.actionFontSize || '' }
-						/>
-						<SelectControl
-							label={ __( 'Action background', 'skvn-marine-blocks' ) }
-							onChange={ ( actionBackgroundColor ) =>
-								setAttributes( {
-									actionBackgroundColor:
-										actionBackgroundColor as ColorSlug,
-								} )
-							}
-							options={ COLOR_PALETTE_OPTIONS }
-							value={ attributes.actionBackgroundColor || '' }
-						/>
-						<SelectControl
-							label={ __( 'Action text', 'skvn-marine-blocks' ) }
-							onChange={ ( actionTextColor ) =>
-								setAttributes( {
-									actionTextColor: actionTextColor as ColorSlug,
-								} )
-							}
-							options={ COLOR_PALETTE_OPTIONS }
-							value={ attributes.actionTextColor || '' }
-						/>
-						<SelectControl
-							label={ __( 'Action hover background', 'skvn-marine-blocks' ) }
-							onChange={ ( actionHoverBackgroundColor ) =>
-								setAttributes( {
-									actionHoverBackgroundColor:
-										actionHoverBackgroundColor as ColorSlug,
-								} )
-							}
-							options={ COLOR_PALETTE_OPTIONS }
-							value={ attributes.actionHoverBackgroundColor || '' }
-						/>
-						<SelectControl
-							label={ __( 'Action hover text', 'skvn-marine-blocks' ) }
-							onChange={ ( actionHoverTextColor ) =>
-								setAttributes( {
-									actionHoverTextColor: actionHoverTextColor as ColorSlug,
-								} )
-							}
-							options={ COLOR_PALETTE_OPTIONS }
-							value={ attributes.actionHoverTextColor || '' }
-						/>
+				<PanelBody title={ __( 'Design', 'skvn-marine-blocks' ) }>
+					<DesignShortcut clientId={ clientId } />
 				</PanelBody>
 				<PanelBody title={ __( 'Advanced', 'skvn-marine-blocks' ) }>
 					<TextControl
@@ -809,10 +515,13 @@ export function CollectionEdit( {
 				value={ attributes.intro }
 			/>
 			<div className="skvn-collection__editor-body">
+				<div className="skvn-collection__editor-sample">
+					<p>{ __( 'Illustrative sample — not live card data', 'skvn-marine-blocks' ) }</p>
 				<PlaceholderCard
 					attributes={ attributes }
 					contentType={ contentType }
 				/>
+				</div>
 				<EditorInfoPanel
 					attributes={ attributes }
 					contentType={ contentType }
@@ -820,6 +529,7 @@ export function CollectionEdit( {
 					tagTerms={ tagTerms }
 				/>
 			</div>
+			{ ( attributes.archiveUrl || ( attributes.showCatalogCta && attributes.catalogCtaUrl ) ) && <p>{ __( 'Footer actions:', 'skvn-marine-blocks' ) } { attributes.archiveUrl ? attributes.archiveLabel || __( 'View all', 'skvn-marine-blocks' ) : '' } { attributes.showCatalogCta && attributes.catalogCtaUrl ? attributes.catalogCtaLabel || __( 'View catalog', 'skvn-marine-blocks' ) : '' }</p> }
 		</section>
 	);
 }
@@ -886,7 +596,7 @@ function useQueryPreview(
 	attributes: CollectionAttributes,
 	categoryTerms: TermRecord[],
 	tagTerms: TermRecord[]
-): PostRecord[] | null {
+): { items: PostRecord[] | null; state: 'loading' | 'results' | 'empty' | 'error' | 'unavailable'; key: string } {
 	const catIds = ( attributes.categories || [] )
 		.map( ( slug ) => categoryTerms.find( ( t ) => t.slug === slug )?.id )
 		.filter( ( id ): id is number => id !== undefined );
@@ -894,21 +604,13 @@ function useQueryPreview(
 		.map( ( slug ) => tagTerms.find( ( t ) => t.slug === slug )?.id )
 		.filter( ( id ): id is number => id !== undefined );
 
-	const orderMap: Record< string, { orderby: string; order: string } > = {
-		newest:             { orderby: 'date',       order: 'desc' },
-		featured:           { orderby: 'menu_order', order: 'asc' },
-		manual:             { orderby: 'menu_order', order: 'asc' },
-		'shuffle-balanced': { orderby: 'rand',       order: 'desc' },
-	};
-	const { orderby, order } =
-		orderMap[ attributes.orderMode || 'newest' ] ||
-		{ orderby: 'date', order: 'desc' };
-
 	const queryParams: Record< string, unknown > = {
 		per_page: Math.min( attributes.itemsToShow || 3, contentType === 'product' ? 20 : 5 ),
 		status:   'publish',
-		orderby,
-		order,
+		// Native post REST does not implement collection featured/manual/shuffle semantics.
+		// Keep a valid newest sample and disclose this limit instead of sending invalid orderby.
+		orderby: 'date',
+		order: 'desc',
 	};
 
 	if ( contentType === 'product' ) {
@@ -919,15 +621,19 @@ function useQueryPreview(
 		if ( tagIds.length > 0 ) queryParams.tags = tagIds;
 	}
 
-	const queryKey = contentType + JSON.stringify( queryParams );
+	const unresolvedTerms = catIds.length !== ( attributes.categories || [] ).length || tagIds.length !== ( attributes.tags || [] ).length;
+	const queryKey = contentType + JSON.stringify( queryParams ) + String( unresolvedTerms ) + attributes.orderMode + attributes.relation;
 
 	return useSelect(
-		( select ) =>
-			( select( 'core' ).getEntityRecords(
-				'postType',
-				contentType === 'product' ? 'product' : 'post',
-				queryParams
-			) as PostRecord[] | null ),
+		( select ) => {
+			if ( unresolvedTerms || ( contentType === 'product' && window.skvnMarineDesign?.woocommerceAvailable === false ) ) return { items: null, state: 'unavailable' as const, key: queryKey };
+			const core = select( 'core' );
+			const args = [ 'postType', contentType === 'product' ? 'product' : 'post', queryParams ];
+			const items = core.getEntityRecords( ...args ) as PostRecord[] | null;
+			const failed = core.getResolutionError?.( 'getEntityRecords', args );
+			const finished = core.hasFinishedResolution( 'getEntityRecords', args );
+			return { items, key: queryKey, state: failed || ( finished && items === null ) ? 'error' as const : items === null ? 'loading' as const : items.length ? 'results' as const : 'empty' as const };
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ queryKey ]
 	);
@@ -969,14 +675,16 @@ type PreviewSpecGroup = {
 function PreviewSpecGroups( {
 	groups,
 	limit,
+	className = '',
 }: {
 	groups: PreviewSpecGroup[];
 	limit: number;
+	className?: string;
 } ) {
 	const safeLimit = Math.max( 1, limit );
 
 	return (
-		<div className="skvn-collection-card__specs skvn-collection-card__specs--grouped">
+		<div className={ `skvn-collection-card__specs skvn-collection-card__specs--grouped${ className }` }>
 			{ groups.map( ( group ) => {
 				const visible = group.values.slice( 0, safeLimit );
 				const remaining = group.values.length - visible.length;
@@ -1035,7 +743,7 @@ function PlaceholderCard( {
 	// handling and never receives the floating/padded preset.
 	const mediaLayout = resolveMediaLayout( attributes.mediaLayout );
 	const mediaLayoutClass =
-		contentType === 'product'
+		contentType === 'product' && [ 'flush', 'padded', 'floating' ].includes( attributes.mediaLayout || '' )
 			? `skvn-collection-card--media-${ mediaLayout }`
 			: '';
 	const cardClass = [ 'skvn-collection-card', chipClass, chipColorClass, mediaLayoutClass ]
@@ -1068,7 +776,7 @@ function PlaceholderCard( {
 
 		return (
 			<div className={ cardClass }>
-				<div className="skvn-collection-card__media">
+				{ attributes.showImage !== false && <div className="skvn-collection-card__media">
 					{ showCategories && (
 						<div className="skvn-collection-card__badges">
 							<span className="skvn-collection-card__badge">Category</span>
@@ -1077,14 +785,15 @@ function PlaceholderCard( {
 					{ attributes.showImage !== false && (
 						<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" />
 					) }
-				</div>
+				</div> }
 				<div className="skvn-collection-card__body">
-					<h3 className={`skvn-collection-card__title${ titleClasses }`}>
-						{ __( 'Post title', 'skvn-marine-blocks' ) }
-					</h3>
 					{ showDate && (
 						<span className={`skvn-collection-card__date${ detailsClasses }`}>Jan 1, 2025</span>
 					) }
+					{ attributes.showAuthor === true && <span className={ `skvn-collection-card__author${ detailsClasses }` }>{ __( 'Sample author', 'skvn-marine-blocks' ) }</span> }
+					<h3 className={`skvn-collection-card__title${ titleClasses }`}>
+						{ __( 'Post title', 'skvn-marine-blocks' ) }
+					</h3>
 					{ showExcerpt && (
 						<p className={`skvn-collection-card__excerpt${ detailsClasses }`}>
 							{ __( 'Post excerpt preview…', 'skvn-marine-blocks' ) }
@@ -1133,7 +842,7 @@ function PlaceholderCard( {
 
 	return (
 		<div className={ cardClass }>
-			<div className="skvn-collection-card__media" style={ paddedStyle }>
+			{ attributes.showImage !== false && <div className="skvn-collection-card__media" style={ paddedStyle }>
 				{ showTags && (
 					<div className="skvn-collection-card__badges">
 						<span className="skvn-collection-card__badge">Product tag</span>
@@ -1142,7 +851,7 @@ function PlaceholderCard( {
 				{ attributes.showImage !== false && (
 					<div className="skvn-collection-card__image skvn-collection-card__image--placeholder" style={ floatStyle } />
 				) }
-			</div>
+			</div> }
 			<div className="skvn-collection-card__body">
 				<h3 className={`skvn-collection-card__title${ titleClasses }`}>
 					{ __( 'Product name', 'skvn-marine-blocks' ) }
@@ -1150,6 +859,7 @@ function PlaceholderCard( {
 				{ showSpecs && isCarousel && (
 					<>
 						<PreviewSpecGroups
+							className={ detailsClasses }
 							groups={ PREVIEW_SPEC_GROUPS }
 							limit={ resolveSpecValuesLimit( attributes.specValuesLimit ) }
 						/>
@@ -1189,7 +899,7 @@ function EditorInfoPanel( {
 	categoryTerms: TermRecord[];
 	tagTerms: TermRecord[];
 } ) {
-	const items = useQueryPreview( contentType, attributes, categoryTerms, tagTerms );
+	const query = useQueryPreview( contentType, attributes, categoryTerms, tagTerms );
 	const isProduct = contentType === 'product';
 
 	const fields = [
@@ -1207,11 +917,12 @@ function EditorInfoPanel( {
 		),
 		isProduct
 			? { label: `CTA: ${ actionModeLabel( attributes.productActionMode || 'quote' ) }`, active: ( attributes.productActionMode || 'quote' ) !== 'none' }
-			: { label: `CTA: ${ actionModeLabel( attributes.postActionMode || 'read' ) }`,    active: true },
+			: { label: `CTA: ${ actionModeLabel( attributes.postActionMode || 'read' ) }`, active: true },
 		{ label: 'Equal height', active: attributes.equalHeight !== false },
 	];
 
 	return (
+		<>
 		<div className="skvn-collection__editor-info">
 			<p className="skvn-collection__editor-info-heading">
 				{ __( 'Card data:', 'skvn-marine-blocks' ) }
@@ -1229,46 +940,53 @@ function EditorInfoPanel( {
 					</li>
 				) ) }
 			</ul>
-			<p className="skvn-collection__editor-info-heading skvn-collection__editor-info-heading--products">
-				{ isProduct
-					? __( 'Products in query:', 'skvn-marine-blocks' )
-					: __( 'Posts in query:', 'skvn-marine-blocks' ) }
-			</p>
-			{ items === null ? (
-				<p className="skvn-collection__editor-product-status">
-					{ __( 'Loading query...', 'skvn-marine-blocks' ) }
-				</p>
-			) : items.length === 0 ? (
-				<p className="skvn-collection__editor-product-status">
-					{ isProduct
-						? __( 'No products match.', 'skvn-marine-blocks' )
-						: __( 'No posts match.', 'skvn-marine-blocks' ) }
-				</p>
-			) : (
-				<>
-					<p className="skvn-collection__editor-product-count">
-						{ sprintf(
-							__(
-								'%d item in query preview',
-								'skvn-marine-blocks'
-							),
-							items.length
-						) }
-					</p>
-					<div className="skvn-collection__editor-product-grid">
-						{ items.map( ( p ) => (
-							<div key={ p.id } className="skvn-collection__editor-product-item">
-								{ p.title.rendered }
-							</div>
-						) ) }
-					</div>
-					<p className="skvn-collection__editor-product-note">
-						{ __( '* Approximate list — editor-side preview may differ from frontend query.', 'skvn-marine-blocks' ) }
-					</p>
-				</>
-			) }
 		</div>
+		<QueryPreview key={ query.key } query={ query } contentType={ contentType } />
+		</>
 	);
+}
+
+function QueryPreview( { query, contentType }: { query: ReturnType< typeof useQueryPreview >; contentType: 'post' | 'product' } ) {
+	const container = useRef< HTMLDivElement >( null );
+	const queryHeading = useRef< HTMLHeadingElement >( null );
+	const disclosure = useRef< HTMLButtonElement >( null );
+	const [ columns, setColumns ] = useState( 1 );
+	const [ expanded, setExpanded ] = useState( false );
+	useEffect( () => {
+		const element = container.current;
+		if ( ! element ) return;
+		const measure = () => { const width = element.getBoundingClientRect().width; setColumns( width >= 700 ? 3 : width >= 380 ? 2 : 1 ); };
+		measure();
+		const observer = new ResizeObserver( measure );
+		observer.observe( element );
+		return () => observer.disconnect();
+	}, [] );
+	const items = query.items || [];
+	const limit = columns * 3;
+	const visible = expanded ? items : items.slice( 0, limit );
+	const messages = {
+		loading: __( 'Loading query preview…', 'skvn-marine-blocks' ),
+		empty: __( 'No matching records in this preview.', 'skvn-marine-blocks' ),
+		error: __( 'Query preview could not be loaded. Check the REST response and permissions; frontend results are not shown here.', 'skvn-marine-blocks' ),
+		unavailable: __( 'Query preview is unavailable: WooCommerce or selected taxonomy terms are unavailable or still loading.', 'skvn-marine-blocks' ),
+		results: '',
+	};
+	return <div ref={ container } className="skvn-collection__editor-query">
+		<h3 ref={ queryHeading } tabIndex={ -1 }>{ contentType === 'product' ? __( 'Product query preview', 'skvn-marine-blocks' ) : __( 'Post query preview', 'skvn-marine-blocks' ) }</h3>
+		<p>{ __( 'Approximate native REST sample, newest first. Featured, manual and shuffle ordering and OR across category/tag filters are not reproduced. Post preview is capped at 5; frontend query remains authoritative.', 'skvn-marine-blocks' ) }</p>
+		{ query.state !== 'results' ? <p role="status">{ messages[ query.state ] }</p> : <>
+			<p>{ sprintf( __( '%d records fetched for preview', 'skvn-marine-blocks' ), items.length ) }</p>
+			<ol className="skvn-collection__editor-product-grid" style={ { gridTemplateColumns: `repeat(${ columns }, minmax(0, 1fr))` } }>
+				{ visible.map( ( item ) => <li key={ item.id } className="skvn-collection__editor-product-item">{ decodeEntities( item.title?.rendered || __( 'Untitled', 'skvn-marine-blocks' ) ) }</li> ) }
+			</ol>
+			{ ( expanded || items.length > limit ) && <Button ref={ disclosure } variant="secondary" onClick={ () => {
+				// After a narrow→wide resize, collapsing can remove this button.
+				// Move only its own active focus; never steal focus from another input.
+				if ( expanded && items.length <= limit && disclosure.current === disclosure.current?.ownerDocument.activeElement ) queryHeading.current?.focus();
+				setExpanded( ! expanded );
+			} }>{ expanded ? __( 'Show less', 'skvn-marine-blocks' ) : sprintf( __( 'Show %d more', 'skvn-marine-blocks' ), items.length - limit ) }</Button> }
+		</> }
+	</div>;
 }
 
 function actionModeLabel( mode: string ): string {
@@ -1324,16 +1042,6 @@ function ProductCardControls( {
 	attributes,
 	setAttributes,
 }: Pick< CollectionEditProps, 'attributes' | 'setAttributes' > ) {
-	const [ colorPalette ] = useSettings( 'color.palette' ) as Array<
-		Array< { slug: string; name: string; color: string } >
-	>;
-	const chipColorOptions = [
-		{ label: __( 'Default', 'skvn-marine-blocks' ), value: '' },
-		...( colorPalette || [] ).map( ( c ) => ( {
-			label: c.name,
-			value: c.slug,
-		} ) ),
-	];
 
 	return (
 		<>
@@ -1349,7 +1057,340 @@ function ProductCardControls( {
 				label={ __( 'Show spec chips', 'skvn-marine-blocks' ) }
 				onChange={ ( showSpecChips ) => setAttributes( { showSpecChips } ) }
 			/>
-			{ attributes.showSpecChips !== false && (
+
+		</>
+	);
+}
+
+export type DesignGroup = 'image' | 'title' | 'details' | 'action';
+export function CollectionDesignControls( { attributes, contentType, setAttributes, group }: Omit< CollectionEditProps, 'clientId' > & { group: DesignGroup } ) {
+	if ( group === 'details' && ( contentType === 'product' ? attributes.showSpecChips === false : attributes.showDate === false && attributes.showAuthor !== true && attributes.showExcerpt === false ) ) {
+		return <p>{ __( 'Enable a Details field in Block settings before adjusting its design. Saved styles are retained.', 'skvn-marine-blocks' ) }</p>;
+	}
+	const knownColors = COLOR_PALETTE_OPTIONS.map( ( option ) => option.value as string );
+	const invalid = [ attributes.titleColor, attributes.detailsColor, attributes.actionTextColor, attributes.actionBackgroundColor, attributes.actionHoverTextColor, attributes.actionHoverBackgroundColor, attributes.chipColorScheme ].some( ( value ) => value && ! knownColors.includes( value ) );
+	const invalidFont = [ attributes.titleFontFamily, attributes.detailsFontFamily, attributes.actionFontFamily ].some( ( value ) => value && ! FONT_FAMILY_OPTIONS.some( ( option ) => option.value === value ) );
+return <>
+{ invalid && <p role="status">{ __( 'An unavailable saved color is retained. It falls back until you choose a supported color or reset its component.', 'skvn-marine-blocks' ) }</p> }
+{ invalidFont && <p role="status">{ __( 'An unavailable saved font role is retained. It uses the inherited fallback until you choose a supported role or reset its component.', 'skvn-marine-blocks' ) }</p> }
+{ group === 'image' && ( contentType === 'product' && attributes.showImage !== false ? <>
+							{ attributes.mediaLayout === 'floating' && (
+								<>
+									<RangeControl
+										label={ __(
+											'Image width (% of card width)',
+											'skvn-marine-blocks'
+										) }
+										min={ MEDIA_WIDTH_MIN }
+										max={ MEDIA_WIDTH_MAX }
+										step={ MEDIA_WIDTH_STEP }
+										onChange={ ( v ) =>
+											setAttributes( { mediaWidthPercent: v } )
+										}
+										value={
+											attributes.mediaWidthPercent ??
+											MEDIA_WIDTH_DEFAULT
+										}
+									/>
+									<RangeControl
+										label={ __(
+											'Lift up from top edge (px)',
+											'skvn-marine-blocks'
+										) }
+										min={ MEDIA_OFFSET_MIN }
+										max={ MEDIA_OFFSET_MAX }
+										step={ MEDIA_OFFSET_STEP }
+										onChange={ ( v ) =>
+											setAttributes( { mediaOffset: v } )
+										}
+										value={ attributes.mediaOffset ?? MEDIA_OFFSET_DEFAULT }
+									/>
+									<ToggleControl
+										checked={ attributes.mediaShadowToggle === true }
+										label={ __( 'Image shadow', 'skvn-marine-blocks' ) }
+										onChange={ ( mediaShadowToggle ) =>
+											setAttributes( { mediaShadowToggle } )
+										}
+									/>
+									{ attributes.mediaShadowToggle === true && (
+										<>
+											<NumberControl
+												label={ __(
+													'Shadow offset X',
+													'skvn-marine-blocks'
+												) }
+												min={ MEDIA_SHADOW_OFFSET_MIN }
+												max={ MEDIA_SHADOW_OFFSET_MAX }
+												step={ MEDIA_SHADOW_OFFSET_STEP }
+												onChange={ ( v ) =>
+													setAttributes( {
+														mediaShadowOffsetX: resolveMediaShadowOffset( v ),
+													} )
+												}
+												value={
+													attributes.mediaShadowOffsetX ??
+													MEDIA_SHADOW_OFFSET_DEFAULT
+												}
+											/>
+											<NumberControl
+												label={ __(
+													'Shadow offset Y',
+													'skvn-marine-blocks'
+												) }
+												min={ MEDIA_SHADOW_OFFSET_MIN }
+												max={ MEDIA_SHADOW_OFFSET_MAX }
+												step={ MEDIA_SHADOW_OFFSET_STEP }
+												onChange={ ( v ) =>
+													setAttributes( {
+														mediaShadowOffsetY: resolveMediaShadowOffset( v ),
+													} )
+												}
+												value={
+													attributes.mediaShadowOffsetY ??
+													MEDIA_SHADOW_OFFSET_DEFAULT
+												}
+											/>
+											<SelectControl
+												label={ __(
+													'Shadow unit',
+													'skvn-marine-blocks'
+												) }
+												onChange={ ( mediaShadowUnit ) =>
+													setAttributes( {
+														mediaShadowUnit: mediaShadowUnit as ShadowUnit,
+													} )
+												}
+												options={ MEDIA_SHADOW_UNIT_OPTIONS }
+												value={
+													attributes.mediaShadowUnit ??
+													MEDIA_SHADOW_UNIT_DEFAULT
+												}
+											/>
+											<RangeControl
+												label={ __(
+													'Shadow blur',
+													'skvn-marine-blocks'
+												) }
+												min={ MEDIA_SHADOW_BLUR_MIN }
+												max={ MEDIA_SHADOW_BLUR_MAX }
+												step={ MEDIA_SHADOW_BLUR_STEP }
+												onChange={ ( v ) =>
+												setAttributes( { mediaShadowBlur: resolveMediaShadowBlur( v ) } )
+												}
+												value={
+													attributes.mediaShadowBlur ??
+													MEDIA_SHADOW_BLUR_DEFAULT
+												}
+											/>
+											<RangeControl
+												label={ __(
+													'Shadow opacity (%)',
+													'skvn-marine-blocks'
+												) }
+												min={ MEDIA_SHADOW_OPACITY_MIN }
+												max={ MEDIA_SHADOW_OPACITY_MAX }
+												step={ MEDIA_SHADOW_OPACITY_STEP }
+												onChange={ ( v ) =>
+												setAttributes( { mediaShadowOpacity: resolveMediaShadowOpacity( v ) } )
+												}
+												value={
+													attributes.mediaShadowOpacity ??
+													MEDIA_SHADOW_OPACITY_DEFAULT
+												}
+											/>
+										</>
+									) }
+								</>
+							) }
+							{ attributes.mediaLayout === 'padded' && (
+								<>
+									<NumberControl
+										label={ __(
+											'Frame padding',
+											'skvn-marine-blocks'
+										) }
+										min={ MEDIA_PADDING_MIN }
+										max={ MEDIA_PADDING_MAX }
+										step={ MEDIA_PADDING_STEP }
+										onChange={ ( v ) =>
+											setAttributes( { mediaPadding: resolveMediaPadding( v ) } )
+										}
+										value={
+											attributes.mediaPadding ??
+											MEDIA_PADDING_DEFAULT
+										}
+									/>
+									<SelectControl
+										label={ __(
+											'Padding unit',
+											'skvn-marine-blocks'
+										) }
+										onChange={ ( mediaPaddingUnit ) =>
+											setAttributes( {
+												mediaPaddingUnit: mediaPaddingUnit as PaddingUnit,
+											} )
+										}
+										options={ MEDIA_PADDING_UNIT_OPTIONS }
+										value={
+											attributes.mediaPaddingUnit ??
+											MEDIA_PADDING_UNIT_DEFAULT
+										}
+									/>
+								</>
+							) }
+
+<p>{ __( 'Choose the media preset in Block settings. Existing bounds and defaults are preserved.', 'skvn-marine-blocks' ) }</p>
+</> : <p>{ __( 'Image adjustments are available for Product images. Image visibility and ratio stay in Block settings.', 'skvn-marine-blocks' ) }</p> ) }
+{ group === 'title' && <>{/* Title role */}
+						<SelectControl
+							label={ __( 'Title font', 'skvn-marine-blocks' ) }
+							onChange={ ( titleFontFamily ) =>
+								setAttributes( {
+									titleFontFamily: titleFontFamily as FontFamily,
+								} )
+							}
+							options={ FONT_FAMILY_OPTIONS }
+							value={ attributes.titleFontFamily || '' }
+						/>
+						<SelectControl
+							label={ __( 'Title size', 'skvn-marine-blocks' ) }
+							onChange={ ( titleFontSize ) =>
+								setAttributes( {
+									titleFontSize: resolveFontSize(
+										titleFontSize,
+										[ 'base', 'lg', 'xl', '2xl' ]
+									) as CardRoleSize,
+								} )
+							}
+							options={ TITLE_SIZE_OPTIONS }
+							value={ attributes.titleFontSize || '' }
+						/>
+						<SelectControl
+							label={ __( 'Title color', 'skvn-marine-blocks' ) }
+							onChange={ ( titleColor ) =>
+								setAttributes( { titleColor: titleColor as ColorSlug } )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.titleColor || '' }
+						/>
+						</> }
+{ group === 'details' && <>{/* Details role */}
+						<SelectControl
+							label={ __( 'Details font', 'skvn-marine-blocks' ) }
+							onChange={ ( detailsFontFamily ) =>
+								setAttributes( {
+									detailsFontFamily: detailsFontFamily as FontFamily,
+								} )
+							}
+							options={ FONT_FAMILY_OPTIONS }
+							value={ attributes.detailsFontFamily || '' }
+						/>
+						<SelectControl
+							label={ __( 'Details size', 'skvn-marine-blocks' ) }
+							onChange={ ( detailsFontSize ) =>
+								setAttributes( {
+									detailsFontSize: resolveFontSize(
+										detailsFontSize,
+										[ 'sm', 'base', 'lg' ]
+									) as DetailsSize,
+								} )
+							}
+							options={ DETAILS_SIZE_OPTIONS }
+							value={ attributes.detailsFontSize || '' }
+						/>
+						<SelectControl
+							label={ __( 'Details color', 'skvn-marine-blocks' ) }
+							onChange={ ( detailsColor ) =>
+								setAttributes( {
+									detailsColor: detailsColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.detailsColor || '' }
+						/>
+						<ProductChipDesign attributes={ attributes } setAttributes={ setAttributes } contentType={ contentType } /></> }
+{ group === 'action' && <>{/* Action role */}
+						<SelectControl
+							label={ __( 'Action font', 'skvn-marine-blocks' ) }
+							onChange={ ( actionFontFamily ) =>
+								setAttributes( {
+									actionFontFamily: actionFontFamily as FontFamily,
+								} )
+							}
+							options={ FONT_FAMILY_OPTIONS }
+							value={ attributes.actionFontFamily || '' }
+						/>
+						<SelectControl
+							label={ __( 'Action size', 'skvn-marine-blocks' ) }
+							onChange={ ( actionFontSize ) =>
+								setAttributes( {
+									actionFontSize: resolveFontSize(
+										actionFontSize,
+										[ 'base', 'lg', 'xl', '2xl' ]
+									) as CardRoleSize,
+								} )
+							}
+							options={ TITLE_SIZE_OPTIONS }
+							value={ attributes.actionFontSize || '' }
+						/>
+						{ contentType === 'product' && (
+<SelectControl
+							label={ __( 'Action background', 'skvn-marine-blocks' ) }
+							onChange={ ( actionBackgroundColor ) =>
+								setAttributes( {
+									actionBackgroundColor:
+										actionBackgroundColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.actionBackgroundColor || '' }
+						/>
+) }
+						<SelectControl
+							label={ __( 'Action text', 'skvn-marine-blocks' ) }
+							onChange={ ( actionTextColor ) =>
+								setAttributes( {
+									actionTextColor: actionTextColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.actionTextColor || '' }
+						/>
+						{ contentType === 'product' && (
+<SelectControl
+							label={ __( 'Action hover background', 'skvn-marine-blocks' ) }
+							onChange={ ( actionHoverBackgroundColor ) =>
+								setAttributes( {
+									actionHoverBackgroundColor:
+										actionHoverBackgroundColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.actionHoverBackgroundColor || '' }
+						/>
+) }
+						<SelectControl
+							label={ __( 'Action hover text', 'skvn-marine-blocks' ) }
+							onChange={ ( actionHoverTextColor ) =>
+								setAttributes( {
+									actionHoverTextColor: actionHoverTextColor as ColorSlug,
+								} )
+							}
+							options={ COLOR_PALETTE_OPTIONS }
+							value={ attributes.actionHoverTextColor || '' }
+						/>
+				</> }
+</>;
+}
+
+function ProductChipDesign( { attributes, contentType, setAttributes }: Omit< CollectionEditProps, 'clientId' > ) {
+	// Every exposed slug has a plugin-owned CSS consumer and fallback.
+	const chipColorOptions = attributes.chipColorScheme && ! COLOR_PALETTE_OPTIONS.some( ( option ) => option.value === attributes.chipColorScheme )
+		? [ ...COLOR_PALETTE_OPTIONS, { value: attributes.chipColorScheme, label: __( 'Unavailable saved color (retained)', 'skvn-marine-blocks' ) } ]
+		: COLOR_PALETTE_OPTIONS;
+
+if ( contentType !== 'product' ) return null;
+return <>			{ attributes.showSpecChips !== false && (
 				<>
 					<SelectControl
 						label={ __( 'Chip style', 'skvn-marine-blocks' ) }
@@ -1368,7 +1409,5 @@ function ProductCardControls( {
 						value={ attributes.chipColorScheme || '' }
 					/>
 				</>
-			) }
-		</>
-	);
+			) }</>;
 }

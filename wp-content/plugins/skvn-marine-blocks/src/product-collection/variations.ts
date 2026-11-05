@@ -22,6 +22,7 @@ export function registerProductCollectionVariations() {
 			layout: 'carousel',
 			responsivePreset: '4-2-1',
 			contentWidth: 'wide',
+			mediaLayout: 'flush',
 		},
 		isActive: [ 'layout' ],
 		scope: [ 'inserter' ],

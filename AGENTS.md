@@ -7,11 +7,17 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical**
+Current milestone: **V1 / 1.3.19 — Plugin Design Sidebar Foundation**
+
+Human start 2026-11-04: giao agent Sol coding theo plan 048, Q1=A/Q2=A. 1.3.18 được chuyển ưu tiên, **DEFERRED_WITH_CARRY_OVER**, không phải toàn bộ PASS; checklist/evidence giữ trong MILESTONES_HISTORY và carry register 1.3.19. Loading/navigation 046 vẫn thuộc 1.3.18, source/test/debt riêng, chưa nghiệm thu. Các đoạn checkpoint dưới là lịch sử trước lệnh start này. Metadata 1.3.19 là milestone development build, không phải release approval.
 
 Milestone source of truth: `.context/MILESTONES.md`.
 
 Human chuyển current 2026-10-19 sau khi approve 1.3.17 onsite. 1.3.17 → `MILESTONES_HISTORY.md` với `DONE_WITH_CARRY_OVER`: gói A (width) và B (grouped attributes + `+N`) PASS; gói C PASS về chức năng nhưng **bản sửa regression state owner ngày 2026-10-19 chưa kiểm chứng lại**; gói D skeleton **có source, chưa test**. Sáu mục carry sang 1.3.18: xác minh lại C, test D, Post visual riêng, controls hide/disabled, G-MEDIA, editor preview 040 §13. Editor preview chưa được code dù milestone đã mở. Plan `045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` đã tồn tại; §9–13 cập nhật planning chi tiết ngày 2026-10-20. Human yêu cầu không sửa skeleton trong đợt này; không triển khai skeleton toàn trang, giữ debt D và hiện tượng chớp chưa giải quyết. Arrow centering đã có source riêng, chờ onsite. Lượt planning không bump metadata hoặc bắt đầu implementation Editor UX.
+
+### Cập nhật thứ tự 2026-11-04 — Sidebar / Hero swap
+
+Human hoán đổi hai scope: **1.3.19 — Plugin Design Sidebar Foundation → 1.3.20 — Product Category Grid + Category details → 1.3.21 — Hero Slider Contrast Repair**. Thay thứ tự Category trước Sidebar ngày 2026-10-28. Sidebar nhận phần acceptance Carousel 1.3.18 chưa hoàn tất/thiếu evidence; register tại MILESTONES.md §1.3.19, giữ IDs/PASS/gaps và kiểm runtime riêng với DS-01–07. Carousel cơ bản dùng được theo human onsite report; không suy toàn bộ Technical PASS. Category tích hợp nền sidebar khi triển khai 1.3.20; không xây Category trong milestone nền. Hero giữ source/acceptance, hotfix ngoài current. **Current vẫn 1.3.18; chưa start Sidebar hoặc bump/archive/đóng milestone.**
 
 ### Milestone stack → SemVer — bắt buộc trước khi triển khai
 

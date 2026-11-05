@@ -126,6 +126,13 @@ function skvn_marine_blocks_render_collection_post_card( $post, $attributes = ar
 		$action_classes .= ' skvn-collection-card__cta--text-' . $action_text_color;
 	}
 
+	$action_hover_text = skvn_marine_blocks_collection_allowlist(
+		isset( $attributes['actionHoverTextColor'] ) ? $attributes['actionHoverTextColor'] : '', $color_allowed
+	);
+	if ( '' !== $action_hover_text ) {
+		$action_classes .= ' skvn-collection-card__cta--hover-text-' . $action_hover_text;
+	}
+
 	ob_start();
 	?>
 	<article class="skvn-collection-card skvn-collection-card--post">
@@ -191,7 +198,6 @@ function skvn_marine_blocks_render_collection_product_card( $product, $attribute
 	if ( '' === $media_layout ) {
 		$media_layout = 'flush';
 	}
-	$card_classes[] = 'skvn-collection-card--media-' . $media_layout;
 
 	// Floating geometry (values are % of card width / px; all bounded).
 	$media_width_percent = isset( $attributes['mediaWidthPercent'] )
@@ -282,6 +288,11 @@ function skvn_marine_blocks_render_collection_product_card( $product, $attribute
 	}
 
 	$card_classes = array( 'skvn-collection-card', 'skvn-collection-card--product' );
+	// Missing/empty legacy attributes keep their saved ratio/cover behavior.
+	// Explicit presets opt in; do not migrate old content merely by rendering it.
+	if ( isset( $attributes['mediaLayout'] ) && in_array( $attributes['mediaLayout'], array( 'flush', 'padded', 'floating' ), true ) ) {
+		$card_classes[] = 'skvn-collection-card--media-' . $media_layout;
+	}
 	if ( 'tag' !== $chip_style ) {
 		$card_classes[] = 'skvn-collection-card--chip-' . $chip_style;
 	}

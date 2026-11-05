@@ -957,3 +957,39 @@ Human decision: bắt đầu promote milestone hiện tại để carousel chạ
 - Scope/checklist 1.3.10 giữ nguyên tại `.context/MILESTONES.md` §1.3.10; planning 018 và decision fullscreen-step-slider-1.3.10 vẫn giữ truy vết. Nơi nhận tương lai: stack M5, chưa gán version mới.
 - Không có RESOLVED_ACTIVE tension nào mang milestone 1.3.10; không move tension thuộc milestone khác. OPEN tensions giữ nguyên, không tự resolve QA debt.
 - Không QA PASS, release approval hay metadata bump trong chat planning này. Muse thực thi, human kiểm chứng onsite.
+## V1 / 1.3.18 — Product/Post Carousel Editor UX & Technical (stack: M1 follow-up)
+
+Status: **DEFERRED_WITH_CARRY_OVER**
+Onsite checkpoint **2026-11-04**: human báo Carousel cơ bản có thể sử dụng, yêu cầu chuyển phần chưa kiểm sang milestone kế và hoán đổi Sidebar/Hero. **Phần acceptance còn thiếu của 1.3.18 → Deferred, đích nhận 1.3.19** theo register carry-over trong section 1.3.19; giữ PASS và IDs/evidence đã có, không suy rộng Technical PASS. Chưa đóng/chuyển current 1.3.18; runbook `docs/testing/carousel-editor-ux-technical-1.3.18.md` là checklist gốc cần chạy tiếp.
+Started: **2026-10-19**, human chuyển current từ 1.3.17 sau khi approve 1.3.17 onsite.
+Confirmed: **2026-10-14**, human xác nhận "semver + 1" sau current 1.3.17, dành Editor UX và Technical.
+Version check: không thấy 1.3.18 được dùng/reserved trong AGENTS/.context/docs trước khi ghi.
+SemVer rationale: PATCH tiếp thep cho sửa/hardening collection hiện có cùng minor 1.3; không phê duyệt feature architecture mới.
+Planning reference: `planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` — file đã tồn tại; human yêu cầu lập chi tiết ngày 2026-10-20, §9–13 chia 7 hệ thống và gói P0–P6, requirement/evidence giữ ID cũ. Runbook: `docs/testing/carousel-editor-ux-technical-1.3.18.md`. Đây là planning, chưa bắt đầu implementation Editor UX.
+
+Override human 2026-10-20: không sửa skeleton trong đợt Editor UX này, không triển khai skeleton toàn trang. Giữ debt test D dưới đây và báo cáo chớp khi load là chưa giải quyết, không tự PASS/xóa acceptance. Arrow centering đã sửa source riêng, chờ onsite theo `docs/testing/carousel-arrow-centering-1.3.18.md`.
+
+Scope: nhận **Deferred UX-01–08, UX-02a, TECH-01–11, TECH-08a** theo 040 §11.1; TECH-10/11 chia verification theo từng version. Giữ toàn bộ source defects và acceptance cũ trong mapping.
+
+Carry-in từ 1.3.17 (human chốt 2026-10-19):
+- **Xác minh lại gói C** sau bản sửa state owner (regression scrollbar ngang) — hiện **Chờ kiểm chứng**.
+- **Gói D skeleton** — source đã có 2026-10-19, chưa build/lint/onsite; cần test D-01…D-08.
+- **Post Carousel visual** — human duyệt riêng.
+- **Controls** — quyết định hide/disabled và placement.
+- **G-MEDIA** — chọn/lưu ba media layouts + cơ chế legacy.
+- **Editor preview theo 040 §13** (UX-09/10/11, TECH-12); artifact prototype 172/172 PASS không phải nghiệm thu editor thật.
+
+Acceptance carry-in:
+- [ ] Controls có tác dụng, labels/defaults/query/preview/save-reload parity (UX IDs).
+- [ ] Preset + bounded controls + reset rõ; truthful preview/help, không Swiper/autoplay editor.
+- [ ] Query/render/actions/context, valid markup/security, keyboard, pause/autoplay/reduced-motion, loop/count/resize đúng (TECH IDs).
+- [ ] Legacy ratio mechanism/tương thích old/new Product/Post được quyết và kiểm; không tự ép content cũ.
+- [ ] Grid/editor compatibility, lifecycle/memory/assets/build và full evidence theo 040 §11.1.
+- [ ] Editor preview 040 §13: card mẫu gọn, cấu hình label–value, grid query 3/2/1 + Xem thêm/Thu gọn, khung width editor-only.
+- [ ] Xác minh lại C + D onsite (bằng chứng có trong repo).
+- [ ] Human nghiệm thu sau kiểm chứng.
+
+Metadata: bump **1.3.17** đã chạy cho release boundary; bump sang 1.3.18 chỉ khi human ra lệnh bắt đầu implementation 1.3.18. M1 gồm 1.3.17 + 1.3.18; UI PASS không phải toàn bộ Technical PASS. Quote Flow vẫn sau visual gate, bắt đầu M2 cần quyết định riêng.
+
+
+Transition 2026-11-04: human yêu cầu agent Sol bắt đầu 1.3.19 theo plan 048. Chuyển ưu tiên, không completion/PASS. Toàn bộ checklist chưa tick giữ nguyên; Carousel thiếu evidence nhận tại carry register 1.3.19, E02 giữ PASS. Loading/navigation 046 vẫn scope 1.3.18: b9332d3 + source execution §11, 8 VM tests PASS, build/lint/onsite LDR-01–09/UXHF-01–10 chưa kiểm; không nhập acceptance vào Sidebar, không sửa skeleton.

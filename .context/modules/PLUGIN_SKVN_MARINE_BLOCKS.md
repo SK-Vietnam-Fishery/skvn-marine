@@ -97,6 +97,8 @@ src/
 
 ## [manual] Product And Post Collections
 
+Execution 2026-11-04: current **V1 / 1.3.19 — Plugin Design Sidebar Foundation**, human giao Sol coding plan048. Source shell tại `src/design-sidebar/`, local style controls dùng attrs/Undo/Page Save; Theme Design authenticated adapter trong module typography hiện có, Q1=A/Q2=A, option/theme_mod owners giữ riêng. Contract theme tại `inc/customizer.php`, active child + caps server-gated. Native preview limitations phải hiển thị; không query endpoint mới. Legacy missing mediaLayout không migrate. Runbook/inventory `docs/testing/plugin-design-sidebar-1.3.19*.md`; DS/TD và Carousel carry register chưa runtime PASS. 1.3.18 checkpoint deferred/history; loading046 vẫn scope riêng. Đoạn current cũ bên dưới là baseline lịch sử.
+
 Current collection follow-up: **V1 / 1.3.17 — Product/Post Carousel Block UI & Visual QA**; **1.3.18 Editor UX & Technical PLANNED, chưa start** (human split 2026-10-14, stack M1). 040 §11 owns version mapping; full UX/TECH Deferred to 1.3.18, current only visual plus minimum UI regression. Settings are inventory only; detailed UX/architecture later. Load `.context/planning/040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md` for Block UI / Editor UX / Technical baseline, full QA mapping and human decisions/rationale (§10, 2026-10-14). Apply `docs/standards/block-ui-editor-ux-technical-review-contract.md`. Product square/contain/full title/mobile arrows are design decisions, not proof of source or onsite PASS; legacy ratio mechanism and Post visual remain separate. No new advanced settings architecture is approved by this plan.
 
 Earlier V1 product surfaces used WooCommerce native blocks/patterns first. That
