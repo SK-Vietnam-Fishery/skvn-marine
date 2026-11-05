@@ -1,6 +1,9 @@
 # Core Control and Core Button Hover
 
-Status: IMPLEMENTED (plan 033 — frontend + editor preview, onsite QA pending)  
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.4
+Lifecycle: active
+Notes: plan 033 (frontend + editor preview) implemented; onsite QA still pending. Core Button Hover fix scope thuộc V1 / 1.3.8.
 Target: V1 / 1.3.4 (foundation), fix V1 / 1.3.8  
 Date: 2026-06-12 (updated 2026-06-22)
 

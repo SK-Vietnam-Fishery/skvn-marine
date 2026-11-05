@@ -17,8 +17,8 @@ Read in mandatory order:
 5. `.context/TENSIONS_ACTIVE.md`
 6. `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md`
 7. `.context/planning/015_VERSION_1_2_1_SKVN_SLIDER_PRESETS_AND_INSERTER_PLANNING.md`
-8. `docs/decisions/slider-presets-and-inserter-1.2.1.md`
-9. `docs/decisions/slider-block.md`
+8. `docs/decisions/archives/slider-presets-and-inserter-1.2.1.md`
+9. `docs/decisions/archives/slider-block.md`
 10. `docs/explain/slider-competitive-research-1.2.0.md`
 
 Human UX direction:
@@ -60,7 +60,7 @@ action.
 - `wp-content/plugins/skvn-marine-blocks/build/**`
 - `.context/MILESTONES.md`
 - `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md`
-- `docs/decisions/slider-presets-and-inserter-1.2.1.md`
+- `docs/decisions/archives/slider-presets-and-inserter-1.2.1.md`
 
 ## Files Forbidden To Change
 
@@ -88,7 +88,7 @@ action.
 
 The previous competitive research recommended a hybrid slide manager. Human
 explicitly rejected that direction for MVP complexity. The active decision is
-`docs/decisions/slider-presets-and-inserter-1.2.1.md`.
+`docs/decisions/archives/slider-presets-and-inserter-1.2.1.md`.
 
 Do not reopen the slide-manager decision during implementation unless a concrete
 Gutenberg API limitation makes the three preset workflow impossible.

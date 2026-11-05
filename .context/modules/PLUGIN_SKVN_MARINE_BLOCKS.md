@@ -4,6 +4,14 @@
 
 Custom Gutenberg blocks with logic, and future plugin-owned editor/admin tooling.
 
+Human decision 2026-11-04: product đích **Marine Blocks** (`marine-blocks`, PHP `marine_blocks_`); bộ block chuyên dụng và patterns để dựng/chỉnh sửa/bàn giao website nhanh, không full-FSE supercharger. Plugin ship styling/runtime độc lập WindPress/theme; website dùng WindPress enhance core blocks/patterns. Migration target **1.4.0**, SemVer đã xác nhận, chưa start; source giữ naming hiện tại tới migration. Theme identity giữ nguyên. Xem `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md` cho mapping, compatibility và acceptance.
+
+## [manual] Product Language
+
+Repair follow-up2026-11-05: human approved plan051 G0–G4 for current1.3.19. Source adds post-editor context/API guard + Inspector design fallback, structured session expiry/manual nonce recovery preserving draft/base, export draft text and lazy ThemeDesign read. Tests/runbook and execution ledger in plan051; no runtime/release approval. Existing owner locks/storage/permissions and Category persistence policy unchanged. Working-tree repair pending human build/lint/onsite evidence.
+
+Plugin product UI and frontend default copy use English as the source language. Keep user-facing strings translatable with the `skvn-marine-blocks` text domain where applicable; do not translate stored attribute/option keys or enum values. Vietnamese localization follows in a separately scoped phase. Internal documentation may remain in Vietnamese. See `AGENTS.md` §Product language.
+
 ## [manual] Architecture
 
 Architecture: **Block-centric feature modules with minimal shared services**.
@@ -91,6 +99,16 @@ src/
 
 ## [manual] Product And Post Collections
 
+Design visual-controls planning 2026-11-05: plan054 lưu SVG layout tiles, CSS fit/surface specimens, swatches/type preview theo controls có consumer. Q1(Category existing-only vs modes mới), Q2(Media layout owner/reset), Q3(group navigation) đang đề xuất, chưa human approve/coding. Không coi Category cardPadding là Product mediaPadding, không expose fit trên Product nếu chưa consumer, giữ Legacy/unknown values; Theme Design/session và frame053 không đổi scope.
+
+Execution053 2026-11-05: human cho implementation+agent commit. Collection Product/Post Grid/Carousel và Category Grid đã có source shared editor frame/label/palette/spacing correction; Collection heading/intro cùng frame, query/sample/states giữ và Post note cap5. EF/CP onsite chưa PASS. Shared helper `src/shared/editor-preview-frame.ts` + CSS chỉ editor; không thêm schema/DB/query. Slider source được audit, palette/mockup pending; không có Step Slider registration/runtime trong inventory hiện tại, giữ deferred mapping. Runbook `docs/testing/editor-preview-frames-1.3.19.md`.
+
+Editor preview direction 2026-11-05: plan052 Product Carousel có source card trái/summary-query phải, giữ sample-vs-real/query limitation, onsite CP01–05 chưa PASS. Human duyệt khung chung gồm heading/intro + nhãn loại, Carousel xám xanh/Grid xanh biển nhạt, khoảng hở dọc tối thiểu10px không double parent gap. Đọc `docs/standards/editor-preview-frame-contract.md` và plan053 khi làm preview Collection/Category/Slider/Step Slider. Rollout P1/P2 đã có source theo execution053 ở trên; Slider/Step palette/mockup còn mở. Không áp margin global/core block, không thay frontend hoặc tự mở milestone Slider/Step.
+
+Execution 2026-11-04: current **V1 / 1.3.19 — Plugin Design Sidebar Foundation**, human giao Sol coding plan048. Source shell tại `src/design-sidebar/`, local style controls dùng attrs/Undo/Page Save; Theme Design authenticated adapter trong module typography hiện có, Q1=A/Q2=A, option/theme_mod owners giữ riêng. Contract theme tại `inc/customizer.php`, active child + caps server-gated. Native preview limitations phải hiển thị; không query endpoint mới. Legacy missing mediaLayout không migrate. Runbook/inventory `docs/testing/plugin-design-sidebar-1.3.19*.md`; DS/TD và Carousel carry register chưa runtime PASS. 1.3.18 checkpoint deferred/history; loading046 vẫn scope riêng. Đoạn current cũ bên dưới là baseline lịch sử.
+
+Current collection follow-up: **V1 / 1.3.17 — Product/Post Carousel Block UI & Visual QA**; **1.3.18 Editor UX & Technical PLANNED, chưa start** (human split 2026-10-14, stack M1). 040 §11 owns version mapping; full UX/TECH Deferred to 1.3.18, current only visual plus minimum UI regression. Settings are inventory only; detailed UX/architecture later. Load `.context/planning/040_VER_1_3_17_CAROUSEL_UI_UX_TECHNICAL_PLANNING.md` for Block UI / Editor UX / Technical baseline, full QA mapping and human decisions/rationale (§10, 2026-10-14). Apply `docs/standards/block-ui-editor-ux-technical-review-contract.md`. Product square/contain/full title/mobile arrows are design decisions, not proof of source or onsite PASS; legacy ratio mechanism and Post visual remain separate. No new advanced settings architecture is approved by this plan.
+
 Earlier V1 product surfaces used WooCommerce native blocks/patterns first. That
 0.4.0 deferral is superseded for the human-approved future milestone
 V1 / 1.3.3.
@@ -119,6 +137,10 @@ V1 / 1.3.3 planned direction:
   navigation, product attribute query, faceted filters, archive builder, and
   universal CPT collection remain deferred to 2.x.x or later unless human
   explicitly changes scope.
+- Carousel engine decision (2026-10-07): keep Swiper 11 for collection carousel
+  (`docs/decisions/collection-carousel-engine-keep-swiper.md`); scroll-snap (B)
+  and hybrid (C) stay under deliberation in the ideation workflow and open only
+  on onsite measurement.
 
 ## [manual] Future Layout Blocks
 
@@ -190,7 +212,7 @@ Decision doc: `docs/decisions/block-animation-strategy.md`.
 
 This boundary is active for V1 / 1.2.0.
 
-Future scope may rename or migrate this plugin toward `Gutenberg Supercharger`, so plugin-owned block behavior must remain portable.
+Marine Blocks migration trong 1.4.0 thay identity Gutenberg Supercharger; plugin-owned behavior và styling phải portable (plan 047).
 
 Mandatory rule:
 
@@ -198,7 +220,7 @@ Mandatory rule:
 - Required behavior includes attributes, editor controls, frontend JS, CSS classes, keyframes, transitions, reduced-motion fallback, device targeting, and no-JS visible fallback.
 - Theme CSS/JS may skin or override plugin motion, but must not be required for plugin block animation to work.
 - Theme animation remains acceptable for core blocks, page sections, and theme decoration that are not plugin-owned block behavior.
-- Tailwind/WindPress is prototype-only and must not become the production animation contract.
+- Tailwind/WindPress được dùng enhance core blocks/patterns trên website; không là dependency animation/styling bắt buộc của plugin-owned blocks.
 
 Implemented V1 / 1.2.0:
 
@@ -487,6 +509,44 @@ Completed V1 / 1.3.2 Feature Showcase autoplay and panel links:
 - Map visual cues to theme-owned SKVN tokens/classes when producing Gutenberg output.
 - If a required token/class does not exist, report it in `token_changes_needed` or `missing_theme_classes`; do not inject raw color CSS into content.
 - Leave brand profile/theme token implementation for V1 / 0.7.0.
+
+## [manual] Collection Carousel Runtime State Contract
+
+Áp dụng cho `src/collection-view.ts` + `src/collection/style.css` + `modules/collection-render/`.
+
+**State owner duy nhất:** phần tử `<section class="skvn-collection …">`. JS **không** được gắn `skvn-is-initializing` / `skvn-is-ready` / `skvn-is-fallback` vào `.skvn-collection__carousel-outer`.
+
+DOM thực tế:
+
+```text
+<section class="skvn-collection skvn-collection--{product|post} skvn-collection--{grid|carousel} …">   ← state owner
+  <header> … .skvn-collection__arrow--prev/next (NGOÀI carousel-outer) … </header>
+  <div class="skvn-collection__carousel-outer" data-skvn-collection-carousel>   ← JS đọc dataset ở đây
+    <div class="skvn-collection__carousel swiper">
+      <div class="swiper-wrapper">…real slides…</div>
+      <div class="skvn-collection__skeleton" aria-hidden="true">…</div>          ← nằm trong carousel
+    </div>
+  </div>
+</section>
+```
+
+**Bài học đã mắc 1 lần (regression scrollbar ngang, 1.3.17 gói C/D, 2026-10-19):**
+CSS state selector và JS class mutation **phải trỏ cùng một phần tử**. Đã có class trong source, hoặc build thành công, **không** chứng minh selector match DOM runtime.
+
+Triệu chứng: carousel vẫn cuộn ngang sau khi Swiper init, arrows luôn ẩn, skeleton không bao giờ hiện. Nguyên nhân: JS gắn class vào `carousel-outer` trong khi CSS viết `.skvn-collection--carousel.skvn-is-ready` (class nằm trên `section`) → `:not(.skvn-is-ready)` luôn đúng → `overflow-x: auto` + gap fallback **luôn bật** ở Ready; rule `visibility:hidden` cho arrows/skeleton cũng không bao giờ match.
+
+Vì sao self-review bỏ sót: đã đọc lại từng hunk JS và CSS riêng lẻ và thấy "đúng cú pháp", nhưng **không** đối chiếu phần tử mà mỗi bên nhắm tới; cũng không có bước nào bắt buộc kiểm selector có match DOM thật trước khi coi là xong.
+
+**Check bắt buộc trước khi coi là xong (áp cho mọi thay đổi lifecycle):**
+
+1. Xác định state owner bằng `grep` ra chỗ render class ở PHP, viết ra `file:line`, rồi viết selector CSS cùng phần tử đó.
+2. Đối chiếu DOM thật: state class phải nằm trên **một** phần tử; không selector nào dựa trên việc class "chắc là sẽ match".
+3. Kiểm đủ 4 state trên **cùng một build**: SSR (không JS), `initializing`, `ready`, `fallback`/destroy.
+4. Element nào bị `visibility: hidden` chỉ được chứa nội dung thật — không được nuốt skeleton/con trợ giúp nằm chung.
+5. Evidence bắt buộc khi nghiệm thu: class list **của section** + class list của `carousel-outer` (phải sạch state class), computed `overflow-x` và `gap`, rect carousel so với page, screenshot.
+6. Phân biệt overflow nội bộ của track dài (bình thường ở SSR/fallback) với tràn ngang toàn trang (lỗi). Không dùng `overflow: hidden` ở body/page để che.
+
+**Sửa test đã từng sai:** `docs/testing/carousel-skeleton-loading-1.3.17.md` case D-01 ban đầu yêu cầu chặn `collection-view.ts` rồi kỳ vọng skeleton hiện — mâu thuẫn với chính cơ chế (runtime chạy mới gắn `initializing`). Đã đổi D-01 thành kiểm SSR/fallback và thêm D-04 mô phỏng có kiểm soát bằng cách ép class `skvn-is-initializing`, ghi rõ là mô phỏng chứ không phải cold-load thật. Không thêm delay production chỉ để nhìn thấy skeleton.
 
 ## [manual] Rules
 

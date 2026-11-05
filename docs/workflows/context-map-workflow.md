@@ -83,7 +83,13 @@ Do not use this path to silently bypass project rules. If the change conflicts w
 
 1. Decision doc
 
-Create or update `docs/decisions/<topic>.md` when the decision should be auditable by humans.
+Create or update `docs/decisions/<topic>.md` when the decision should be auditable by humans. Follow the conventions in `docs/decisions/README.md`:
+
+- Filename carries a version suffix only when that version already exists in `AGENTS.md` §9; otherwise use `<topic>.md` and set `Milestone: none` with the reason in `Notes`.
+- Exactly one `Status:` line with a single value from the standard set; QA/mapping/historical notes go in `Notes:`.
+- Always declare `Milestone:` and `Lifecycle:`.
+- A decision is never deleted. Superseded/closed decisions move to `docs/decisions/archives/` with `Superseded by:` or an `ARCHIVED` reason. Technical references go to `docs/decisions/reports/`.
+- Update `docs/decisions/README.md` when adding a file.
 
 Include:
 
@@ -176,10 +182,12 @@ Do not edit more than 5 files unless the decision truly crosses multiple modules
 ```markdown
 # <Decision Title>
 
-Status: active decision.
-Milestone: V1 / <version>.
+Status: ACTIVE
+Milestone: V1 / <version>
+Lifecycle: active
 Owner: <theme/plugin/workflow/module>.
 Decision source: <human/debug/artifact/review source>.
+Notes: <optional — QA carry, historical mapping, supersede reason>
 
 ## Decision
 

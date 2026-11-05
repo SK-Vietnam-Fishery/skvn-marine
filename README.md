@@ -156,7 +156,9 @@ If a task changes WordPress runtime behavior, also run a runtime smoke test in t
 ## Documentation Map
 
 ```text
-docs/decisions/   Approved or working project decisions
+docs/decisions/   Approved or working project decisions (start at docs/decisions/README.md)
+  |- reports/     Technical references and implementation logs (not decision scope)
+  |- archives/    Superseded / implemented-and-closed decisions (not loaded by default)
 docs/standards/   Coding, AI, and security standards
 docs/workflows/   Development, deployment, QA, and context workflows
 docs/testing/     Test plans and verification notes

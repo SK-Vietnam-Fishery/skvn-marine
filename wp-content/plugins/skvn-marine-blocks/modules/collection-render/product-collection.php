@@ -35,6 +35,7 @@ function skvn_marine_blocks_render_product_collection( $attributes ) {
 				'skvn-collection--preset-' . $preset,
 				$ratio,
 				skvn_marine_blocks_collection_bool( $attributes, 'equalHeight', true ) ? 'skvn-collection--equal-height' : '',
+				skvn_marine_blocks_collection_width_class( $attributes ),
 			)
 		)
 	);

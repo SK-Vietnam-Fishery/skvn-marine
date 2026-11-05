@@ -21,7 +21,7 @@ function skvn_marine_blocks_query_collection_products( $attributes ) {
 	}
 
 	$limit      = isset( $attributes['itemsToShow'] ) ? absint( $attributes['itemsToShow'] ) : 3;
-	$limit      = min( 10, max( 1, $limit ) );
+	$limit      = min( 20, max( 1, $limit ) );
 	$order_mode = isset( $attributes['orderMode'] ) ? sanitize_key( $attributes['orderMode'] ) : 'newest';
 	$tax_query  = skvn_marine_blocks_build_collection_tax_query(
 		$attributes,

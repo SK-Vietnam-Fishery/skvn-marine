@@ -45,7 +45,7 @@ Keep static/editor-owned:
 - Slider variations/templates.
 - Editor preview. Hero may remain vertically readable; carousel/showcase
   presets use the approved non-moving 5x2 grid from
-  `docs/decisions/slider-carousel-showcase-ux.md`.
+  `docs/decisions/archives/slider-carousel-showcase-ux.md`.
 - Gutenberg List View and native block actions.
 
 Move to dynamic/server-owned:

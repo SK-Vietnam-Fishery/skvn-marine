@@ -9,7 +9,7 @@
 **Ngày tạo:** 2026-06-19  
 **Status:** IMPLEMENTED — 2026-06-19  
 **Decision doc:** `docs/decisions/typography-scope-and-font-loading.md`  
-**Liên quan:** `docs/decisions/typography-and-gp-exit-report.md`, `docs/decisions/skvn-1.3.x-architecture-and-decisions.md` §5
+**Liên quan:** `docs/decisions/reports/typography-and-gp-exit-report.md`, `docs/decisions/archives/skvn-1.3.x-architecture-and-decisions.md` §5
 
 ---
 
@@ -185,8 +185,8 @@ Tạo `docs/testing/typography-scope-isolation-1.3.6.md` với checklist onsite/
 | `wp-content/themes/skvn-marine/inc/typography.php` | Scoped palette/heading inject |
 | `wp-content/themes/skvn-marine/style.css` | Tách `body` vs `.editor-styles-wrapper` |
 | `docs/decisions/typography-scope-and-font-loading.md` | **NEW** |
-| `docs/decisions/typography-and-gp-exit-report.md` | Appendix link |
-| `docs/decisions/skvn-1.3.x-architecture-and-decisions.md` | §5 update |
+| `docs/decisions/reports/typography-and-gp-exit-report.md` | Appendix link |
+| `docs/decisions/archives/skvn-1.3.x-architecture-and-decisions.md` | §5 update |
 | `docs/testing/typography-scope-isolation-1.3.6.md` | **NEW** |
 | `.context/modules/THEME_SKVN_MARINE.md` | [manual] invariant |
 | `.context/planning/archives/029_VER_1_3_6_TYPOGRAPHY_SCOPE_ISOLATION_PLANNING.md` | This file — mark IMPLEMENTED when done |

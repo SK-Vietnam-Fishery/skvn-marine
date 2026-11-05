@@ -7,9 +7,38 @@
 
 ## 0. Milestone hiện tại
 
-Current milestone: **V1 / 1.3.7 — Collection Block UI & Card Styles**
+Current milestone: **V1 / 1.3.19 — Plugin Design Sidebar Foundation**
+
+Human start 2026-11-04: giao agent Sol coding theo plan 048, Q1=A/Q2=A. 1.3.18 được chuyển ưu tiên, **DEFERRED_WITH_CARRY_OVER**, không phải toàn bộ PASS; checklist/evidence giữ trong MILESTONES_HISTORY và carry register 1.3.19. Loading/navigation 046 vẫn thuộc 1.3.18, source/test/debt riêng, chưa nghiệm thu. Các đoạn checkpoint dưới là lịch sử trước lệnh start này. Metadata 1.3.19 là milestone development build, không phải release approval.
 
 Milestone source of truth: `.context/MILESTONES.md`.
+
+Human chuyển current 2026-10-19 sau khi approve 1.3.17 onsite. 1.3.17 → `MILESTONES_HISTORY.md` với `DONE_WITH_CARRY_OVER`: gói A (width) và B (grouped attributes + `+N`) PASS; gói C PASS về chức năng nhưng **bản sửa regression state owner ngày 2026-10-19 chưa kiểm chứng lại**; gói D skeleton **có source, chưa test**. Sáu mục carry sang 1.3.18: xác minh lại C, test D, Post visual riêng, controls hide/disabled, G-MEDIA, editor preview 040 §13. Editor preview chưa được code dù milestone đã mở. Plan `045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` đã tồn tại; §9–13 cập nhật planning chi tiết ngày 2026-10-20. Human yêu cầu không sửa skeleton trong đợt này; không triển khai skeleton toàn trang, giữ debt D và hiện tượng chớp chưa giải quyết. Arrow centering đã có source riêng, chờ onsite. Lượt planning không bump metadata hoặc bắt đầu implementation Editor UX.
+
+### Cập nhật thứ tự 2026-11-04 — Sidebar / Hero swap
+
+Human hoán đổi hai scope: **1.3.19 — Plugin Design Sidebar Foundation → 1.3.20 — Product Category Grid + Category details → 1.3.21 — Hero Slider Contrast Repair**. Thay thứ tự Category trước Sidebar ngày 2026-10-28. Sidebar nhận phần acceptance Carousel 1.3.18 chưa hoàn tất/thiếu evidence; register tại MILESTONES.md §1.3.19, giữ IDs/PASS/gaps và kiểm runtime riêng với DS-01–07. Carousel cơ bản dùng được theo human onsite report; không suy toàn bộ Technical PASS. Category tích hợp nền sidebar khi triển khai 1.3.20; không xây Category trong milestone nền. Hero giữ source/acceptance, hotfix ngoài current. **Current vẫn 1.3.18; chưa start Sidebar hoặc bump/archive/đóng milestone.**
+
+### Milestone stack → SemVer — bắt buộc trước khi triển khai
+
+Human decision (2026-10-13): roadmap 039 là **milestone stack**. Các nhãn M1–M6 chỉ định danh scope trong stack, không phải version và không thay current milestone.
+
+- Audit, review và planning được dùng nhãn stack khi mục còn chưa có version.
+- Trước khi đưa một mục vào triển khai, agent phải xác định scope, đề xuất SemVer cụ thể theo Version Naming Rule, nêu lý do chọn MAJOR/MINOR/PATCH, đối chiếu version hiện tại và các version đã dùng/đã dự kiến trong MILESTONES.md. Không tái dùng hoặc đè scope của một version khác nếu chưa có quyết định human rõ ràng.
+- Human phải xác nhận SemVer và việc bắt đầu/chuyển milestone trước implementation. Nếu đã xác nhận trong session hoặc tài liệu quyết định thì dùng quyết định đó, không hỏi lại. Chọn ưu tiên/scope trong stack không tự là phê duyệt version hay chuyển mốc.
+- Chưa có SemVer được xác nhận: tiếp tục audit/planning; không implement mục mới, đổi current milestone, bump metadata hoặc archive milestone/tension.
+- Khi được xác nhận, ghi mapping nhãn stack → SemVer vào roadmap 039, đồng bộ current milestone trong AGENTS.md và MILESTONES.md theo Transition Rule. Định dạng current: `V<phase> / <MAJOR.MINOR.PATCH> — <tên scope>`; M1–M6 chỉ được ghi thêm như tham chiếu stack.
+- Prompt handoff triển khai phải có version đã xác nhận, scope/acceptance và tham chiếu stack. Không ghi `Current: M1` hoặc dùng M1 thay cho `1.3.x`. Nếu mapping và current milestone không khớp, dừng implementation và báo chênh lệch.
+- Sync metadata chỉ sau khi bắt đầu milestone đã được human xác nhận; milestone development build vẫn khác release approved. Chat chỉ planning/Markdown không chạy bump/build.
+
+Quy tắc này không chọn version cho mục nào và không chuyển current milestone hiện tại.
+
+### Chuyển ưu tiên (defer/reprioritize) — chỉ human quyết
+
+- Phân biệt **hoàn thành milestone bình thường** (đủ acceptance DONE + smoke test + human approve theo Transition Rule) với **human quyết định hoãn/thay ưu tiên** khi milestone hiện tại chưa bắt đầu hoặc chưa hoàn thành.
+- Khi human xác nhận chuyển ưu tiên, milestone cũ có thể ở trạng thái deferred dù checklist chưa DONE: giữ nguyên checklist, acceptance chưa giải quyết và mọi truy vết planning/decision; không bao giờ đánh dấu completed cho milestone bị dời và không làm mất acceptance nào.
+- SemVer của scope mới và lệnh bắt đầu/chuyển mốc có thể được human xác nhận cùng lúc; nếu đã xác nhận trong session hoặc tài liệu quyết định thì dùng quyết định đó, không hỏi lại.
+- Lượt chỉ sửa quy tắc không đổi Current, không archive milestone/tension, không bump metadata.
 
 Quy tắc quản lý tension theo milestone:
 
@@ -105,7 +134,18 @@ Quy tắc tóm tắt:
 
 **Rule quyết định nhanh**: nếu thay theme mà feature bị mất → feature thuộc plugin.
 
-### Naming — Không bao giờ đổi
+### Marine Blocks — human decision 2026-11-04
+
+- Định vị: bộ block chuyên dụng và patterns giúp dựng, chỉnh sửa, bàn giao website nhanh; không hướng tới supercharge toàn bộ FSE. Ưu tiên core blocks/patterns, custom block khi cần dữ liệu/tương tác/UX biên tập chuyên dụng. Không tự mở lại query ownership của Collection.
+- Plugin có styling/runtime riêng, hoạt động độc lập với WindPress và theme SKVN. Website được dùng WindPress/Tailwind enhance core blocks/patterns; không coi đây là hai lựa chọn loại trừ nhau. Layout/style trên mỗi surface phải có owner rõ ràng.
+- Identity đích: Marine Blocks; slug/text domain `marine-blocks`, block namespace `marine-blocks/*`, PHP functions `marine_blocks_*`, constants `MARINE_BLOCKS_*`, plugin CSS `marine-blocks-*`, variables `--marine-blocks-*`.
+- Theme giữ identity `skvn-marine`, PHP `skvn_marine_`, CSS/tokens theme. Có thể cập nhật điểm gọi API plugin khi migrate, không đổi thương hiệu theme.
+- Human xác nhận 2026-11-04: **1.4.0 — Marine Blocks Migration**; Setup UI cũ 1.4.0 → 1.4.1, Layout/Quote Validation cũ 1.4.1 → 1.4.2, giữ acceptance. Version đã chốt, chưa start; current vẫn 1.3.18. Trước migration giữ naming source hiện hành.
+- Replace hàng loạt chỉ theo inventory plugin/theme/shared. Hàm nội bộ có thể đổi đồng bộ; wrapper chỉ cần cho consumer chưa chuyển. Saved blocks/markup, option/meta keys phải có compatibility hoặc migration riêng; không global replace `skvn` trong repo/DB.
+- Identity GU Supercharger và mục tiêu full-FSE bị thay thế. Migration sớm hơn không tự thay public-launch gate sau 1.5.x, reset version về 0.0.1, hoặc hủy acceptance/milestone cũ.
+- Source of truth: `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md`.
+
+### Naming — source hiện hành trước migration 1.4.0
 
 ```
 Theme slug:         skvn-marine
@@ -117,6 +157,13 @@ Theme PHP prefix:   skvn_marine_
 Plugin PHP prefix:  skvn_marine_blocks_
 CSS prefix:         skvn-
 ```
+
+### Product language — Plugin English first
+
+- Giao diện sản phẩm của plugin (tên block, Inspector, admin/settings, nút, nhãn, mô tả, trạng thái, thông báo và văn bản mặc định hiển thị ở frontend) dùng **tiếng Anh** làm ngôn ngữ gốc.
+- Không đưa tiếng Việt vào UI mới như bản dịch tạm hoặc trộn hai ngôn ngữ trong cùng một luồng. Tài liệu nội bộ và trao đổi với human vẫn có thể viết tiếng Việt.
+- Chuỗi hiển thị phải sẵn sàng cho i18n bằng API dịch WordPress và text domain `skvn-marine-blocks` ở nơi áp dụng; khóa attribute, enum, option và dữ liệu đã lưu không dịch theo ngôn ngữ hiển thị.
+- Tiếng Việt là giai đoạn bản địa hóa sau, triển khai bằng bản dịch khi có scope và nghiệm thu riêng; quy tắc này không tự kích hoạt Polylang hoặc đổi milestone hiện tại.
 
 ### PHP security — Không thương lượng
 
@@ -208,6 +255,19 @@ một trong ba mode:
 
 `CLAUDE.md` Work Plan Rule: coi là đã satisfy khi (a) human đã approve hướng trong cùng thread, hoặc (b) routing = `CODE_NOW` với chỉ thị implement rõ. Plan dài + chờ approve chỉ khi routing = `ASK_ARCHITECTURE` hoặc scope còn mơ hồ.
 
+### Block/UI review — ba nhóm và hai lớp xuyên suốt
+
+Human chốt phương pháp 2026-10-14. Trước audit/review/planning hoặc implementation block/UI liên quan frontend, editor hoặc runtime, đọc:
+
+`docs/standards/block-ui-editor-ux-technical-review-contract.md`
+
+- Xem xét riêng **Block UI (frontend UI/UX), Editor UX, Technical**.
+- Mỗi yêu cầu có **Content & States** (dữ liệu/trạng thái) và **Acceptance & Evidence** (cách kiểm/bằng chứng). Accessibility, responsive, performance áp vào từng nhóm/surface liên quan.
+- Ghi theo mẫu: `ID → Nhóm → Hành vi mong đợi → Hiện trạng → Việc cần sửa → Cách kiểm → Evidence`.
+- Trạng thái yêu cầu: **Chưa làm / Đã có source / Chờ kiểm chứng / PASS / FAIL / Deferred**. Có source hoặc design approval không đồng nghĩa runtime PASS; không dùng DONE chung cho triển khai và nghiệm thu.
+- Task hẹp được ghi ngắn, nhóm không liên quan ghi N/A kèm lý do; không mở scope mới chỉ để đủ bảng. Không bỏ acceptance cũ vì đổi format.
+- Khi lưu planning/giải thích cho human, giữ rationale, giới hạn, proposal còn mở/superseded để tài liệu tự đọc được, không phụ thuộc chat.
+- Transition Rule giữ hiệu lực: acceptance DONE phải có kiểm chứng/approval cần thiết, smoke và human approve chuyển mốc; không tự thay status lịch sử hoặc taxonomy tensions.
 ### Agent + Human collaboration — Bắt buộc
 
 - Workflow của project này là **agent phối hợp với human**, không phải agent tự
@@ -231,6 +291,32 @@ một trong ba mode:
   - agent sẽ tiếp tục phần nào sau khi nhận kết quả.
 - Các bước cần credential, quyết định sản phẩm, onsite visual judgment, hoặc
   terminal tương tác ưu tiên phối hợp với human thay vì agent tự suy đoán.
+
+### Decision Memo — Bắt buộc khi xin human quyết định
+
+Human quyết định trên bằng chứng, không quyết trên lời khai. Mọi lần agent cần human
+quyết (tension, `ASK_ARCHITECTURE`, milestone approval, scope change, dependency mới),
+agent phải trình theo format 7 mục — bản đầy đủ + ví dụ:
+`docs/standards/decision-memo-format.md`.
+
+```text
+1. Vấn đề (1 câu)
+2. Phương án (2–3, mỗi cái kèm trade-off)
+3. Khuyến nghị + lý do
+4. Bằng chứng (artifact nhìn được: commit/file:line/screenshot/số đo)
+5. Tự kiểm chứng (nguồn + file + xem gì — human research độc lập ≤10 phút)
+6. Đảo ngược (2 chiều → quyết nhanh | 1 chiều → cần evidence dày)
+7. Default nếu human không quyết trước [mốc] (conservative; quyết định chặn/HIGH → DỪNG)
+```
+
+Quy tắc kèm theo:
+
+- Không điền được mục 4–5 = chưa đủ tư cách hỏi; quay lại research.
+- Khẳng định về behavior thư viện ngoài phải cite docs/changelog **đúng major version**
+  trong `package.json`; kiến thức tổng quát không đủ điều kiện làm premise cho
+  invariant/decision doc.
+- Fix nào lật đổ premise trong decision doc thì update doc đó **trong cùng đợt fix** —
+  docs sai dẫn đường sai cho mọi agent load context sau.
 
 ### Onsite-first UX/runtime testing
 
@@ -269,12 +355,16 @@ Constraint: [manual] rule nào conflict (quote lại)
 Severity:   low | high
 Tags:       tag-one, tag-two
 Milestone:  V1 / 0.x.0
+Evidence:   [artifact nhìn được chứng minh tension có thật — optional nhưng nên có]
+Default:    [severity low: phương án conservative + mốc nếu human không quyết. Severity high: luôn ghi "DỪNG chờ human"]
 Status:     OPEN
 Resolved:
 Decision:   OPEN
 ```
 
 Agent không được parse `Decision` để suy ra state. Chỉ dùng `Status`.
+`Evidence` và `Default` là field mở rộng (2026-07-12, theo Decision Memo format —
+`docs/standards/decision-memo-format.md`); entry cũ thiếu 2 field này vẫn hợp lệ.
 
 Allowed `Status`: `OPEN`, `RESOLVED_ACTIVE`, `ARCHIVED`.
 
@@ -338,7 +428,7 @@ Milestone checklist và trigger chuyển mốc được quản lý trong `.conte
 | Task muốn custom-code quote form handler thay CF7 | HIGH |
 | Task muốn thêm animation logic riêng trong block, bỏ qua shared runtime | LOW |
 | Task muốn đặt custom block trong theme folder | HIGH |
-| Task muốn rename prefix/namespace | HIGH |
+| Task muốn rename prefix/namespace ngoài migration đã duyệt | HIGH |
 | Task muốn add dependency không có rationale | LOW |
 | Không chắc feature thuộc theme hay plugin | LOW |
 
@@ -447,8 +537,8 @@ if (!prefersReduced) { /* run animation */ }
 
 - 0.9.0 scope: plugin settings page stores `skvn_footer_page_id`; theme renders the selected footer page through GeneratePress' `generate_footer` surface.
 - Implement 0.9.0 footer settings as a migration-ready module inside the current `skvn-marine-blocks` plugin until the **post-1.5.x product launch**.
-- **Human locked (2026-06-23):** first public plugin launch = **GU Supercharger `0.0.1`** (`gu-supercharger` slug + block namespace) **after V1 / 1.5.x** stabilizes — not at 1.3.11. Until launch, keep dev slug `skvn-marine-blocks` and block namespace `skvn-marine/*` for all production sites. See `docs/decisions/gu-supercharger-launch-post-1.5x.md`.
-- `Gutenberg Supercharger Stage 2` remains the pro/commercial stage name. `Gutenberg Remap` is retained only as an alternate/redirect candidate.
+- **Human updated 2026-11-04:** identity Marine Blocks; migration planned 1.4.0 (SemVer đã xác nhận, chưa start), source giữ tên cũ tới migration. Public launch sau 1.5.x là gate riêng; xem plan 047 và launch decision đã chú thích supersession.
+- GU/Gutenberg Supercharger và Remap là hướng tên lịch sử bị Marine Blocks thay thế; chưa chốt tên commercial stage riêng.
 - Footer settings may use a module-shaped folder such as `modules/footer-settings/` or `includes/modules/footer-settings/` inside `wp-content/plugins/skvn-marine-blocks/`.
 - Keep current plugin slug, text domain, and option key: `skvn-marine-blocks`, `skvn-marine-blocks`, and `skvn_footer_page_id`.
 - Do not rename namespaces, option keys, plugin headers, build entrypoints, or activation path for 0.9.0.
@@ -507,7 +597,7 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 
 ```
 [ ] Không sửa themes/generatepress/
-[ ] Không rename namespace/prefix
+[ ] Không rename namespace/prefix ngoài migration đã duyệt; theme identity giữ nguyên
 [ ] Không đặt block logic trong theme
 [ ] Input sanitized, output escaped
 [ ] Đã đọc `docs/standards/security-guidelines.md` nếu task chạm output path (option, block attr, URL, inline CSS, tools IO)
@@ -577,12 +667,13 @@ Mỗi task đưa cho AI nên có đủ 6 phần:
 | 1.3.11 | Comprehensive Onsite QA (Slider, Collections & Controls) |
 | 1.3.12 | SKVN Team Credits Easter Egg |
 | 1.3.16 | Comprehensive Testing (1.3.x Feature QA) |
-| 1.4.0 | SKVN Theme Init Setup UI |
-| 1.4.1 | Layout Blocks Validation & Quote Evaluation |
+| 1.4.1 | SKVN Theme Init Setup UI |
+| 1.4.2 | Layout Blocks Validation & Quote Evaluation |
 | 1.5.0 | Woo Catalog Plugin |
 | 1.6.0 | SKVN Surface Presets |
 | 1.7.0 | Front page trang Chuyển đổi số |
-| Post 1.5.x | GU Supercharger 0.0.1 Product Launch |
+| 1.4.0 | Marine Blocks Migration — planned, chưa start |
+| Post 1.5.x | Marine Blocks Public Launch — version riêng cần xác nhận |
 
 ### Version naming rules
 

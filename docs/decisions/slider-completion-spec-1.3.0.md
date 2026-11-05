@@ -1,8 +1,10 @@
 # Slider Completion Spec — V1 / 1.3.0
 
-Status: APPROVED
+Status: ACTIVE
+Milestone: V1 / 1.3.0
+Lifecycle: active
+Notes: source of truth cho Slider layer contract; giữ ACTIVE vì các milestone sau vẫn tham chiếu.
 Approved: 2026-06-11
-Milestone: V1 / 1.3.0 — Slider Dynamic Rendering Architecture
 Source of truth: this document
 
 ## Current Onsite Failure Note
@@ -333,5 +335,5 @@ Active related documents:
 
 - `docs/testing/onsite-slider-motion-1.3.2.md`
 - `.context/planning/archives/020_VERSION_1_3_2_FEATURE_SHOWCASE_AUTOPLAY_AND_LINKS_PLANNING.md`
-- `docs/decisions/fullscreen-step-slider-1.5.0.md`
+- `docs/decisions/fullscreen-step-slider-1.3.10.md`
 - `.context/planning/018_VERSION_1_5_0_FULLSCREEN_STEP_SLIDER_PLANNING.md`

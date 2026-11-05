@@ -1,5 +1,5 @@
 > Archived: 2026-06-30 — prefix giữ nguyên, không renumber.
-> Decision: docs/decisions/post-heading-numbering-1.3.14.md
+> Decision: docs/decisions/archives/post-heading-numbering-1.3.14.md
 > Onsite QA defer: Dev build + onsite test pending
 
 # 036 — Post Heading Auto-Numbering (Core Control feature)
@@ -8,7 +8,7 @@
 Version:   1.3.14
 Date:      2026-06-28
 Status:    IMPLEMENTED (2026-06-28 — chờ Dev build + onsite test)
-Decision:  docs/decisions/post-heading-numbering-1.3.14.md
+Decision:  docs/decisions/archives/post-heading-numbering-1.3.14.md
 Home:      modules/core-control (feature post_heading_numbers + sub-option)
 ```
 

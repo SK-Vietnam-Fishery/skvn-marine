@@ -16,9 +16,9 @@ Read first, in order:
 5. `.context/TENSIONS_ACTIVE.md`
 6. `.context/modules/PLUGIN_SKVN_MARINE_BLOCKS.md`
 7. `docs/standards/css-layout-safety-contract.md`
-8. `docs/decisions/slider-block.md`
-9. `docs/decisions/slider-presets-and-inserter-1.2.1.md`
-10. `docs/decisions/slider-carousel-showcase-ux.md`
+8. `docs/decisions/archives/slider-block.md`
+9. `docs/decisions/archives/slider-presets-and-inserter-1.2.1.md`
+10. `docs/decisions/archives/slider-carousel-showcase-ux.md`
 11. `.context/planning/017_VERSION_1_3_0_SLIDER_DYNAMIC_RENDERING_ARCHITECTURE_PLANNING.md`
 12. `.context/planning/019_FUTURE_CANDIDATE_SLIDER_CAROUSEL_SHOWCASE_UX_PLANNING.md`
 13. `docs/testing/onsite-slider-motion-1.2.9.md`

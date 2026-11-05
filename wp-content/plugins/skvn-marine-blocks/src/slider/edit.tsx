@@ -55,6 +55,12 @@ type SliderAttributes = {
 	responsiveSlides: string;
 	enableParallax: boolean;
 	parallaxIntensity: 'subtle' | 'medium' | 'strong';
+	parallaxAdvanced: boolean;
+	parallaxDepth: 'both' | 'translate' | 'scale';
+	parallaxDirection: 'horizontal' | 'vertical';
+	parallaxTranslate: number;
+	parallaxScale: number;
+	parallaxInset: number;
 };
 
 type SliderEditProps = {
@@ -413,7 +419,7 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 						label={__('Enable parallax', 'skvn-marine-blocks')}
 						onChange={(enableParallax) => setAttributes({ enableParallax })}
 					/>
-					{ attributes.enableParallax && (
+					{ attributes.enableParallax && ! attributes.parallaxAdvanced && (
 						<BaseControl
 							help={__(
 								'Controls how far the background travels and how much it scales during the transition.',
@@ -439,6 +445,111 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 							</ButtonGroup>
 						</BaseControl>
 					) }
+					{ attributes.enableParallax && (
+						<ToggleControl
+							checked={attributes.parallaxAdvanced}
+							help={__(
+								'Reveal manual depth controls. When on, these override the intensity preset.',
+								'skvn-marine-blocks'
+							)}
+							label={__('Advanced', 'skvn-marine-blocks')}
+							onChange={(parallaxAdvanced) =>
+								setAttributes({ parallaxAdvanced })
+							}
+						/>
+					) }
+					{ attributes.enableParallax && attributes.parallaxAdvanced && (
+						<>
+							<SelectControl
+								label={__('Depth mechanism', 'skvn-marine-blocks')}
+								help={__(
+									'Both compounds a slide and a zoom for the strongest depth.',
+									'skvn-marine-blocks'
+								)}
+								onChange={(parallaxDepth) =>
+									setAttributes({
+										parallaxDepth:
+											parallaxDepth as SliderAttributes['parallaxDepth'],
+									})
+								}
+								options={[
+									{ label: __('Both (translate + scale)', 'skvn-marine-blocks'), value: 'both' },
+									{ label: __('Translate only', 'skvn-marine-blocks'), value: 'translate' },
+									{ label: __('Scale only', 'skvn-marine-blocks'), value: 'scale' },
+								]}
+								value={attributes.parallaxDepth}
+							/>
+							{ attributes.parallaxDepth !== 'scale' && (
+								<>
+									<SelectControl
+										label={__('Direction', 'skvn-marine-blocks')}
+										onChange={(parallaxDirection) =>
+											setAttributes({
+												parallaxDirection:
+													parallaxDirection as SliderAttributes['parallaxDirection'],
+											})
+										}
+										options={[
+											{ label: __('Horizontal', 'skvn-marine-blocks'), value: 'horizontal' },
+											{ label: __('Vertical', 'skvn-marine-blocks'), value: 'vertical' },
+										]}
+										value={attributes.parallaxDirection}
+									/>
+									<RangeControl
+										label={__('Translate', 'skvn-marine-blocks')}
+										help={__(
+											'How far the background travels, in percent.',
+											'skvn-marine-blocks'
+										)}
+										max={80}
+										min={0}
+										onChange={(parallaxTranslate) =>
+											setAttributes({
+												parallaxTranslate:
+													parallaxTranslate ?? 30,
+											})
+										}
+										value={attributes.parallaxTranslate}
+									/>
+									<RangeControl
+										label={__('Edge guard (inset)', 'skvn-marine-blocks')}
+										help={__(
+											'Extra background beyond the frame so the edge is not revealed during travel. Raise if you see a gap.',
+											'skvn-marine-blocks'
+										)}
+										max={80}
+										min={0}
+										onChange={(parallaxInset) =>
+											setAttributes({
+												parallaxInset:
+													parallaxInset ?? 35,
+											})
+										}
+										value={attributes.parallaxInset}
+									/>
+								</>
+							) }
+							{ attributes.parallaxDepth !== 'translate' && (
+								<RangeControl
+									label={__('Scale', 'skvn-marine-blocks')}
+									help={__(
+										'How much the background zooms during the transition.',
+										'skvn-marine-blocks'
+									)}
+									max={1.5}
+									min={1}
+									step={0.01}
+									onChange={(parallaxScale) =>
+										setAttributes({
+											parallaxScale:
+												parallaxScale ?? 1.12,
+										})
+									}
+									value={attributes.parallaxScale}
+								/>
+							) }
+						</>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<div className="skvn-slider__editor-toolbar">
@@ -463,7 +574,7 @@ export function Edit({ attributes, clientId, setAttributes }: SliderEditProps) {
 				</Button>
 				{ attributes.enableParallax && (
 					<span className="skvn-slider__parallax-badge">
-						{ `Parallax ON · ${ attributes.parallaxIntensity }` }
+						{ `Parallax ON · ${ attributes.parallaxAdvanced ? 'custom' : attributes.parallaxIntensity }` }
 					</span>
 				) }
 			</div>

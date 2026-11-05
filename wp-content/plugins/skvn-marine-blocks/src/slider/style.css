@@ -22,6 +22,21 @@
 	width: 100% !important;
 }
 
+/* One-slide Hero fallback: overlap static slides in one reserved frame instead
+   of stacking full viewport heights. CSS works with JS absent or bundle blocked. */
+.skvn-slider--hero:not(.skvn-slider--initialized, .skvn-slider--editor) .skvn-slider__wrapper {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.skvn-slider--hero:not(.skvn-slider--initialized, .skvn-slider--editor) .skvn-slide {
+	grid-area: 1 / 1;
+	min-width: 0;
+}
+
+.skvn-slider--hero:not(.skvn-slider--initialized, .skvn-slider--editor) .skvn-slide:not(:first-child) {
+	visibility: hidden;
+}
+
 .skvn-slider__editor-stack {
 	display: grid;
 	gap: 1rem;
@@ -46,7 +61,23 @@
 .skvn-slide__bg {
 	inset: var(--skvn-parallax-inset, 0%);
 	position: absolute;
+}
+
+/* Promote compositor layer only when parallax is active (avoids GPU cost on
+   every slider). Inset var is painted by PHP for first-frame edge-guard. */
+.skvn-slider--parallax .skvn-slide__bg {
 	will-change: transform;
+}
+
+/* Server cannot know prefers-reduced-motion; force flat bg when reduced. */
+@media (prefers-reduced-motion: reduce) {
+	.skvn-slider {
+		--skvn-parallax-inset: 0% !important;
+	}
+
+	.skvn-slider--parallax .skvn-slide__bg {
+		will-change: auto;
+	}
 }
 
 .skvn-slide__bg img {
@@ -701,16 +732,55 @@
 	margin-block-start: 2rem;
 }
 
+/* Hero default text colour. The Hero background is a dark gradient whether or
+   not a Slide background image is set, so the default cannot depend on
+   `.skvn-slide--has-background`.
+   The colour lives on `.skvn-slide__content` (carrier) and the elements below
+   only set `color: inherit`. That ordering keeps the intended precedence:
+   1. explicit colour on the block or a rich-text span (preset class is
+      `!important`, custom colour is inline) — wins over `inherit`;
+   2. explicit colour from a coloured Group ancestor — reaches the heading only
+      because nothing declares a colour directly on it;
+   3. Hero light default — inherited from the carrier;
+   4. theme typography fallback — unchanged outside the Hero preset.
+   `color: inherit` on the heading branch is (0,3,0) so it outranks the theme's
+   `body:not(.wp-admin) .wp-block-heading` (0,2,1) and the editor's
+   `.editor-styles-wrapper .wp-block-heading` (0,2,0). One selector list serves
+   both surfaces because editor and frontend share this stylesheet and the same
+   `skvn-slider--hero` / `skvn-slide__content` classes. */
+.skvn-slider--hero .skvn-slide__content {
+	color: #fff;
+}
+
+.skvn-slider--hero .skvn-slide__content :where(h1, h2, h3, h4, h5, h6),
+.skvn-slider--hero .skvn-slide__content .wp-block-heading,
+.skvn-slider--hero .skvn-slide__content :where(p, .wp-block-paragraph),
+.skvn-slider--hero .skvn-slide__content a:not(.wp-block-button__link) {
+	color: inherit;
+}
+
 .skvn-slider--hero .wp-block-button__link {
-	background: #fff;
 	border-radius: 999px;
 	font-weight: 700;
 	padding: 0.85rem 1.35rem;
 }
 
-.skvn-slider--hero .wp-block-button__link:hover,
-.skvn-slider--hero .wp-block-button__link:focus-visible {
+/* Hero CTA default: white pill with navy text. `:not(.has-background)` keeps the
+   default away from any CTA the editor gave a background colour or gradient to,
+   so custom values, preset gradients (!important) and inline backgrounds are all
+   left alone. (0,4,0) also outranks the GeneratePress rule
+   `a.wp-block-button__link:not(.has-background)` (0,2,1) that otherwise forces a
+   grey pill. Custom hover stays per-channel through the marker-gated rules
+   below (modules/core-control/features/button-hover.php). */
+.skvn-slider--hero .skvn-slide__content .wp-block-button__link:not(.has-background) {
+	background: #fff;
+	color: #073b5a;
+}
+
+.skvn-slider--hero .skvn-slide__content .wp-block-button__link:not(.has-background):hover,
+.skvn-slider--hero .skvn-slide__content .wp-block-button__link:not(.has-background):focus-visible {
 	background: #eaf7ff;
+	color: #073b5a;
 }
 
 .skvn-slider--hero .wp-block-button.has-skvn-btn-hover-bg .wp-block-button__link:hover,

@@ -8,6 +8,24 @@
 
 ## Agent Pitfalls (lỗi quy trình của AI agent)
 
+### AP-06 — Bỏ visual cũ trước khi chứng minh replacement được nạp
+
+**Xảy ra:** 2026-11-05, chuyển khung Product Carousel từ body preview ra root để bao heading/intro (plan053).
+**Triệu chứng:** Human thấy mất cả viền và nền đã duyệt; label/heading/card/query vẫn hiện.
+**Lỗi của agent:** Tôi bỏ nền/viền body cũ khi replacement mới chỉ tồn tại trong source; không kiểm đầy đủ CSS extraction → registered handle → editor document/iframe. Tôi báo “đã triển khai khung” dựa trên syntax/VM tests mà chưa có bằng chứng giao diện. Thực tế sửa import ở commit sau, khiến replacement không atomic với việc bỏ cơ chế cũ. Đây là lỗi implementation/integration của agent, không phải human đổi ý hoặc thiếu thông tin.
+**Evidence:** `b4dba14` đổi frame boundary; snapshot được lưu trong `05b9cef` có frame CSS ở `build/index.ts.css` trong khi bootstrap chỉ đăng ký `build/style-index.ts.css`. Source correction `c70c4ce`; [CASE-008](../docs/debug-casebook/gutenberg/008_EDITOR_FRAME_CSS_EXTRACTED_NOT_ENQUEUED.md).
+**Tránh:** Chuyển visual owner phải nối replacement tới bundle/handle được nạp trong cùng thay đổi; kiểm output thực tế sau human build và computed style/rect trong editor. Syntax PASS/VM spacing PASS không chứng minh màu/viền xuất hiện. Nếu thiếu runtime evidence phải ghi “source có, visual chưa kiểm”, không nói khung đã hiển thị đúng hoặc coi đã nghiệm thu.
+**Fixed:** Source import/extraction correction đã có; onsite visual chưa xác nhận. Không xóa entry vì đã sửa source.
+
+### AP-07 — Đoán cache/deploy khi chưa có bằng chứng onsite
+
+**Xảy ra:** 2026-11-05, human gửi screenshot khung preview bị mất.
+**Nguy cơ đã nhận diện:** Có selector trong CSS local hoặc build local mới không chứng minh site đang nhận đúng asset, selector match DOM hay rule thắng cascade. Không quy lỗi cho cache hoặc yêu cầu human build/reload lặp lại rồi coi đó là diagnosis.
+**Tránh:** Tách ba trạng thái: source defect đã chứng minh; local artifact đã kiểm; onsite delivery/computed chưa kiểm. Với UI lỗi, yêu cầu bằng chứng tối thiểu đúng layer: DOM class, stylesheet URL/version/Network và computed background/border/padding ở đúng editor document/iframe. Chỉ nói cache stale khi evidence chứng minh. Chỉ giao human bước cần thiết, kèm expected result; không đổ trách nhiệm kiểm integration cho human.
+**Related:** CASE-008 và `docs/testing/editor-preview-frames-1.3.19.md`.
+
+---
+
 ### AP-01 — Edit tool yêu cầu Read trước
 
 **Xảy ra:** 2026-06-17, session sửa `.skvn-post-hero` trong `style.css`.
@@ -32,6 +50,32 @@
 **Triệu chứng:** Agent sửa rule thành `display: block` (xóa mất `display: flex; align-items: flex-end`) khi chỉ cần thêm `width: 100%`. Phải sửa lại ngay.
 **Nguyên nhân:** Khi thêm 1 property vào CSS rule, agent không giữ nguyên toàn bộ rule cũ mà vô tình overwrote.
 **Tránh:** Khi thêm property vào CSS rule đã có, luôn copy toàn bộ rule cũ vào `old_string` và `new_string` — chỉ thêm dòng mới, không bao giờ xóa dòng cũ nếu không được yêu cầu.
+
+---
+
+### AP-04 — block.json attribute đặt ngoài khối `"attributes"` (lỗi JSON)
+
+**Xảy ra:** 2026-10-21, session sửa `src/product-collection/block.json` và `build/product-collection/block.json` (gap CTA hover + chip màu).
+**Triệu chứng:** `npm run build` thất bại:
+```
+Module parse failed: Cannot parse JSON: Unexpected non-whitespace character after JSON at position 4905
+```
+**Nguyên nhân:** Khi thêm attribute mới (`mediaLayout`, `mediaWidthPercent`, …, `mediaPaddingUnit`), các key bị đặt **ngoài** khối `"attributes"` — tức sau dấu `}` đóng `"attributes"`. JSON có hai cấp `"attributes"` cùng cấp → không hợp lệ → webpack parse thất bại.
+**Cách phát hiện (trước khi build):**
+```bash
+node -e "JSON.parse(require('fs').readFileSync('wp-content/plugins/skvn-marine-blocks/src/product-collection/block.json','utf8')); console.log('JSON OK')"
+```
+Áp cả cho `build/product-collection/block.json`.
+**Cách khắc phục:** Mở file `block.json`, tìm dấu `}` đóng khối `"attributes"`; đảm bảo mọi attribute mới nằm **trước** dấu đóng đó, cách nhau bởi dấu phẩy. Không để attribute nằm sau khối `"attributes"` hoặc sau `"supports"`; không trailing comma sau attribute cuối cùng.
+**Check trước commit/build:** `src/*.block.json` và `build/*.block.json` phải parse JSON thành công. Nếu edit `src/block.json`, phải sync lại `build/block.json` trước khi onsite.
+
+---
+
+### AP-05 — PowerShell không hỗ trợ `&&`
+
+**Xảy ra:** 2026-10-21, session commit nhiều nhóm file liên tiếp.
+**Triệu chứng:** Lệnh `git add ... && git commit -m "..."` bị lỗi `The token '&&' is not a valid statement separator`.
+**Tránh:** Chạy `git add` và `git commit` thành hai lệnh riêng biệt (không dùng `&&`).
 
 ---
 

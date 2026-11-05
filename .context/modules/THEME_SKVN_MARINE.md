@@ -4,6 +4,8 @@
 
 GeneratePress child theme for SKVN Marine visual system.
 
+Human decision 2026-11-04: theme giữ identity SKVN Marine. Website được dùng WindPress enhance core blocks/patterns; plugin Marine Blocks ship styling/runtime riêng. Trong migration 1.4.0 (SemVer đã xác nhận, chưa start), có thể sửa điểm gọi API plugin hoặc dùng compatibility wrapper, không rename prefix/tokens theme. Quy tắc surface presets độc lập WindPress vẫn áp riêng cho presets. Xem plan `.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md`.
+
 ## [manual] Responsibilities
 
 - Theme styles and tokens.
@@ -307,7 +309,7 @@ HTML-2-Gutenberg brand-mapping contract for 0.5.1:
 
 0.5.1 Tailwind artifact CSS hardening decision:
 
-- `docs/decisions/css-change-logs.md` records human-approved CSS hardening discovered while generating test data from real Tailwind web artifacts.
+- `docs/decisions/reports/style-css-change-log.md` records human-approved CSS hardening discovered while generating test data from real Tailwind web artifacts.
 - This is allowed inside 0.5.1 only as visual contract hardening for existing theme CSS/classes; it does not move HTML-2-Gutenberg tooling, publisher UI, brand profile, or token-system implementation into the theme.
 - Before marking a class as missing or adding CSS, scan `wp-content/themes/skvn-marine/style.css` first and reuse existing `skvn-*` families.
 

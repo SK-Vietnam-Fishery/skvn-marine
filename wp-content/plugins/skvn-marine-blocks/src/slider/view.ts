@@ -58,6 +58,12 @@ type SliderConfig = {
 	slideCount?: number;
 	enableParallax?: boolean;
 	parallaxIntensity?: string;
+	parallaxAdvanced?: boolean;
+	parallaxDepth?: string;
+	parallaxDirection?: string;
+	parallaxTranslate?: number;
+	parallaxScale?: number;
+	parallaxInset?: number;
 };
 
 type NormalizedSliderConfig = {
@@ -83,6 +89,12 @@ type NormalizedSliderConfig = {
 	slideCount: number;
 	enableParallax: boolean;
 	parallaxIntensity: 'subtle' | 'medium' | 'strong';
+	parallaxAdvanced: boolean;
+	parallaxDepth: 'both' | 'translate' | 'scale';
+	parallaxDirection: 'horizontal' | 'vertical';
+	parallaxTranslate: number;
+	parallaxScale: number;
+	parallaxInset: number;
 };
 
 type SliderElement = HTMLElement & {
@@ -98,6 +110,17 @@ function clampInteger(
 ) {
 	return typeof value === 'number' && Number.isFinite( value )
 		? Math.min( maximum, Math.max( minimum, Math.round( value ) ) )
+		: fallback;
+}
+
+function clampNumber(
+	value: unknown,
+	fallback: number,
+	minimum: number,
+	maximum: number
+) {
+	return typeof value === 'number' && Number.isFinite( value )
+		? Math.min( maximum, Math.max( minimum, value ) )
 		: fallback;
 }
 
@@ -220,6 +243,23 @@ function parseSliderConfig(
 			[ 'subtle', 'medium', 'strong' ] as const,
 			'medium'
 		),
+		parallaxAdvanced:
+			typeof parsed.parallaxAdvanced === 'boolean'
+				? parsed.parallaxAdvanced
+				: false,
+		parallaxDepth: normalizeChoice(
+			parsed.parallaxDepth,
+			[ 'both', 'translate', 'scale' ] as const,
+			'both'
+		),
+		parallaxDirection: normalizeChoice(
+			parsed.parallaxDirection,
+			[ 'horizontal', 'vertical' ] as const,
+			'horizontal'
+		),
+		parallaxTranslate: clampInteger( parsed.parallaxTranslate, 30, 0, 80 ),
+		parallaxScale: clampNumber( parsed.parallaxScale, 1.12, 1, 1.5 ),
+		parallaxInset: clampInteger( parsed.parallaxInset, 35, 0, 80 ),
 	};
 }
 
@@ -397,9 +437,28 @@ function initSlider( slider: SliderElement ): void {
 			}
 		};
 		syncViewportHeight();
+		const publishReady = () => {
+			if ( config.slideCount > 1 && ( ! slider.swiper?.initialized || slider.swiper.destroyed ) ) {
+				return;
+			}
+			const box = slider.getBoundingClientRect();
+			const slide = slider.querySelector< HTMLElement >( '.skvn-slide' );
+			if ( box.width <= 0 || box.height <= 0 || ! slide || slide.getBoundingClientRect().width <= 0 ) {
+				return;
+			}
+			slider.dataset.skvnSliderReady = 'true';
+			slider.dispatchEvent( new Event( 'skvn:slider-ready', { bubbles: true } ) );
+		};
+		// Optional document lifecycle gate. No theme/loader means normal autoplay.
+		const loaderActive = () => {
+			const root = document.documentElement;
+			return root.hasAttribute( 'data-skvn-loading' ) &&
+				Number( root.dataset.skvnLoadingUntil ) > Date.now();
+		};
 
 		if ( config.slideCount <= 1 ) {
 			slider.classList.add( 'skvn-slider--static' );
+			window.requestAnimationFrame( publishReady );
 			return;
 		}
 
@@ -419,16 +478,93 @@ function initSlider( slider: SliderElement ): void {
 
 		window.addEventListener( 'resize', syncViewportHeight );
 
-		if ( shouldParallax ) {
-			const translateMap = { subtle: '-15%', medium: '-30%', strong: '-50%' } as const;
-			const scaleMap = { subtle: 1.06, medium: 1.12, strong: 1.20 } as const;
-			const insetMap = { subtle: '-20%', medium: '-35%', strong: '-50%' } as const;
+		// Swiper 11 loop mode does not create DOM clones (rearrangement /
+		// loopFix only). Inject data attrs BEFORE new Swiper() so the Parallax
+		// module reads them on init. Inset CSS var is owned by PHP first paint
+		// (see slider-render.php) — do not set it here (avoids load-time jump).
+		if ( reducedMotion ) {
+			slider.style.removeProperty( '--skvn-parallax-inset' );
+			slider.classList.remove( 'skvn-slider--parallax' );
+		} else if ( shouldParallax ) {
+			const presetTranslate = {
+				subtle: 15,
+				medium: 30,
+				strong: 50,
+			} as const;
+			const presetScale = {
+				subtle: 1.06,
+				medium: 1.12,
+				strong: 1.2,
+			} as const;
 			const intensity = config.parallaxIntensity;
-			slider.querySelectorAll< HTMLElement >( '.skvn-slide__bg' ).forEach( ( bg ) => {
-				bg.setAttribute( 'data-swiper-parallax', translateMap[ intensity ] );
-				bg.setAttribute( 'data-swiper-parallax-scale', String( scaleMap[ intensity ] ) );
-			} );
-			slider.style.setProperty( '--skvn-parallax-inset', insetMap[ intensity ] );
+			const advanced = config.parallaxAdvanced;
+			const depth = advanced ? config.parallaxDepth : 'both';
+			const direction = advanced
+				? config.parallaxDirection
+				: 'horizontal';
+			const translateMag = advanced
+				? config.parallaxTranslate
+				: presetTranslate[ intensity ];
+			const scaleVal = advanced
+				? config.parallaxScale
+				: presetScale[ intensity ];
+			const includeTranslate = depth !== 'scale';
+			const includeScale = depth !== 'translate';
+			const axis = direction === 'vertical' ? 'y' : 'x';
+			const durationMs = String( config.transitionDuration );
+
+			slider
+				.querySelectorAll< HTMLElement >( '.skvn-slide__bg' )
+				.forEach( ( bg ) => {
+					bg.removeAttribute( 'data-swiper-parallax' );
+					bg.removeAttribute( 'data-swiper-parallax-x' );
+					bg.removeAttribute( 'data-swiper-parallax-y' );
+					bg.removeAttribute( 'data-swiper-parallax-scale' );
+					bg.removeAttribute( 'data-swiper-parallax-duration' );
+
+					if ( includeTranslate ) {
+						bg.setAttribute(
+							`data-swiper-parallax-${ axis }`,
+							`-${ translateMag }%`
+						);
+					}
+
+					if ( includeScale ) {
+						bg.setAttribute(
+							'data-swiper-parallax-scale',
+							String( scaleVal )
+						);
+					}
+
+					// Keep parallax transition in phase with slide speed
+					// (avoids desync / stutter on loopFix and manual nav).
+					bg.setAttribute(
+						'data-swiper-parallax-duration',
+						durationMs
+					);
+				} );
+
+			// Legacy markup fallback: if PHP did not paint inset, set once
+			// before Swiper so the first transition still has edge-guard.
+			if ( ! slider.style.getPropertyValue( '--skvn-parallax-inset' ) ) {
+				const presetInset = {
+					subtle: 20,
+					medium: 35,
+					strong: 50,
+				} as const;
+				const insetMag = advanced
+					? config.parallaxInset
+					: presetInset[ intensity ];
+				const effectiveInset = includeTranslate ? insetMag : 0;
+				if ( effectiveInset > 0 ) {
+					slider.style.setProperty(
+						'--skvn-parallax-inset',
+						`-${ effectiveInset }%`
+					);
+				}
+			}
+
+			slider.classList.add( 'skvn-slider--parallax' );
 		}
 
 		try {
@@ -487,6 +623,7 @@ function initSlider( slider: SliderElement ): void {
 				autoplay:
 					config.autoplay && ! reducedMotion
 						? {
+								enabled: ! loaderActive(),
 								delay: config.autoplayDelay,
 								disableOnInteraction: false,
 								pauseOnMouseEnter: false,
@@ -531,6 +668,8 @@ function initSlider( slider: SliderElement ): void {
 			let pauseCoordinator: AutoplayPauseCoordinator | undefined;
 			let cleaned = false;
 			let previousRealIndex = 0;
+			let loaderTimer: number | undefined;
+			const readyFrame = window.requestAnimationFrame( publishReady );
 
 			const resetProgress = () => {
 				slider.style.setProperty( '--skvn-slider-progress', '0' );
@@ -539,6 +678,7 @@ function initSlider( slider: SliderElement ): void {
 				if (
 					! config.autoplay ||
 					reducedMotion ||
+					loaderActive() ||
 					pauseCoordinator?.isPaused()
 				) {
 					swiper.autoplay?.pause();
@@ -550,6 +690,9 @@ function initSlider( slider: SliderElement ): void {
 					return;
 				}
 
+				if ( typeof swiper.params.autoplay === 'object' ) {
+					swiper.params.autoplay.enabled = true;
+				}
 				if ( swiper.autoplay && ! swiper.autoplay.running ) {
 					swiper.autoplay.start();
 				} else {
@@ -681,6 +824,10 @@ function initSlider( slider: SliderElement ): void {
 				}
 
 				cleaned = true;
+				window.cancelAnimationFrame( readyFrame );
+				window.clearTimeout( loaderTimer );
+				window.removeEventListener( 'skvn:loading-released', releaseLoader );
+				delete slider.dataset.skvnSliderReady;
 				pauseCoordinator?.cleanup();
 				paginationElement?.removeEventListener(
 					'click',
@@ -716,6 +863,7 @@ function initSlider( slider: SliderElement ): void {
 					'--skvn-slider-viewport-offset'
 				);
 				slider.style.removeProperty( '--skvn-parallax-inset' );
+				slider.classList.remove( 'skvn-slider--parallax' );
 				delete slider.dataset.skvnDirection;
 
 				if ( slider.swiper?.destroyed ) {
@@ -727,6 +875,18 @@ function initSlider( slider: SliderElement ): void {
 				onPause: syncAutoplay,
 				onResume: syncAutoplay,
 			} );
+			function releaseLoader() {
+				if ( cleaned ) { return; }
+				pauseCoordinator?.setPauseReason( 'loader', false );
+				syncAutoplay();
+			}
+			if ( loaderActive() ) {
+				pauseCoordinator.setPauseReason( 'loader', true );
+				window.addEventListener( 'skvn:loading-released', releaseLoader );
+				// A broken theme script cannot leave the plugin permanently paused.
+				loaderTimer = window.setTimeout( releaseLoader,
+					Math.max( 0, Number( document.documentElement.dataset.skvnLoadingUntil ) - Date.now() ) + 50 );
+			}
 			paginationElement?.addEventListener(
 				'click',
 				handlePaginationClick,

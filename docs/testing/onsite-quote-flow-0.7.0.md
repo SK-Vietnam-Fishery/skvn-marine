@@ -72,9 +72,9 @@ WP-CLI fallback:
 
 Future admin UI:
 
-- A wp-admin "SKVN Theme Init Setup UI" is deferred to milestone 1.4.0.
+- A wp-admin "SKVN Theme Init Setup UI" is deferred to milestone 1.4.1.
 - Candidate card: `Request A Quote Workflow`.
-- The 1.4.0 UI must be discussed before implementation and must not be built during 0.10.0 test debt resolution.
+- The 1.4.1 UI must be discussed before implementation and must not be built during 0.10.0 test debt resolution.
 
 ## Expected Form Fields
 

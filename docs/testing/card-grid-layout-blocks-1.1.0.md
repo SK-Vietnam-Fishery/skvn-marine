@@ -2,7 +2,7 @@
 
 Status: **DEFERRED**
 Deferred on: **2026-06-07**
-Target milestone: **V1 / 1.4.1 — Layout Blocks Validation & Quote Evaluation**
+Target milestone: **V1 / 1.4.2 — Layout Blocks Validation & Quote Evaluation**
 
 ## Target
 

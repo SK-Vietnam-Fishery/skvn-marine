@@ -1,7 +1,10 @@
 # Footer Page Settings — 0.9.0 Report
 
 Date: 2026-06-03
-Status: Implemented, online smoke evidence carried to V1 / 0.10.0.
+Status: IMPLEMENTED
+Milestone: V1 / 0.9.0
+Lifecycle: active
+Notes: online smoke evidence carried to V1 / 0.10.0.
 
 ## Scope
 

@@ -1,13 +1,22 @@
 # Decision: GU Supercharger Launch (post V1 / 1.5.x)
 
-**Status:** LOCKED  
+Status: ACTIVE
+Milestone: none
+Lifecycle: active
+Notes: quyết định LOCKED 2026-06-23; launch boundary = sau khi V1 / 1.5.x ổn định.
 **Date:** 2026-06-23 (revised — supersedes 1.3.11 launch timing)  
-**Prior decision:** `docs/decisions/gutenberg-supercharger-launch-1.3.11.md` — **SUPERSEDED**  
+**Prior decision:** `docs/decisions/archives/gutenberg-supercharger-launch-1.3.11.md` — **SUPERSEDED**  
 **Milestone boundary:** After **V1 / 1.5.x** stabilizes (woo-catalog integration + multi-site confidence)
 
 ---
 
 ## Decision
+
+### Amendment — 2026-11-04 (hiệu lực ưu tiên)
+
+Human chốt **Marine Blocks** (`marine-blocks`, PHP `marine_blocks_`), thay identity GU/Gutenberg Supercharger; không hướng full-FSE supercharger. Plugin styling/runtime riêng; website WindPress enhance core/pattern. Migration chuyển sang **1.4.0**, SemVer đã xác nhận, chưa start, không đợi public launch. Xem [plan 047](../../.context/planning/047_VER_1_4_0_MARINE_BLOCKS_MIGRATION_PLANNING.md).
+
+File vẫn ACTIVE cho gate public launch sau 1.5.x và QA. Identity, yêu cầu giữ tên cũ tới launch và migration chỉ tại launch bên dưới là lịch sử đã bị thay thế. Public version cần xác nhận lại, không tự reset 0.0.1. Research tên cũ không áp dụng cho marine-blocks. Giữ acceptance: dùng tên mới khi thực hiện và nối evidence migration 1.4.0 vào launch gate.
 
 Human chốt:
 

@@ -14,6 +14,230 @@ const SKVN_MARINE_BLOCKS_TYPOGRAPHY_OPTION = 'skvn_typography';
 
 add_action( 'admin_menu', 'skvn_marine_blocks_typography_menu' );
 add_action( 'admin_init', 'skvn_marine_blocks_register_typography_settings' );
+add_action( 'enqueue_block_editor_assets', 'skvn_marine_blocks_design_bootstrap' );
+add_action( 'wp_ajax_skvn_marine_design_settings', 'skvn_marine_blocks_design_settings_ajax' );
+add_action( 'wp_ajax_skvn_marine_design_session', 'skvn_marine_blocks_design_session_ajax' );
+
+/** Exact active child plus explicit theme contract; parent/name alone is insufficient. */
+function skvn_marine_blocks_design_theme_supported() {
+	if ( 'skvn-marine' !== get_stylesheet() || ! function_exists( 'skvn_marine_design_sidebar_contract' ) ) {
+		return false;
+	}
+	$contract = skvn_marine_design_sidebar_contract();
+	return is_array( $contract ) && isset( $contract['version'], $contract['capabilities'] ) && is_array( $contract['capabilities'] ) && 1 === $contract['version']
+		&& ! array_diff( array( 'palette', 'heading', 'fonts' ), $contract['capabilities'] )
+		&& function_exists( 'skvn_marine_font_presets' ) && function_exists( 'skvn_marine_heading_scope_choices' )
+		&& function_exists( 'skvn_marine_get_font_preset' ) && function_exists( 'skvn_marine_get_heading_scope' )
+		&& function_exists( 'skvn_marine_sanitize_font_preset' ) && function_exists( 'skvn_marine_sanitize_heading_scope' );
+}
+
+/** Optimistic group revision, checked only after acquiring the storage-owner lock. */
+function skvn_marine_blocks_design_revision( $value ) {
+	return hash( 'sha256', wp_json_encode( $value ) );
+}
+
+/**
+ * Drop all three native Options API cache locations before a locked read.
+ * Native update_option() remains responsible for sanitize/filter/action/cache
+ * semantics and serialization; this adapter never writes option rows directly.
+ */
+function skvn_marine_blocks_design_refresh_owner( $owner ) {
+	global $wpdb;
+	wp_cache_delete( $owner, 'options' );
+	wp_cache_delete( 'alloptions', 'options' );
+	wp_cache_delete( 'notoptions', 'options' );
+	$row = $wpdb->get_row( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name = %s LIMIT 1", $owner ), ARRAY_A );
+	if ( $wpdb->last_error ) {
+		return new WP_Error( 'storage_error', __( 'Saved settings could not be read. Your draft is kept.', 'skvn-marine-blocks' ) );
+	}
+	return array( 'value' => is_array( $row ) ? maybe_unserialize( $row['option_value'] ) : false );
+}
+
+/** Return errors to AJAX only after finally releases the connection-owned lock. */
+function skvn_marine_blocks_design_save_group( $group, $raw, $revision ) {
+	global $wpdb;
+	static $held_owners = array();
+	$stylesheet = get_option( 'stylesheet' );
+	$owner = 'fonts' === $group ? 'theme_mods_' . $stylesheet : SKVN_MARINE_BLOCKS_TYPOGRAPHY_OPTION;
+	if ( isset( $held_owners[ $owner ] ) ) {
+		return new WP_Error( 'busy', __( 'A settings hook attempted a recursive save. Your draft is kept.', 'skvn-marine-blocks' ), array( 'status' => 503 ) );
+	}
+	// MySQL/MariaDB names are server-wide and limited to 64 characters.
+	// Database + options table scopes separate sites, blogs, prefixes and owners.
+	$lock = 'skvn-design-' . hash( 'sha256', DB_NAME . '|' . $wpdb->options . '|' . $owner );
+	$lock = substr( $lock, 0, 63 );
+	$acquired = $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock ) );
+	if ( '1' !== (string) $acquired ) {
+		return new WP_Error( 'busy', __( 'Another design save is in progress, or the database cannot lock this owner. Your draft is kept. Try Save again.', 'skvn-marine-blocks' ), array( 'status' => 503 ) );
+	}
+	$held_owners[ $owner ] = true;
+	try {
+		if ( ! skvn_marine_blocks_design_theme_supported() || $stylesheet !== get_option( 'stylesheet' ) || ! current_user_can( 'fonts' === $group ? 'edit_theme_options' : 'manage_options' ) ) {
+			return new WP_Error( 'unavailable', __( 'The theme or your permissions changed. Your draft is kept, but this group cannot be saved.', 'skvn-marine-blocks' ), array( 'status' => 403 ) );
+		}
+		$persisted = skvn_marine_blocks_design_refresh_owner( $owner );
+		if ( is_wp_error( $persisted ) ) {
+			return $persisted;
+		}
+		// get_theme_mods() also preserves WP's deprecated-location migration when
+		// the modern owner is absent. Both font keys are committed in ONE update.
+		$value = 'fonts' === $group ? get_theme_mods() : ( is_array( $persisted['value'] ) ? $persisted['value'] : array() );
+		$value = is_array( $value ) ? $value : array();
+		$current = skvn_marine_blocks_design_snapshot()['groups'][ $group ];
+		if ( ! hash_equals( $current['revision'], $revision ) ) {
+			return new WP_Error( 'conflict', __( 'This group changed in another session. Review the saved values and your draft before saving.', 'skvn-marine-blocks' ), array( 'status' => 409, 'current' => $current ) );
+		}
+		if ( 'fonts' === $group ) {
+			$changes = array( 'skvn_font_preset' => skvn_marine_sanitize_font_preset( $raw['preset'] ), 'skvn_font_heading_scope' => skvn_marine_sanitize_heading_scope( $raw['scope'] ) );
+			foreach ( $changes as $key => $next ) {
+				// Same per-key filter and old-value contract as WP set_theme_mod().
+				$value[ $key ] = apply_filters( "pre_set_theme_mod_{$key}", $next, isset( $value[ $key ] ) ? $value[ $key ] : false );
+			}
+		} else {
+			// Merge the other registered group; the native registered sanitizer
+			// still owns its established policy for unrecognized option keys.
+			$value[ $group ] = $raw;
+		}
+		// A reconnect can drop connection-owned locks. Never write unguarded.
+		$owns_lock = $wpdb->get_var( $wpdb->prepare( 'SELECT IS_USED_LOCK(%s) = CONNECTION_ID()', $lock ) );
+		if ( '1' !== (string) $owns_lock ) {
+			return new WP_Error( 'busy', __( 'The design save lock was lost. Your draft is kept. Try Save again.', 'skvn-marine-blocks' ), array( 'status' => 503 ) );
+		}
+		// Retains native absent-row add_option(), sanitize_option(), option
+		// pre-update filters/actions, serialized equality and cache management.
+		update_option( $owner, $value );
+		$check = skvn_marine_blocks_design_refresh_owner( $owner );
+		if ( is_wp_error( $check ) ) {
+			return $check;
+		}
+		$saved = skvn_marine_blocks_design_snapshot()['groups'][ $group ];
+		$expected = 'fonts' === $group ? $raw : skvn_marine_blocks_sanitize_typography( array( $group => $raw ) )[ $group ];
+		$physical = is_array( $check['value'] ) ? $check['value'] : array();
+		$physical_group = 'fonts' === $group ? array(
+			'preset' => skvn_marine_sanitize_font_preset( isset( $physical['skvn_font_preset'] ) && is_string( $physical['skvn_font_preset'] ) ? $physical['skvn_font_preset'] : 'instrument' ),
+			'scope' => skvn_marine_sanitize_heading_scope( isset( $physical['skvn_font_heading_scope'] ) && is_string( $physical['skvn_font_heading_scope'] ) ? $physical['skvn_font_heading_scope'] : 'h1-h3' ),
+		) : skvn_marine_blocks_sanitize_typography( $physical )[ $group ];
+		if ( $physical_group !== $expected || $saved['value'] !== $expected ) {
+			return new WP_Error( 'storage_error', __( 'The saved values differ from your draft, possibly because of a settings filter. Your draft is kept. Reload this group to review saved settings.', 'skvn-marine-blocks' ) );
+		}
+		return $saved;
+	} finally {
+		// No wp_send_json()/exit inside this critical section: PHP exit skips finally.
+		$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock ) );
+		unset( $held_owners[ $owner ] );
+	}
+}
+
+/** Read current storage owners without creating a second settings store. */
+function skvn_marine_blocks_design_snapshot() {
+	$supported = skvn_marine_blocks_design_theme_supported();
+	$result = array(
+		'available' => $supported,
+		'incompatible' => 'skvn-marine' === get_stylesheet() && ! $supported,
+		'settingsUrl' => current_user_can( 'manage_options' ) ? admin_url( 'admin.php?page=skvn-marine-typography' ) : '',
+	);
+	if ( ! $supported ) {
+		return $result;
+	}
+	$typography = skvn_marine_blocks_get_typography();
+	$values = array(
+		'palette' => $typography['palette'],
+		'heading' => $typography['heading'],
+		'fonts' => array( 'preset' => skvn_marine_get_font_preset(), 'scope' => skvn_marine_get_heading_scope() ),
+	);
+	foreach ( $values as $group => $value ) {
+		$result['groups'][ $group ] = array(
+			'value' => $value,
+			'revision' => skvn_marine_blocks_design_revision( $value ),
+			'canEdit' => current_user_can( 'fonts' === $group ? 'edit_theme_options' : 'manage_options' ),
+		);
+	}
+	$result['presets'] = array();
+	foreach ( skvn_marine_font_presets() as $key => $preset ) {
+		$result['presets'][] = array( 'value' => $key, 'label' => $preset['label'] );
+	}
+	$result['scopes'] = array();
+	foreach ( skvn_marine_heading_scope_choices() as $key => $label ) {
+		$result['scopes'][] = array( 'value' => $key, 'label' => $label );
+	}
+	return $result;
+}
+
+/** Only editor transport configuration; no theme CSS or draft preview in admin chrome. */
+function skvn_marine_blocks_design_bootstrap() {
+	$screen = get_current_screen();
+	wp_localize_script( 'skvn-marine-blocks-editor', 'skvnMarineDesign', array(
+		'url' => admin_url( 'admin-ajax.php' ),
+		'nonce' => wp_create_nonce( 'skvn_marine_design_settings' ),
+		'woocommerceAvailable' => class_exists( 'WooCommerce' ),
+		'postEditor' => $screen && 'post' === $screen->base && $screen->is_block_editor(),
+	) );
+}
+
+/** Authenticated, read-only token recovery. No settings values are returned or written. */
+function skvn_marine_blocks_design_session_ajax() {
+	nocache_headers();
+	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) && ! current_user_can( 'edit_theme_options' ) ) {
+		wp_send_json_error( array( 'code' => 'unavailable', 'canEdit' => false, 'message' => __( 'Sign in with an account that can access design settings.', 'skvn-marine-blocks' ) ), 403 );
+	}
+	wp_send_json_success( array( 'nonce' => wp_create_nonce( 'skvn_marine_design_settings' ) ) );
+}
+
+/**
+ * Authenticated Theme Design transport. Each request rechecks theme and capability.
+ * Read/save are independent of Page Save. Writes merge only the requested group.
+ */
+function skvn_marine_blocks_design_settings_ajax() {
+	if ( false === check_ajax_referer( 'skvn_marine_design_settings', 'nonce', false ) ) {
+		wp_send_json_error( array( 'code' => 'expired_session', 'message' => __( 'Your design session expired. Refresh the session before saving. Your draft is kept.', 'skvn-marine-blocks' ) ), 403 );
+	}
+	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) && ! current_user_can( 'edit_theme_options' ) ) {
+		wp_send_json_error( array( 'code' => 'unavailable', 'canEdit' => false, 'message' => __( 'You cannot access design settings.', 'skvn-marine-blocks' ) ), 403 );
+	}
+	$operation = isset( $_POST['operation'] ) && is_string( $_POST['operation'] ) ? sanitize_key( wp_unslash( $_POST['operation'] ) ) : 'read';
+	if ( 'read' === $operation ) {
+		wp_send_json_success( skvn_marine_blocks_design_snapshot() );
+	}
+	$group = isset( $_POST['group'] ) && is_string( $_POST['group'] ) ? sanitize_key( wp_unslash( $_POST['group'] ) ) : '';
+	if ( 'save' !== $operation || ! in_array( $group, array( 'palette', 'heading', 'fonts' ), true ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unknown settings group.', 'skvn-marine-blocks' ) ), 400 );
+	}
+	if ( ! skvn_marine_blocks_design_theme_supported() || ! current_user_can( 'fonts' === $group ? 'edit_theme_options' : 'manage_options' ) ) {
+		wp_send_json_error( array( 'code' => 'unavailable', 'canEdit' => false, 'message' => __( 'This theme or your permissions do not support saving this group.', 'skvn-marine-blocks' ) ), 403 );
+	}
+	$current = skvn_marine_blocks_design_snapshot();
+	$revision = isset( $_POST['revision'] ) && is_string( $_POST['revision'] ) ? sanitize_text_field( wp_unslash( $_POST['revision'] ) ) : '';
+	$raw = isset( $_POST['value'] ) && is_string( $_POST['value'] ) ? json_decode( wp_unslash( $_POST['value'] ), true ) : null;
+	$valid = is_array( $raw ) && count( $raw ) === count( $current['groups'][ $group ]['value'] );
+	if ( 'fonts' === $group ) {
+		$valid = $valid && isset( $raw['preset'], $raw['scope'] ) && is_string( $raw['preset'] ) && is_string( $raw['scope'] )
+			&& array_key_exists( $raw['preset'], skvn_marine_font_presets() ) && array_key_exists( $raw['scope'], skvn_marine_heading_scope_choices() );
+	} else {
+		foreach ( $current['groups'][ $group ]['value'] as $key => $value ) {
+			if ( 'palette' === $group ) {
+				$valid = $valid && isset( $raw[ $key ] ) && is_string( $raw[ $key ] ) && (bool) sanitize_hex_color( $raw[ $key ] );
+			} else {
+				$valid = $valid && isset( $raw[ $key ] ) && is_array( $raw[ $key ] ) && 2 === count( $raw[ $key ] )
+					&& isset( $raw[ $key ]['size'], $raw[ $key ]['weight'] ) && is_string( $raw[ $key ]['size'] ) && is_string( $raw[ $key ]['weight'] )
+					&& (bool) skvn_marine_blocks_sanitize_css_size( $raw[ $key ]['size'] ) && (bool) skvn_marine_blocks_sanitize_font_weight( $raw[ $key ]['weight'] );
+			}
+		}
+	}
+	if ( ! $valid ) {
+		wp_send_json_error( array( 'message' => __( 'Check the values in this group. Colors must be hex; heading sizes use px or rem and weights use 100–900.', 'skvn-marine-blocks' ) ), 400 );
+	}
+	$saved = skvn_marine_blocks_design_save_group( $group, $raw, $revision );
+	if ( is_wp_error( $saved ) ) {
+		$data = $saved->get_error_data();
+		wp_send_json_error( array(
+			'code' => $saved->get_error_code(),
+			'message' => $saved->get_error_message(),
+			'current' => isset( $data['current'] ) ? $data['current'] : null,
+			'canEdit' => skvn_marine_blocks_design_theme_supported() && current_user_can( 'fonts' === $group ? 'edit_theme_options' : 'manage_options' ),
+		), isset( $data['status'] ) ? $data['status'] : 500 );
+	}
+	wp_send_json_success( $saved );
+}
 
 // ---------------------------------------------------------------------------
 // Defaults and getter
@@ -62,7 +286,7 @@ function skvn_marine_blocks_get_typography() {
  * Sanitize the full typography option array.
  *
  * Registered as sanitize_callback with register_setting so WordPress calls
- * this whenever the option is updated from any source.
+ * this for updates after registration on admin_init, including admin AJAX.
  *
  * @param mixed $value Raw option value.
  * @return array<string,mixed>

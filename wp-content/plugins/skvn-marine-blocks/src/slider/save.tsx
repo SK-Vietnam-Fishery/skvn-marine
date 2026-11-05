@@ -17,6 +17,12 @@ type SliderAttributes = {
 	responsiveSlides: string;
 	enableParallax: boolean;
 	parallaxIntensity: string;
+	parallaxAdvanced: boolean;
+	parallaxDepth: string;
+	parallaxDirection: string;
+	parallaxTranslate: number;
+	parallaxScale: number;
+	parallaxInset: number;
 };
 
 type SliderSaveProps = {
@@ -50,6 +56,12 @@ export function save({ attributes }: SliderSaveProps) {
 				: {}),
 			enableParallax: attributes.enableParallax,
 			parallaxIntensity: attributes.parallaxIntensity,
+			parallaxAdvanced: attributes.parallaxAdvanced,
+			parallaxDepth: attributes.parallaxDepth,
+			parallaxDirection: attributes.parallaxDirection,
+			parallaxTranslate: attributes.parallaxTranslate,
+			parallaxScale: attributes.parallaxScale,
+			parallaxInset: attributes.parallaxInset,
 		}),
 	});
 

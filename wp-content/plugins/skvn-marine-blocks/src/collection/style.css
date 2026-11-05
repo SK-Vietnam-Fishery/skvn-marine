@@ -195,6 +195,24 @@
 	margin: 0;
 }
 
+/* Product carousel titles remain complete, including unbroken product codes.
+ * Keep this scoped so Post title policy and saved media ratios stay independent.
+ */
+.skvn-collection--product.skvn-collection--carousel .skvn-collection-card__body {
+	min-width: 0;
+}
+
+.skvn-collection--product.skvn-collection--carousel .skvn-collection-card__title,
+.skvn-collection--product.skvn-collection--carousel .skvn-collection-card__title a {
+	display: block;
+	max-height: none;
+	overflow: visible;
+	overflow-wrap: anywhere;
+	text-overflow: clip;
+	white-space: normal;
+	-webkit-line-clamp: unset;
+}
+
 .skvn-collection-card__meta,
 .skvn-collection-card__excerpt {
 	color: #4b6470;
@@ -222,6 +240,14 @@
 .skvn-collection--ratio-3-2  .skvn-collection-card__image { aspect-ratio: 3 / 2; }
 .skvn-collection--ratio-16-9 .skvn-collection-card__image { aspect-ratio: 16 / 9; }
 .skvn-collection--ratio-auto .skvn-collection-card__image { aspect-ratio: auto; }
+
+/* The skeleton media must reserve the same box as the real media, so it reuses
+ * the exact same ratio declarations instead of a second set of values. */
+.skvn-collection--ratio-1-1  .skvn-collection__skeleton-media { aspect-ratio: 1 / 1; }
+.skvn-collection--ratio-4-3  .skvn-collection__skeleton-media { aspect-ratio: 4 / 3; }
+.skvn-collection--ratio-3-2  .skvn-collection__skeleton-media { aspect-ratio: 3 / 2; }
+.skvn-collection--ratio-16-9 .skvn-collection__skeleton-media { aspect-ratio: 16 / 9; }
+.skvn-collection--ratio-auto .skvn-collection__skeleton-media { aspect-ratio: auto; }
 
 /* Equal height cards */
 .skvn-collection--equal-height .skvn-collection-card {
@@ -267,6 +293,7 @@ a.skvn-collection-card__badge:hover {
 /* Carousel */
 .skvn-collection__carousel-outer {
 	position: relative;
+	--skvn-carousel-gap: 16px;
 }
 
 .skvn-collection__carousel {
@@ -283,6 +310,155 @@ a.skvn-collection-card__badge:hover {
 .skvn-collection__carousel .swiper-slide {
 	box-sizing: border-box;
 	height: auto;
+}
+
+/* ── C: pre-init + fallback geometry ──────────────────────────────────────
+ * Before the runtime takes over (and permanently if it cannot start), the
+ * carousel must already look like the configured preset instead of a single
+ * 100%-wide slide hidden behind overflow. Real content stays visible and every
+ * item stays reachable by manual scroll/keyboard.
+ *
+ * Scoped with :not(.skvn-is-ready) so this covers the static SSR state and the
+ * fallback state, and Swiper's own .swiper-slide{width:100%} loses on
+ * specificity (0,4,0 vs 0,1,0) regardless of stylesheet order.
+ */
+.skvn-collection--carousel:not(.skvn-is-ready) .skvn-collection__carousel {
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+}
+
+.skvn-collection--carousel:not(.skvn-is-ready) .skvn-collection__carousel .swiper-wrapper {
+	gap: var(--skvn-carousel-gap);
+}
+
+.skvn-collection--carousel:not(.skvn-is-ready) .skvn-collection__carousel .swiper-slide {
+	flex: 0 0 auto;
+	width: calc(
+		(100% - (var(--skvn-collection-columns) - 1) * var(--skvn-carousel-gap)) /
+			var(--skvn-collection-columns)
+	);
+}
+
+/* Ready: Swiper owns geometry and spacing, so drop the pre-init gap to avoid
+ * double spacing, and hide the manual scroll affordance. */
+.skvn-collection--carousel.skvn-is-ready .skvn-collection__carousel {
+	overflow-x: hidden;
+}
+
+.skvn-collection--carousel.skvn-is-ready .skvn-collection__carousel .swiper-wrapper {
+	gap: 0;
+}
+
+/* Preset → visible columns, same source values as the Grid preset rules above.
+ * mobile base / tablet 640 / desktop 1024, matching collection-view.ts. */
+	.skvn-collection--preset-1-1-1 { --skvn-collection-columns: 1; }
+.skvn-collection--preset-2-1-1 { --skvn-collection-columns: 1; }
+.skvn-collection--preset-3-2-1 { --skvn-collection-columns: 1; }
+.skvn-collection--preset-4-2-1 { --skvn-collection-columns: 1; }
+.skvn-collection--preset-5-3-1 { --skvn-collection-columns: 1; }
+
+@media (min-width: 640px) {
+.skvn-collection--preset-1-1-1 { --skvn-collection-columns: 1; }
+	.skvn-collection--preset-2-1-1 { --skvn-collection-columns: 2; }
+	.skvn-collection--preset-3-2-1 { --skvn-collection-columns: 2; }
+	.skvn-collection--preset-4-2-1 { --skvn-collection-columns: 2; }
+	.skvn-collection--preset-5-3-1 { --skvn-collection-columns: 3; }
+}
+
+@media (min-width: 1024px) {
+	.skvn-collection--preset-2-1-1 { --skvn-collection-columns: 2; }
+	.skvn-collection--preset-3-2-1 { --skvn-collection-columns: 3; }
+	.skvn-collection--preset-4-2-1 { --skvn-collection-columns: 4; }
+	.skvn-collection--preset-5-3-1 { --skvn-collection-columns: 5; }
+}
+
+/* Controls have no meaning before the runtime owns the carousel. Hidden with
+ * visibility so the header keeps its exact geometry (no layout shift). */
+.skvn-collection--carousel:not(.skvn-is-ready) .skvn-collection__arrow,
+.skvn-collection--carousel:not(.skvn-is-ready) .skvn-collection__pause-btn {
+	visibility: hidden;
+}
+
+/* Reserve the dots row before bullets exist so init does not shift the page. */
+.skvn-collection--carousel:not(.skvn-is-ready) .skvn-collection__pagination {
+	min-height: 0.6rem;
+}
+
+/* ── D: local loading skeleton ────────────────────────────────────────────
+ * Hidden by default, so SSR and no-JS keep the real content (never a
+ * JS-only reveal). It appears only while the runtime owns initialization and
+ * is scoped to the carousel element itself, so it can never cover the page,
+ * the footer or the catalog CTA.
+ */
+.skvn-collection__skeleton {
+	display: none;
+}
+
+.skvn-collection--carousel.skvn-is-initializing .skvn-collection__skeleton {
+	background: #fff;
+	display: block;
+	inset: 0;
+	position: absolute;
+	z-index: 2;
+}
+
+/* The real row keeps its box during init, so revealing it later cannot shift
+ * the page and cannot produce a giant-card flash.
+ *
+ * Only `.swiper-wrapper` is hidden, never `.skvn-collection__carousel`: the
+ * skeleton is a CHILD of that element, so hiding the container would hide the
+ * skeleton with it. */
+.skvn-collection--carousel.skvn-is-initializing .skvn-collection__carousel .swiper-wrapper {
+	visibility: hidden;
+}
+
+.skvn-collection__skeleton-track {
+	align-items: stretch;
+	display: flex;
+	gap: var(--skvn-carousel-gap);
+}
+
+/* Same width source as the pre-init slides: preset columns and the shared gap. */
+.skvn-collection__skeleton-card {
+	background: #fff;
+	border: 1px solid #d9e2e8;
+	border-radius: 8px;
+	flex: 0 0 auto;
+	overflow: hidden;
+	width: calc(
+		(100% - (var(--skvn-collection-columns) - 1) * var(--skvn-carousel-gap)) /
+			var(--skvn-collection-columns)
+	);
+}
+
+.skvn-collection__skeleton-media {
+	background: #edf4f7;
+	display: block;
+	width: 100%;
+}
+
+.skvn-collection__skeleton-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding: 1rem;
+}
+
+.skvn-collection__skeleton-line {
+	background: #edf4f7;
+	border-radius: 3px;
+	display: block;
+	height: 0.6rem;
+	width: 100%;
+}
+
+.skvn-collection__skeleton-line--title {
+	height: 0.85rem;
+}
+
+.skvn-collection__skeleton-line--short {
+	width: 60%;
 }
 
 .skvn-collection--equal-height .skvn-collection__carousel .swiper-slide {
@@ -310,6 +486,19 @@ a.skvn-collection-card__badge:hover {
 	line-height: 1;
 	transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 	width: 2.5rem;
+}
+
+/* Keep theme button padding and font glyph metrics out of the icon geometry. */
+.skvn-collection .skvn-collection__arrow {
+	box-sizing: border-box;
+	padding: 0;
+}
+
+.skvn-collection__arrow > .skvn-collection__arrow-icon {
+	display: block;
+	flex: 0 0 20px;
+	height: 20px;
+	width: 20px;
 }
 
 .skvn-collection__arrow:hover {
@@ -369,6 +558,20 @@ a.skvn-collection-card__badge:hover {
 	.skvn-collection__carousel .swiper-wrapper {
 		transition: none !important;
 	}
+
+	/* Visual motion only; autoplay coordination remains owned by the runtime. */
+	.skvn-collection--carousel .skvn-collection-card,
+	.skvn-collection--carousel .skvn-collection-card__image,
+	.skvn-collection--carousel .skvn-collection__arrow,
+	.skvn-collection--carousel .skvn-collection__pagination .swiper-pagination-bullet {
+		transition: none;
+	}
+
+	.skvn-collection--carousel .skvn-collection-card:hover,
+	.skvn-collection--carousel .skvn-collection-card:hover .skvn-collection-card__image,
+	.skvn-collection--carousel .skvn-collection-card__cta:active {
+		transform: none;
+	}
 }
 
 /* ── Product card — new classes ────────────────────────────────────────── */
@@ -385,7 +588,68 @@ a.skvn-collection-card__badge:hover {
 	border-radius: 3px;
 	color: #25404d;
 	font-size: 0.78rem;
+	overflow-wrap: anywhere;
 	padding: 0.1rem 0.4rem;
+}
+
+/* Grouped attribute summary (Product Carousel only).
+ * Rows grow with content: no fixed height, no clipping, no line-clamp and no
+ * font shrinking, so long values wrap instead of being cut. */
+.skvn-collection-card__specs--grouped {
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.skvn-collection-card__spec-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	min-width: 0;
+}
+
+.skvn-collection-card__spec-group-label {
+	color: #4b6470;
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
+	overflow-wrap: anywhere;
+	text-transform: uppercase;
+}
+
+.skvn-collection-card__spec-values {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+	min-width: 0;
+}
+
+/* "+N" is informational only — same chip geometry, muted tone, not a button. */
+.skvn-collection-card__spec-more {
+	background: none;
+	border: 1px dashed #c6d9e2;
+	border-radius: 3px;
+	color: #4b6470;
+	font-size: 0.78rem;
+	padding: 0.1rem 0.4rem;
+	white-space: nowrap;
+}
+
+.skvn-collection-card__visually-hidden {
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+	word-wrap: normal;
+}
+
+.skvn-collection__editor-note {
+	color: #4b6470;
+	font-size: 0.72rem;
+	margin: 0.2rem 0 0;
 }
 
 /* chipStyle: hashtag */
@@ -423,15 +687,48 @@ a.skvn-collection-card__badge:hover {
 	content: ' / ';
 }
 
-/* chipColorScheme — teal + navy (add more when new palette slugs needed) */
-.skvn-chips--teal .skvn-collection-card__spec-tag {
-	border-color: var(--wp--preset--color--teal);
-	color: var(--wp--preset--color--teal);
+/* chipColorScheme — áp màu palette cho mọi slug có trong COLOR_PALETTE_OPTIONS.
+ * Thêm rule này thay vì chỉ hardcode teal/navy, để editor chọn màu chip thực sự
+ * có hiệu lực (gap E10 / UX-05.a). */
+.skvn-chips--skvn-blue-950 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-blue-950, #082f49);
+	color: var(--wp--preset--color--skvn-blue-950, #082f49);
 }
-
-.skvn-chips--navy .skvn-collection-card__spec-tag {
-	border-color: var(--wp--preset--color--navy);
-	color: var(--wp--preset--color--navy);
+.skvn-chips--skvn-blue-900 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+	color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-chips--skvn-blue-700 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+	color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-chips--skvn-mint-100 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+	color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-chips--skvn-gold-300 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+	color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-chips--skvn-teal-600 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+	color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-chips--skvn-sky-50 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+	color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-chips--skvn-slate-700 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-slate-700, #334155);
+	color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-chips--skvn-slate-900 .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+	color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-chips--skvn-white .skvn-collection-card__spec-tag {
+	border-color: var(--wp--preset--color--skvn-white, #ffffff);
+	color: var(--wp--preset--color--skvn-white, #ffffff);
 }
 
 /* Catalog slot — woo-catalog (1.5.0) sẽ own nội dung này. See woo-catalog-css-migration-1.5.0.md */
@@ -499,6 +796,70 @@ a.skvn-collection-card__badge:hover {
 	background: #0D9488;
 }
 
+/* CTA hover màu theo palette (gap E07 / UX-12.a). Chỉ áp khi editor chọn
+ * actionHoverBackgroundColor / actionHoverTextColor; block cũ thiếu key giữ
+ * hardcode hover trên. */
+.skvn-collection-card__cta--hover-bg-skvn-blue-950:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-blue-950, #082f49);
+}
+.skvn-collection-card__cta--hover-text-skvn-blue-950:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-blue-950, #082f49);
+}
+.skvn-collection-card__cta--hover-bg-skvn-blue-900:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-collection-card__cta--hover-text-skvn-blue-900:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-collection-card__cta--hover-bg-skvn-blue-700:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-collection-card__cta--hover-text-skvn-blue-700:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-collection-card__cta--hover-bg-skvn-mint-100:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-collection-card__cta--hover-text-skvn-mint-100:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-collection-card__cta--hover-bg-skvn-gold-300:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-collection-card__cta--hover-text-skvn-gold-300:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-collection-card__cta--hover-bg-skvn-teal-600:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-collection-card__cta--hover-text-skvn-teal-600:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-collection-card__cta--hover-bg-skvn-sky-50:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-collection-card__cta--hover-text-skvn-sky-50:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-collection-card__cta--hover-bg-skvn-slate-700:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-collection-card__cta--hover-text-skvn-slate-700:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-collection-card__cta--hover-bg-skvn-slate-900:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-collection-card__cta--hover-text-skvn-slate-900:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-collection-card__cta--hover-bg-skvn-white:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	background-color: var(--wp--preset--color--skvn-white, #ffffff);
+}
+.skvn-collection-card__cta--hover-text-skvn-white:is(.skvn-collection-card__cta, .skvn-collection-card__read-more):is(:hover, :focus-visible) {
+	color: var(--wp--preset--color--skvn-white, #ffffff);
+}
+
 .skvn-collection-card__cta:active {
 	transform: translateY(1px);
 }
@@ -520,8 +881,126 @@ a.skvn-collection-card__badge:hover {
 .skvn-collection--editor-preview .skvn-collection__editor-body {
 	display: grid;
 	gap: 1.5rem;
-	grid-template-columns: 260px 1fr;
+	grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
 	margin-top: 1rem;
+	align-items: start;
+	container-type: inline-size;
+}
+
+/* Editor canvas owns width; components never create viewport bleed. */
+.skvn-collection--editor-preview .skvn-collection-card {
+	height: auto;
+	min-width: 0;
+}
+.skvn-collection__editor-query { grid-column: 1 / -1; min-width: 0; }
+.skvn-collection__editor-sample { width: min(260px, 100%); min-width: 0; justify-self: center; }
+@container (max-width: 520px) {
+	.skvn-collection__editor-sample,
+	.skvn-collection__editor-info { grid-column: 1 / -1; }
+}
+
+/* Plan053: Product/Post Grid and Carousel editor overview presentation.
+ * The editor section owns the available width; queries style descendants,
+ * never the container itself. No page-width or frontend rules are changed. */
+.skvn-collection--editor-preview.skvn-collection--canvas-overview {
+	container: skvn-product-canvas / inline-size;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-body {
+	box-sizing: border-box;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+	gap: 24px;
+	padding: 0;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-sample {
+	width: 100%;
+	max-width: 340px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-overview {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-sample-heading,
+.skvn-collection--canvas-overview .skvn-collection__editor-info-heading {
+	color: #334c5b;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	line-height: 1.5;
+	margin: 0 0 16px;
+	text-transform: uppercase;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+	gap: 8px 24px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field {
+	color: #526570;
+	font-size: 13px;
+	min-width: 0;
+	align-items: baseline;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field-icon {
+	display: none;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field-state {
+	color: #334c5b;
+	font-weight: 600;
+	margin-inline-start: auto;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-query {
+	border-top: 1px solid var(--skvn-editor-frame-border, #dce4e9);
+	margin-top: 20px;
+	padding-top: 20px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-query h3 {
+	color: #193c50;
+	font-size: 16px;
+	line-height: 1.5;
+	margin: 0 0 8px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-query p,
+.skvn-collection--canvas-overview .skvn-collection__editor-caption,
+.skvn-collection--canvas-overview .skvn-collection__editor-limitations {
+	color: #526570;
+	font-size: 12px;
+	line-height: 1.6;
+	margin: 8px 0 16px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-product-grid {
+	gap: 12px 24px;
+	margin: 16px 0;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-product-item {
+	padding: 4px 0;
+	line-height: 1.6;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-limitations {
+	border-top: 1px solid var(--skvn-editor-frame-border, #dce4e9);
+	grid-column: 1 / -1;
+	margin: 0;
+	padding-top: 16px;
+}
+
+@container skvn-product-canvas (max-width: 760px) {
+	.skvn-collection--canvas-overview .skvn-collection__editor-body {
+		grid-template-columns: minmax(0, 1fr);
+		padding: 0;
+	}
 }
 
 .skvn-collection-card__image--placeholder {
@@ -600,12 +1079,29 @@ a.skvn-collection-card__badge:hover {
 	color: #c6d9e2;
 }
 
-.skvn-collection__editor-product-list {
-	color: #4b6470;
-	font-size: 0.95rem;
-	list-style: none;
+.skvn-collection__editor-product-count {
+	color: #25404d;
+	font-size: 0.85rem;
+	font-weight: 600;
+	margin: 0 0 0.4rem;
+}
+
+.skvn-collection__editor-product-grid {
+	display: grid;
+	gap: 0.5rem;
 	margin: 0;
-	padding: 0;
+	padding: 0 0 0 1.5rem;
+}
+
+.skvn-collection__editor-product-item {
+	color: #25404d;
+	font-size: 0.85rem;
+	line-height: 1.3;
+	list-style: decimal;
+	margin: 0;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	padding: 0.25rem 0.5rem;
 }
 
 .skvn-collection__editor-product-status {
@@ -638,4 +1134,272 @@ a.skvn-collection-card__badge:hover {
 
 .skvn-collection-card__read-more:hover {
 	text-decoration: underline;
+}
+
+/* ── Style panel: typography & color per role (S4/S5) ──
+ * Tokens lưu slug, CSS resolve qua biến theme. Không raw hex/computed CSS.
+ * Fallback: khi slug rỗng hoặc token bị gỡ, kế thừa theme (không rule áp dụng).
+ */
+
+/* Editor section heading */
+.skvn-collection__editor-section-heading {
+	color: #25404d;
+	font-size: 0.85rem;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	margin: 0.6rem 0 0.4rem;
+	text-transform: uppercase;
+}
+
+/* Font-family roles */
+.skvn-collection .skvn-font-family-skvn-system {
+	font-family: var(--skvn-font-body, system-ui, sans-serif);
+}
+.skvn-collection .skvn-font-family-skvn-heading {
+	font-family: var(--skvn-font-heading, Georgia, serif);
+}
+.skvn-collection .skvn-font-family-skvn-ui {
+	font-family: var(--skvn-font-ui, system-ui, sans-serif);
+}
+
+/* Explicit Details roles reach nested value chips. A chip color override owns
+ * chip color; otherwise the selected Details color is inherited. */
+.skvn-collection [class*="skvn-font-size-"] :is(.skvn-collection-card__spec-tag, .skvn-collection-card__spec-more) {
+	font-size: inherit;
+}
+.skvn-collection-card:not([class*="skvn-chips--"]) [class*="skvn-collection-card__details--color-"] :is(.skvn-collection-card__spec-tag, .skvn-collection-card__spec-more) {
+	color: inherit;
+}
+
+/* Font-size roles (giá trị khớp theme.json presets) */
+.skvn-collection .skvn-font-size-sm {
+	font-size: 0.875rem;
+}
+.skvn-collection .skvn-font-size-base {
+	font-size: 1rem;
+}
+.skvn-collection .skvn-font-size-lg {
+	font-size: 1.125rem;
+}
+.skvn-collection .skvn-font-size-xl {
+	font-size: 1.25rem;
+}
+.skvn-collection .skvn-font-size-2xl {
+	font-size: 1.5rem;
+}
+
+/* Title color — áp trên .skvn-collection-card__title và liên kết bên trong */
+.skvn-collection-card__title--color-skvn-blue-950,
+.skvn-collection-card__title--color-skvn-blue-950 a {
+	color: var(--wp--preset--color--skvn-blue-950, #082f49);
+}
+.skvn-collection-card__title--color-skvn-blue-900,
+.skvn-collection-card__title--color-skvn-blue-900 a {
+	color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-collection-card__title--color-skvn-blue-700,
+.skvn-collection-card__title--color-skvn-blue-700 a {
+	color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-collection-card__title--color-skvn-mint-100,
+.skvn-collection-card__title--color-skvn-mint-100 a {
+	color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-collection-card__title--color-skvn-gold-300,
+.skvn-collection-card__title--color-skvn-gold-300 a {
+	color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-collection-card__title--color-skvn-teal-600,
+.skvn-collection-card__title--color-skvn-teal-600 a {
+	color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-collection-card__title--color-skvn-sky-50,
+.skvn-collection-card__title--color-skvn-sky-50 a {
+	color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-collection-card__title--color-skvn-slate-700,
+.skvn-collection-card__title--color-skvn-slate-700 a {
+	color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-collection-card__title--color-skvn-slate-900,
+.skvn-collection-card__title--color-skvn-slate-900 a {
+	color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-collection-card__title--color-skvn-white,
+.skvn-collection-card__title--color-skvn-white a {
+	color: var(--wp--preset--color--skvn-white, #ffffff);
+}
+
+/* Details color — áp trên date/author/excerpt/spec-meta */
+.skvn-collection-card__details--color-skvn-blue-950 {
+	color: var(--wp--preset--color--skvn-blue-950, #082f49);
+}
+.skvn-collection-card__details--color-skvn-blue-900 {
+	color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-collection-card__details--color-skvn-blue-700 {
+	color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-collection-card__details--color-skvn-mint-100 {
+	color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-collection-card__details--color-skvn-gold-300 {
+	color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-collection-card__details--color-skvn-teal-600 {
+	color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-collection-card__details--color-skvn-sky-50 {
+	color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-collection-card__details--color-skvn-slate-700 {
+	color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-collection-card__details--color-skvn-slate-900 {
+	color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-collection-card__details--color-skvn-white {
+	color: var(--wp--preset--color--skvn-white, #ffffff);
+}
+
+/* Action CTA background */
+.skvn-collection-card__cta--bg-skvn-blue-950 {
+	background-color: var(--wp--preset--color--skvn-blue-950, #082f49);
+}
+.skvn-collection-card__cta--bg-skvn-blue-900 {
+	background-color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-collection-card__cta--bg-skvn-blue-700 {
+	background-color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-collection-card__cta--bg-skvn-mint-100 {
+	background-color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-collection-card__cta--bg-skvn-gold-300 {
+	background-color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-collection-card__cta--bg-skvn-teal-600 {
+	background-color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-collection-card__cta--bg-skvn-sky-50 {
+	background-color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-collection-card__cta--bg-skvn-slate-700 {
+	background-color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-collection-card__cta--bg-skvn-slate-900 {
+	background-color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-collection-card__cta--bg-skvn-white {
+	background-color: var(--wp--preset--color--skvn-white, #ffffff);
+}
+
+/* Action CTA text */
+.skvn-collection-card__cta--text-skvn-blue-950 {
+	color: var(--wp--preset--color--skvn-blue-950, #082f49);
+}
+.skvn-collection-card__cta--text-skvn-blue-900 {
+	color: var(--wp--preset--color--skvn-blue-900, #0c4a6e);
+}
+.skvn-collection-card__cta--text-skvn-blue-700 {
+	color: var(--wp--preset--color--skvn-blue-700, #0369a1);
+}
+.skvn-collection-card__cta--text-skvn-mint-100 {
+	color: var(--wp--preset--color--skvn-mint-100, #ddfaf4);
+}
+.skvn-collection-card__cta--text-skvn-gold-300 {
+	color: var(--wp--preset--color--skvn-gold-300, #e9c766);
+}
+.skvn-collection-card__cta--text-skvn-teal-600 {
+	color: var(--wp--preset--color--skvn-teal-600, #0d9488);
+}
+.skvn-collection-card__cta--text-skvn-sky-50 {
+	color: var(--wp--preset--color--skvn-sky-50, #eaf7ff);
+}
+.skvn-collection-card__cta--text-skvn-slate-700 {
+	color: var(--wp--preset--color--skvn-slate-700, #334155);
+}
+.skvn-collection-card__cta--text-skvn-slate-900 {
+	color: var(--wp--preset--color--skvn-slate-900, #0f172a);
+}
+.skvn-collection-card__cta--text-skvn-white {
+	color: var(--wp--preset--color--skvn-white, #ffffff);
+}
+
+/* Action CTA focus-visible indicator (độc lập, không xóa focus indicator) */
+.skvn-collection-card__cta:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+/* ── Media presets — Product only (S6 / P4) ──
+ * Width % is relative to the card width, so cards of different sizes stay
+ * consistent. flush keeps legacy ratio/contain behavior without clipping.
+ * padded adds even inner spacing. floating lifts the image above the card's
+ * top edge; card and body stay in place and nothing is clipped.
+ */
+
+/* flush: full card width, contain, no float/shadow/padding. Legacy blocks
+ * without a mediaLayout class keep their existing cover/ratio rules. */
+.skvn-collection-card--media-flush .skvn-collection-card__media {
+	border-radius: 8px 8px 0 0;
+	overflow: hidden;
+}
+.skvn-collection-card--media-flush .skvn-collection-card__image {
+	aspect-ratio: 1 / 1;
+	object-fit: contain;
+	width: 100%;
+	height: auto;
+	border-radius: 0;
+	transform: none;
+	box-shadow: none;
+}
+
+/* padded: even padding top/left/right; inner radius shrinks with padding. */
+.skvn-collection-card--media-padded .skvn-collection-card__media {
+	border-radius: calc(8px - var(--skvn-media-padding-side, 0.5rem));
+	overflow: hidden;
+	padding: var(--skvn-media-padding-top, 0.5rem)
+		var(--skvn-media-padding-side, 0.5rem) 0;
+	width: calc(100% - 2 * var(--skvn-media-padding-side, 0.5rem));
+	margin: 0 auto;
+}
+.skvn-collection-card--media-padded .skvn-collection-card__image {
+	object-fit: contain;
+	width: 100%;
+	height: auto;
+	border-radius: calc(
+		8px - var(--skvn-media-padding-side, 0.5rem) - 2px
+	);
+	transform: none;
+	box-shadow: none;
+}
+
+/* floating: card keeps its box, media frame lifts so the image is never
+ * clipped by the card's top edge. Card/body do not move. */
+.skvn-collection-card--media-floating {
+	overflow: visible;
+}
+.skvn-collection-card--media-floating .skvn-collection-card__media {
+	overflow: visible;
+}
+.skvn-collection-card--media-floating .skvn-collection-card__image {
+	position: relative;
+	width: var(--skvn-media-float-width, 100%);
+	max-width: 100%;
+	height: auto;
+	object-fit: contain;
+	display: block;
+	margin: 0 auto;
+	transform: translateY(var(--skvn-media-float-offset, -12px));
+	border-radius: 0;
+	box-shadow: var(--skvn-media-float-shadow, none);
+}
+
+/* Reduced motion: freeze the float lift and shadow. */
+@media (prefers-reduced-motion: reduce) {
+	.skvn-collection-card--media-floating .skvn-collection-card__image {
+		transform: none;
+		transition: none;
+	}
 }

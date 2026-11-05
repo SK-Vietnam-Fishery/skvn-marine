@@ -349,10 +349,60 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 			array( 'subtle', 'medium', 'strong' ),
 			'medium'
 		),
+		'parallaxAdvanced'  => isset( $attributes['parallaxAdvanced'] ) ? (bool) $attributes['parallaxAdvanced'] : false,
+		'parallaxDepth'     => skvn_marine_blocks_normalize_slider_choice(
+			$attributes['parallaxDepth'] ?? 'both',
+			array( 'both', 'translate', 'scale' ),
+			'both'
+		),
+		'parallaxDirection' => skvn_marine_blocks_normalize_slider_choice(
+			$attributes['parallaxDirection'] ?? 'horizontal',
+			array( 'horizontal', 'vertical' ),
+			'horizontal'
+		),
+		'parallaxTranslate' => skvn_marine_blocks_normalize_slider_integer(
+			$attributes['parallaxTranslate'] ?? 30,
+			30,
+			0,
+			80
+		),
+		'parallaxScale'     => max(
+			1.0,
+			min(
+				1.5,
+				is_numeric( $attributes['parallaxScale'] ?? null ) ? (float) $attributes['parallaxScale'] : 1.12
+			)
+		),
+		'parallaxInset'     => skvn_marine_blocks_normalize_slider_integer(
+			$attributes['parallaxInset'] ?? 35,
+			35,
+			0,
+			80
+		),
 	);
 
 	if ( '3-2-1' === $responsive_slides ) {
 		$config['responsiveSlides'] = $responsive_slides;
+	}
+
+	// Parallax edge-guard inset is config-static: paint on first frame via
+	// inline style so the bg box does not jump from 0% → -N% after JS init (F1).
+	// Client reduced-motion is handled in CSS; JS only wires Swiper data attrs.
+	$parallax_enabled = ! empty( $config['enableParallax'] ) && 1 === (int) $slides_per_view;
+	$parallax_inset_pct = 0;
+
+	if ( $parallax_enabled ) {
+		$preset_inset = array(
+			'subtle' => 20,
+			'medium' => 35,
+			'strong' => 50,
+		);
+		$depth          = $config['parallaxAdvanced'] ? $config['parallaxDepth'] : 'both';
+		$include_translate = 'scale' !== $depth;
+		$inset_mag      = $config['parallaxAdvanced']
+			? (int) $config['parallaxInset']
+			: (int) ( $preset_inset[ $config['parallaxIntensity'] ] ?? 35 );
+		$parallax_inset_pct = $include_translate ? max( 0, min( 80, $inset_mag ) ) : 0;
 	}
 
 	$class_name = 'skvn-slider swiper alignfull';
@@ -362,6 +412,10 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 	}
 
 	$class_name .= ' skvn-slider--height-' . $height_preset;
+
+	if ( $parallax_enabled ) {
+		$class_name .= ' skvn-slider--parallax';
+	}
 
 	if ( $show_arrows ) {
 		$class_name .= ' skvn-slider--has-arrows';
@@ -375,13 +429,21 @@ function skvn_marine_blocks_render_slider( $attributes, $content, $block ) {
 		$class_name .= ' skvn-slider--pagination-' . $pagination_style;
 	}
 
-	$wrapper_attributes = get_block_wrapper_attributes(
-		array(
-			'class'            => $class_name,
-			'data-skvn-slider' => wp_json_encode( $config ),
-			'aria-label'       => esc_attr__( 'SKVN content slider', 'skvn-marine-blocks' ),
-		)
+	$wrapper_args = array(
+		'class'            => $class_name,
+		'data-skvn-slider' => wp_json_encode( $config ),
+		'aria-label'       => esc_attr__( 'SKVN content slider', 'skvn-marine-blocks' ),
 	);
+
+	if ( $parallax_enabled && $parallax_inset_pct > 0 ) {
+		// esc_attr via get_block_wrapper_attributes; value is a clamped integer.
+		$wrapper_args['style'] = sprintf(
+			'--skvn-parallax-inset:-%d%%',
+			$parallax_inset_pct
+		);
+	}
+
+	$wrapper_attributes = get_block_wrapper_attributes( $wrapper_args );
 	$slides             = skvn_marine_blocks_render_slider_inner_blocks( $block );
 	$output             = '<div ' . $wrapper_attributes . '>';
 	$output            .= '<div class="skvn-slider__wrapper swiper-wrapper">' . $slides . '</div>';

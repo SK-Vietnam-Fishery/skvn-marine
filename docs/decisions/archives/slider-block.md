@@ -1,7 +1,10 @@
 # Slider Block — Decision Log
 
-Status: active decision — editor implementation completed in 1.2.0
-Milestone: V1 / 0.3.0; editor completion: V1 / 1.2.0
+Status: ARCHIVED
+Milestone: V1 / 0.3.0
+Lifecycle: archived
+Notes: decision log gốc cho slider/slide; phần editor hoàn tất ở V1 / 1.2.0. Đã archive từ trước 2026-10-13. Contract slider hiện hành nằm ở `docs/decisions/slider-completion-spec-1.3.0.md`, `docs/decisions/slider-navigation-and-pagination-controls.md`, `docs/decisions/swiper-architecture.md`.
+Editor completion context: V1 / 1.2.0
 Layer: Plugin `skvn-marine-blocks` (logic/portable structure) + Theme `skvn-marine` (tokens/visual overrides)
 Last updated: 2026-06-08
 
@@ -292,7 +295,7 @@ Quyết định: không tạo variant 2 cho đến khi có use case thật sự 
 
 The active follow-up decision is:
 
-- `docs/decisions/slider-presets-and-inserter-1.2.1.md`
+- `docs/decisions/archives/slider-presets-and-inserter-1.2.1.md`
 
 Summary:
 

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SKVN Marine Blocks
  * Description: Custom Gutenberg blocks for SKVN Marine.
- * Version: 1.3.7
+ * Version: 1.3.19
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Text Domain: skvn-marine-blocks
@@ -16,6 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/modules/footer-settings/footer-settings.php';
 require_once __DIR__ . '/modules/header-settings/header-settings.php';
 require_once __DIR__ . '/modules/collection-render/collection-render.php';
+require_once __DIR__ . '/modules/category-grid/category-grid.php';
 require_once __DIR__ . '/modules/slider-render/slider-render.php';
 require_once __DIR__ . '/modules/feature-showcase-render/feature-showcase-render.php';
 require_once __DIR__ . '/modules/typography-settings/typography-settings.php';
@@ -211,6 +212,7 @@ function skvn_marine_blocks_register_blocks() {
 		'feature-showcase',
 		'post-collection',
 		'product-collection',
+		'product-category-grid',
 	);
 
 	foreach ( $blocks as $block ) {
@@ -267,7 +269,7 @@ function skvn_marine_blocks_register_blocks() {
 			}
 
 			if (
-				in_array( $block, array( 'post-collection', 'product-collection' ), true ) &&
+				in_array( $block, array( 'post-collection', 'product-collection', 'product-category-grid' ), true ) &&
 				wp_style_is( 'skvn-marine-blocks-editor', 'registered' )
 			) {
 				$args['editor_style_handles'] = array( 'skvn-marine-blocks-editor' );
@@ -280,6 +282,11 @@ function skvn_marine_blocks_register_blocks() {
 
 			if ( 'product-collection' === $block ) {
 				$args['render_callback'] = 'skvn_marine_blocks_render_product_collection';
+			}
+
+			if ( 'product-category-grid' === $block ) {
+				$args['render_callback']   = 'skvn_marine_blocks_render_product_category_grid';
+				$args['skip_inner_blocks'] = true;
 			}
 
 			if (

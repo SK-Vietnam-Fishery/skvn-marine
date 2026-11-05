@@ -2,6 +2,7 @@ import { CollectionEdit } from '../collection/controls';
 import type { CollectionAttributes } from '../collection/types';
 
 type ProductCollectionEditProps = {
+	clientId: string;
 	attributes: CollectionAttributes;
 	setAttributes: ( attributes: Partial< CollectionAttributes > ) => void;
 };

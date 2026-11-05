@@ -1,5 +1,9 @@
 # SKVN Marine Design Direction
 
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+
 ## Current Decision
 
 Use a blue-first system with soft mint as the main support accent.

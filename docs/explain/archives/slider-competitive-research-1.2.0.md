@@ -8,7 +8,7 @@ Target: `skvn-marine/slider` and `skvn-marine/slide`
 > slide manager because it adds UX complexity. The active 1.2.1 direction is an
 > add-and-see workflow using a dedicated `SKVN Marine` inserter category and three
 > hardcoded Slider presets. See
-> `docs/decisions/slider-presets-and-inserter-1.2.1.md`.
+> `docs/decisions/archives/slider-presets-and-inserter-1.2.1.md`.
 
 ## 1. Research Question
 

@@ -1,6 +1,9 @@
 # Single Post Layout & Mobile Surfaces — Decisions
 
-Status: **DECIDED** (implemented in theme)  
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.6
+Lifecycle: active
+Notes: decided + implemented in theme.
 Date: 2026-06-19  
 Milestone context: V1 / 1.3.6 Trục C (Single Post Fix)  
 Sources merged:
@@ -12,7 +15,7 @@ Sources merged:
 Related evidence:
 
 - `docs/testing/single-post-hero-layout-review-1.3.6.md` — UI debug + Verify 2 DevTools
-- `docs/decisions/skvn-1.3.x-architecture-and-decisions.md` — island pattern (desktop)
+- `docs/decisions/archives/skvn-1.3.x-architecture-and-decisions.md` — island pattern (desktop)
 
 **Ý tưởng chưa quyết định / future customization:** đọc `docs/workflows/ideation-end-user-deep-customization.md` — file này **không** duplicate brainstorm.
 

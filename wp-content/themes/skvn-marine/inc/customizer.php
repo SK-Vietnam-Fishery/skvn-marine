@@ -18,14 +18,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 // ---------------------------------------------------------------------------
 
 /**
- * Return the four governed font presets.
+ * Return the five governed font presets.
  *
  * @return array<string, array{heading: string, body: string, gfonts: string|null, label: string}>
  */
 function skvn_marine_font_presets(): array {
 	return array(
 		'instrument' => array(
-			'label'   => 'Instrument Serif (mặc định)',
+			'label'   => 'Instrument Serif (default)',
 			'heading' => "'Instrument Serif', Georgia, serif",
 			'body'    => 'system-ui, sans-serif',
 			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap',
@@ -42,8 +42,14 @@ function skvn_marine_font_presets(): array {
 			'body'    => "'Barlow', system-ui, sans-serif",
 			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700&display=swap',
 		),
+		'be-vietnam-pro' => array(
+			'label'   => 'Be Vietnam Pro',
+			'heading' => "'Be Vietnam Pro', system-ui, sans-serif",
+			'body'    => "'Be Vietnam Pro', system-ui, sans-serif",
+			'gfonts'  => 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700&display=swap',
+		),
 		'system'     => array(
-			'label'   => 'System (không cần Google Fonts)',
+			'label'   => 'System (no Google Fonts)',
 			'heading' => 'system-ui, -apple-system, sans-serif',
 			'body'    => 'system-ui, -apple-system, sans-serif',
 			'gfonts'  => null,
@@ -61,6 +67,19 @@ function skvn_marine_heading_scope_choices(): array {
 		'h1'    => 'H1 only',
 		'h1-h3' => 'H1 – H3',
 		'all'   => 'H1 – H6',
+	);
+}
+
+/**
+ * Explicit handshake for the plugin's editor Theme Design adapter.
+ * Storage, font registry and delivery remain owned by this theme.
+ *
+ * @return array<string,mixed>
+ */
+function skvn_marine_design_sidebar_contract(): array {
+	return array(
+		'version' => 1,
+		'capabilities' => array( 'palette', 'heading', 'fonts' ),
 	);
 }
 

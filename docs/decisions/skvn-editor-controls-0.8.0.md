@@ -1,10 +1,9 @@
 # SKVN Editor Controls 0.8.0
 
-Status:
-
-```text
-DRAFT_READY_FOR_HUMAN_REVIEW
-```
+Status: ACTIVE
+Milestone: V1 / 0.8.0
+Lifecycle: evergreen
+Notes: governance contract 0.8.0 vẫn hiệu lực cho sidebar controls; milestone 0.8.0 carried sang 0.10.0 (DONE).
 
 Purpose:
 

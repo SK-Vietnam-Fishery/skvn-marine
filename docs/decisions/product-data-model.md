@@ -1,5 +1,9 @@
 # Product Data Model
 
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+
 ## Decision
 
 Use WooCommerce native products, categories, and attributes for V1.

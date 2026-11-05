@@ -1,8 +1,10 @@
 # Feature Showcase — 1.2.3 Decision
 
 Date: 2026-06-08
-Status: milestone complete; onsite QA carried to V1 / 1.2.9
+Status: IMPLEMENTED
 Milestone: V1 / 1.2.3
+Lifecycle: active
+Notes: milestone complete; onsite QA carried to V1 / 1.2.9.
 
 ## Updated Decision — Panel-Only Block
 

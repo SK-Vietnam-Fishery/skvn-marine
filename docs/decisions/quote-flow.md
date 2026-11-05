@@ -1,5 +1,9 @@
 # Request a Quote Flow
 
+Status: ACTIVE
+Milestone: none
+Lifecycle: evergreen
+
 ## Decision
 
 The Request a Quote flow stays on the same website.
@@ -15,7 +19,7 @@ Human scope update on 2026-05-26:
 - 1.1.2 resolves remaining quote data-flow evidence: product/page block origin, form submission, CFDB7 storage, hidden/context fields, and thank-you behavior.
 - 1.1.2 also checks the map block/display surface because the current onsite map is not viewable.
 - n8n automation is deferred until after version 1.0.0.
-- 1.4.0 is reserved for a deeper discussion of an wp-admin "SKVN Theme Init Setup UI" that can load reviewed setup templates from Admin.
+- 1.4.1 is reserved for a deeper discussion of an wp-admin "SKVN Theme Init Setup UI" that can load reviewed setup templates from Admin.
 
 ## 0.6.0 Flow
 
@@ -44,9 +48,9 @@ CF7 / CFDB7 submission
 → n8n webhook processes lead
 ```
 
-## Future 1.4.0 Admin Setup UI Candidate
+## Future 1.4.1 Admin Setup UI Candidate
 
-The admin setup UI idea is deferred to milestone 1.4.0.
+The admin setup UI idea is deferred to milestone 1.4.1.
 
 Initial wireframe:
 
@@ -67,7 +71,7 @@ Intent:
 
 Constraints:
 
-- Do not build this UI before 1.4.0.
+- Do not build this UI before 1.4.1.
 - Discuss exact UX, permissions, idempotency, rollback, and audit behavior before coding.
 - The Request A Quote setup may create/update CF7 markup and WordPress pages, but must not replace CF7 handling with a custom PHP form handler.
 - n8n remains out of scope here unless a later human-approved milestone moves it into scope.

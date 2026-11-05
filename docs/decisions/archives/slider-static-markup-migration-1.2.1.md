@@ -1,8 +1,12 @@
 # Slider Static Markup Migration — 1.2.1 Decision
 
 Date: 2026-06-08
-Status: superseded before implementation by V1 / 1.3.0 dynamic rendering planning
-Milestone: V1 / 1.2.1 — SKVN Slider Presets & Inserter
+Status: SUPERSEDED
+Milestone: V1 / 1.2.1
+Lifecycle: archived
+Notes: superseded trước khi implement bởi planning dynamic rendering V1 / 1.3.0.
+Superseded by: `docs/decisions/slider-completion-spec-1.3.0.md`
+Milestone context: V1 / 1.2.1 — SKVN Slider Presets & Inserter
 
 ## Superseding Decision
 
@@ -157,7 +161,7 @@ wp-content/plugins/skvn-marine-blocks/build/style-index.ts-rtl.css
 Documentation already updated:
 
 ```text
-docs/decisions/slider-block.md
+docs/decisions/archives/slider-block.md
 docs/testing/slider-frontend-media-content-layer-bug-1.2.1.md
 ```
 

@@ -4,7 +4,7 @@ Status: FUTURE_CANDIDATE
 Created: 2026-06-11
 Version: unassigned
 Dependency: V1 / 1.3.0 Slider Dynamic Rendering Architecture
-Decision contract: `docs/decisions/slider-carousel-showcase-ux.md`
+Decision contract: `docs/decisions/archives/slider-carousel-showcase-ux.md`
 
 ## 1. Goal
 

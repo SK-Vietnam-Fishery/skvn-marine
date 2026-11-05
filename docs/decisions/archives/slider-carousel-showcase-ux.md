@@ -1,7 +1,10 @@
 # Slider Carousel Showcase UX Decision
 
 Date: 2026-06-11
-Status: approved UX direction; implementation not started
+Status: ARCHIVED
+Milestone: none
+Lifecycle: archived
+Notes: approved UX direction nhưng implementation chưa bắt đầu; đã archive từ trước 2026-10-13. Vẫn là nguồn direction cho `.context/planning/archives/019_FUTURE_CANDIDATE_SLIDER_CAROUSEL_SHOWCASE_UX_PLANNING.md` — không implement nếu không có milestone mới.
 Target: Future Candidate after or alongside the V1 / 1.3.0 Slider dynamic rendering foundation
 
 ## Decision Source

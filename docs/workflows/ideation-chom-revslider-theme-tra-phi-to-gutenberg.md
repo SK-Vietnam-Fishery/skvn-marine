@@ -58,6 +58,28 @@ Có thể đính kèm:
 ---
 
 
+## Deliberation 2026-10-07 — Collection carousel engine (B vs C)
+
+Status: analyzing (A đã DECIDED — `docs/decisions/collection-carousel-engine-keep-swiper.md`).
+B và C giữ lại đây vì human còn phân vân. Mở lại khi revisit trigger trong decision A đạt.
+
+| Tiêu chí | B — Scroll-snap (+ controller nhẹ) | C — Hybrid (slider Swiper + collection scroll-snap) |
+|---|---|---|
+| JS tải trên trang collection | Bỏ cả bundle 91.5 KB (~26.6 KB gzip), chỉ còn CSS | Như B cho collection; slider vẫn tải 108 KB (~31.3 KB gzip) |
+| Touch trên mobile | Native scroll — mượt nhất | Như B |
+| Loop vô hạn | **Mất** (arrows disable ở 2 đầu, như artifact gốc) | **Mất** ở collection, giữ ở slider |
+| Dots | Theo **page** — khớp artifact 1:1 | Theo page ở collection, theo slide ở slider (2 nghĩa khác nhau) |
+| Viết mới | ~150–200 dòng: autoplay timer + governed delay, Pause/Play, hover/focus/hidden pause, dots-sync (`scroll` + `rAF`), keyboard, teardown | Như B, cộng duy trì 2 motion system |
+| Memory-leak MUST rules | Mọi acquisition phải có release trong cùng edit (`memory-leak-prevention-rules.md` Rule 0) — repo đã leak một lần | Như B, nhân đôi bề mặt review |
+| Contract | Phá `MILESTONES.md` §1.3.3 (reuse Swiper adapter) → phải sửa decision | Như B |
+| QA matrix | Làm lại toàn bộ (desktop/mobile, autoplay on/off, reduced-motion, Woo-off, console, memory) | Như B, cộng parity 2 engine trên cùng trang |
+| Cảm giác chuyển động | Khác slider (2 quán tính trượt) | Khác nhau giữa slider và collection trên cùng trang |
+| Khi nào đáng | LCP onsite đỏ do JS, hoặc `collection-view.ts.js` ≥5% page weight | Có số đo chứng minh 26.6 KB gzip là bottleneck thật |
+
+Kết luận tạm: B rẻ hơn C (1 system thay vì 2). Cả hai chỉ mở khi có số đo onsite.
+
+---
+
 ## 2. Phân rã thiết kế
 
 ### Composition

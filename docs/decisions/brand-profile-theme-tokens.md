@@ -1,6 +1,9 @@
 # Brand Profile & Theme Tokens
 
-Status: working decision for V1 / 0.7.0.
+Status: ACTIVE
+Milestone: V1 / 0.7.0
+Lifecycle: evergreen
+Notes: token contract in force; referenced by `docs/standards/site-branding-guideline.md`.
 
 Purpose:
 

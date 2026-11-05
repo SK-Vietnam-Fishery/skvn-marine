@@ -1,9 +1,20 @@
 # Decision — Slider Parallax (Both Depth) 1.3.8
 
-**Version:** 1.0  
-**Milestone:** V1 / 1.3.8 — Slider Parallax  
-**Status:** DECIDED  
-**Date:** 2026-06-22  
+**Version:** 1.1  
+
+Status: IMPLEMENTED
+Milestone: V1 / 1.3.8
+Lifecycle: active
+Notes: contract (Rev 1.1) hiệu lực; `new Swiper()` loopFix invariant thuộc `swiper-architecture.md`. Milestone 1.3.8 DONE nhưng 2 bug parallax còn OPEN trong `.context/TENSIONS_OPEN.md` (T-DEMO-1).
+**Scope:** V1 / 1.3.8 — Slider Parallax  
+**Date:** 2026-06-22 (rev. 2026-07-01)  
+
+> **Revision 1.1 (2026-07-01)** — Reverses the "governed / hidden" stance below.
+> Per Dev direction, the underlying depth parameters are now **exposed** behind an
+> **Advanced** toggle. The intensity preset (Subtle/Medium/Strong) remains the default
+> quick-pick; Advanced reveals raw controls that override it. See **Inspector UX** for
+> the current contract. The "Governed Internally — Hidden from UI" section is retained
+> for historical context but is **superseded**.
 
 ---
 
@@ -159,11 +170,17 @@ slider.style.setProperty('--skvn-parallax-inset', insetMap[parallaxIntensity]);
   - help: *"Controls how far the background travels and how much it scales during the transition. Higher intensity = stronger depth effect."*
   - **ButtonGroup not dropdown**: intensity is a tactile feel comparison, not a numeric value — user needs to pick by eye, not from a list.
 - **When disabled**, hide intensity control
-- **Badge** when `enableParallax: true`: `"Parallax ON · {intensity}"`
+- **Advanced toggle** (rev 1.1): when on, hides the Intensity preset and reveals raw controls that override it:
+  - **Depth mechanism** (Both / Translate only / Scale only)
+  - **Direction** (Horizontal / Vertical) — shown when depth includes translate; maps to `data-swiper-parallax-x` / `-y`
+  - **Translate** (0–80%), **Edge guard / inset** (0–80%) — shown when depth includes translate
+  - **Scale** (1.00–1.50) — shown when depth includes scale
+  - Preset (non-advanced) still injects the governed table values below; advanced injects the raw attribute values
+- **Badge** when `enableParallax: true`: `"Parallax ON · {intensity}"` (or `"Parallax ON · custom"` in advanced mode)
   - Reason: editor does not run Swiper parallax runtime; badge confirms the setting is active without misleading user into thinking the effect should be visible in editor.
 - No parallax runtime in editor — stacked slide preview remains static
 
-### Governed Internally — Hidden from UI
+### Governed Internally — Hidden from UI  *(SUPERSEDED by rev 1.1 — now exposed via Advanced toggle)*
 
 **Depth mechanism: Both (translate + scale)** is always applied when parallax is enabled. It is **not exposed** as a user control.
 
@@ -181,6 +198,60 @@ Values injected at runtime in `view.ts` per intensity preset (user never sees th
 | subtle | `-15%` | `1.06` |
 | medium | `-30%` | `1.12` |
 | strong | `-50%` | `1.20` |
+
+### Rev 1.1 — Advanced Controls Contract (2026-07-01)
+
+**New attributes in `block.json`:**
+
+```json
+{
+  "parallaxAdvanced":   { "type": "boolean", "default": false },
+  "parallaxDepth":      { "type": "string",  "enum": ["both", "translate", "scale"], "default": "both" },
+  "parallaxDirection":  { "type": "string",  "enum": ["horizontal", "vertical"],     "default": "horizontal" },
+  "parallaxTranslate":  { "type": "number",  "default": 30 },
+  "parallaxScale":      { "type": "number",  "default": 1.12 },
+  "parallaxInset":      { "type": "number",  "default": 35 }
+}
+```
+
+**UI flow (Inspector > Motion panel):**
+
+```
+Enable Parallax  [toggle]
+│
+├─ Advanced OFF (default):
+│    Intensity: (Subtle)(Medium)(Strong)     ← preset quick-pick
+│    Advanced  [toggle off]
+│
+└─ Advanced ON:
+     Advanced  [toggle on]
+     Depth mechanism: [Both ▾]              ← Both / Translate only / Scale only
+     │
+     ├─ depth !== "scale":
+     │    Direction:   [Horizontal ▾]        ← Horizontal / Vertical
+     │    Translate:   ───●──  30%           ← 0–80% slider
+     │    Edge guard:  ───●──  35%           ← 0–80% slider (prevent edge-reveal)
+     │
+     └─ depth !== "translate":
+          Scale:       ──●───  1.12          ← 1.00–1.50 slider, step 0.01
+
+Badge: "Parallax ON · custom"  (vs "Parallax ON · medium" in preset mode)
+```
+
+**Runtime resolution in `view.ts`:**
+
+| Mode | translate value | scale value | inset value | axis |
+|------|----------------|-------------|-------------|------|
+| Preset — Subtle | `-15%` | `1.06` | `-20%` | horizontal |
+| Preset — Medium | `-30%` | `1.12` | `-35%` | horizontal |
+| Preset — Strong | `-50%` | `1.20` | `-50%` | horizontal |
+| Advanced | `-{parallaxTranslate}%` | `parallaxScale` | `-{parallaxInset}%` | per `parallaxDirection` |
+
+**Key rules:**
+- `inset` only applies when depth includes translate (scale-only → inset = 0, edge guard hidden in UI)
+- `direction` maps to `data-swiper-parallax-x` (horizontal) or `data-swiper-parallax-y` (vertical)
+- Each init removes all existing parallax data attributes before re-setting (prevents stale attributes on toggle change)
+- Advanced overrides preset entirely — the two modes are mutually exclusive at runtime
 
 ### Auto-disable (no UI)
 
@@ -216,8 +287,8 @@ These are automatic guards in `view.ts`, not user-facing controls.
 ## Deferred / Out of Scope 1.3.8
 
 - Per-block `__content` parallax translate (too risky with zoom-out transition)
-- Scale-only mode (translate gives better visual results; scale-only deferred)
-- User-facing "depth mechanism" dropdown (governed both is the only exposed option)
+- ~~Scale-only mode~~ — **now exposed** via Advanced depth control (rev 1.1)
+- ~~User-facing "depth mechanism" dropdown~~ — **now exposed** via Advanced toggle (rev 1.1)
 - Parallax on step slider frames (1.3.10 inherits foundation; fine-tuning deferred to 1.3.10)
 - Content-layer intensity coupling (background layer is the primary depth mechanism)
 - Mobile `< 768px` disable guard — parallax runs on mobile when `slidesPerView === 1` and reduced-motion is off. This supersedes 026 §mobile which suggested a breakpoint guard.

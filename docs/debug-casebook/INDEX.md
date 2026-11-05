@@ -13,6 +13,7 @@ Registry chính của các án lệ kỹ thuật trong SKVN Marine.
 | `CASE-005` | Slider / Gutenberg | [Slider Editor IME Typing Re-Render Cascade](slider/005_SLIDER_EDITOR_IME_TYPING_RERENDER_CASCADE.md) | `PROVEN · FIXED · REGRESSION_GUARDED` | useSelect không return object mới mỗi keystroke — dùng context + memo |
 | `CASE-006` | Slider / Gutenberg | [Slider Editor Arrow Preview CSS Cascade](slider/006_SLIDER_EDITOR_ARROW_PREVIEW_CSS_CASCADE.md) | `PROVEN · FIXED · REGRESSION_GUARDED` | Editor decorative control phải thắng `.editor-styles-wrapper button` — verify computed trong iframe |
 | `CASE-007` | Core Control | [Button Hover CSS Vars Built Not Emitted](core-control/007_BUTTON_HOVER_CSS_VARS_BUILT_NOT_EMITTED.md) | `PROVEN · FIXED · REGRESSION_GUARDED` | Scoped `var()` cần rule define custom properties trên cùng scope — build array ≠ emit CSS |
+| `CASE-008` | Gutenberg / editor assets | [Editor Frame CSS Extracted Not Enqueued](gutenberg/008_EDITOR_FRAME_CSS_EXTRACTED_NOT_ENQUEUED.md) | `PROVEN · FIXED` (source; onsite pending) | Source/build CSS ≠ stylesheet được nạp; chuyển visual owner phải nối đủ asset graph |
 
 ## Guides
 
