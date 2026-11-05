@@ -15,6 +15,12 @@ Stack ref: **M1 follow-up** — roadmap 039; 1.3.18 deferred checkpoint archived
 
 AGENTS.md current milestone phải match file này.
 
+### Editor preview presentation register — 2026-11-05
+
+Execution update: human yêu cầu thực hiện053 và agent commit. EF01–05 cho Collection Product/Post Carousel/Grid + Category Grid đã có source, 8VM spacing tests PASS (không phải browser evidence); CP/EF onsite vẫn Chờ kiểm chứng. EF06 Slider/Step mới audit: Slider có source nhưng preview/palette cần chốt, Step chưa có registered runtime. Không chuyển current/version, không đóng acceptance; runbook `docs/testing/editor-preview-frames-1.3.19.md`.
+
+Planning checkpoint trước implementation: Plan052 Product Carousel đã có source, CP01–05 còn chờ kiểm chứng. Human duyệt khung preview dùng chung: [plan053](planning/053_EDITOR_PREVIEW_FRAMES_ROLLOUT.md), contract `docs/standards/editor-preview-frame-contract.md`. Giữ heading/intro trong khung, nhãn type, palette Carousel/Grid và gap dọc tối thiểu10px có parent ownership. P1/P2 nay đã có source theo execution ở trên; audit/thiết kế preview Slider và Step Slider theo gói riêng, không tự đổi mapping1.3.10/stackM5 hoặc chuyển current. Acceptance EF01–06 bổ sung, không thay DS/TD/CP hoặc carry register hiện có.
+
 ### UX hotfix bổ sung trong 1.3.18 — 2026-11-03
 
 Human xác nhận đưa initial loading logo và fade chuyển trang vào milestone hiện tại, commit nhãn UX hotfix. **Chỉ planning; chưa duyệt implementation plan, chưa code/commit.** Plan [046](planning/046_VER_1_3_18_SITE_LOADING_NAVIGATION_UX_HOTFIX_PLAN.md), acceptance UXHF-01–10 và runbook `docs/testing/site-loading-navigation-ux-hotfix-1.3.18.md`. Không đổi current/version hoặc scope các mốc 1.3.21–23; không sửa skeleton, không coi hiệu ứng chuyển trang là fix toàn bộ flash cũ. Giữ nguyên acceptance/debt 045; completion hotfix không tự đóng milestone.

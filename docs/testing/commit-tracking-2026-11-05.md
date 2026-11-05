@@ -1,5 +1,24 @@
 # Commit tracking — 2026-11-05 backlog checkpoint
 
+## Follow-up checkpoint — canvas frames (same date)
+
+Human approved implementation of plan053 P1/P2 and agent commits. New baseline was `b82e546`; the original backlog checkpoint below remains historical.
+
+| Commit | Group | Status |
+|---|---|---|
+| `b4dba14` | Canvas presentation + editor preview frames | Product/Post Collection Grid/Carousel and Product Category Grid use editor-only type labels/palettes; Collection heading/intro now inside the outer frame, illustrative card and query overview retained. Shared bounded measured gap correction and cleanup hook, 8 VM tests, plan052/053, standard/runbooks. Source added; onsite pending. |
+| `7ee509e` | Existing generated snapshot | Four external generated files preserved separately. Bundle/styles have prior overview but no `skvn-editor-preview-frame` marker, so they do not contain the new frame source. Human rebuild required before onsite/deploy. |
+
+This tracking/index commit includes GLOBAL/MILESTONES/module status synchronization; find its hash with `git log --oneline -- docs/testing/commit-tracking-2026-11-05.md`.
+
+Verification rerun: `node --disable-warning=ExperimentalWarning tools/tests/editor-preview-frame.test.mjs` **8/8 PASS** against the actual hook with simulated DOM geometry/lifecycle. Cases cover parent gap0/8/24, collapsed margins, gap changes, side-by-side children, previous removal/reorder targets and observer/listener/rAF cleanup. Three changed TS/TSX syntax parses, two CSS parses and staged whitespace checks PASS. This is not a full typecheck, plugin build, PHP lint, browser geometry or WordPress runtime PASS.
+
+Asset metadata observed before staging: `build/index.ts.js` mtime `2026-11-05T06:49:00.546Z`, `build/style-index.ts.css` mtime `2026-11-05T06:50:44.583Z`; timestamps do not identify the builder or prove a successful/parity build. No generated output manually edited and no build/lint/deploy/push run by this agent.
+
+Outstanding: run EF/CP onsite checks in `docs/testing/editor-preview-frames-1.3.19.md`; Category viewport breakpoint repair remains separate; Slider palette/mockup remains pending and Step Slider has no source registration in current inventory, with1.3.10 deferred→M5 requiring confirmed activation/version before coding. Source claims below saying canvas is unimplemented predate this checkpoint. Current milestone/version unchanged; no acceptance closed.
+
+## Original backlog checkpoint
+
 Human yêu cầu lưu hướng canvas đã duyệt và giao agent commit toàn bộ thay đổi đang tồn đọng, chia theo tính năng và docs. Baseline trước lượt này: `e13fa2c`. Current vẫn **V1 / 1.3.19 IN PROGRESS**; đây không phải milestone transition, release approval hoặc deployment.
 
 ## Feature-separated commits
