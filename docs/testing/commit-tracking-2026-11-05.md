@@ -1,5 +1,18 @@
 # Commit tracking — 2026-11-05 backlog checkpoint
 
+## Follow-up checkpoint — frame pitfalls and corrected asset extraction
+
+User requested agent commits after recording the missing-frame failure. Current stays1.3.19; no implementation change or onsite approval in this checkpoint.
+
+| Commit | Group | Status |
+|---|---|---|
+| `c02b4a9` | Agent pitfalls / CASE-008 | AP-06/AP-07, technical Pitfall8, case evidence, registry and context pointer. Records incomplete visual-owner replacement and evidence limits; no onsite PASS or automated asset guard claimed. |
+| `69f52e6` | Existing generated snapshot after source import correction | Five external generated changes preserved. Shared frame rules now occur in registered `build/style-index.ts.css` and RTL counterpart; old standalone `index.ts.css`/RTL removed by the existing build output. Script asset version observed: `6363a1ecc7263f75117c`. |
+
+The committing agent did not run build/PHP lint, edit generated output by hand, deploy or push. CSS timestamp observed before staging: 2026-11-05 07:58:11 UTC, not evidence of builder identity or successful full build. Marker/output-path inspection proves the local snapshot contains the frame rules in the registered file; it does **not** prove stylesheet delivery, DOM matching, cascade or appearance in the onsite editor/iframe. Continue EF/CP onsite checks. The earlier pre-correction snapshot notes below remain historical.
+
+UTF-8 text checks and staged whitespace checks PASS. Source files unchanged in this commit task. This ledger commit follows the two hashes above.
+
 ## Follow-up checkpoint — Sidebar visual-controls planning
 
 User requested plan054 and agent commits; no visual Sidebar implementation in this checkpoint. Q1 Category scope, Q2 Media layout owner/reset and Q3 group navigation remain open recommendations, not human approval. Current stays1.3.19.
