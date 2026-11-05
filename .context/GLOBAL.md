@@ -58,6 +58,9 @@ Planning snapshots live in `.context/planning/` and use a three-digit ordering p
 
 Active planning (root — load when task liên quan):
 
+- `.context/planning/054_DESIGN_SIDEBAR_VISUAL_CONTROLS_PLAN.md` — visual SVG/CSS/palette/type controls, per-block capability inventory; đề xuất Q1=A Category existing-only, Q2=A Media layout owner Design/Image + explicit reset semantics, Q3=A group navigation. Chờ human chốt, chưa code visual Sidebar; Theme Design persistence/frame053 riêng.
+
+
 Execution053 update 2026-11-05: human đã cho triển khai + agent commit. Collection Product/Post Carousel/Grid và Category Grid có source frame/palette/labels/spacing adapter; runbook `docs/testing/editor-preview-frames-1.3.19.md`, geometry/onsite pending. 8VM spacing tests PASS (simulated DOM). Slider/Step vẫn audit/design pending, chưa màu/source mới.
 - `.context/planning/053_EDITOR_PREVIEW_FRAMES_ROLLOUT.md` — human approved 2026-11-05: khung editor gồm heading/intro, nhãn loại, màu theo Carousel/Grid, gap dọc tối thiểu10px không cộng parent gap. P1/P2 có source; geometry/onsite pending. Slider/Step Slider còn audit/mockup/palette. Contract `docs/standards/editor-preview-frame-contract.md`.
 - `.context/planning/052_PRODUCT_CAROUSEL_CANVAS_PRESENTATION.md` — human approved 2026-11-05: card trái, Content summary + Query preview phải, responsive stacking và giữ thông tin cũ; đã có source, screenshot human đã cung cấp nhưng chưa đủ CP01–05/PASS. Khung bao heading/intro follow-up theo053.

@@ -99,6 +99,8 @@ src/
 
 ## [manual] Product And Post Collections
 
+Design visual-controls planning 2026-11-05: plan054 lưu SVG layout tiles, CSS fit/surface specimens, swatches/type preview theo controls có consumer. Q1(Category existing-only vs modes mới), Q2(Media layout owner/reset), Q3(group navigation) đang đề xuất, chưa human approve/coding. Không coi Category cardPadding là Product mediaPadding, không expose fit trên Product nếu chưa consumer, giữ Legacy/unknown values; Theme Design/session và frame053 không đổi scope.
+
 Execution053 2026-11-05: human cho implementation+agent commit. Collection Product/Post Grid/Carousel và Category Grid đã có source shared editor frame/label/palette/spacing correction; Collection heading/intro cùng frame, query/sample/states giữ và Post note cap5. EF/CP onsite chưa PASS. Shared helper `src/shared/editor-preview-frame.ts` + CSS chỉ editor; không thêm schema/DB/query. Slider source được audit, palette/mockup pending; không có Step Slider registration/runtime trong inventory hiện tại, giữ deferred mapping. Runbook `docs/testing/editor-preview-frames-1.3.19.md`.
 
 Editor preview direction 2026-11-05: plan052 Product Carousel có source card trái/summary-query phải, giữ sample-vs-real/query limitation, onsite CP01–05 chưa PASS. Human duyệt khung chung gồm heading/intro + nhãn loại, Carousel xám xanh/Grid xanh biển nhạt, khoảng hở dọc tối thiểu10px không double parent gap. Đọc `docs/standards/editor-preview-frame-contract.md` và plan053 khi làm preview Collection/Category/Slider/Step Slider. Rollout P1/P2 đã có source theo execution053 ở trên; Slider/Step palette/mockup còn mở. Không áp margin global/core block, không thay frontend hoặc tự mở milestone Slider/Step.
