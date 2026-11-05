@@ -1,5 +1,17 @@
 # Carousel Editor UX & Technical — onsite runbook 1.3.18
 
+## CP-01–05 — Product Carousel canvas presentation (2026-11-05)
+
+Current scope: follow-up1.3.19, approved plan052; source added, onsite pending. Giữ acceptance E-* và carry-over dưới đây. Target frontend: `https://minhhaifishery.com/home/`; mở Edit Page của trang này để kiểm canvas (editor URL/page ID, WP version, build/hash và browser cần ghi khi chạy). Setup: human build/deploy assets mới; Product Carousel có >=12 results và fixture title dài; không dùng Category Grid thay cho block cần kiểm.
+
+1. **CP-01:** Mở/đóng Inspector/Design sidebar; kiểm canvas >760px rồi 760px/520px/320px hoặc Group/Columns hẹp trên trang test được phép. Rộng: card trái khoảng1/3, summary/query phải dùng diện tích còn lại; footer hết hàng. Hẹp: card → summary → query → footer. Không cắt nội dung/horizontal scroll. Heading/intro vẫn chỉnh được. Ghi screenshot, rect section/body/sample/overview và scrollWidth/clientWidth khi có scrollbar dọc.
+2. **CP-02:** Toggle image/spec chips/tags/equal height; thử CTA quote/view/both/custom/none và grouped specs/+N. Summary giữ đủ trạng thái cũ; card mẫu giữ thiết kế/attrs consumers. Kiểm loading/empty/error/unavailable/results trong vùng query, card không mất khi request fail. Chỉ mô phỏng lỗi trên test page bằng controlled blocking được phép, không phá production REST.
+3. **CP-03:** Nhãn “Illustrative sample — not live card data” phân biệt card với tên query thật; count là fetched. Footer nói rõ native REST approximate/newest-first và unsupported filters/order. Không hiểu summary là bằng chứng query parity.
+4. **CP-04:** Tab tới Show more/less, mở rồi resize và thu gọn; focus không rơi vào element đã remove. Đổi query giữ behavior reset/disclosure cũ. Network không có request mới chỉ vì đổi layout/resize; Save/reopen và Undo vẫn bình thường. Editor không autoplay/Swiper.
+5. **CP-05:** So frontend Product Carousel trước/sau cùng fixture; markup/query/card behavior không đổi. Product Grid và Post Grid/Carousel editor không nhận presentation mới.
+
+PASS cần screenshot/geometry/keyboard/state evidence theo từng CP; FAIL ghi URL/build/steps/expected/actual/console. Source parse PASS không thay runtime PASS. Root chưa chạy build/PHP lint/onsite; assets thay đổi bởi bên ngoài trong lúc sửa source không chứng minh đã chứa source cuối.
+
 Ngày lập: 2026-10-20. **Chờ kiểm chứng**. Lượt planning không có runtime PASS mới.
 Plan: `.context/planning/045_VER_1_3_18_CAROUSEL_EDITOR_UX_TECHNICAL_EXECUTION_PLAN.md` §9–13.
 

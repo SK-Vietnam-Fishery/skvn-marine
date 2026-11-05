@@ -1,3 +1,4 @@
+import { useEditorPreviewFrame } from '../shared/editor-preview-frame';
 import { canUseDesignSidebar, DesignFallback, DesignShortcut } from '../design-sidebar/navigation';
 import { CategoryDesignControls } from './design';
 import {
@@ -138,8 +139,10 @@ export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
 		invalidateCategoryData();
 	}
 
+	const frameRef = useEditorPreviewFrame();
 	const blockProps = useBlockProps( {
-		className: 'skvn-category-grid-block',
+		ref: frameRef,
+		className: 'skvn-category-grid-block skvn-editor-preview-frame skvn-editor-preview-frame--grid',
 	} );
 
 	return (
@@ -261,6 +264,7 @@ export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
 			</InspectorControls>
 
 			<div { ...blockProps }>
+				<p className="skvn-editor-preview-frame__label">{ __( 'Product Category Grid', 'skvn-marine-blocks' ) }</p>
 				<CategoryGridPreview attributes={ attributes } state={ data } />
 				{ attributes.showImage === false && (
 					<p className="skvn-category-grid__editor-note">
@@ -270,6 +274,14 @@ export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
 						) }
 					</p>
 				) }
+			{ data.missingIds.length > 0 && (
+				<p className="skvn-category-grid__editor-note" role="status">
+					{ __(
+						'Some selected categories no longer exist. They are skipped on the front end and can be removed from the list.',
+						'skvn-marine-blocks'
+					) }
+				</p>
+			) }
 			</div>
 
 			{ pickerOpen && (
@@ -280,14 +292,6 @@ export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
 				/>
 			) }
 
-			{ data.missingIds.length > 0 && (
-				<p className="skvn-category-grid__editor-note" role="status">
-					{ __(
-						'Some selected categories no longer exist. They are skipped on the front end and can be removed from the list.',
-						'skvn-marine-blocks'
-					) }
-				</p>
-			) }
 		</>
 	);
 }

@@ -1,3 +1,4 @@
+import { useEditorPreviewFrame } from '../shared/editor-preview-frame';
 import { canUseDesignSidebar, DesignFallback, DesignShortcut } from '../design-sidebar/navigation';
 import {
 	InspectorControls,
@@ -112,12 +113,18 @@ export function CollectionEdit( {
 	setAttributes,
 	clientId,
 }: CollectionEditProps ) {
+	const frameRef = useEditorPreviewFrame();
+	const isCarousel = attributes.layout === 'carousel';
+	const frameLabel = contentType === 'product'
+		? ( isCarousel ? __( 'Product Carousel', 'skvn-marine-blocks' ) : __( 'Product Grid', 'skvn-marine-blocks' ) )
+		: ( isCarousel ? __( 'Post Carousel', 'skvn-marine-blocks' ) : __( 'Post Grid', 'skvn-marine-blocks' ) );
 	const categoryTaxonomy =
 		contentType === 'product' ? 'product_cat' : 'category';
 	const tagTaxonomy = contentType === 'product' ? 'product_tag' : 'post_tag';
 	const categoryTerms = useTaxonomyTerms( categoryTaxonomy );
 	const tagTerms = useTaxonomyTerms( tagTaxonomy );
 	const blockProps = useBlockProps( {
+		ref: frameRef,
 		className: [
 			'skvn-collection',
 			`skvn-collection--${ contentType }`,
@@ -134,6 +141,9 @@ export function CollectionEdit( {
 			attributes.contentWidth === 'wide' ? 'alignwide' : '',
 			attributes.contentWidth === 'full' ? 'alignfull' : '',
 			'skvn-collection--editor-preview',
+			'skvn-collection--canvas-overview',
+			'skvn-editor-preview-frame',
+			`skvn-editor-preview-frame--${ isCarousel ? 'carousel' : 'grid' }`,
 		]
 			.filter( Boolean )
 			.join( ' ' ),
@@ -141,6 +151,7 @@ export function CollectionEdit( {
 
 	return (
 		<section { ...blockProps }>
+			<p className="skvn-editor-preview-frame__label">{ frameLabel }</p>
 			<InspectorControls>
 				<PanelBody title={ __( 'Content', 'skvn-marine-blocks' ) }>
 					<TextControl
@@ -516,11 +527,12 @@ export function CollectionEdit( {
 			/>
 			<div className="skvn-collection__editor-body">
 				<div className="skvn-collection__editor-sample">
-					<p>{ __( 'Illustrative sample — not live card data', 'skvn-marine-blocks' ) }</p>
+					<p className="skvn-collection__editor-sample-heading">{ __( 'Card design', 'skvn-marine-blocks' ) }</p>
 				<PlaceholderCard
 					attributes={ attributes }
 					contentType={ contentType }
 				/>
+				<p className="skvn-collection__editor-caption">{ __( 'Illustrative sample — not live card data', 'skvn-marine-blocks' ) }</p>
 				</div>
 				<EditorInfoPanel
 					attributes={ attributes }
@@ -528,6 +540,7 @@ export function CollectionEdit( {
 					categoryTerms={ categoryTerms }
 					tagTerms={ tagTerms }
 				/>
+				<p className="skvn-collection__editor-limitations">{ queryPreviewNote( contentType ) }</p>
 			</div>
 			{ ( attributes.archiveUrl || ( attributes.showCatalogCta && attributes.catalogCtaUrl ) ) && <p>{ __( 'Footer actions:', 'skvn-marine-blocks' ) } { attributes.archiveUrl ? attributes.archiveLabel || __( 'View all', 'skvn-marine-blocks' ) : '' } { attributes.showCatalogCta && attributes.catalogCtaUrl ? attributes.catalogCtaLabel || __( 'View catalog', 'skvn-marine-blocks' ) : '' }</p> }
 		</section>
@@ -903,11 +916,11 @@ function EditorInfoPanel( {
 	const isProduct = contentType === 'product';
 
 	const fields = [
-		{ label: 'Image',        active: attributes.showImage !== false },
+		{ label: __( 'Image', 'skvn-marine-blocks' ), active: attributes.showImage !== false },
 		...( isProduct
 			? [
-				{ label: 'Spec chips', active: attributes.showSpecChips !== false },
-				{ label: 'Tags badge', active: attributes.showProductTags !== false },
+				{ label: __( 'Spec chips', 'skvn-marine-blocks' ), active: attributes.showSpecChips !== false },
+				{ label: __( 'Tags badge', 'skvn-marine-blocks' ), active: attributes.showProductTags !== false },
 			  ]
 			: [
 				{ label: 'Excerpt',    active: attributes.showExcerpt !== false },
@@ -918,14 +931,13 @@ function EditorInfoPanel( {
 		isProduct
 			? { label: `CTA: ${ actionModeLabel( attributes.productActionMode || 'quote' ) }`, active: ( attributes.productActionMode || 'quote' ) !== 'none' }
 			: { label: `CTA: ${ actionModeLabel( attributes.postActionMode || 'read' ) }`, active: true },
-		{ label: 'Equal height', active: attributes.equalHeight !== false },
+		{ label: __( 'Equal height', 'skvn-marine-blocks' ), active: attributes.equalHeight !== false },
 	];
 
-	return (
-		<>
+	const summary = (
 		<div className="skvn-collection__editor-info">
 			<p className="skvn-collection__editor-info-heading">
-				{ __( 'Card data:', 'skvn-marine-blocks' ) }
+				{ __( 'Content summary', 'skvn-marine-blocks' ) }
 			</p>
 			<ul className="skvn-collection__editor-field-list">
 				{ fields.map( ( f ) => (
@@ -937,13 +949,19 @@ function EditorInfoPanel( {
 							{ f.active ? '✓' : '✗' }
 						</span>
 						{ f.label }
+						<span className="skvn-collection__editor-field-state">{ f.active ? __( 'On', 'skvn-marine-blocks' ) : __( 'Off', 'skvn-marine-blocks' ) }</span>
 					</li>
 				) ) }
 			</ul>
 		</div>
-		<QueryPreview key={ query.key } query={ query } contentType={ contentType } />
-		</>
 	);
+	const preview = <QueryPreview key={ query.key } query={ query } contentType={ contentType } />;
+	return <div className="skvn-collection__editor-overview">{ summary }{ preview }</div>;
+}
+
+function queryPreviewNote( contentType: 'post' | 'product' ) {
+	if ( contentType === 'post' ) return __( 'Approximate native REST sample, newest first, capped at 5 posts. Featured, manual and shuffle ordering and OR across category/tag filters are not reproduced. Frontend query remains authoritative.', 'skvn-marine-blocks' );
+	return __( 'Approximate native REST sample, newest first. Featured, manual and shuffle ordering and OR across category/tag filters are not reproduced. Frontend query remains authoritative.', 'skvn-marine-blocks' );
 }
 
 function QueryPreview( { query, contentType }: { query: ReturnType< typeof useQueryPreview >; contentType: 'post' | 'product' } ) {
@@ -973,7 +991,6 @@ function QueryPreview( { query, contentType }: { query: ReturnType< typeof useQu
 	};
 	return <div ref={ container } className="skvn-collection__editor-query">
 		<h3 ref={ queryHeading } tabIndex={ -1 }>{ contentType === 'product' ? __( 'Product query preview', 'skvn-marine-blocks' ) : __( 'Post query preview', 'skvn-marine-blocks' ) }</h3>
-		<p>{ __( 'Approximate native REST sample, newest first. Featured, manual and shuffle ordering and OR across category/tag filters are not reproduced. Post preview is capped at 5; frontend query remains authoritative.', 'skvn-marine-blocks' ) }</p>
 		{ query.state !== 'results' ? <p role="status">{ messages[ query.state ] }</p> : <>
 			<p>{ sprintf( __( '%d records fetched for preview', 'skvn-marine-blocks' ), items.length ) }</p>
 			<ol className="skvn-collection__editor-product-grid" style={ { gridTemplateColumns: `repeat(${ columns }, minmax(0, 1fr))` } }>

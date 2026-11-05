@@ -2,6 +2,8 @@
 
 Ngày: 2026-11-05. **Human approved design direction; chưa implement, chưa runtime PASS.**
 
+Execution override 2026-11-05: human yêu cầu làm ngay. Đã thêm source Product Carousel editor-only trong `controls.tsx` và `style.css`: card trái / overview phải, summary + query giữ fields/states/disclosure, limitation footer, named container query stack ở <=760px. CP-01–05: **Đã có source / chờ kiểm chứng**; các trạng thái chưa implement bên dưới là snapshot trước implementation. TSX syntax parse và CSS PostCSS parse PASS; chưa full typecheck/build/lint/onsite. Runbook CP-01–05 tại `docs/testing/carousel-editor-ux-technical-1.3.18.md`. Không đổi query/schema/frontend render/sidebar hoặc breakpoint Category Grid.
+
 Scope: trình bày preview trên canvas Product Carousel, carry-over Editor UX được tracking trong current V1 / 1.3.19. Không chuyển milestone, bump version, thay query ownership hoặc tự áp thiết kế này cho Post. Sidebar UI không thuộc lượt thiết kế này.
 
 ## 1. Vấn đề và rationale
@@ -46,6 +48,10 @@ Human đánh giá preview trước khá đẹp nhưng giao diện mới giảm c
 Tên sản phẩm, số lượng và summary trong tranh chỉ minh họa vị trí; không hardcode vào sản phẩm. Summary chỉ mô tả cấu hình thật; không ám chỉ query preview đã tái hiện các bộ lọc/thứ tự chưa được hỗ trợ.
 
 ## 3. Contract trình bày
+
+Execution053 2026-11-05: root frame bao heading/intro đã có source và presentation được áp các Collection theo contentType/layout; Post dùng sample riêng và note cap5. Giới hạn Product-only của bản052 ban đầu được mở rộng bởi human chấp thuận thực hiện053, không phải thay query ownership. Khung chung/body unframed chờ onsite EF/CP.
+
+Follow-up approved 2026-11-05: [plan053](053_EDITOR_PREVIEW_FRAMES_ROLLOUT.md) + `docs/standards/editor-preview-frame-contract.md` mở rộng chrome để heading/intro nằm **trong cùng khung ngoài**, nhãn Product Carousel và spacing/palette theo family. Phần “heading/intro giữ ở đầu block” dưới đây vẫn đúng vị trí tương đối, nhưng không còn là quyết định để chúng ở ngoài frame. Source052 hiện chưa move heading/intro hoặc áp frame chung. Giữ card/summary/query acceptance, tránh khung lồng khung; Sidebar Design/visual picker là scope khác.
 
 - Heading/intro giữ ở đầu block, chỉnh trực tiếp như hiện có.
 - Card bên trái chiếm khoảng 1/3; cột phải nhận phần còn lại. Giữ kích thước card hợp lý, không phóng toàn chiều rộng hoặc dùng fixed height cắt nội dung.

@@ -899,6 +899,110 @@ a.skvn-collection-card__badge:hover {
 	.skvn-collection__editor-info { grid-column: 1 / -1; }
 }
 
+/* Plan053: Product/Post Grid and Carousel editor overview presentation.
+ * The editor section owns the available width; queries style descendants,
+ * never the container itself. No page-width or frontend rules are changed. */
+.skvn-collection--editor-preview.skvn-collection--canvas-overview {
+	container: skvn-product-canvas / inline-size;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-body {
+	box-sizing: border-box;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+	gap: 24px;
+	padding: 0;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-sample {
+	width: 100%;
+	max-width: 340px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-overview {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-sample-heading,
+.skvn-collection--canvas-overview .skvn-collection__editor-info-heading {
+	color: #334c5b;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.06em;
+	line-height: 1.5;
+	margin: 0 0 16px;
+	text-transform: uppercase;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field-list {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+	gap: 8px 24px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field {
+	color: #526570;
+	font-size: 13px;
+	min-width: 0;
+	align-items: baseline;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field-icon {
+	display: none;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-field-state {
+	color: #334c5b;
+	font-weight: 600;
+	margin-inline-start: auto;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-query {
+	border-top: 1px solid var(--skvn-editor-frame-border, #dce4e9);
+	margin-top: 20px;
+	padding-top: 20px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-query h3 {
+	color: #193c50;
+	font-size: 16px;
+	line-height: 1.5;
+	margin: 0 0 8px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-query p,
+.skvn-collection--canvas-overview .skvn-collection__editor-caption,
+.skvn-collection--canvas-overview .skvn-collection__editor-limitations {
+	color: #526570;
+	font-size: 12px;
+	line-height: 1.6;
+	margin: 8px 0 16px;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-product-grid {
+	gap: 12px 24px;
+	margin: 16px 0;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-product-item {
+	padding: 4px 0;
+	line-height: 1.6;
+}
+
+.skvn-collection--canvas-overview .skvn-collection__editor-limitations {
+	border-top: 1px solid var(--skvn-editor-frame-border, #dce4e9);
+	grid-column: 1 / -1;
+	margin: 0;
+	padding-top: 16px;
+}
+
+@container skvn-product-canvas (max-width: 760px) {
+	.skvn-collection--canvas-overview .skvn-collection__editor-body {
+		grid-template-columns: minmax(0, 1fr);
+		padding: 0;
+	}
+}
+
 .skvn-collection-card__image--placeholder {
 	aspect-ratio: 1 / 1;
 	background-color: #edf4f7;
