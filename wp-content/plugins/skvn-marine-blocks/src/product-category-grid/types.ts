@@ -15,6 +15,7 @@ export type CategoryShadow = 'none' | 'soft' | 'strong';
 export type CategoryColumns = 1 | 2 | 3 | 4;
 
 export type CategoryGridAttributes = {
+	align?: '' | 'wide' | 'full';
 	categories: CategorySelection[];
 	columnsDesktop: CategoryColumns;
 	columnsTablet: CategoryColumns;

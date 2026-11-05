@@ -2,7 +2,6 @@ import { canUseDesignSidebar, DesignFallback, DesignShortcut } from '../design-s
 import { CategoryDesignControls } from './design';
 import {
 	PanelBody,
-	RangeControl,
 	SelectControl,
 	TextControl,
 	ToggleControl,
@@ -59,6 +58,34 @@ function normalizeSelection( raw: unknown ): CategorySelection[] {
 	} );
 
 	return items;
+}
+
+function ColumnNumberControl( { label, max, value, onChange }: {
+	label: string;
+	max: number;
+	value: number;
+	onChange: ( value: 1 | 2 | 3 | 4 ) => void;
+} ) {
+	const [ input, setInput ] = useState( String( value ) );
+	useEffect( () => setInput( String( value ) ), [ value ] );
+	return (
+		<TextControl
+			label={ label }
+			type="number"
+			min={ 1 }
+			max={ max }
+			step={ 1 }
+			value={ input }
+			onChange={ ( raw ) => {
+				setInput( raw );
+				const number = Number( raw );
+				if ( raw.trim() && Number.isInteger( number ) && number >= 1 && number <= max ) {
+					onChange( number as 1 | 2 | 3 | 4 );
+				}
+			} }
+			onBlur={ () => setInput( String( value ) ) }
+		/>
+	);
 }
 
 export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
@@ -145,37 +172,34 @@ export function Edit( { attributes, setAttributes, clientId }: EditProps ) {
 					initialOpen={ false }
 					title={ __( 'Layout', 'skvn-marine-blocks' ) }
 				>
-					<RangeControl
-						help={ __(
-							'Desired columns in a wide container. The grid also drops columns when the block container itself is narrow.',
-							'skvn-marine-blocks'
-						) }
-						label={ __( 'Columns — wide container', 'skvn-marine-blocks' ) }
-						max={ 4 }
-						min={ 1 }
-						onChange={ ( columnsDesktop ) =>
-							setAttributes( { columnsDesktop: ( columnsDesktop || 3 ) as 1 | 2 | 3 | 4 } )
-						}
-						value={ attributes.columnsDesktop ?? 3 }
+					<SelectControl
+						label={ __( 'Content width', 'skvn-marine-blocks' ) }
+						value={ attributes.align ?? 'wide' }
+						options={ [
+							{ label: __( 'Normal', 'skvn-marine-blocks' ), value: '' },
+							{ label: __( 'Wide', 'skvn-marine-blocks' ), value: 'wide' },
+							{ label: __( 'Full width', 'skvn-marine-blocks' ), value: 'full' },
+						] }
+						onChange={ ( align ) => setAttributes( { align: align as CategoryGridAttributes['align'] } ) }
 					/>
-					<RangeControl
-						label={ __( 'Columns — medium container', 'skvn-marine-blocks' ) }
-						max={ 4 }
-						min={ 1 }
-						onChange={ ( columnsTablet ) =>
-							setAttributes( { columnsTablet: ( columnsTablet || 2 ) as 1 | 2 | 3 | 4 } )
-						}
-						value={ attributes.columnsTablet ?? 2 }
-					/>
-					<RangeControl
-						label={ __( 'Columns — narrow container', 'skvn-marine-blocks' ) }
-						max={ 2 }
-						min={ 1 }
-						onChange={ ( columnsMobile ) =>
-							setAttributes( { columnsMobile: ( columnsMobile || 1 ) as 1 | 2 | 3 | 4 } )
-						}
-						value={ attributes.columnsMobile ?? 1 }
-					/>
+					<fieldset className="skvn-category-grid__column-controls">
+						<legend>{ __( 'Columns', 'skvn-marine-blocks' ) }</legend>
+						<div className="skvn-category-grid__column-inputs">
+							{ ( [
+								{ key: 'columnsDesktop', label: __( 'Desktop', 'skvn-marine-blocks' ), fallback: 3, max: 4 },
+								{ key: 'columnsTablet', label: __( 'Tablet', 'skvn-marine-blocks' ), fallback: 2, max: 4 },
+								{ key: 'columnsMobile', label: __( 'Mobile', 'skvn-marine-blocks' ), fallback: 1, max: 2 },
+							] as const ).map( ( control ) => (
+								<ColumnNumberControl
+									key={ control.key }
+									label={ control.label }
+									max={ control.max }
+									value={ attributes[ control.key ] ?? control.fallback }
+									onChange={ ( value ) => setAttributes( { [ control.key ]: value } ) }
+								/>
+							) ) }
+						</div>
+					</fieldset>
 					<SelectControl
 						label={ __( 'Gap', 'skvn-marine-blocks' ) }
 						onChange={ ( gap ) =>

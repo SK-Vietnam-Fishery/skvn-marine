@@ -1,5 +1,25 @@
 # Product Category Grid — 1.3.20 onsite runbook
 
+## Layout number controls — 2026-11-05 follow-up
+
+### Width repair — source added, onsite pending
+
+Human requested the width repair after supplying `/home/` HTML: Product Carousel has `alignwide`, Category Grid has no alignment class. Theme top-level width rules therefore assign 1200px versus 760px. Category Grid now defaults its native `align` attribute to `wide`, including existing blocks without a saved alignment. Explicit saved alignment remains authoritative. Layout → Content width exposes Normal / Wide / Full width; Normal explicitly saves an empty alignment string. Theme retains width ownership; no fixed plugin canvas width, viewport math, negative margin or overflow mask added. Device breakpoint repair remains pending separately.
+
+On `/home/`, after deploying rebuilt assets and clearing caches, check the existing grid without resaving: wrapper must have `alignwide` and share the 1200px theme width allowance of the Carousel (track occupancy can differ). In the editor switch Normal → Wide → Full width, save/reopen and check each mode, including Normal retaining its empty alignment after reload. Repeat in a narrow Group/Columns parent: grid must stay within that parent. At desktop/tablet/mobile with a vertical scrollbar, report wrapper/parent `getBoundingClientRect()`, computed max-width, screenshot and `document.documentElement.scrollWidth <= document.documentElement.clientWidth`. FAIL on overflow, lost saved choice or editor/frontend mismatch. Build/geometry evidence still pending.
+
+Human requested Desktop / Tablet / Mobile on one row with number inputs instead of three stacked sliders. Reference: `docs/artifacts/editor-ui/category-grid-picker-prototype.html` horizontal Layout fields; the three-number arrangement is the new human instruction, not an existing feature of that artifact.
+
+Status: source added, build and onsite verification pending. This change only updates controls; existing container breakpoints and saved alignment remain unchanged and still require the separately discussed repair. Device labels alone do not prove device-based behavior.
+
+- Target: onsite `/home/`, edit the Product Category Grid shown in the reported screenshots; exact editor URL/build to record during testing.
+- Setup: deploy human-built assets; select Category Grid and open Layout.
+- Steps: confirm all three labeled inputs share one row at normal and narrow Inspector widths. Type 4/2/1; use mouse steppers and keyboard Arrow Up/Down. Clear a field and retype. Try 0, negative, decimal and values over the limits; leave the field. Save and reopen the page; check Undo/Redo.
+- Expected: no sliders, readable labels, no horizontal overflow; Desktop/Tablet accept integers 1–4 and Mobile 1–2. Empty/invalid input does not overwrite the saved attribute and returns to the last valid value on blur. Valid changes participate in native Page Save and Undo/Redo.
+- PASS requires all above checks; report FAIL with editor URL, build, screenshot, attempted value, observed attribute/result and console errors. Frontend width/breakpoint correctness is a separate pending acceptance.
+
+Bổ sung 2026-11-05: [review regression tests T00–T12](product-category-grid-1.3.20-review-regressions.md) cho findings source R01–R12: revisions/conflicts, page outcomes/notices, limits/races/preview và workload. Chưa chạy online; cần điền URLs/build/test environment trước thực hiện. Bộ này không thay acceptance nền dưới đây.
+
 Created 2026-11-04. **Chờ kiểm chứng**: source-only implementation, no runtime
 PASS yet. Plan: `.context/planning/049_VER_1_3_20_PRODUCT_CATEGORY_GRID_EXECUTION_PLAN.md`.
 Spec/acceptance: `docs/ideations/category-grid-spec.md` (CG-*).
